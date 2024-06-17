@@ -1,0 +1,16 @@
+C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\FOV.Infrastructure\bin\Debug\net8.0\FOV.Infrastructure.deps.json
+C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\FOV.Infrastructure\bin\Debug\net8.0\FOV.Infrastructure.dll
+C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\FOV.Infrastructure\bin\Debug\net8.0\FOV.Infrastructure.pdb
+C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\FOV.Infrastructure\bin\Debug\net8.0\FOV.Domain.dll
+C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\FOV.Infrastructure\bin\Debug\net8.0\FOV.Domain.pdb
+C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\FOV.Infrastructure\obj\Debug\net8.0\FOV.Infrastructure.csproj.AssemblyReference.cache
+C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\FOV.Infrastructure\obj\Debug\net8.0\FOV.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\FOV.Infrastructure\obj\Debug\net8.0\FOV.Infrastructure.AssemblyInfoInputs.cache
+C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\FOV.Infrastructure\obj\Debug\net8.0\FOV.Infrastructure.AssemblyInfo.cs
+C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\FOV.Infrastructure\obj\Debug\net8.0\FOV.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\FOV.Infrastructure\obj\Debug\net8.0\FOV.Infrastructure.sourcelink.json
+C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\FOV.Infrastructure\obj\Debug\net8.0\FOV.Infr.D18F342E.Up2Date
+C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\FOV.Infrastructure\obj\Debug\net8.0\FOV.Infrastructure.dll
+C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\FOV.Infrastructure\obj\Debug\net8.0\refint\FOV.Infrastructure.dll
+C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\FOV.Infrastructure\obj\Debug\net8.0\FOV.Infrastructure.pdb
+C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\FOV.Infrastructure\obj\Debug\net8.0\ref\FOV.Infrastructure.dll

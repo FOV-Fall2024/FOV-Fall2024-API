@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "FOV.Infrastructure/1.0.0": {
+        "dependencies": {
+          "FOV.Domain": "1.0.0"
+        },
+        "runtime": {
+          "FOV.Infrastructure.dll": {}
+        }
+      },
+      "FOV.Domain/1.0.0": {
+        "runtime": {
+          "FOV.Domain.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "FOV.Infrastructure/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "FOV.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
