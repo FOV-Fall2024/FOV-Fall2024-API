@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\FOV.Application\\FOV.Application.csproj": {}
+    "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Application\\FOV.Application.csproj": {}
   },
   "projects": {
-    "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\FOV.Application\\FOV.Application.csproj": {
+    "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Application\\FOV.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\FOV.Application\\FOV.Application.csproj",
+        "projectUniqueName": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Application\\FOV.Application.csproj",
         "projectName": "FOV.Application",
-        "projectPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\FOV.Application\\FOV.Application.csproj",
+        "projectPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Application\\FOV.Application.csproj",
         "packagesPath": "C:\\Users\\manda\\.nuget\\packages\\",
-        "outputPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\FOV.Application\\obj\\",
+        "outputPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Application\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\manda\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -28,8 +28,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\FOV.Infrastructure\\FOV.Infrastructure.csproj": {
-                "projectPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\FOV.Infrastructure\\FOV.Infrastructure.csproj"
+              "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Infrastructure\\FOV.Infrastructure.csproj": {
+                "projectPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Infrastructure\\FOV.Infrastructure.csproj"
               }
             }
           }
@@ -68,14 +68,14 @@
         }
       }
     },
-    "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\FOV.Domain\\FOV.Domain.csproj": {
+    "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Domain\\FOV.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\FOV.Domain\\FOV.Domain.csproj",
+        "projectUniqueName": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Domain\\FOV.Domain.csproj",
         "projectName": "FOV.Domain",
-        "projectPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\FOV.Domain\\FOV.Domain.csproj",
+        "projectPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Domain\\FOV.Domain.csproj",
         "packagesPath": "C:\\Users\\manda\\.nuget\\packages\\",
-        "outputPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\FOV.Domain\\obj\\",
+        "outputPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\manda\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -108,6 +108,40 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.4, )"
+            },
+            "Microsoft.Data.SqlClient": {
+              "target": "Package",
+              "version": "[5.2.0, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.4, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[8.0.4, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -128,14 +162,14 @@
         }
       }
     },
-    "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\FOV.Infrastructure\\FOV.Infrastructure.csproj": {
+    "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Infrastructure\\FOV.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\FOV.Infrastructure\\FOV.Infrastructure.csproj",
+        "projectUniqueName": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Infrastructure\\FOV.Infrastructure.csproj",
         "projectName": "FOV.Infrastructure",
-        "projectPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\FOV.Infrastructure\\FOV.Infrastructure.csproj",
+        "projectPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Infrastructure\\FOV.Infrastructure.csproj",
         "packagesPath": "C:\\Users\\manda\\.nuget\\packages\\",
-        "outputPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\FOV.Infrastructure\\obj\\",
+        "outputPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\manda\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -152,8 +186,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\FOV.Domain\\FOV.Domain.csproj": {
-                "projectPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\FOV.Domain\\FOV.Domain.csproj"
+              "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Domain\\FOV.Domain.csproj": {
+                "projectPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Domain\\FOV.Domain.csproj"
               }
             }
           }

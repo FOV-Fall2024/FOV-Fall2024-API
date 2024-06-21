@@ -11,8 +11,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Configurations\" />
     <Folder Include="Data\Interceptors\" />
+    <Folder Include="Data\FluentAPI\" />
+    <Folder Include="Constant\" />
+    <Folder Include="UnitOfWork\IUnitOfWork\" />
+    <Folder Include="UnitOfWork\UnitOfWork\" />
   </ItemGroup>
 
 </Project>
