@@ -15,11 +15,11 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructureDI(this IServiceCollection services, string ConnectionString)
     {
-
-        services.AddDbContextPool<FOVContext>(options => options.UseNpgsql(ConnectionString));
-        services.AddScoped<ApplicationDbContextInitializer>();
-        services.AddSingleton(TimeProvider.System);
-
+        //services.AddOutputCache();
+        //services.AddDbContextPool<FOVContext>(options => options.UseNpgsql(ConnectionString));
+        //services.AddScoped<ApplicationDbContextInitializer>();
+        //services.AddSingleton(TimeProvider.System);
+        //services.AddDataProtection();
 
         return services;
 

@@ -18,4 +18,8 @@
     <Folder Include="UnitOfWork\UnitOfWork\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.3.0" />
+  </ItemGroup>
+
 </Project>

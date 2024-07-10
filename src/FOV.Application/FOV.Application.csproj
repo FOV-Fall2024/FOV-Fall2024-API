@@ -13,6 +13,10 @@
   <ItemGroup>
     <Folder Include="Common\Exception\" />
     <Folder Include="Common\Models\" />
+    <Folder Include="Ingredients\" />
+    <Folder Include="IngredientTypes\Commands\CreateIngredientType\" />
+    <Folder Include="IngredientTypes\Queries\" />
+    <Folder Include="Users\Queries\" />
   </ItemGroup>
 
 </Project>

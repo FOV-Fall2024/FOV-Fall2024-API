@@ -9,6 +9,9 @@
 	<ItemGroup>
 		<Folder Include="Common\" />
 		<Folder Include="Constant\" />
+		<Folder Include="Entities\IngredientAggregator\Enums\" />
+		<Folder Include="Entities\IngredientAggregator\ValueObject\" />
+		<Folder Include="Entities\IngredientAggregator\Primitives\" />
 		<Folder Include="Entities\UserAggregator\ValueObject\" />
 		<Folder Include="Entities\UserAggregator\Primitives\" />
 	</ItemGroup>

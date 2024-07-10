@@ -6,8 +6,8 @@ var conn = builder.Configuration.GetConnectionString("DefaultConnection");
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddPresentationDI(conn);
 builder.Services.AddInfrastructureDI(conn);
-builder.Services.AddPresentationDI();
 
 
 
@@ -20,7 +20,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-await app.InitializeDatabaseAsync();
+//await app.InitializeDatabaseAsync();
 app.UseHttpsRedirection();
 await app.AuthenticationEndPoint();
 app.UseAuthorization();

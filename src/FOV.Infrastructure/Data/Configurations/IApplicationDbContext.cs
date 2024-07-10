@@ -1,13 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FOV.Domain.Entities.IngredientAggregator;
+using Microsoft.EntityFrameworkCore;
 
-namespace FOV.Infrastructure.Data.Configurations
+namespace FOV.Infrastructure.Data.Configurations;
+
+public  interface IApplicationDbContext
 {
-    public  interface IApplicationDbContext
-    {
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken);
-    }
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+
+    DbSet<Ingredient> Ingredients { get; }
+
+    DbSet<IngredientType> IngredientTypes { get; }
+
+    DbSet<IngredientGeneral> IngredientGenerals { get;}
 }

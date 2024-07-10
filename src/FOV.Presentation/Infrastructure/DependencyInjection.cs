@@ -2,21 +2,30 @@
 using FOV.Infrastructure.Data;
 using FOV.Infrastructure.Data.Configurations;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace FOV.Presentation.Infrastructure
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddPresentationDI(this IServiceCollection services)
+        public static IServiceCollection AddPresentationDI(this IServiceCollection services, string connectionString)
         {
+
+
+            services.AddOutputCache();
+            services.AddDbContextPool<FOVContext>(options => options.UseNpgsql(connectionString));
+            services.AddScoped<ApplicationDbContextInitializer>();
+            services.AddSingleton(TimeProvider.System);
+            services.AddDataProtection();
+
+
             //? Database Configuration
             services.AddOutputCache();
             services.AddIdentityCore<User>()
                       .AddRoles<IdentityRole>()
                       .AddEntityFrameworkStores<FOVContext>()
                       .AddApiEndpoints();
-
-            services.AddDataProtection();
+        services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
 
             //? Swagger Configuration
             services.AddEndpointsApiExplorer();
@@ -24,6 +33,7 @@ namespace FOV.Presentation.Infrastructure
             {
                 c.SwaggerDoc("v1", new() { Title = "Vegetarian Restaurant  API", Version = "v1" });
             });
+            services.AddDataProtection();
 
             return services;
         }
