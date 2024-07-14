@@ -1,6 +1,9 @@
 ﻿using FOV.Domain.Entities.UserAggregator;
 using FOV.Infrastructure.Data;
 using FOV.Infrastructure.Data.Configurations;
+using FOV.Infrastructure.Repository.IRepositories;
+using FOV.Infrastructure.Repository.Repositories;
+using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +23,8 @@ public static class DependencyInjection
         //services.AddScoped<ApplicationDbContextInitializer>();
         //services.AddSingleton(TimeProvider.System);
         //services.AddDataProtection();
-
+        services.AddScoped<IIngredientTypeRepository, IngredientTypeRepository>();
+        services.AddScoped<IUnitOfWorks, UnitOfWorks>();
         return services;
 
     }

@@ -1,3 +1,4 @@
+using FOV.Application;
 using FOV.Infrastructure;
 using FOV.Presentation.Infrastructure;
 
@@ -6,6 +7,7 @@ var conn = builder.Configuration.GetConnectionString("DefaultConnection");
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddApplicationDI();
 builder.Services.AddPresentationDI(conn);
 builder.Services.AddInfrastructureDI(conn);
 

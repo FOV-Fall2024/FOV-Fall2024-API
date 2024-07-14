@@ -10,22 +10,17 @@ namespace FOV.Presentation.Infrastructure
     {
         public static IServiceCollection AddPresentationDI(this IServiceCollection services, string connectionString)
         {
-
-
             services.AddOutputCache();
             services.AddDbContextPool<FOVContext>(options => options.UseNpgsql(connectionString));
             services.AddScoped<ApplicationDbContextInitializer>();
             services.AddSingleton(TimeProvider.System);
-            services.AddDataProtection();
-
 
             //? Database Configuration
-            services.AddOutputCache();
             services.AddIdentityCore<User>()
                       .AddRoles<IdentityRole>()
                       .AddEntityFrameworkStores<FOVContext>()
                       .AddApiEndpoints();
-        services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
+            services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
 
             //? Swagger Configuration
             services.AddEndpointsApiExplorer();
@@ -48,9 +43,9 @@ namespace FOV.Presentation.Infrastructure
 
             await initializer.SeedAsync();
 
-            
+
         }
     }
 
- 
+
 }

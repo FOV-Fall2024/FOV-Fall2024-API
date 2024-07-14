@@ -1055,8 +1055,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
-          "FOV.Domain": "1.0.0",
-          "MediatR": "12.3.0"
+          "FOV.Domain": "1.0.0"
         },
         "compile": {
           "bin/placeholder/FOV.Infrastructure.dll": {}
@@ -2891,7 +2890,8 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "FOV.Infrastructure >= 1.0.0"
+      "FOV.Infrastructure >= 1.0.0",
+      "MediatR >= 12.3.0"
     ]
   },
   "packageFolders": {
@@ -2941,6 +2941,12 @@
     "frameworks": {
       "net8.0": {
         "targetAlias": "net8.0",
+        "dependencies": {
+          "MediatR": {
+            "target": "Package",
+            "version": "[12.3.0, )"
+          }
+        },
         "imports": [
           "net461",
           "net462",

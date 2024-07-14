@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 namespace FOV.Infrastructure.Data.Configurations
 {
 
-   
+
     public class ApplicationDbContextInitializer
     {
         private readonly ILogger<ApplicationDbContextInitializer> _logger;
@@ -71,8 +71,8 @@ namespace FOV.Infrastructure.Data.Configurations
             await _userManager.AddClaimsAsync(administrator,
           [
               new(nameof(Role), Role.Administrator),
-                new(nameof(administrator.UserName), administrator.UserName),
-                new(nameof(administrator.Email), administrator.Email)
+              new(nameof(administrator.UserName), administrator.UserName),
+              new(nameof(administrator.Email), administrator.Email)
           ]);
 
             await _context.SaveChangesAsync();

@@ -4,11 +4,27 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FOV.Presentation.Controllers.v1;
 
-public class IngredientTypeController(IMediator mediator) : DefaultController
+public class IngredientTypeController : DefaultController 
 {
+    private readonly ISender _sender;
+    public IngredientTypeController(ISender sender)
+    {
 
-    private readonly IMediator _mediator = mediator;
+        _sender = sender;
+
+    }
+
 
     [HttpPost]
-    public async Task<IActionResult> Add(CreateIngredientTypeCommand request) => Ok(await _mediator.Send(request));
+    public async Task<IActionResult> Add(CreateIngredientTypeCommand request)
+    {
+        var response = await _sender.Send(request);
+        return Ok(response);
+    }
+
+    //[HttpPut]
+    //public async Task<IActionResult> Update()
+
+
+
 }

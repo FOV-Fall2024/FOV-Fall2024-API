@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FOV.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5018073c70fbad0c0f11b96eef6d5ec41023a960")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5795ba4f38e253f2eb31182d854b28ca218e854a")]
 [assembly: System.Reflection.AssemblyProductAttribute("FOV.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FOV.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

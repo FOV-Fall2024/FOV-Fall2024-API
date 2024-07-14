@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FOV.Infrastructure.Data.Configurations;
 
-public  interface IApplicationDbContext
+public interface IApplicationDbContext
 {
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 
@@ -11,5 +11,5 @@ public  interface IApplicationDbContext
 
     DbSet<IngredientType> IngredientTypes { get; }
 
-    DbSet<IngredientGeneral> IngredientGenerals { get;}
+    DbSet<IngredientGeneral> IngredientGenerals { get; }
 }
