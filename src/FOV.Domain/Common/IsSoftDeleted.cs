@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace FOV.Domain.Common;
 
-namespace FOV.Domain.Common
+public interface IsSoftDeleted
 {
-    public abstract class IsSoftDeleted
-    {
-        public bool IsDeleted { get; set; }
-    }
+    bool IsDeleted { get; set; }
 }
+

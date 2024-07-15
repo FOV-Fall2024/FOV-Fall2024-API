@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "E5rV/Bsb6Q5S0CRlRKoYwEiuF5QJzb7xgdjHFdtrGhAdlyn7d0KxMi6/WfeQEx/E57XvrnN8blgoHE2GmFd+7g==",
+  "dgSpecHash": "bzWbzJx6JHlmazD4TLnf5W5Tnz1DBCh0TqDOI8aFIi0/mrBO6w7az5xN1cPsBkCRDa37TG7rlxJql0Rv+o7MoQ==",
   "success": true,
   "projectFilePath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Presentation\\FOV.Presentation.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\manda\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\manda\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
+    "C:\\Users\\manda\\.nuget\\packages\\fluentvalidation\\11.9.2\\fluentvalidation.11.9.2.nupkg.sha512",
     "C:\\Users\\manda\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\manda\\.nuget\\packages\\mediatr\\12.3.0\\mediatr.12.3.0.nupkg.sha512",
     "C:\\Users\\manda\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",

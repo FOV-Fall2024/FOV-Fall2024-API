@@ -1,19 +1,13 @@
-﻿using FOV.Application.IngredientTypes.Commands.CreateIngredientType;
+﻿using FOV.Application.IngredientTypes.Commands.Create;
+using FOV.Application.IngredientTypes.Commands.Update;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FOV.Presentation.Controllers.v1;
 
-public class IngredientTypeController : DefaultController 
+public class IngredientTypeController(ISender sender) : DefaultController 
 {
-    private readonly ISender _sender;
-    public IngredientTypeController(ISender sender)
-    {
-
-        _sender = sender;
-
-    }
-
+    private readonly ISender _sender = sender;
 
     [HttpPost]
     public async Task<IActionResult> Add(CreateIngredientTypeCommand request)
@@ -22,8 +16,14 @@ public class IngredientTypeController : DefaultController
         return Ok(response);
     }
 
-    //[HttpPut]
-    //public async Task<IActionResult> Update()
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> Update(Guid id,UpdateIngredientTypeCommand command)
+    {
+        command.Id = id;
+        var response = await _sender.Send(command);
+        return Ok(response);
+    }
+
 
 
 

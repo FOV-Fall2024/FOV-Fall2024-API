@@ -191,3 +191,4 @@ C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Presentation\obj\
 C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Presentation\obj\Debug\net8.0\ref\FOV.Presentation.dll
 C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Presentation\bin\Debug\net8.0\MediatR.dll
 C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Presentation\bin\Debug\net8.0\MediatR.Contracts.dll
+C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Presentation\bin\Debug\net8.0\FluentValidation.dll

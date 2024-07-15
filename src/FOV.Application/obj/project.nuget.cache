@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "4IrE79rXAU00GeiBPaPWwAQvuAz5e3Zb10BFM04dndOgtXDSvoa+2pQ13+7orApT/6oLU+7H/6/y4GRMArRBrA==",
+  "dgSpecHash": "6m9xIDKlA63GNkWT/bJH2OfQkp0m1ik0NxNZDjPXxbIYMPmOyQ1jWM4Bl3ydboQJ5WMQTf76ca6lOSryCxBvYA==",
   "success": true,
   "projectFilePath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Application\\FOV.Application.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\manda\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\manda\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
+    "C:\\Users\\manda\\.nuget\\packages\\fluentvalidation\\11.9.2\\fluentvalidation.11.9.2.nupkg.sha512",
     "C:\\Users\\manda\\.nuget\\packages\\mediatr\\12.3.0\\mediatr.12.3.0.nupkg.sha512",
     "C:\\Users\\manda\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
     "C:\\Users\\manda\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\8.0.4\\microsoft.aspnetcore.cryptography.internal.8.0.4.nupkg.sha512",
