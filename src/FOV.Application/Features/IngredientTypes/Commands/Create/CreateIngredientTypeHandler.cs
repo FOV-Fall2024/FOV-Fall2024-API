@@ -2,7 +2,7 @@
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
-namespace FOV.Application.IngredientTypes.Commands.Create;
+namespace FOV.Application.Features.IngredientTypes.Commands.Create;
 public record CreateIngredientTypeCommand(string Name, string Description) : IRequest<Guid>;
 
 

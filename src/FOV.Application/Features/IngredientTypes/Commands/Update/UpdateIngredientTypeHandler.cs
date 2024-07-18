@@ -3,7 +3,7 @@ using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 using System.Text.Json.Serialization;
 
-namespace FOV.Application.IngredientTypes.Commands.Update;
+namespace FOV.Application.Features.IngredientTypes.Commands.Update;
 
 public sealed record UpdateIngredientTypeCommand : IRequest<Guid>
 {

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FOV.Application.Users.Commands.CreateUser
+namespace FOV.Application.Features.Users.Commands.CreateUser
 {
     public class CreateUseCommand : IRequest<string>
     {

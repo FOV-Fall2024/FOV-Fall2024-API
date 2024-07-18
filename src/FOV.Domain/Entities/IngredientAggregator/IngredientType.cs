@@ -20,7 +20,7 @@ public class IngredientType : BaseAuditableEntity, IsSoftDeleted
     public bool IsDeleted { get; set; }
     public IngredientType()
     {
-        
+
     }
 
 

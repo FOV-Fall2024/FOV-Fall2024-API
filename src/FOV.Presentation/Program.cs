@@ -8,8 +8,8 @@ var conn = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddControllers();
 builder.Services.AddApplicationDI();
-builder.Services.AddPresentationDI(conn);
-builder.Services.AddInfrastructureDI(conn);
+builder.Services.AddPresentationDI(conn ?? throw new ArgumentNullException(nameof(conn), "Connection string cannot be null."));
+builder.Services.AddInfrastructureDI();
 
 
 
@@ -24,7 +24,7 @@ if (app.Environment.IsDevelopment())
 
 //await app.InitializeDatabaseAsync();
 app.UseHttpsRedirection();
-await app.AuthenticationEndPoint();
+app.AuthenticationEndPoint();
 app.UseAuthorization();
 
 app.MapControllers();

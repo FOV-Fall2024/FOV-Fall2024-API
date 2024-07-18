@@ -1,6 +1,4 @@
-﻿using FOV.Application.Users.Commands.CreateUser;
-using MediatR;
-using Microsoft.AspNetCore.Components.Forms;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FOV.Presentation.Controllers.v1
