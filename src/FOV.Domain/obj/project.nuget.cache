@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "XqoZz0r5QdPiKuYRbelOjKaFjNQWxueP7M4zTUwbw72ma+qkFKOu0Ezg/sN3s0CEs9cO9s80LZPURDx0e2MQtA==",
+  "dgSpecHash": "ZanMCdoijJ/efYX4jT1ZPUqljZi4iJC9ytnQCpQrxK1D/N5nPXunOSrY80tPbVEb7BRghHaejpacNAPuqsrvgA==",
   "success": true,
   "projectFilePath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Domain\\FOV.Domain.csproj",
   "expectedPackageFiles": [
@@ -52,6 +52,7 @@
     "C:\\Users\\manda\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
     "C:\\Users\\manda\\.nuget\\packages\\npgsql\\8.0.3\\npgsql.8.0.3.nupkg.sha512",
     "C:\\Users\\manda\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\8.0.4\\npgsql.entityframeworkcore.postgresql.8.0.4.nupkg.sha512",
+    "C:\\Users\\manda\\.nuget\\packages\\sonaranalyzer.csharp\\8.56.0.67649\\sonaranalyzer.csharp.8.56.0.67649.nupkg.sha512",
     "C:\\Users\\manda\\.nuget\\packages\\system.codedom\\4.4.0\\system.codedom.4.4.0.nupkg.sha512",
     "C:\\Users\\manda\\.nuget\\packages\\system.collections.immutable\\6.0.0\\system.collections.immutable.6.0.0.nupkg.sha512",
     "C:\\Users\\manda\\.nuget\\packages\\system.composition\\6.0.0\\system.composition.6.0.0.nupkg.sha512",

@@ -1012,6 +1012,9 @@
           }
         }
       },
+      "SonarAnalyzer.CSharp/8.56.0.67649": {
+        "type": "package"
+      },
       "System.CodeDom/4.4.0": {
         "type": "package",
         "compile": {
@@ -3112,6 +3115,26 @@
         "postgresql.png"
       ]
     },
+    "SonarAnalyzer.CSharp/8.56.0.67649": {
+      "sha512": "u5klyn4PBAOe38/CoPbxGjuMqJQ5K0M7SA17H2DHgHyQ+neSU+abneRGjSQSVD76kbYXzG7E1/KQwTuj+nnMZw==",
+      "type": "package",
+      "path": "sonaranalyzer.csharp/8.56.0.67649",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "analyzers/Google.Protobuf.dll",
+        "analyzers/SonarAnalyzer.CFG.dll",
+        "analyzers/SonarAnalyzer.CSharp.dll",
+        "analyzers/SonarAnalyzer.dll",
+        "images/sonarsource_64.png",
+        "license/THIRD-PARTY-NOTICES.txt",
+        "sonaranalyzer.csharp.8.56.0.67649.nupkg.sha512",
+        "sonaranalyzer.csharp.nuspec",
+        "tools/install.ps1",
+        "tools/uninstall.ps1"
+      ]
+    },
     "System.CodeDom/4.4.0": {
       "sha512": "2sCCb7doXEwtYAbqzbF/8UAeDRMNmPaQbU2q50Psg1J9KzumyVVCgKQY8s53WIPTufNT0DpSe9QRvVjOzfDWBA==",
       "type": "package",
@@ -4230,7 +4253,8 @@
       "Microsoft.EntityFrameworkCore.Design >= 8.0.4",
       "Microsoft.EntityFrameworkCore.SqlServer >= 8.0.4",
       "Microsoft.EntityFrameworkCore.Tools >= 8.0.4",
-      "Npgsql.EntityFrameworkCore.PostgreSQL >= 8.0.4"
+      "Npgsql.EntityFrameworkCore.PostgreSQL >= 8.0.4",
+      "SonarAnalyzer.CSharp >= 8.56.0.67649"
     ]
   },
   "packageFolders": {
@@ -4308,6 +4332,12 @@
           "Npgsql.EntityFrameworkCore.PostgreSQL": {
             "target": "Package",
             "version": "[8.0.4, )"
+          },
+          "SonarAnalyzer.CSharp": {
+            "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+            "suppressParent": "All",
+            "target": "Package",
+            "version": "[8.56.0.67649, )"
           }
         },
         "imports": [

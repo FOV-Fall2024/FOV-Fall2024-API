@@ -10,6 +10,19 @@ public class ProductIngredientGeneral : BaseAuditableEntity, IsSoftDeleted
 
     public IngredientGeneral? IngredientGeneral { get; set; }
 
+    public decimal Quantity { get; set; }
     public Guid? IngredientGeneralId { get; set; }
     public bool IsDeleted { get; set; }
+
+    public ProductIngredientGeneral()
+    {
+
+    }
+
+    public ProductIngredientGeneral(Guid productGeneralId, Guid ingredientGeneralId, decimal Qunantity)
+    {
+        this.ProductGeneralId = productGeneralId;
+        this.IngredientGeneralId = ingredientGeneralId;
+        this.Quantity = Quantity;
+    }
 }
