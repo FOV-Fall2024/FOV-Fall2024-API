@@ -1,4 +1,4 @@
-﻿using FOV.Domain.Entities.IngredientAggregator;
+﻿using FOV.Domain.Entities.IngredientGeneralAggregator;
 
 
 namespace FOV.Infrastructure.Repository.IRepositories;

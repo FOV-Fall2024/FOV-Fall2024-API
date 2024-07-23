@@ -11,9 +11,9 @@ namespace FOV.Application.Features.Users.Commands.CreateUser
 {
     public class CreateUseCommand : IRequest<string>
     {
-        public string userName { get; set; }
-        public string email { get; set; }
-        public string passwordDefault { get; set; }
+        public required string UserName { get; set; }
+        public required string Email { get; set; }
+        public required string PasswordDefault { get; set; }
     }
     public class CreateUserCommandHandler : IRequestHandler<CreateUseCommand, string>
     {
@@ -26,11 +26,11 @@ namespace FOV.Application.Features.Users.Commands.CreateUser
         {
             User user = new User
             {
-                UserName = request.userName,
-                Email = request.email,
+                UserName = request.UserName,
+                Email = request.Email,
 
             };
-            var result = await _userManager.CreateAsync(user, request.passwordDefault);
+            var result = await _userManager.CreateAsync(user, request.PasswordDefault);
 
             return "LoginSucessfully";
         }

@@ -1,4 +1,4 @@
-﻿using FOV.Domain.Entities.IngredientAggregator;
+﻿using FOV.Domain.Entities.IngredientGeneralAggregator;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,5 +9,6 @@ public class IngredientGeneralConfiguration : IEntityTypeConfiguration<Ingredien
     public void Configure(EntityTypeBuilder<IngredientGeneral> builder)
     {
         builder.HasKey(x => x.Id);
+        builder.HasMany(x => x.ProductIngredientGenerals).WithOne(x => x.IngredientGeneral).HasForeignKey(x => x.IngredientGeneralId);
     }
 }

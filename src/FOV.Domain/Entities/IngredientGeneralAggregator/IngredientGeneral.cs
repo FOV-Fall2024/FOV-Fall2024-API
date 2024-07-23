@@ -1,6 +1,8 @@
 ﻿using FOV.Domain.Common;
+using FOV.Domain.Entities.IngredientAggregator;
+using FOV.Domain.Entities.ProductGeneralAggregator;
 
-namespace FOV.Domain.Entities.IngredientAggregator;
+namespace FOV.Domain.Entities.IngredientGeneralAggregator;
 
 public class IngredientGeneral : BaseAuditableEntity, IsSoftDeleted
 {
@@ -9,6 +11,8 @@ public class IngredientGeneral : BaseAuditableEntity, IsSoftDeleted
     public IngredientType? IngredientType { get; set; }
     public Guid IngredientTypeId { get; set; }
     public bool IsDeleted { get; set; } = false;
+
+    public virtual ICollection<ProductIngredientGeneral>? ProductIngredientGenerals { get; set; }
 
     public IngredientGeneral()
     {

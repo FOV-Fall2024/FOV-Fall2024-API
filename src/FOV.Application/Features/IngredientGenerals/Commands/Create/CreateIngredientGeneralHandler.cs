@@ -1,4 +1,4 @@
-﻿using FOV.Domain.Entities.IngredientAggregator;
+﻿using FOV.Domain.Entities.IngredientGeneralAggregator;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 

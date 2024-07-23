@@ -1,4 +1,5 @@
 ﻿using FOV.Domain.Common;
+using FOV.Domain.Entities.IngredientGeneralAggregator;
 
 
 namespace FOV.Domain.Entities.IngredientAggregator;
@@ -42,7 +43,7 @@ public class IngredientType : BaseAuditableEntity, IsSoftDeleted
         this.IngredientDescription = IngrendientDescription;
     }
 
-    public void Delete() => IsDeleted = true;
+    public void UpdateState(bool state) => IsDeleted = state;
 
 
 }

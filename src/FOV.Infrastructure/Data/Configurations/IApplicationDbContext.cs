@@ -1,4 +1,5 @@
 ﻿using FOV.Domain.Entities.IngredientAggregator;
+using FOV.Domain.Entities.IngredientGeneralAggregator;
 using Microsoft.EntityFrameworkCore;
 
 namespace FOV.Infrastructure.Data.Configurations;

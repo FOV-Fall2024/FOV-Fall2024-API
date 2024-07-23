@@ -9,9 +9,22 @@
 	<ItemGroup>
 		<Folder Include="Common\" />
 		<Folder Include="Constant\" />
+		<Folder Include="Entities\ComboAggregator\ValueObjects\" />
+		<Folder Include="Entities\ComboAggregator\Primitives\" />
 		<Folder Include="Entities\IngredientAggregator\Enums\" />
 		<Folder Include="Entities\IngredientAggregator\ValueObject\" />
 		<Folder Include="Entities\IngredientAggregator\Primitives\" />
+		<Folder Include="Entities\IngredientGeneralAggregator\Enums\" />
+		<Folder Include="Entities\IngredientGeneralAggregator\ValueObject\" />
+		<Folder Include="Entities\IngredientGeneralAggregator\Primitives\" />
+		<Folder Include="Entities\ProductAggregator\Enums\" />
+		<Folder Include="Entities\ProductAggregator\ValueObjects\" />
+		<Folder Include="Entities\ProductAggregator\Primitives\" />
+		<Folder Include="Entities\ProductGeneralAggregator\Enums\" />
+		<Folder Include="Entities\ProductGeneralAggregator\ValueObjet\" />
+		<Folder Include="Entities\ProductGeneralAggregator\Primitives\" />
+		<Folder Include="Entities\RestaurantAggregator\ValueObject\" />
+		<Folder Include="Entities\RestaurantAggregator\Primitives\" />
 		<Folder Include="Entities\UserAggregator\ValueObject\" />
 		<Folder Include="Entities\UserAggregator\Primitives\" />
 	</ItemGroup>

@@ -1,4 +1,5 @@
 ﻿using FOV.Domain.Entities.IngredientAggregator;
+using FOV.Domain.Entities.IngredientGeneralAggregator;
 using FOV.Domain.Entities.UserAggregator;
 using FOV.Infrastructure.Data.Configurations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;

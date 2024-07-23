@@ -8,6 +8,12 @@ namespace FOV.Presentation.Controllers.v1;
 
 public class IngredientGeneralController(ISender sender) : DefaultController
 {
+    //[ ] Create 
+    //[ ] Update 
+    //[ ] Inactive
+    //[ ] Active
+    //[ ] Get
+    //[ ] Get Detail
     private readonly ISender _sender = sender;
     [HttpPost]
     public async Task<IActionResult> Create(CreateIngredientGeneralCommand command)

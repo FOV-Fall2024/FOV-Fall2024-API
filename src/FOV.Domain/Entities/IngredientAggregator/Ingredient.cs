@@ -1,4 +1,5 @@
 ﻿using FOV.Domain.Common;
+using FOV.Domain.Entities.RestaurantAggregator;
 
 
 namespace FOV.Domain.Entities.IngredientAggregator;
@@ -13,7 +14,11 @@ public class Ingredient : BaseEntity
 
     public IngredientType? IngredientType { get; set; }
 
-    public Guid IngredientTypeId { get; set; }
+    public Guid? IngredientTypeId { get; set; }
+
+    public Restaurant? Restaurant { get; set; }
+
+    public Guid? RestaurantId { get; set; }
 
 }
 

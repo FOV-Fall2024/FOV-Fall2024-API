@@ -2,5 +2,8 @@
 {
     public class AuthController
     {
+        // [ ] Login
+        // [ ] Register 
+        // [ ] Login Google 
     }
 }
