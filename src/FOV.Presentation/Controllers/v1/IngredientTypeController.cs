@@ -5,7 +5,7 @@ using FOV.Application.Features.IngredientTypes.Commands.Update;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FOV.Presentation.Controllers.v1;
+namespace FOV.Presentation.Controllers.V1;
 
 
 

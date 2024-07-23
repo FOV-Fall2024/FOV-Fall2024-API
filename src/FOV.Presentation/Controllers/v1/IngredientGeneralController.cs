@@ -4,7 +4,7 @@ using FOV.Application.Features.IngredientGenerals.Commands.Create;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FOV.Presentation.Controllers.v1;
+namespace FOV.Presentation.Controllers.V1;
 
 public class IngredientGeneralController(ISender sender) : DefaultController
 {

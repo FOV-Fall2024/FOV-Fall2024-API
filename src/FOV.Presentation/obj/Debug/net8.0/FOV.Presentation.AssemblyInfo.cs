@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FOV.Presentation")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a959e3fd8c1803d2f35157940883e2c939ccc9dc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+56d15c6b0161c45761ca9f49e1dd318b1f307b28")]
 [assembly: System.Reflection.AssemblyProductAttribute("FOV.Presentation")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FOV.Presentation")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

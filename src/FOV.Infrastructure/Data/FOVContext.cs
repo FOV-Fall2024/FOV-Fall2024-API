@@ -1,10 +1,11 @@
-﻿using FOV.Domain.Entities.IngredientAggregator;
+﻿using System.Reflection;
+using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Domain.Entities.IngredientGeneralAggregator;
+using FOV.Domain.Entities.ProductGeneralAggregator;
 using FOV.Domain.Entities.UserAggregator;
 using FOV.Infrastructure.Data.Configurations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 
 namespace FOV.Infrastructure.Data;
 
@@ -20,6 +21,11 @@ public class FOVContext : IdentityDbContext<User>, IApplicationDbContext
     public DbSet<IngredientType> IngredientTypes => Set<IngredientType>();
 
     public DbSet<IngredientGeneral> IngredientGenerals => Set<IngredientGeneral>();
+
+    public DbSet<ProductIngredientGeneral> ProductIngredientGenerals => Set<ProductIngredientGeneral>();
+
+    public DbSet<ProductGeneral> ProductGenerals => Set<ProductGeneral>();
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
