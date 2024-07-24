@@ -9,5 +9,7 @@ public interface IUnitOfWorks
     public IIngredientGeneralRepository IngredientGeneralRepository { get; }
     public ITableRepository TableRepository { get; }
     public IRestaurantRepository RestaurantRepository { get; }
+    public IProductGeneralRepository ProductGeneralRepository { get; }
+    public IProductIngredientGeneralRepository ProductIngredientGeneralRepository { get; }
     public Task<int> SaveChangeAsync();
 }

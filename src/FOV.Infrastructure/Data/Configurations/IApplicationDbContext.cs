@@ -1,5 +1,6 @@
 ﻿using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Domain.Entities.IngredientGeneralAggregator;
+using FOV.Domain.Entities.ProductGeneralAggregator;
 using Microsoft.EntityFrameworkCore;
 
 namespace FOV.Infrastructure.Data.Configurations;
@@ -13,4 +14,8 @@ public interface IApplicationDbContext
     DbSet<IngredientType> IngredientTypes { get; }
 
     DbSet<IngredientGeneral> IngredientGenerals { get; }
+
+    DbSet<ProductIngredientGeneral> ProductIngredientGenerals { get; }
+
+    DbSet<ProductGeneral> ProductGenerals { get; }
 }

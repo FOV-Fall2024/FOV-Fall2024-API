@@ -1,9 +1,8 @@
-﻿namespace FOV.Presentation.Controllers.v1
+﻿namespace FOV.Presentation.Controllers.V1;
+
+public class AuthController
 {
-    public class AuthController
-    {
-        // [ ] Login
-        // [ ] Register 
-        // [ ] Login Google 
-    }
+    // [ ] Login
+    // [ ] Register 
+    // [ ] Login Google 
 }

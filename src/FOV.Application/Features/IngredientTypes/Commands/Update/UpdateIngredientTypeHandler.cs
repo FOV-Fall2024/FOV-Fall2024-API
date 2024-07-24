@@ -1,7 +1,7 @@
-﻿using FOV.Domain.Entities.IngredientAggregator;
+﻿using System.Text.Json.Serialization;
+using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
-using System.Text.Json.Serialization;
 
 namespace FOV.Application.Features.IngredientTypes.Commands.Update;
 
