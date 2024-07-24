@@ -221,6 +221,48 @@ namespace FOV.Infrastructure.Migrations
                     b.ToTable("IngredientGenerals");
                 });
 
+            modelBuilder.Entity("FOV.Domain.Entities.OrderAggregator.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("OrderStatus")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("OrderTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("OrderType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("TableId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TableId");
+
+                    b.ToTable("Order");
+                });
+
             modelBuilder.Entity("FOV.Domain.Entities.ProductAggregator.Category", b =>
                 {
                     b.Property<Guid>("Id")
@@ -419,6 +461,69 @@ namespace FOV.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Restaurant");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.TableAggregator.Table", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("RestaurantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("TableCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("TableDescription")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("TableImage")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("TableNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("TableQRCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("TableState")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("TableStatus")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("TableType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RestaurantId");
+
+                    b.ToTable("Table");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.UserAggregator.User", b =>
@@ -673,6 +778,17 @@ namespace FOV.Infrastructure.Migrations
                     b.Navigation("IngredientType");
                 });
 
+            modelBuilder.Entity("FOV.Domain.Entities.OrderAggregator.Order", b =>
+                {
+                    b.HasOne("FOV.Domain.Entities.TableAggregator.Table", "Table")
+                        .WithMany("Orders")
+                        .HasForeignKey("TableId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Table");
+                });
+
             modelBuilder.Entity("FOV.Domain.Entities.ProductAggregator.Product", b =>
                 {
                     b.HasOne("FOV.Domain.Entities.ProductAggregator.Category", "Category")
@@ -716,6 +832,17 @@ namespace FOV.Infrastructure.Migrations
                     b.Navigation("IngredientGeneral");
 
                     b.Navigation("ProductGeneral");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.TableAggregator.Table", b =>
+                {
+                    b.HasOne("FOV.Domain.Entities.RestaurantAggregator.Restaurant", "Restaurant")
+                        .WithMany("Tables")
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Restaurant");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -810,6 +937,13 @@ namespace FOV.Infrastructure.Migrations
                     b.Navigation("Ingredients");
 
                     b.Navigation("Products");
+
+                    b.Navigation("Tables");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.TableAggregator.Table", b =>
+                {
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

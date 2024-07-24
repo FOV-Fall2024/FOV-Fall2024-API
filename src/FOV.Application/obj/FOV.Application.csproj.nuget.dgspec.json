@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Application\\FOV.Application.csproj": {}
+    "D:\\FOV\\FOV-Fall2024-API\\src\\FOV.Application\\FOV.Application.csproj": {}
   },
   "projects": {
-    "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Application\\FOV.Application.csproj": {
+    "D:\\FOV\\FOV-Fall2024-API\\src\\FOV.Application\\FOV.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Application\\FOV.Application.csproj",
+        "projectUniqueName": "D:\\FOV\\FOV-Fall2024-API\\src\\FOV.Application\\FOV.Application.csproj",
         "projectName": "FOV.Application",
-        "projectPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Application\\FOV.Application.csproj",
-        "packagesPath": "C:\\Users\\manda\\.nuget\\packages\\",
-        "outputPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Application\\obj\\",
+        "projectPath": "D:\\FOV\\FOV-Fall2024-API\\src\\FOV.Application\\FOV.Application.csproj",
+        "packagesPath": "C:\\Users\\ducan\\.nuget\\packages\\",
+        "outputPath": "D:\\FOV\\FOV-Fall2024-API\\src\\FOV.Application\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\manda\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\ducan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,14 +26,15 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Infrastructure\\FOV.Infrastructure.csproj": {
-                "projectPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Infrastructure\\FOV.Infrastructure.csproj"
+              "D:\\FOV\\FOV-Fall2024-API\\src\\FOV.Infrastructure\\FOV.Infrastructure.csproj": {
+                "projectPath": "D:\\FOV\\FOV-Fall2024-API\\src\\FOV.Infrastructure\\FOV.Infrastructure.csproj"
               }
             }
           }
@@ -56,6 +61,10 @@
             "MediatR": {
               "target": "Package",
               "version": "[12.3.0, )"
+            },
+            "QRCoder": {
+              "target": "Package",
+              "version": "[1.4.1, )"
             }
           },
           "imports": [
@@ -74,21 +83,25 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.205/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Domain\\FOV.Domain.csproj": {
+    "D:\\FOV\\FOV-Fall2024-API\\src\\FOV.Domain\\FOV.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Domain\\FOV.Domain.csproj",
+        "projectUniqueName": "D:\\FOV\\FOV-Fall2024-API\\src\\FOV.Domain\\FOV.Domain.csproj",
         "projectName": "FOV.Domain",
-        "projectPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Domain\\FOV.Domain.csproj",
-        "packagesPath": "C:\\Users\\manda\\.nuget\\packages\\",
-        "outputPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Domain\\obj\\",
+        "projectPath": "D:\\FOV\\FOV-Fall2024-API\\src\\FOV.Domain\\FOV.Domain.csproj",
+        "packagesPath": "C:\\Users\\ducan\\.nuget\\packages\\",
+        "outputPath": "D:\\FOV\\FOV-Fall2024-API\\src\\FOV.Domain\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\manda\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\ducan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -96,6 +109,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -119,6 +133,14 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "FirebaseAuth": {
+              "target": "Package",
+              "version": "[2.0.6, )"
+            },
+            "FirebaseStorage.net": {
+              "target": "Package",
+              "version": "[1.0.3, )"
+            },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
               "version": "[8.0.4, )"
@@ -150,6 +172,18 @@
             "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
               "version": "[8.0.4, )"
+            },
+            "QRCoder": {
+              "target": "Package",
+              "version": "[1.4.1, )"
+            },
+            "System.Drawing.Common": {
+              "target": "Package",
+              "version": "[8.0.7, )"
+            },
+            "System.Linq.Dynamic.Core": {
+              "target": "Package",
+              "version": "[1.4.3, )"
             }
           },
           "imports": [
@@ -168,21 +202,25 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.205/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Infrastructure\\FOV.Infrastructure.csproj": {
+    "D:\\FOV\\FOV-Fall2024-API\\src\\FOV.Infrastructure\\FOV.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Infrastructure\\FOV.Infrastructure.csproj",
+        "projectUniqueName": "D:\\FOV\\FOV-Fall2024-API\\src\\FOV.Infrastructure\\FOV.Infrastructure.csproj",
         "projectName": "FOV.Infrastructure",
-        "projectPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Infrastructure\\FOV.Infrastructure.csproj",
-        "packagesPath": "C:\\Users\\manda\\.nuget\\packages\\",
-        "outputPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Infrastructure\\obj\\",
+        "projectPath": "D:\\FOV\\FOV-Fall2024-API\\src\\FOV.Infrastructure\\FOV.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\ducan\\.nuget\\packages\\",
+        "outputPath": "D:\\FOV\\FOV-Fall2024-API\\src\\FOV.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\manda\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\ducan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -190,14 +228,15 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Domain\\FOV.Domain.csproj": {
-                "projectPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Domain\\FOV.Domain.csproj"
+              "D:\\FOV\\FOV-Fall2024-API\\src\\FOV.Domain\\FOV.Domain.csproj": {
+                "projectPath": "D:\\FOV\\FOV-Fall2024-API\\src\\FOV.Domain\\FOV.Domain.csproj"
               }
             }
           }
@@ -238,7 +277,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.205/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

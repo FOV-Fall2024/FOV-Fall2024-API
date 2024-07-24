@@ -6,7 +6,7 @@ namespace FOV.Presentation.Infrastructure
     {
         public static void AuthenticationEndPoint(this WebApplication app)
         {
-             app.MapIdentityApi<User>();
+            app.MapIdentityApi<User>();
 
         }
     }

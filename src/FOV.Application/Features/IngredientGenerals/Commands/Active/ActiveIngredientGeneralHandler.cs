@@ -20,4 +20,4 @@ public class ActiveIngredientGeneralHandler(IUnitOfWorks unitOfWorks) : IRequest
         return Result.Ok();
 
     }
-} 
+}

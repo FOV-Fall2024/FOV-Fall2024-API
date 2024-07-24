@@ -17,7 +17,7 @@ public class Combo : BaseAuditableEntity, IsSoftDeleted
 
     public DateTime ExpiredDate { get; set; }
 
-    public Restaurant? Restaurant { get; set; }  
+    public Restaurant? Restaurant { get; set; }
 
     public Guid RestaurantId { get; set; }
 

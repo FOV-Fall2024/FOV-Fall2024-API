@@ -10,10 +10,10 @@ public class ProductGeneral : BaseAuditableEntity, IsSoftDeleted
 
     public string ProductDescription { get; set; } = string.Empty;
 
-    public Category? Category { get; set; } 
+    public Category? Category { get; set; }
 
     public Guid CategoryId { get; set; }
-    public bool IsDeleted { get;  set; }
+    public bool IsDeleted { get; set; }
 
     public virtual ICollection<ProductIngredientGeneral> Ingredients { get; set; } = [];
 }

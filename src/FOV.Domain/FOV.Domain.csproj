@@ -17,6 +17,9 @@
 		<Folder Include="Entities\IngredientGeneralAggregator\Enums\" />
 		<Folder Include="Entities\IngredientGeneralAggregator\ValueObject\" />
 		<Folder Include="Entities\IngredientGeneralAggregator\Primitives\" />
+		<Folder Include="Entities\OrderAggregator\Enums\" />
+		<Folder Include="Entities\OrderAggregator\ValueObjects\" />
+		<Folder Include="Entities\OrderAggregator\Primitives\" />
 		<Folder Include="Entities\ProductAggregator\Enums\" />
 		<Folder Include="Entities\ProductAggregator\ValueObjects\" />
 		<Folder Include="Entities\ProductAggregator\Primitives\" />
@@ -25,11 +28,18 @@
 		<Folder Include="Entities\ProductGeneralAggregator\Primitives\" />
 		<Folder Include="Entities\RestaurantAggregator\ValueObject\" />
 		<Folder Include="Entities\RestaurantAggregator\Primitives\" />
+		<Folder Include="Entities\TableAggregator\ValueObjects\" />
+		<Folder Include="Entities\TableAggregator\Primitives\" />
+		<Folder Include="Entities\TransactionAggregator\Enums\" />
+		<Folder Include="Entities\TransactionAggregator\ValueObjects\" />
+		<Folder Include="Entities\TransactionAggregator\Primitives\" />
 		<Folder Include="Entities\UserAggregator\ValueObject\" />
 		<Folder Include="Entities\UserAggregator\Primitives\" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="FirebaseAuth" Version="2.0.6" />
+		<PackageReference Include="FirebaseStorage.net" Version="1.0.3" />
 		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.4" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.4" />
@@ -43,6 +53,9 @@
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
+		<PackageReference Include="QRCoder" Version="1.4.1" />
+		<PackageReference Include="System.Drawing.Common" Version="8.0.7" />
+		<PackageReference Include="System.Linq.Dynamic.Core" Version="1.4.3" />
 	</ItemGroup>
 
 </Project>

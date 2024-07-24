@@ -16,5 +16,5 @@ public class Product : BaseAuditableEntity
 
     public Restaurant? Restaurant { get; set; }
 
-    public Guid RestaurantId { get; set; }     
+    public Guid RestaurantId { get; set; }
 }
