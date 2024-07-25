@@ -22,7 +22,8 @@
     <Folder Include="Features\IngredientGenerals\Commands\Inactive\" />
     <Folder Include="Features\IngredientGenerals\Queries\" />
     <Folder Include="Features\Ingredients\" />
-    <Folder Include="Features\Tables\Queries\" />
+    <Folder Include="Features\ProductGenerals\Commands\Inactive\" />
+    <Folder Include="Features\ProductGenerals\Queries\" />
     <Folder Include="Features\Users\Queries\" />
   </ItemGroup>
 

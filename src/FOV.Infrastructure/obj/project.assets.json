@@ -8843,24 +8843,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ducan\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\manda\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\FOV\\FOV-Fall2024-API\\src\\FOV.Infrastructure\\FOV.Infrastructure.csproj",
+      "projectUniqueName": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Infrastructure\\FOV.Infrastructure.csproj",
       "projectName": "FOV.Infrastructure",
-      "projectPath": "D:\\FOV\\FOV-Fall2024-API\\src\\FOV.Infrastructure\\FOV.Infrastructure.csproj",
-      "packagesPath": "C:\\Users\\ducan\\.nuget\\packages\\",
-      "outputPath": "D:\\FOV\\FOV-Fall2024-API\\src\\FOV.Infrastructure\\obj\\",
+      "projectPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Infrastructure\\FOV.Infrastructure.csproj",
+      "packagesPath": "C:\\Users\\manda\\.nuget\\packages\\",
+      "outputPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Infrastructure\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\ducan\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\manda\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -8868,15 +8863,14 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\FOV\\FOV-Fall2024-API\\src\\FOV.Domain\\FOV.Domain.csproj": {
-              "projectPath": "D:\\FOV\\FOV-Fall2024-API\\src\\FOV.Domain\\FOV.Domain.csproj"
+            "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Domain\\FOV.Domain.csproj": {
+              "projectPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Domain\\FOV.Domain.csproj"
             }
           }
         }
@@ -8917,16 +8911,8 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.205/PortableRuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file D:\\FOV\\FOV-Fall2024-API\\src\\FOV.Infrastructure\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-    }
-  ]
+  }
 }

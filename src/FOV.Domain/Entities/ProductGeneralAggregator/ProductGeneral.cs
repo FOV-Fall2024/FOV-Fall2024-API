@@ -7,9 +7,9 @@ namespace FOV.Domain.Entities.ProductGeneralAggregator;
 public class ProductGeneral : BaseAuditableEntity, IsSoftDeleted
 {
 
-    public string ProductName { get; set; }
+    public required string ProductName { get; set; } =string.Empty;
 
-    public string ProductDescription { get; set; } = string.Empty;
+    public required string ProductDescription { get; set; } = string.Empty;
 
     public Category? Category { get; set; }
 
@@ -24,12 +24,18 @@ public class ProductGeneral : BaseAuditableEntity, IsSoftDeleted
 
     }
 
-    public ProductGeneral(string Name, string Description, Guid CategoryId)
+    public ProductGeneral(string name, string description, Guid categoryId)
     {
-        ProductName = Name;
-        ProductDescription = Description;
-        this.CategoryId = CategoryId;
+        ProductName = name;
+        ProductDescription = description;
+        CategoryId = categoryId;
         IsDeleted = false;
         Id = Guid.NewGuid();
+    }
+
+    public void Update(string name, string description)
+    {
+        ProductName = name;
+        ProductDescription = description;
     }
 }

@@ -25,4 +25,11 @@ public class ProductIngredientGeneral : BaseAuditableEntity, IsSoftDeleted
         this.IngredientGeneralId = ingredientGeneralId;
         this.Quantity = Quantity;
     }
+
+    public void Update(Guid productGeneralId, Guid ingredientGeneralId, decimal quantity)
+    {
+        this.ProductGeneralId = productGeneralId;
+        this.IngredientGeneralId = ingredientGeneralId;
+        this.Quantity = quantity;
+    }
 }
