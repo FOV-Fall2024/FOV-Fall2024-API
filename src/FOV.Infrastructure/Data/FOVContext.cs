@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Domain.Entities.IngredientGeneralAggregator;
+using FOV.Domain.Entities.ProductAggregator;
 using FOV.Domain.Entities.ProductGeneralAggregator;
 using FOV.Domain.Entities.UserAggregator;
 using FOV.Infrastructure.Data.Configurations;
@@ -25,6 +26,8 @@ public class FOVContext : IdentityDbContext<User>, IApplicationDbContext
     public DbSet<ProductIngredientGeneral> ProductIngredientGenerals => Set<ProductIngredientGeneral>();
 
     public DbSet<ProductGeneral> ProductGenerals => Set<ProductGeneral>();
+
+    public DbSet<Category> Categories => Set<Category>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

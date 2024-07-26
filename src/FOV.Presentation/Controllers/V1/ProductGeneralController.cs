@@ -30,7 +30,7 @@ public class ProductGeneralController(ISender sender) : DefaultController
     // [ ] Update
 
     [HttpPost("{productId: guid}")]
-    public async Task<IActionResult> Update(Guid productId,UpdateProductGeneralCommand command)
+    public async Task<IActionResult> Update(Guid productId, UpdateProductGeneralCommand command)
     {
         command.Id = productId;
         var response = await _sender.Send(command);

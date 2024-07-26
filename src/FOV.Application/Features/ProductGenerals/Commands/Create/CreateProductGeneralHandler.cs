@@ -1,5 +1,4 @@
-﻿using FOV.Domain.Entities.ProductAggregator;
-using FOV.Domain.Entities.ProductGeneralAggregator;
+﻿using FOV.Domain.Entities.ProductGeneralAggregator;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 

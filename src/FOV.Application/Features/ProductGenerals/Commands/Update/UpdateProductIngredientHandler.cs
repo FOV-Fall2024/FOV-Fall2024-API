@@ -22,10 +22,10 @@ internal class UpdateProductIngredientHandler(IUnitOfWorks unitOfWorks) : IReque
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     public async Task<Result> Handle(UpdateProductGeneralCommand request, CancellationToken cancellationToken)
     {
-        ProductGeneral product =  await _unitOfWorks.ProductGeneralRepository.GetByIdAsync(request.Id) ?? throw new Exception();
+        ProductGeneral product = await _unitOfWorks.ProductGeneralRepository.GetByIdAsync(request.Id) ?? throw new Exception();
         product.Update(request.Name, request.Description);
 
-         _unitOfWorks.ProductGeneralRepository.Update(product);
+        _unitOfWorks.ProductGeneralRepository.Update(product);
         await _unitOfWorks.SaveChangeAsync();
         return Result.Ok();
     }

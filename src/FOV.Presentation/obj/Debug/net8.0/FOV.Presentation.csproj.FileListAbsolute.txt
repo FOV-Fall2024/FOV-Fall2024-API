@@ -193,3 +193,15 @@ C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Presentation\bin\
 C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Presentation\bin\Debug\net8.0\MediatR.Contracts.dll
 C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Presentation\bin\Debug\net8.0\FluentValidation.dll
 C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Presentation\bin\Debug\net8.0\FluentResults.dll
+C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Presentation\bin\Debug\net8.0\FirebaseAuth.dll
+C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Presentation\bin\Debug\net8.0\Firebase.Storage.dll
+C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Presentation\bin\Debug\net8.0\jose-jwt.dll
+C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Presentation\bin\Debug\net8.0\System.Net.Http.Formatting.dll
+C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Presentation\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
+C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Presentation\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Presentation\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Presentation\bin\Debug\net8.0\BouncyCastle.Crypto.dll
+C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Presentation\bin\Debug\net8.0\QRCoder.dll
+C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Presentation\bin\Debug\net8.0\System.Drawing.Common.dll
+C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Presentation\bin\Debug\net8.0\System.Linq.Dynamic.Core.dll
+C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Presentation\bin\Debug\net8.0\runtimes\win\lib\net8.0\Microsoft.Win32.SystemEvents.dll

@@ -4,6 +4,268 @@
     "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Presentation\\FOV.Presentation.csproj": {}
   },
   "projects": {
+    "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Application\\FOV.Application.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Application\\FOV.Application.csproj",
+        "projectName": "FOV.Application",
+        "projectPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Application\\FOV.Application.csproj",
+        "packagesPath": "C:\\Users\\manda\\.nuget\\packages\\",
+        "outputPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Application\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\manda\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Infrastructure\\FOV.Infrastructure.csproj": {
+                "projectPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Infrastructure\\FOV.Infrastructure.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "FluentValidation": {
+              "target": "Package",
+              "version": "[11.9.2, )"
+            },
+            "MediatR": {
+              "target": "Package",
+              "version": "[12.3.0, )"
+            },
+            "QRCoder": {
+              "target": "Package",
+              "version": "[1.4.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.205/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Domain\\FOV.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Domain\\FOV.Domain.csproj",
+        "projectName": "FOV.Domain",
+        "projectPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Domain\\FOV.Domain.csproj",
+        "packagesPath": "C:\\Users\\manda\\.nuget\\packages\\",
+        "outputPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Domain\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\manda\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "FirebaseAuth": {
+              "target": "Package",
+              "version": "[2.0.6, )"
+            },
+            "FirebaseStorage.net": {
+              "target": "Package",
+              "version": "[1.0.3, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.4, )"
+            },
+            "Microsoft.Data.SqlClient": {
+              "target": "Package",
+              "version": "[5.2.0, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.4, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[8.0.4, )"
+            },
+            "QRCoder": {
+              "target": "Package",
+              "version": "[1.4.1, )"
+            },
+            "System.Drawing.Common": {
+              "target": "Package",
+              "version": "[8.0.7, )"
+            },
+            "System.Linq.Dynamic.Core": {
+              "target": "Package",
+              "version": "[1.4.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.205/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Infrastructure\\FOV.Infrastructure.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Infrastructure\\FOV.Infrastructure.csproj",
+        "projectName": "FOV.Infrastructure",
+        "projectPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Infrastructure\\FOV.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\manda\\.nuget\\packages\\",
+        "outputPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Infrastructure\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\manda\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Domain\\FOV.Domain.csproj": {
+                "projectPath": "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Domain\\FOV.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "FluentResults": {
+              "target": "Package",
+              "version": "[3.16.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.205/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
     "C:\\Code\\FinalCapstionProject_Fall2024\\FOV-Fall2024-API\\src\\FOV.Presentation\\FOV.Presentation.csproj": {
       "version": "1.0.0",
       "restore": {

@@ -19,6 +19,8 @@
   <ItemGroup>
     <Folder Include="Common\Exception\" />
     <Folder Include="Common\Models\" />
+    <Folder Include="Features\Categories\Commands\Delete\" />
+    <Folder Include="Features\Categories\Queries\" />
     <Folder Include="Features\IngredientGenerals\Commands\Inactive\" />
     <Folder Include="Features\IngredientGenerals\Queries\" />
     <Folder Include="Features\Ingredients\" />

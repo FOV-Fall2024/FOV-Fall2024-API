@@ -11,5 +11,7 @@ public interface IUnitOfWorks
     public IRestaurantRepository RestaurantRepository { get; }
     public IProductGeneralRepository ProductGeneralRepository { get; }
     public IProductIngredientGeneralRepository ProductIngredientGeneralRepository { get; }
+
+    public ICategoryRepository CategoryRepository { get; }
     public Task<int> SaveChangeAsync();
 }

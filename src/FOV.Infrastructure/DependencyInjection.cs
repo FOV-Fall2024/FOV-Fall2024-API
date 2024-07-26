@@ -16,7 +16,7 @@ public static class DependencyInjection
         services.AddScoped<IRestaurantRepository, RestaurantRepository>();
         //services.AddScoped<IGenericRepository, GenericRepository>();
         services.AddScoped<IProductGeneralRepository, ProductGeneralRepository>();
-        services.AddScoped<IProductIngredientGeneralRepository,  ProductIngredientGeneralRepository>();
+        services.AddScoped<IProductIngredientGeneralRepository, ProductIngredientGeneralRepository>();
         services.AddSingleton<StorageHandler>();
         services.AddSingleton<QRCodeGeneratorHandler>();
         services.AddScoped<IUnitOfWorks, UnitOfWorks>();
