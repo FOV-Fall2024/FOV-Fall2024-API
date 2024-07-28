@@ -10,16 +10,27 @@ using System.Threading.Tasks;
 namespace FOV.Domain.Entities.TableAggregator;
 public class Table : BaseAuditableEntity, IsSoftDeleted
 {
-    public string TableNumber { get; set; } = string.Empty;
-    public string TableCode { get; set; } = string.Empty;
-    public string TableStatus { get; set; } = string.Empty;
-    public string TableState { get; set; } = string.Empty;
-    public string TableType { get; set; } = string.Empty;
-    public string TableDescription { get; set; } = string.Empty;
-    public string TableImage { get; set; } = string.Empty;
-    public string TableQRCode { get; set; } = string.Empty;
+    [StringAttribute]
+    public string? TableNumber { get; set; }
+    [StringAttribute]
+    public string? TableCode { get; set; }
+    [StringAttribute]
+    public string? TableStatus { get; set; }
+    [StringAttribute]
+    public string? TableState { get; set; }
+    [StringAttribute]
+    public string? TableType { get; set; }
+    [StringAttribute]
+    public string? TableDescription { get; set; }
+    [StringAttribute]
+    public string? TableImage { get; set; }
+    [StringAttribute]
+    public string? TableQRCode { get; set; }
+    [BooleanAttribute]
     public bool IsDeleted { get; set; }
+    [ChildAttribute]
     public Restaurant? Restaurant { get; set; }
+    [GuidAttribute]
     public Guid RestaurantId { get; set; }
     public virtual ICollection<Order> Orders { get; set; } = [];
 

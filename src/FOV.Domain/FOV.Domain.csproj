@@ -7,7 +7,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Folder Include="Common\" />
 		<Folder Include="Constant\" />
 		<Folder Include="Entities\ComboAggregator\ValueObjects\" />
 		<Folder Include="Entities\ComboAggregator\Primitives\" />

@@ -2,6 +2,7 @@
 using FOV.Application.Features.Tables.Commands.Create;
 using FOV.Application.Features.Tables.Commands.Inactive;
 using FOV.Application.Features.Tables.Commands.Update;
+using FOV.Application.Features.Tables.Queries;
 using FOV.Presentation.Controllers.V1;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +36,12 @@ public class TableController(ISender sender) : DefaultController
     public async Task<IActionResult> Inactive(Guid id)
     {
         var response = await _sender.Send(new InactiveTableCommand(id));
+        return Ok(response);
+    }
+    [HttpGet]
+    public async Task<IActionResult> Get([FromQuery] GetTableCommand command)
+    {
+        var response = await _sender.Send(command);
         return Ok(response);
     }
 }

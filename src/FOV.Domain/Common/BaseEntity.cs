@@ -8,6 +8,7 @@ namespace FOV.Domain.Common
 {
     public abstract class BaseEntity
     {
+        [GuidAttribute]
         public Guid Id { get; set; }
     }
 }
