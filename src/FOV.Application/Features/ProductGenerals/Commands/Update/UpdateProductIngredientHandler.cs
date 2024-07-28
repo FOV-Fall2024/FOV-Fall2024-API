@@ -14,6 +14,8 @@ public sealed record UpdateProductGeneralCommand : IRequest<Result>
     public string Name { get; set; } = string.Empty;
 
     public string Description { get; set; } = string.Empty;
+
+    public Guid CategoryId { get; set; }
 }
 
 
@@ -23,7 +25,7 @@ internal class UpdateProductIngredientHandler(IUnitOfWorks unitOfWorks) : IReque
     public async Task<Result> Handle(UpdateProductGeneralCommand request, CancellationToken cancellationToken)
     {
         ProductGeneral product = await _unitOfWorks.ProductGeneralRepository.GetByIdAsync(request.Id) ?? throw new Exception();
-        product.Update(request.Name, request.Description);
+        product.Update(request.Name, request.Description, request.CategoryId);
 
         _unitOfWorks.ProductGeneralRepository.Update(product);
         await _unitOfWorks.SaveChangeAsync();

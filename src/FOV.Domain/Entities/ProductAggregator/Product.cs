@@ -6,7 +6,7 @@ namespace FOV.Domain.Entities.ProductAggregator;
 
 public class Product : BaseAuditableEntity
 {
-    public required string ProductName { get; set; }
+    public string ProductName { get; set; }
 
     public string ProductDescription { get; set; } = string.Empty;
 
@@ -17,4 +17,15 @@ public class Product : BaseAuditableEntity
     public Restaurant? Restaurant { get; set; }
 
     public Guid RestaurantId { get; set; }
+
+    public Product()
+    {
+
+    }
+
+    public Product(string name, Guid restaurantId)
+    {
+        ProductName = name;
+        RestaurantId = restaurantId;
+    }
 }

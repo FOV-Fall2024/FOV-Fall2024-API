@@ -12,6 +12,11 @@ public interface IUnitOfWorks
     public IProductGeneralRepository ProductGeneralRepository { get; }
     public IProductIngredientGeneralRepository ProductIngredientGeneralRepository { get; }
 
+    public IProductIngredientRepository ProductIngredientRepository { get; }
+    public IProductRepository ProductRepository { get; }
+
+    public IIngredientRepository IngredientRepository { get; }
+
     public ICategoryRepository CategoryRepository { get; }
     public Task<int> SaveChangeAsync();
 }

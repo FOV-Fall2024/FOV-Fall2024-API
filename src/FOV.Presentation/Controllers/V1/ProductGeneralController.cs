@@ -1,5 +1,6 @@
-﻿using FOV.Application.Features.IngredientGenerals.Commands.Update;
+﻿using FOV.Application.Features.ProductGenerals.Commands.Active;
 using FOV.Application.Features.ProductGenerals.Commands.Create;
+using FOV.Application.Features.ProductGenerals.Commands.Inactive;
 using FOV.Application.Features.ProductGenerals.Commands.Update;
 using FOV.Application.Features.ProductGenerals.Commands.UpdateIngredientQuantity;
 using MediatR;
@@ -12,6 +13,7 @@ public class ProductGeneralController(ISender sender) : DefaultController
 {
 
     private readonly ISender _sender = sender;
+
     // [ ] Create 
     [HttpPost]
     public async Task<IActionResult> Add(CreateProductGeneralCommand command)
@@ -22,9 +24,9 @@ public class ProductGeneralController(ISender sender) : DefaultController
 
     // [ ] Update Ingredient quantity
     [HttpPatch("{productId :guid}/ingredient/{ingredientId :guid}")]
-    public async Task<IActionResult> UpdateQuantity(Guid productId, Guid ingredientId, [FromBody] decimal Quantity)
+    public async Task<IActionResult> UpdateQuantity(Guid productId, Guid ingredientId, [FromBody] decimal quantity)
     {
-        var response = await _sender.Send(new UpdateIngredientQuantityCommand(productId, ingredientId, Quantity));
+        var response = await _sender.Send(new UpdateIngredientQuantityCommand(productId, ingredientId, quantity));
         return Ok(response);
     }
     // [ ] Update
@@ -38,9 +40,26 @@ public class ProductGeneralController(ISender sender) : DefaultController
     }
 
     // [ ] Active 
+
+    [HttpPost("{id:guid}/active")]
+    public async Task<IActionResult> Actvie(Guid id)
+    {
+        var response = await _sender.Send(new ActiveProductGeneralCommand(id));
+        return Ok(response);
+    }
+
     // [ ] Inactive
+    [HttpPost("{id:guid}/inactive")]
+    public async Task<IActionResult> Inactive(Guid id)
+    {
+        var response = await _sender.Send(new InactiveProductGeneralCommand(id));
+        return Ok(response);
+    }
+
+
     // [ ] Get
     // [ ] Detail 
+
 
 
 

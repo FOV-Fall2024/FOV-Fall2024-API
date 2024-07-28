@@ -33,9 +33,12 @@ public class ProductGeneral : BaseAuditableEntity, IsSoftDeleted
         Id = Guid.NewGuid();
     }
 
-    public void Update(string name, string description)
+    public void Update(string name, string description, Guid categoryId)
     {
         ProductName = name;
         ProductDescription = description;
+        CategoryId = categoryId;
     }
+
+    public void SetState(bool isDeleted) => IsDeleted = isDeleted;
 }

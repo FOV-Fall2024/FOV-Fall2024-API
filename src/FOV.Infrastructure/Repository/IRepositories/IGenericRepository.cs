@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 using FOV.Domain.Common;
 using FOV.Infrastructure.Common;
 
@@ -20,5 +15,7 @@ namespace FOV.Infrastructure.Repository.IRepositories
         void UpdateRange(List<TEntity> entities);
         Task AddRangeAsync(List<TEntity> entities);
         Task<Pagination<TEntity>> ToPagination(int pageNumber = 0, int pageSize = 10);
+
+        void Remove(TEntity entity);
     }
 }
