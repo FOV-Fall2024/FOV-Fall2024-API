@@ -23,15 +23,15 @@ public class ProductGeneralController(ISender sender) : DefaultController
     }
 
     // [ ] Update Ingredient quantity
-    [HttpPatch("{productId :guid}/ingredient/{ingredientId :guid}")]
-    public async Task<IActionResult> UpdateQuantity(Guid productId, Guid ingredientId, [FromBody] decimal quantity)
+    [HttpPatch("{productId}/ingredient/{ingredientId}")]
+    public async Task<IActionResult> UpdateQuantity(Guid productId, Guid ingredientId,  UpdateIngredientQuantityCommand command)
     {
-        var response = await _sender.Send(new UpdateIngredientQuantityCommand(productId, ingredientId, quantity));
+        var response = await _sender.Send(new UpdateIngredientQuantityCommand { ProductId = productId, IngredientId = ingredientId, Quantity = command.Quantity });
         return Ok(response);
     }
     // [ ] Update
 
-    [HttpPost("{productId: guid}")]
+    [HttpPost("{productId}")]
     public async Task<IActionResult> Update(Guid productId, UpdateProductGeneralCommand command)
     {
         command.Id = productId;
