@@ -1,6 +1,5 @@
 ﻿using FOV.Infrastructure.Data;
 using FOV.Infrastructure.Repository.IRepositories;
-using FOV.Infrastructure.Repository.Repositories;
 
 namespace FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 
@@ -13,8 +12,12 @@ public class UnitOfWorks : IUnitOfWorks
     private readonly IRestaurantRepository _restaurantRepository;
     private readonly IProductGeneralRepository _productGeneralRepository;
     private readonly IProductIngredientGeneralRepository _productIngredientGeneralRepository;
+    private readonly ICategoryRepository _categoryRepository;
+    private readonly IProductRepository _productRepository;
+    private readonly IIngredientRepository _ingredientRepository;
+    private readonly IProductIngredientRepository _productIngredientRepository;
 
-    public UnitOfWorks(FOVContext context, IIngredientTypeRepository ingredientTypeRepository, IIngredientGeneralRepository ingredientGeneralRepository, IProductGeneralRepository productGeneralRepository, IProductIngredientGeneralRepository productIngredientGeneralRepository, ITableRepository tableRepository, IRestaurantRepository restaurantRepository)
+    public UnitOfWorks(FOVContext context, IIngredientTypeRepository ingredientTypeRepository, IIngredientGeneralRepository ingredientGeneralRepository, IProductGeneralRepository productGeneralRepository, IProductIngredientGeneralRepository productIngredientGeneralRepository, ITableRepository tableRepository, IRestaurantRepository restaurantRepository, ICategoryRepository categoryRepository, IProductRepository productRepository, IIngredientRepository ingredientRepository, IProductIngredientRepository productIngredientRepository)
     {
         _context = context;
         _ingredientTypeRepository = ingredientTypeRepository;
@@ -23,6 +26,10 @@ public class UnitOfWorks : IUnitOfWorks
         _restaurantRepository = restaurantRepository;
         _productGeneralRepository = productGeneralRepository;
         _productIngredientGeneralRepository = productIngredientGeneralRepository;
+        _categoryRepository = categoryRepository;
+        _productRepository = productRepository;
+        _ingredientRepository = ingredientRepository;
+        _productIngredientRepository = productIngredientRepository;
     }
     public IIngredientTypeRepository IngredientTypeRepository => _ingredientTypeRepository;
     public IIngredientGeneralRepository IngredientGeneralRepository => _ingredientGeneralRepository;
@@ -32,6 +39,14 @@ public class UnitOfWorks : IUnitOfWorks
     public IProductGeneralRepository ProductGeneralRepository => _productGeneralRepository;
 
     public IProductIngredientGeneralRepository ProductIngredientGeneralRepository => _productIngredientGeneralRepository;
+
+    public ICategoryRepository CategoryRepository => _categoryRepository;
+
+    public IProductRepository ProductRepository => _productRepository;
+
+    public IIngredientRepository IngredientRepository => _ingredientRepository;
+
+    public IProductIngredientRepository ProductIngredientRepository => _productIngredientRepository;
 
     public async Task<int> SaveChangeAsync()
     {

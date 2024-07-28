@@ -1,11 +1,11 @@
-﻿using FluentResults;
-using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
-using MediatR;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentResults;
+using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
+using MediatR;
 
 namespace FOV.Application.Features.Tables.Commands.Active;
 public sealed record ActiveTableCommand(Guid id) : IRequest<Result>;

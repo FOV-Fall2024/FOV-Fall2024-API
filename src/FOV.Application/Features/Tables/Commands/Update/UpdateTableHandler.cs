@@ -1,16 +1,16 @@
-﻿using FOV.Domain.Entities.TableAggregator;
-using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
-using MediatR;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using FOV.Domain.Helpers.QRCodeGeneratorHelper;
+using FOV.Domain.Entities.TableAggregator;
 using FOV.Domain.Helpers.FirebaseHandler;
-using System.Drawing.Imaging;
-using System.Drawing;
+using FOV.Domain.Helpers.QRCodeGeneratorHelper;
+using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
+using MediatR;
 
 namespace FOV.Application.Features.Tables.Commands.Update;
 public sealed record UpdateTableCommand : IRequest<Guid>

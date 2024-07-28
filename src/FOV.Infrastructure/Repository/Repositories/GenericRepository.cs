@@ -52,7 +52,10 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
             .FirstOrDefaultAsync(x => x.Id.Equals(id));
     }
 
-
+    public void Remove(TEntity entity)
+    {
+        _dbSet.Remove(entity);
+    }
 
     public async Task<Pagination<TEntity>> ToPagination(int pageNumber = 0, int pageSize = 10)
     {

@@ -4,7 +4,7 @@ using FOV.Domain.Entities.RestaurantAggregator;
 
 namespace FOV.Domain.Entities.IngredientAggregator;
 
-public class Ingredient : BaseEntity
+public class Ingredient : BaseAuditableEntity
 {
     public string IngredientName { get; set; } = string.Empty;
 
@@ -19,6 +19,18 @@ public class Ingredient : BaseEntity
     public Restaurant? Restaurant { get; set; }
 
     public Guid? RestaurantId { get; set; }
+
+    public Ingredient()
+    {
+
+    }
+
+    public Ingredient(string name, Guid ingredientTypeId, Guid restaurantId)
+    {
+        IngredientName = name;
+        RestaurantId = restaurantId;
+        IngredientTypeId = ingredientTypeId;
+    }
 
 }
 

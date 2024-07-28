@@ -9,13 +9,13 @@ namespace FOV.Domain.Entities.RestaurantAggregator;
 
 public class Restaurant : BaseAuditableEntity, IsSoftDeleted
 {
-    public required string RestaurantName { get; set; }
-    public required string Address { get; set; }
+    public string RestaurantName { get; set; }
+    public string Address { get; set; }
 
     public Status Status { get; set; }
-    public required string RestaurantPhone { get; set; }
+    public string RestaurantPhone { get; set; }
 
-    public required string RestataurantCode { get; set; }
+    public string RestataurantCode { get; set; }
 
     public virtual ICollection<Ingredient> Ingredients { get; set; } = [];
 
@@ -23,4 +23,17 @@ public class Restaurant : BaseAuditableEntity, IsSoftDeleted
     public virtual ICollection<Table> Tables { get; set; } = [];
     public virtual ICollection<Combo> Combos { get; set; } = [];
     public bool IsDeleted { get; set; }
+
+    public Restaurant()
+    {
+
+    }
+
+    public Restaurant(string name, string address, string phone, string code)
+    {
+        RestaurantName = name;
+        Address = address;
+        RestaurantPhone = phone;
+        RestataurantCode = code;
+    }
 }

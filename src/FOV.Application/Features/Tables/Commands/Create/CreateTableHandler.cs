@@ -1,16 +1,16 @@
-﻿using FOV.Domain.Entities.TableAggregator;
-using FOV.Domain.Helpers.FirebaseHandler;
-using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
-using MediatR;
-using QRCoder;
-using System;
-using System.Drawing;
+﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Drawing.Imaging;
+using FOV.Domain.Entities.TableAggregator;
+using FOV.Domain.Helpers.FirebaseHandler;
 using FOV.Domain.Helpers.QRCodeGeneratorHelper;
+using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
+using MediatR;
+using QRCoder;
 
 namespace FOV.Application.Features.Tables.Commands.Create;
 
