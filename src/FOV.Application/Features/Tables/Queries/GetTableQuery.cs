@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FOV.Domain.Common;
+﻿using FOV.Domain.Common;
 using FOV.Domain.Entities.TableAggregator;
 using FOV.Domain.Helpers.GetHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Tables.Queries;
+
 public record GetTableCommand(Guid? Id, string? TableNumber, string? TableCode, string? TableStatus, string? TableState, string? TableType, string? TableDescription, string? TableImage, Guid? RestaurantId, SortOrder? Sort) : IRequest<List<GetTableResponse>>;
+
 public record GetTableResponse(Guid Id, string TableNumber, string TableCode, string TableStatus, string TableState, string TableType, string TableDescription, string TableImage, Guid RestaurantId);
-public class GetTableQuery : IRequestHandler<GetTableCommand, List<GetTableResponse>>
+
+public class GetTableQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetTableCommand, List<GetTableResponse>>
 {
-    private readonly IUnitOfWorks _unitOfWorks;
-    public GetTableQuery(IUnitOfWorks unitOfWorks)
-    {
-        _unitOfWorks = unitOfWorks;
-    }
+    private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
+
     public async Task<List<GetTableResponse>> Handle(GetTableCommand command, CancellationToken cancellationToken)
     {
         var tables = await _unitOfWorks.TableRepository.GetAllAsync();
@@ -35,7 +30,7 @@ public class GetTableQuery : IRequestHandler<GetTableCommand, List<GetTableRespo
         };
 
         var filteredTables = tables.AsQueryable().CustomFilterV1(filterEntity);
-        return filteredTables.Select(t => new GetTableResponse(
+        return [.. filteredTables.Select(t => new GetTableResponse(
                 t.Id,
                 t.TableNumber ?? string.Empty,
                 t.TableCode ?? string.Empty,
@@ -44,6 +39,6 @@ public class GetTableQuery : IRequestHandler<GetTableCommand, List<GetTableRespo
                 t.TableType ?? string.Empty,
                 t.TableDescription ?? string.Empty,
                 t.TableImage ?? string.Empty,
-                t.RestaurantId)).ToList();
+                t.RestaurantId))];
     }
 }

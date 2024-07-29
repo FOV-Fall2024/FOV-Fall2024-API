@@ -11,8 +11,7 @@ public class ActiveIngredientTypeHandler(IUnitOfWorks unitOfWorks) : IRequestHan
     private readonly IUnitOfWorks _unitOfWork = unitOfWorks;
     public async Task<Result> Handle(ActiveIngredientTypeCommand request, CancellationToken cancellationToken)
     {
-        IngredientType ingredientType = await _unitOfWork.IngredientTypeRepository.GetByIdAsync(request.Id) ??
-        throw new Exception();
+        IngredientType ingredientType = await _unitOfWork.IngredientTypeRepository.GetByIdAsync(request.Id) ?? throw new Exception();
         ingredientType.UpdateState(true);
         _unitOfWork.IngredientTypeRepository.Update(ingredientType);
         await _unitOfWork.SaveChangeAsync();

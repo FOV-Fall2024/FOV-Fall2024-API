@@ -37,12 +37,12 @@ public class Category : BaseAuditableEntity, IsSoftDeleted
 
 
     // Add New Child Category 
-    public Category(string name, Guid parentId, string main, int left, int right)
+    public Category(string name, Guid parentId, string main, int right)
     {
         CategoryName = name;
         CategoryParentId = parentId;
         CategoryMain = main;
-        Left = left;
+        Left = right + 1;
         Right = right;
     }
 

@@ -24,8 +24,6 @@
     <Folder Include="Features\IngredientGenerals\Commands\Inactive\" />
     <Folder Include="Features\IngredientGenerals\Queries\" />
     <Folder Include="Features\Ingredients\" />
-    <Folder Include="Features\IngredientTypes\Queries\GetParentCategories\" />
-    <Folder Include="Features\IngredientTypes\Queries\GetChildCategories\" />
     <Folder Include="Features\Product\Commons\" />
     <Folder Include="Features\Product\Queries\" />
     <Folder Include="Features\ProductGenerals\Queries\" />

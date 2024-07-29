@@ -1,7 +1,10 @@
 ﻿using FOV.Application.Features.IngredientTypes.Commands.Active;
 using FOV.Application.Features.IngredientTypes.Commands.Create;
+using FOV.Application.Features.IngredientTypes.Commands.CreateChild;
 using FOV.Application.Features.IngredientTypes.Commands.Inactive;
 using FOV.Application.Features.IngredientTypes.Commands.Update;
+using FOV.Application.Features.IngredientTypes.Queries.GetChildCategories;
+using FOV.Application.Features.IngredientTypes.Queries.GetParentCategories;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,9 +15,23 @@ namespace FOV.Presentation.Controllers.V1;
 public class IngredientTypeController(ISender sender) : DefaultController
 {
 
-    //[ ] Get
-    //[ ] Get Detail
     private readonly ISender _sender = sender;
+
+    //[ ] Get
+    [HttpGet]
+    public async Task<IActionResult> Get()
+    {
+        var response = await _sender.Send(new GetParentCategoriesCommand());
+        return Ok(response);
+    }
+
+    //[ ] Get Detail
+    [HttpGet("{parentId}")]
+    public async Task<IActionResult> GetChildrenIngredientType(Guid parentId)
+    {
+        var resposne = await _sender.Send(new GetChildCategoriesCommand(parentId));
+        return Ok(resposne);
+    }
 
     //[x] Create 
     [HttpPost("parent")]
@@ -24,11 +41,12 @@ public class IngredientTypeController(ISender sender) : DefaultController
         return Ok(response);
     }
 
-    //[HttpPost("child")]
-    //public async Task<IActionResult> AddChild()
-    //{
-
-    //}
+    [HttpPost("child")]
+    public async Task<IActionResult> AddChild(CreateChildIngredientTypeCommand command)
+    {
+        var response = await _sender.Send(command);
+        return Ok(response);
+    }
 
 
     //[x] Update 
@@ -59,8 +77,6 @@ public class IngredientTypeController(ISender sender) : DefaultController
 
 
 
-    //[HttpGet]
-    //public async Task<IActionResult> Get();
 
 
 

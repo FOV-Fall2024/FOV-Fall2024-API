@@ -12,13 +12,17 @@ public sealed record CreateChildIngredientTypeCommand : IRequest<Guid>
 
     public string Description { get; set; } = string.Empty;
 }
-internal class CreateChildIngredientTypeHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<CreateChildIngredientTypeCommand, Guid>
+
+public class CreateChildIngredientTypeHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<CreateChildIngredientTypeCommand, Guid>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     public async Task<Guid> Handle(CreateChildIngredientTypeCommand request, CancellationToken cancellationToken)
     {
-        //IngredientType parentIngredient = await _unitOfWorks.IngredientTypeRepository.GetByIdAsync(request.ParentId) ?? throw new Exception();
-        //IngredientType ingredientType = new(request.Name,request.Description,request.)
-        throw new NotImplementedException();
+        IngredientType parentIngredient = await _unitOfWorks.IngredientTypeRepository.GetByIdAsync(request.ParentId) ?? throw new Exception();
+        IngredientType ingredientType = new(request.Name, request.Description, parentIngredient.Right, parentIngredient.IngredientMain, request.ParentId);
+        await _unitOfWorks.IngredientTypeRepository.AddAsync(ingredientType);
+        await _unitOfWorks.IngredientTypeRepository.UpdateParentIngredientType(parentIngredient.Id, parentIngredient.Right);
+        await _unitOfWorks.SaveChangeAsync();
+        return ingredientType.Id;
     }
 }

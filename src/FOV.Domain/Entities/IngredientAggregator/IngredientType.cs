@@ -10,16 +10,16 @@ public class IngredientType : BaseAuditableEntity, IsSoftDeleted
     public string IngredientDescription { get; set; } = string.Empty;
 
     public string IngredientMain { get; set; } = string.Empty;
-    public Guid? ParentId { get; private set; }
+    public Guid? ParentId { get; set; } = null;
 
     public int Left { get; set; }
 
     public int Right { get; set; }
     public int ExpiredTime { get; set; }
 
-    public virtual ICollection<Ingredient>? Ingredients { get; set; }
+    public virtual ICollection<Ingredient>? Ingredients { get; set; } = [];
 
-    public virtual ICollection<IngredientGeneral>? IngredientGenerals { get; set; }
+    public virtual ICollection<IngredientGeneral>? IngredientGenerals { get; set; } = [];
     public bool IsDeleted { get; set; }
     public IngredientType()
     {
@@ -37,14 +37,15 @@ public class IngredientType : BaseAuditableEntity, IsSoftDeleted
         Right = 2;
         Created = DateTime.UtcNow;
         ParentId = null;
+        IngredientMain = ingredientName;
     }
 
-    public IngredientType(string name, string des, int left, int right, string main, Guid parentId)
+    public IngredientType(string name, string des, int right, string main, Guid parentId)
     {
         IngredientName = name;
         IngredientDescription = des;
-        Left = left;
-        Right = right;
+        Right = right + 1;
+        Left = right;
         ParentId = parentId;
         IngredientMain = main;
     }
