@@ -24,11 +24,11 @@ public class IngredientTypeController(ISender sender) : DefaultController
         return Ok(response);
     }
 
-    [HttpPost("child")]
-    public async Task<IActionResult> AddChild()
-    {
+    //[HttpPost("child")]
+    //public async Task<IActionResult> AddChild()
+    //{
 
-    }
+    //}
 
 
     //[x] Update 
