@@ -2,17 +2,15 @@
 using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 
-namespace FOV.Application.Features.IngredientTypes.Commands.Create;
-
-public sealed class CreateIngredientTypeValidator : AbstractValidator<CreateIngredientTypeCommand>
+namespace FOV.Application.Features.IngredientTypes.Commands.Update;
+public class UpdateIngredientTypeValidator : AbstractValidator<UpdateIngredientTypeCommand>
 {
-    public CreateIngredientTypeValidator(IngredientTypeValidator validator)
+    public UpdateIngredientTypeValidator(IngredientTypeValidator validator)
     {
         RuleFor(x => x.Name).NotEmpty().SetValidator(validator);
-        RuleFor(x => x.Description).NotNull();
-
     }
 }
+
 
 public sealed class IngredientTypeValidator : AbstractValidator<string>
 {
@@ -23,14 +21,13 @@ public sealed class IngredientTypeValidator : AbstractValidator<string>
 
         RuleFor(name => name)
             .MustAsync(CheckDuplicateName)
-            .WithMessage("Asset must not be in assigned state");
+            .WithMessage("Name is unique :>");
 
     }
 
     private async Task<bool> CheckDuplicateName(string name, CancellationToken token)
     {
         IngredientType? ingredientType = await _unitOfWorks.IngredientTypeRepository.FirstOrDefaultAsync(x => x.IngredientName == name);
-        return ingredientType == null;
+        return ingredientType != null;
     }
-
 }

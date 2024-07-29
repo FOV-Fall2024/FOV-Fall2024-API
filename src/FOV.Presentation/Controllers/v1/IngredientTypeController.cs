@@ -17,11 +17,17 @@ public class IngredientTypeController(ISender sender) : DefaultController
     private readonly ISender _sender = sender;
 
     //[x] Create 
-    [HttpPost]
+    [HttpPost("parent")]
     public async Task<IActionResult> Add(CreateIngredientTypeCommand request)
     {
         var response = await _sender.Send(request);
         return Ok(response);
+    }
+
+    [HttpPost("child")]
+    public async Task<IActionResult> AddChild()
+    {
+
     }
 
 

@@ -8,6 +8,8 @@ public class IngredientType : BaseAuditableEntity, IsSoftDeleted
 {
     public string IngredientName { get; set; }
     public string IngredientDescription { get; set; } = string.Empty;
+
+    public string IngredientMain { get; set; } = string.Empty;
     public Guid? ParentId { get; private set; }
 
     public int Left { get; set; }
@@ -26,10 +28,10 @@ public class IngredientType : BaseAuditableEntity, IsSoftDeleted
 
 
     //? Create New Ingredient Type Parent
-    public IngredientType(string IngredientName, string IngredientDescription)
+    public IngredientType(string ingredientName, string ingredientDescription)
     {
-        this.IngredientName = IngredientName;
-        this.IngredientDescription = IngredientDescription;
+        IngredientName = ingredientName;
+        IngredientDescription = ingredientDescription;
         ExpiredTime = 1;
         Left = 1;
         Right = 2;
@@ -37,10 +39,20 @@ public class IngredientType : BaseAuditableEntity, IsSoftDeleted
         ParentId = null;
     }
 
-    public void Update(string IngredientName, string IngrendientDescription)
+    public IngredientType(string name, string des, int left, int right, string main, Guid parentId)
     {
-        this.IngredientName = IngredientName;
-        this.IngredientDescription = IngrendientDescription;
+        IngredientName = name;
+        IngredientDescription = des;
+        Left = left;
+        Right = right;
+        ParentId = parentId;
+        IngredientMain = main;
+    }
+
+    public void Update(string ingredientName, string ingrendientDescription)
+    {
+        IngredientName = ingredientName;
+        IngredientDescription = ingrendientDescription;
     }
 
     public void UpdateState(bool state) => IsDeleted = state;

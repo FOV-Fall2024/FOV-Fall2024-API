@@ -205,3 +205,4 @@ C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Presentation\bin\
 C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Presentation\bin\Debug\net8.0\System.Drawing.Common.dll
 C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Presentation\bin\Debug\net8.0\System.Linq.Dynamic.Core.dll
 C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Presentation\bin\Debug\net8.0\runtimes\win\lib\net8.0\Microsoft.Win32.SystemEvents.dll
+C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Presentation\bin\Debug\net8.0\FluentValidation.DependencyInjectionExtensions.dll

@@ -10,6 +10,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddPresentationDI(this IServiceCollection services, string connectionString)
     {
+
         services.AddOutputCache();
         services.AddDbContextPool<FOVContext>(options => options.UseNpgsql(connectionString));
         services.AddScoped<ApplicationDbContextInitializer>();

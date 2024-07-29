@@ -8,6 +8,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="FluentValidation" Version="11.9.2" />
+		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.2" />
 		<PackageReference Include="MediatR" Version="12.3.0" />
 		<PackageReference Include="QRCoder" Version="1.4.1" />
 	</ItemGroup>
@@ -23,6 +24,8 @@
     <Folder Include="Features\IngredientGenerals\Commands\Inactive\" />
     <Folder Include="Features\IngredientGenerals\Queries\" />
     <Folder Include="Features\Ingredients\" />
+    <Folder Include="Features\IngredientTypes\Queries\GetParentCategories\" />
+    <Folder Include="Features\IngredientTypes\Queries\GetChildCategories\" />
     <Folder Include="Features\Product\Commons\" />
     <Folder Include="Features\Product\Queries\" />
     <Folder Include="Features\ProductGenerals\Queries\" />

@@ -1,4 +1,6 @@
-﻿using FOV.Application.Common.Behaviours;
+﻿using System.Reflection;
+using FluentValidation;
+using FOV.Application.Common.Behaviours;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,7 +15,10 @@ public static class DependencyInjection
         {
             cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+            
         });
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
         return services;
     }
 }

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "lB+lkvQUc3Khtpa7WYUcXdVQFwBS2bOC7CNhaYjLP2Qw7sDjOSZnHnNV0hu7TY3DU3BBwSSMMZ7gdgOogErcvA==",
+  "dgSpecHash": "/HsGSjzBuIl/4DFBFeY9sccZJxB0giimCaYmVwHpMxPBmV1pDeCos7vS3VxuKfH7F7+Z7Go66qMz+sUfzjd/Cw==",
   "success": true,
   "projectFilePath": "D:\\FOV\\FOV-Fall2024-API\\src\\FOV.Application\\FOV.Application.csproj",
   "expectedPackageFiles": [
@@ -10,6 +10,7 @@
     "C:\\Users\\ducan\\.nuget\\packages\\firebasestorage.net\\1.0.3\\firebasestorage.net.1.0.3.nupkg.sha512",
     "C:\\Users\\ducan\\.nuget\\packages\\fluentresults\\3.16.0\\fluentresults.3.16.0.nupkg.sha512",
     "C:\\Users\\ducan\\.nuget\\packages\\fluentvalidation\\11.9.2\\fluentvalidation.11.9.2.nupkg.sha512",
+    "C:\\Users\\manda\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\11.9.2\\fluentvalidation.dependencyinjectionextensions.11.9.2.nupkg.sha512",
     "C:\\Users\\ducan\\.nuget\\packages\\jose-jwt\\2.4.0\\jose-jwt.2.4.0.nupkg.sha512",
     "C:\\Users\\ducan\\.nuget\\packages\\mediatr\\12.3.0\\mediatr.12.3.0.nupkg.sha512",
     "C:\\Users\\ducan\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
