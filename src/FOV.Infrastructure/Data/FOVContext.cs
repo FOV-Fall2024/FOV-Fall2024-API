@@ -29,6 +29,10 @@ public class FOVContext : IdentityDbContext<User>, IApplicationDbContext
 
     public DbSet<Category> Categories => Set<Category>();
 
+    public DbSet<ProductIngredient> ProductIngredients => Set<ProductIngredient>();
+
+    public DbSet<Product> Products => Set<Product>();
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

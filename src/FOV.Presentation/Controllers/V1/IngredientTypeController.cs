@@ -10,8 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FOV.Presentation.Controllers.V1;
 
-
-
 public class IngredientTypeController(ISender sender) : DefaultController
 {
 

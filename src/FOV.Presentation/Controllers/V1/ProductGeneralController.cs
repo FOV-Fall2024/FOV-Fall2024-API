@@ -3,6 +3,8 @@ using FOV.Application.Features.ProductGenerals.Commands.Create;
 using FOV.Application.Features.ProductGenerals.Commands.Inactive;
 using FOV.Application.Features.ProductGenerals.Commands.Update;
 using FOV.Application.Features.ProductGenerals.Commands.UpdateIngredientQuantity;
+using FOV.Application.Features.ProductGenerals.Queries.GetProductGeneral;
+using FOV.Application.Features.ProductGenerals.Queries.GetProductGeneralDetail;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -58,7 +60,22 @@ public class ProductGeneralController(ISender sender) : DefaultController
 
 
     // [ ] Get
+    [HttpGet]
+    public async Task<IActionResult> Get([FromQuery] GetProductGeneralCommand command)
+    {
+        var response = await _sender.Send(command);
+        return Ok(response);
+    }
+
     // [ ] Detail 
+    [HttpGet("{Id}")]
+    public async Task<IActionResult> GetDetail(Guid Id)
+    {
+        var response = await _sender.Send(new GetProductGeneralDetailCommand(Id));
+        return Ok(response);
+    }
+
+
 
 
 

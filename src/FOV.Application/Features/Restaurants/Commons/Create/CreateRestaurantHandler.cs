@@ -54,10 +54,11 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
     {
         foreach (var product in products)
         {
-            ProductGeneral productGeneral = await _unitOfWorks.ProductGeneralRepository.GetByIdAsync(product) ?? throw new Exception();
-            Product productAdding = new(productGeneral.ProductName, restaurantId);
+            ProductGeneral productGeneral = await _unitOfWorks.ProductGeneralRepository.GetByIdAsync(product, x => x.Ingredients) ?? throw new Exception();
+            var ingredientGenerals = await _unitOfWorks.IngredientGeneralRepository.WhereAsync(x => x.ProductIngredientGenerals.Any(pg => pg.ProductGeneralId == productGeneral.Id));
+            Product productAdding = new(productGeneral.ProductName, restaurantId, productGeneral.CategoryId);
             await _unitOfWorks.ProductRepository.AddAsync(productAdding);
-            _ = Task.Run(() => ProductIngredientAdd(productGeneral.Ingredients.Select(x => x.IngredientGeneral.IngredientName).ToList(), restaurantId, productAdding.Id).ConfigureAwait(false));
+            await ProductIngredientAdd(ingredientGenerals.Select(x => x.IngredientName).ToList(), restaurantId, productAdding.Id);
         }
     }
 
@@ -69,8 +70,9 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
             if (ingredient == null)
             {
                 IngredientGeneral ingredientGeneral = await _unitOfWorks.IngredientGeneralRepository.FirstOrDefaultAsync(x => x.IngredientName == item) ?? throw new Exception();
-                await _unitOfWorks.IngredientRepository.AddAsync(new Ingredient(ingredientGeneral.IngredientName, ingredientGeneral.IngredientTypeId, restaurantId));
-                await _unitOfWorks.ProductIngredientRepository.AddAsync(new ProductIngredient(productId, ingredientGeneral.Id));
+                Ingredient ingredient1 = new(ingredientGeneral.IngredientName, ingredientGeneral.IngredientTypeId, restaurantId);
+                await _unitOfWorks.IngredientRepository.AddAsync(ingredient1);
+                await _unitOfWorks.ProductIngredientRepository.AddAsync(new ProductIngredient(productId, ingredient1.Id));
             }
         }
 

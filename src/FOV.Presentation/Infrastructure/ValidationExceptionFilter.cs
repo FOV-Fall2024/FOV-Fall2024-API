@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
+﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using FluentValidation;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace FOV.Presentation.Infrastructure;
 

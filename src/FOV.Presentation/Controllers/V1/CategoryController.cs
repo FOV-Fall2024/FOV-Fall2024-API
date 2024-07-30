@@ -2,6 +2,8 @@
 using FOV.Application.Features.Categories.Commands.AddNewParentCategory;
 using FOV.Application.Features.Categories.Commands.Delete;
 using FOV.Application.Features.Categories.Commands.Update;
+using FOV.Application.Features.Categories.Queries.GetChildCategories;
+using FOV.Application.Features.Categories.Queries.GetParentCategories;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,8 +13,22 @@ public class CategoryController(IMediator mediator) : DefaultController
 {
 
     private readonly IMediator _mediator = mediator;
+
     // [ ] Get All Parent Categories
+    [HttpGet]
+    public async Task<IActionResult> GetParentCategory()
+    {
+        var response = await _mediator.Send(new GetParentCategoriesCommand());
+        return Ok(response);
+    }
+
     // [ ] Get All Children Categories follow ParentCategory 
+    [HttpGet("{Id}")]
+    public async Task<IActionResult> GetChildrenCategory(Guid Id)
+    {
+        var response = await _mediator.Send(new GetChilCategoriesCommand(Id));
+        return Ok(response);
+    }
 
 
     // [ ] Add New Parent Category
@@ -31,7 +47,7 @@ public class CategoryController(IMediator mediator) : DefaultController
         return Ok(response);
     }
 
-    // [ ] Update Name and Descriptiion \
+    // [ ] Update Name and Descriptiion 
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> Update(Guid id, [FromBody] string name)
     {

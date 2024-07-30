@@ -20,4 +20,8 @@ public interface IApplicationDbContext
     DbSet<ProductIngredientGeneral> ProductIngredientGenerals { get; }
 
     DbSet<ProductGeneral> ProductGenerals { get; }
+
+    DbSet<ProductIngredient> ProductIngredients { get; }
+
+    DbSet<Product> Products { get; }
 }

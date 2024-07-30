@@ -20,13 +20,10 @@
   <ItemGroup>
     <Folder Include="Common\Exception\" />
     <Folder Include="Common\Models\" />
-    <Folder Include="Features\Categories\Queries\" />
     <Folder Include="Features\IngredientGenerals\Commands\Inactive\" />
-    <Folder Include="Features\IngredientGenerals\Queries\" />
     <Folder Include="Features\Ingredients\" />
     <Folder Include="Features\Product\Commons\" />
     <Folder Include="Features\Product\Queries\" />
-    <Folder Include="Features\ProductGenerals\Queries\" />
     <Folder Include="Features\Restaurants\Commons\AddIngredientQuantity\" />
     <Folder Include="Features\Restaurants\Queries\" />
     <Folder Include="Features\Users\Queries\" />
