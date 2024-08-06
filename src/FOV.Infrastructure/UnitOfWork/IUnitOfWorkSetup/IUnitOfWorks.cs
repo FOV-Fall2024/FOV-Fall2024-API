@@ -1,4 +1,5 @@
-﻿using FOV.Infrastructure.Repository.IRepositories;
+﻿using FOV.Infrastructure.Data.FluentAPI;
+using FOV.Infrastructure.Repository.IRepositories;
 
 namespace FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 
@@ -15,6 +16,9 @@ public interface IUnitOfWorks
     public IProductIngredientRepository ProductIngredientRepository { get; }
     public IProductRepository ProductRepository { get; }
 
+    public IEmployeeRepository EmployeeRepository { get; }
+
+    public ICustomerRepository CustomerRepository { get; }
     public IIngredientRepository IngredientRepository { get; }
 
     public ICategoryRepository CategoryRepository { get; }

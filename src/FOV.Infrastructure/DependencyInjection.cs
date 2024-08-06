@@ -1,5 +1,6 @@
 ﻿using FOV.Domain.Helpers.FirebaseHandler;
 using FOV.Domain.Helpers.QRCodeGeneratorHelper;
+using FOV.Infrastructure.Data.FluentAPI;
 using FOV.Infrastructure.Repository.IRepositories;
 using FOV.Infrastructure.Repository.Repositories;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
@@ -24,6 +25,8 @@ public static class DependencyInjection
         services.AddSingleton<StorageHandler>();
         services.AddSingleton<QRCodeGeneratorHandler>();
         services.AddScoped<IUnitOfWorks, UnitOfWorks>();
+        services.AddScoped<ICustomerRepository, CustomerRepository>();
+        services.AddScoped<IEmployeeRepository, EmployeeRepository>();
         return services;
 
     }

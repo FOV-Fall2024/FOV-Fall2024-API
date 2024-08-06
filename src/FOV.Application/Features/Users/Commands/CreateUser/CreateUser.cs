@@ -24,7 +24,7 @@ namespace FOV.Application.Features.Users.Commands.CreateUser
         }
         public async Task<string> Handle(CreateUseCommand request, CancellationToken cancellationToken)
         {
-            User user = new User
+            User user = new()
             {
                 UserName = request.UserName,
                 Email = request.Email,
@@ -32,7 +32,7 @@ namespace FOV.Application.Features.Users.Commands.CreateUser
             };
             var result = await _userManager.CreateAsync(user, request.PasswordDefault);
 
-            return "LoginSucessfully";
+            return user.Id;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using FluentValidation;
 using FOV.Application.Common.Behaviours;
+using FOV.Application.Common.Behaviours.Claim;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,7 +19,7 @@ public static class DependencyInjection
 
         });
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-
+        services.AddScoped<IClaimService, ClaimService>();
         return services;
     }
 }

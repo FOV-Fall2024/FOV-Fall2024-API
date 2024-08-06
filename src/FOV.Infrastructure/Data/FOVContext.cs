@@ -33,6 +33,10 @@ public class FOVContext : IdentityDbContext<User>, IApplicationDbContext
 
     public DbSet<Product> Products => Set<Product>();
 
+    public DbSet<Customer> Customers => Set<Customer>();
+
+    public DbSet<Employee> Employees => Set<Employee>();
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

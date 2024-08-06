@@ -1,14 +1,16 @@
 ﻿using FOV.Domain.Entities.UserAggregator;
 using FOV.Infrastructure.Data;
 using FOV.Infrastructure.Data.Configurations;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace FOV.Presentation.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddPresentationDI(this IServiceCollection services, string connectionString)
+    public static IServiceCollection AddPresentationDI(this IServiceCollection services, string connectionString, WebApplicationBuilder builder)
     {
 
         services.AddOutputCache();
@@ -21,7 +23,31 @@ public static class DependencyInjection
                   .AddRoles<IdentityRole>()
                   .AddEntityFrameworkStores<FOVContext>()
                   .AddApiEndpoints();
-        services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
+
+        //? Add JWT Settings
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme =
+            options.DefaultChallengeScheme =
+            options.DefaultForbidScheme =
+            options.DefaultScheme =
+            options.DefaultSignInScheme =
+            options.DefaultSignOutScheme =
+                JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateIssuerSigningKey = true,
+                RequireExpirationTime = true,
+                IssuerSigningKey = new SymmetricSecurityKey(
+                  System.Text.Encoding.UTF8.GetBytes(
+                      builder.Configuration["JWT:SecretKey"])
+              )
+            };
+        });
 
         //? Swagger Configuration
         services.AddEndpointsApiExplorer();

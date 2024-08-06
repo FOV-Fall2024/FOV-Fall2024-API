@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Common\Exception\" />
     <Folder Include="Data\Interceptors\" />
   </ItemGroup>
 

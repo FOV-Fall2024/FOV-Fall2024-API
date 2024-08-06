@@ -328,7 +328,7 @@ namespace FOV.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("CategoryId")
+                    b.Property<Guid?>("CategoryId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("Created")
@@ -574,6 +574,88 @@ namespace FOV.Infrastructure.Migrations
                     b.ToTable("Table");
                 });
 
+            modelBuilder.Entity("FOV.Domain.Entities.UserAggregator.Customer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Customers");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.UserAggregator.Employee", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("EmployeeCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("HireDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("RestaurantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RestaurantId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Employees");
+                });
+
             modelBuilder.Entity("FOV.Domain.Entities.UserAggregator.User", b =>
                 {
                     b.Property<string>("Id")
@@ -592,6 +674,14 @@ namespace FOV.Infrastructure.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");
@@ -841,9 +931,7 @@ namespace FOV.Infrastructure.Migrations
                 {
                     b.HasOne("FOV.Domain.Entities.ProductAggregator.Category", "Category")
                         .WithMany("Products")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.HasOne("FOV.Domain.Entities.RestaurantAggregator.Restaurant", "Restaurant")
                         .WithMany("Products")
@@ -912,6 +1000,36 @@ namespace FOV.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Restaurant");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.UserAggregator.Customer", b =>
+                {
+                    b.HasOne("FOV.Domain.Entities.UserAggregator.User", "User")
+                        .WithOne("Customer")
+                        .HasForeignKey("FOV.Domain.Entities.UserAggregator.Customer", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.UserAggregator.Employee", b =>
+                {
+                    b.HasOne("FOV.Domain.Entities.RestaurantAggregator.Restaurant", "Restaurant")
+                        .WithMany("Employees")
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FOV.Domain.Entities.UserAggregator.User", "User")
+                        .WithOne("Employee")
+                        .HasForeignKey("FOV.Domain.Entities.UserAggregator.Employee", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Restaurant");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1003,6 +1121,8 @@ namespace FOV.Infrastructure.Migrations
                 {
                     b.Navigation("Combos");
 
+                    b.Navigation("Employees");
+
                     b.Navigation("Ingredients");
 
                     b.Navigation("Products");
@@ -1013,6 +1133,13 @@ namespace FOV.Infrastructure.Migrations
             modelBuilder.Entity("FOV.Domain.Entities.TableAggregator.Table", b =>
                 {
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.UserAggregator.User", b =>
+                {
+                    b.Navigation("Customer");
+
+                    b.Navigation("Employee");
                 });
 #pragma warning restore 612, 618
         }

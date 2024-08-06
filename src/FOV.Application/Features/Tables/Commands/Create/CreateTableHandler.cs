@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FOV.Domain.Entities.TableAggregator;
 using FOV.Domain.Helpers.FirebaseHandler;
 using FOV.Domain.Helpers.QRCodeGeneratorHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
-using QRCoder;
 
 namespace FOV.Application.Features.Tables.Commands.Create;
 
@@ -42,10 +36,10 @@ public class CreateTableHandler(IUnitOfWorks unitOfWorks, StorageHandler storage
         }
         string restaurantCode = restaurant.RestataurantCode;
 
-        string QRUrl = $"https://localhost:5001/api/v1/restaurant/{restaurantCode}/table/{TableCode}"; //Change Url Later
+        string qRUrl = $"https://localhost:5001/api/v1/restaurant/{restaurantCode}/table/{TableCode}"; //Change Url Later
         string fileName = $"{restaurantCode}_{TableCode}.png";
 
-        Bitmap qrCodeImage = _qrCodeGeneratorHandler.GenerateQRCode(QRUrl);
+        Bitmap qrCodeImage = _qrCodeGeneratorHandler.GenerateQRCode(qRUrl);
 
         using (var memoryStream = new MemoryStream())
         {
