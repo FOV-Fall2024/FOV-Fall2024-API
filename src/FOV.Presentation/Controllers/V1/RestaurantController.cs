@@ -1,4 +1,10 @@
-﻿using FOV.Application.Features.Restaurants.Commons.Create;
+﻿using FOV.Application.Features.Products.Commons.Active;
+using FOV.Application.Features.Products.Commons.Add;
+using FOV.Application.Features.Products.Commons.Inactive;
+using FOV.Application.Features.Products.Commons.Update;
+using FOV.Application.Features.Products.Queries.GetMenu;
+using FOV.Application.Features.Products.Queries.GetProduct;
+using FOV.Application.Features.Restaurants.Commons.Create;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +22,8 @@ public class RestaurantController(IMediator mediator) : DefaultController
         var response = await _mediator.Send(command);
         return Ok(response);
     }
+
+    
 
     /* XXX  Demo 1
     1. Add New Account Manager (Admin )

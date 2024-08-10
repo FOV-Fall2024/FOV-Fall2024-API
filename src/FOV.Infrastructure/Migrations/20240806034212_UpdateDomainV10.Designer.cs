@@ -3,6 +3,7 @@ using System;
 using FOV.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FOV.Infrastructure.Migrations
 {
     [DbContext(typeof(FOVContext))]
-    partial class FOVContextModelSnapshot : ModelSnapshot
+    [Migration("20240806034212_UpdateDomainV10")]
+    partial class UpdateDomainV10
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -146,46 +149,6 @@ namespace FOV.Infrastructure.Migrations
                     b.HasIndex("RestaurantId");
 
                     b.ToTable("Ingredients");
-                });
-
-            modelBuilder.Entity("FOV.Domain.Entities.IngredientAggregator.IngredientTransaction", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTimeOffset>("Created")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("IngredientId")
-                        .HasColumnType("uuid");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTimeOffset>("LastModified")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text");
-
-                    b.Property<decimal>("Quantity")
-                        .HasColumnType("numeric");
-
-                    b.Property<DateTime>("TransactionDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<byte>("Type")
-                        .HasColumnType("smallint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IngredientId");
-
-                    b.ToTable("IngredientTransactions");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.IngredientAggregator.IngredientType", b =>
@@ -376,9 +339,6 @@ namespace FOV.Infrastructure.Migrations
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset>("LastModified")
                         .HasColumnType("timestamp with time zone");
@@ -953,17 +913,6 @@ namespace FOV.Infrastructure.Migrations
                     b.Navigation("Restaurant");
                 });
 
-            modelBuilder.Entity("FOV.Domain.Entities.IngredientAggregator.IngredientTransaction", b =>
-                {
-                    b.HasOne("FOV.Domain.Entities.IngredientAggregator.Ingredient", "Ingredient")
-                        .WithMany("IngredientTransactions")
-                        .HasForeignKey("IngredientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Ingredient");
-                });
-
             modelBuilder.Entity("FOV.Domain.Entities.IngredientGeneralAggregator.IngredientGeneral", b =>
                 {
                     b.HasOne("FOV.Domain.Entities.IngredientAggregator.IngredientType", "IngredientType")
@@ -1151,11 +1100,6 @@ namespace FOV.Infrastructure.Migrations
             modelBuilder.Entity("FOV.Domain.Entities.ComboAggregator.Combo", b =>
                 {
                     b.Navigation("ProductCombos");
-                });
-
-            modelBuilder.Entity("FOV.Domain.Entities.IngredientAggregator.Ingredient", b =>
-                {
-                    b.Navigation("IngredientTransactions");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.IngredientAggregator.IngredientType", b =>

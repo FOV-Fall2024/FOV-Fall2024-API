@@ -19,8 +19,9 @@ public class UnitOfWorks : IUnitOfWorks
     private readonly IProductIngredientRepository _productIngredientRepository;
     private readonly ICustomerRepository _customerRepository;
     private readonly IEmployeeRepository _employeeRepository;
+    private readonly IIngrdientTransactionRepository _ingrdientTransactionRepository;
 
-    public UnitOfWorks(FOVContext context, IIngredientTypeRepository ingredientTypeRepository, IIngredientGeneralRepository ingredientGeneralRepository, IProductGeneralRepository productGeneralRepository, IProductIngredientGeneralRepository productIngredientGeneralRepository, ITableRepository tableRepository, IRestaurantRepository restaurantRepository, ICategoryRepository categoryRepository, IProductRepository productRepository, IIngredientRepository ingredientRepository, IProductIngredientRepository productIngredientRepository, ICustomerRepository customerRepository, IEmployeeRepository employeeRepository)
+    public UnitOfWorks(FOVContext context, IIngredientTypeRepository ingredientTypeRepository, IIngredientGeneralRepository ingredientGeneralRepository, IProductGeneralRepository productGeneralRepository, IProductIngredientGeneralRepository productIngredientGeneralRepository, ITableRepository tableRepository, IRestaurantRepository restaurantRepository, ICategoryRepository categoryRepository, IProductRepository productRepository, IIngredientRepository ingredientRepository, IProductIngredientRepository productIngredientRepository, ICustomerRepository customerRepository, IEmployeeRepository employeeRepository, IIngrdientTransactionRepository ingrdientTransactionRepository)
     {
         _context = context;
         _ingredientTypeRepository = ingredientTypeRepository;
@@ -35,6 +36,7 @@ public class UnitOfWorks : IUnitOfWorks
         _productIngredientRepository = productIngredientRepository;
         _customerRepository = customerRepository;
         _employeeRepository = employeeRepository;
+        _ingrdientTransactionRepository = ingrdientTransactionRepository;
     }
     public IIngredientTypeRepository IngredientTypeRepository => _ingredientTypeRepository;
     public IIngredientGeneralRepository IngredientGeneralRepository => _ingredientGeneralRepository;
@@ -56,6 +58,8 @@ public class UnitOfWorks : IUnitOfWorks
     public IEmployeeRepository EmployeeRepository => _employeeRepository;
 
     public ICustomerRepository CustomerRepository => _customerRepository;
+
+    public IIngrdientTransactionRepository IngredientTransactionRepository => _ingrdientTransactionRepository;
 
     public async Task<int> SaveChangeAsync()
     {

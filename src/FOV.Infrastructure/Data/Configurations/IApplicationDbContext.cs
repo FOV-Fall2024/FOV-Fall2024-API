@@ -29,4 +29,6 @@ public interface IApplicationDbContext
     DbSet<Customer> Customers { get; }
 
     DbSet<Employee> Employees { get; }
+
+    DbSet<IngredientTransaction> IngredientTransactions { get; }
 }

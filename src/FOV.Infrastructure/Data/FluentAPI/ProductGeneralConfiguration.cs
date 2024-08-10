@@ -9,6 +9,7 @@ public class ProductGeneralConfiguration : IEntityTypeConfiguration<ProductGener
 {
     public void Configure(EntityTypeBuilder<ProductGeneral> builder)
     {
+        builder.HasMany(x => x.Products).WithOne(x => x.ProductGeneral).HasForeignKey(x => x.ProductGeneralId);
         builder.HasMany(x => x.Ingredients).WithOne(x => x.ProductGeneral).HasForeignKey(x => x.ProductGeneralId);
         builder.HasKey(x => x.Id);
     }

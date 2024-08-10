@@ -25,6 +25,7 @@ public static class DependencyInjection
         services.AddSingleton<StorageHandler>();
         services.AddSingleton<QRCodeGeneratorHandler>();
         services.AddScoped<IUnitOfWorks, UnitOfWorks>();
+        services.AddScoped<IIngrdientTransactionRepository, IngrdientTransactionRepository>();
         services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<IEmployeeRepository, EmployeeRepository>();
         return services;

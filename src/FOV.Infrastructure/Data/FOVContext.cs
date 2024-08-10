@@ -37,6 +37,8 @@ public class FOVContext : IdentityDbContext<User>, IApplicationDbContext
 
     public DbSet<Employee> Employees => Set<Employee>();
 
+    public DbSet<IngredientTransaction> IngredientTransactions => Set<IngredientTransaction>();
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

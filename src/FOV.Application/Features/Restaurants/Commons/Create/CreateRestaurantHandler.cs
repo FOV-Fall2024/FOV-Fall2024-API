@@ -56,7 +56,7 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
         {
             ProductGeneral productGeneral = await _unitOfWorks.ProductGeneralRepository.GetByIdAsync(product, x => x.Ingredients) ?? throw new Exception();
             var ingredientGenerals = await _unitOfWorks.IngredientGeneralRepository.WhereAsync(x => x.ProductIngredientGenerals.Any(pg => pg.ProductGeneralId == productGeneral.Id));
-            Product productAdding = new(productGeneral.ProductName, restaurantId, productGeneral.CategoryId);
+            Product productAdding = new(productGeneral.ProductName, restaurantId, productGeneral.CategoryId,productGeneral.Id);
             await _unitOfWorks.ProductRepository.AddAsync(productAdding);
             await ProductIngredientAdd(ingredientGenerals.Select(x => x.IngredientName).ToList(), restaurantId, productAdding.Id);
         }

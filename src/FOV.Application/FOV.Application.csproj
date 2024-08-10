@@ -26,9 +26,8 @@
     <Folder Include="Common\Models\" />
     <Folder Include="Features\Authorize\Queries\" />
     <Folder Include="Features\IngredientGenerals\Commands\Inactive\" />
-    <Folder Include="Features\Ingredients\" />
-    <Folder Include="Features\Product\Commons\" />
-    <Folder Include="Features\Product\Queries\" />
+    <Folder Include="Features\Ingredients\Queries\GetIngredients\" />
+    <Folder Include="Features\Ingredients\Queries\GetIngredientDetail\" />
     <Folder Include="Features\Restaurants\Commons\AddIngredientQuantity\" />
     <Folder Include="Features\Restaurants\Queries\" />
   </ItemGroup>

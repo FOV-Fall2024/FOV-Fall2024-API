@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FOV.Application.Features.Order.Commands.Create;
-public class CreateOrderHandler
+namespace FOV.Application.Features.Products.Queries;
+internal class GetDetail
 {
 }

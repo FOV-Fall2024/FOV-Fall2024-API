@@ -22,5 +22,8 @@ public interface IUnitOfWorks
     public IIngredientRepository IngredientRepository { get; }
 
     public ICategoryRepository CategoryRepository { get; }
+
+    public IIngrdientTransactionRepository IngredientTransactionRepository { get; }
+
     public Task<int> SaveChangeAsync();
 }

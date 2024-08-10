@@ -12,7 +12,7 @@ public class ProductGeneral : BaseAuditableEntity, IsSoftDeleted
     public string ProductDescription { get; set; } = string.Empty;
 
     public Category? Category { get; set; }
-
+    public virtual ICollection<Product> Products { get; set; } = [];
     public Guid? CategoryId { get; set; }
     public bool IsDeleted { get; set; }
 
