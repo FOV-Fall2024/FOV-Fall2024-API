@@ -5,10 +5,11 @@ using FOV.Application.Features.Users.Queries.GetAllEmployee;
 using FOV.Application.Features.Users.Queries.GetAllUser;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using StackExchange.Redis;
 
 namespace FOV.Presentation.Controllers.V1;
 
-public class UserController(IMediator mediator) : DefaultController
+public class UserController(IMediator mediator,IDatabase database) : DefaultController
 {
 
     //[ ] Active User  
@@ -16,6 +17,7 @@ public class UserController(IMediator mediator) : DefaultController
     //[ ] View Users 
     //[ ] View User Detail 
     private readonly IMediator _mediator = mediator;
+    private readonly IDatabase _database = database;
 
 
 
@@ -47,5 +49,14 @@ public class UserController(IMediator mediator) : DefaultController
     public async Task<IActionResult> InActive(string id)
     {
         return Ok(await _mediator.Send(new InactvieEmployeeCommand(id)));
+    }
+
+    [HttpPost("testRedis")]
+    public async Task<IActionResult> Test()
+    {
+        string testKey = "test_key";
+        string testValue = "Hello, Redis!";
+        await _database.StringSetAsync(testKey, testValue);
+        return Ok();
     }
 }

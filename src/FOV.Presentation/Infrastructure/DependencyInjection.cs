@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using StackExchange.Redis;
 
 namespace FOV.Presentation.Infrastructure;
 
@@ -17,6 +18,21 @@ public static class DependencyInjection
         services.AddDbContextPool<FOVContext>(options => options.UseNpgsql(connectionString));
         services.AddScoped<ApplicationDbContextInitializer>();
         services.AddSingleton(TimeProvider.System);
+
+        //? Redis Configuration
+      
+        services.AddSingleton<IConnectionMultiplexer>(sp =>
+        {
+            var configuration = ConfigurationOptions.Parse(builder.Configuration["ConnectionStrings:RedisConnection"], true);
+            return ConnectionMultiplexer.Connect(configuration);
+        });
+        services.AddScoped<IDatabase>(sp =>
+        {
+            var connectionMultiplexer = sp.GetRequiredService<IConnectionMultiplexer>();
+            return connectionMultiplexer.GetDatabase();
+        });
+
+
 
         //? Database Configuration
         services.AddIdentityCore<User>()

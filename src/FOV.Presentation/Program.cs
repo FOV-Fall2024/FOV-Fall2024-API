@@ -4,7 +4,7 @@ using FOV.Infrastructure;
 using FOV.Presentation.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
-var conn = builder.Configuration.GetConnectionString("DefaultConnection");
+var conn = builder.Configuration.GetConnectionString("PostgresConnection");
 // Add services to the container.
 builder.Services.AddControllers(options =>
 {
