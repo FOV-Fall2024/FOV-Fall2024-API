@@ -17,7 +17,7 @@ public class AddMultipleQuantityHandler(IUnitOfWorks unitOfWorks) : IRequestHand
             IngredientTransaction ingredientTransaction = new(item.Quantity,Domain.Entities.IngredientAggregator.Enums.IngredientTransactionType.Add,ingredient.Id);
             ingredient.AddQuantity(item.Quantity);
             await _unitOfWorks.IngredientTransactionRepository.AddAsync(ingredientTransaction);
-            await _unitOfWorks.IngredientRepository.AddAsync(ingredient);
+             _unitOfWorks.IngredientRepository.Update(ingredient);
         }
         await _unitOfWorks.SaveChangeAsync();
         return Result.Ok();

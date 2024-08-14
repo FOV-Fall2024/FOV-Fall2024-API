@@ -18,6 +18,8 @@ public static class DependencyInjection
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IIngredientRepository, IngredientRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<IProductComboRepository, ProductComboRepository>();
+        services.AddScoped<IComboRepository , ComboRepository>();
         services.AddScoped<IProductIngredientRepository, ProductIngredientRepository>();
         //services.AddScoped<IGenericRepository, GenericRepository>();
         services.AddScoped<IProductGeneralRepository, ProductGeneralRepository>();

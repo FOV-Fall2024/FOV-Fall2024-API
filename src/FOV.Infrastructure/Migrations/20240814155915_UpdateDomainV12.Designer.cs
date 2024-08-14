@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FOV.Infrastructure.Migrations
 {
     [DbContext(typeof(FOVContext))]
-    [Migration("20240723043713_RestaurantDomain")]
-    partial class RestaurantDomain
+    [Migration("20240814155915_UpdateDomainV12")]
+    partial class UpdateDomainV12
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -69,7 +69,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("RestaurantId");
 
-                    b.ToTable("Combo");
+                    b.ToTable("Combos");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.ComboAggregator.ProductCombo", b =>
@@ -114,6 +114,12 @@ namespace FOV.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
                     b.Property<decimal>("ExpriedQuantity")
                         .HasColumnType("numeric");
 
@@ -127,6 +133,12 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<Guid?>("IngredientTypeId")
                         .HasColumnType("uuid");
 
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
                     b.Property<Guid?>("RestaurantId")
                         .HasColumnType("uuid");
 
@@ -137,6 +149,46 @@ namespace FOV.Infrastructure.Migrations
                     b.HasIndex("RestaurantId");
 
                     b.ToTable("Ingredients");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.IngredientAggregator.IngredientTransaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("IngredientId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime>("TransactionDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<byte>("Type")
+                        .HasColumnType("smallint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IngredientId");
+
+                    b.ToTable("IngredientTransactions");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.IngredientAggregator.IngredientType", b =>
@@ -155,6 +207,10 @@ namespace FOV.Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("IngredientDescription")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("IngredientMain")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -183,6 +239,34 @@ namespace FOV.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("IngredientTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a7"),
+                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            ExpiredTime = 30,
+                            IngredientDescription = "",
+                            IngredientMain = "Processed",
+                            IngredientName = "Processed Ingredient",
+                            IsDeleted = false,
+                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Left = 1,
+                            Right = 2
+                        },
+                        new
+                        {
+                            Id = new Guid("b8f66bab-13c9-4390-8582-545ddc7d2ec8"),
+                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            ExpiredTime = 60,
+                            IngredientDescription = "",
+                            IngredientMain = "Packaged",
+                            IngredientName = "Packaged Ingredient",
+                            IsDeleted = false,
+                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Left = 3,
+                            Right = 4
+                        });
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.IngredientGeneralAggregator.IngredientGeneral", b =>
@@ -224,20 +308,10 @@ namespace FOV.Infrastructure.Migrations
                     b.ToTable("IngredientGenerals");
                 });
 
-            modelBuilder.Entity("FOV.Domain.Entities.ProductAggregator.Category", b =>
+            modelBuilder.Entity("FOV.Domain.Entities.OrderAggregator.Order", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("CategoryMain")
-                        .HasColumnType("text");
-
-                    b.Property<string>("CategoryName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("CategoryParentId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("Created")
@@ -245,6 +319,62 @@ namespace FOV.Infrastructure.Migrations
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("OrderStatus")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("OrderTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("OrderType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("TableId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TableId");
+
+                    b.ToTable("Order");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.ProductAggregator.Category", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CategoryMain")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("CategoryParentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset>("LastModified")
                         .HasColumnType("timestamp with time zone");
@@ -260,7 +390,31 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Category");
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c011"),
+                            CategoryMain = "Noodle",
+                            CategoryName = "Noodle",
+                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            IsDeleted = false,
+                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Left = 1,
+                            Right = 2
+                        },
+                        new
+                        {
+                            Id = new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"),
+                            CategoryMain = "Salad",
+                            CategoryName = "Salad",
+                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            IsDeleted = false,
+                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Left = 1,
+                            Right = 2
+                        });
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.ProductAggregator.Product", b =>
@@ -269,7 +423,7 @@ namespace FOV.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("CategoryId")
+                    b.Property<Guid?>("CategoryId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("Created")
@@ -277,6 +431,9 @@ namespace FOV.Infrastructure.Migrations
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset>("LastModified")
                         .HasColumnType("timestamp with time zone");
@@ -287,6 +444,9 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("ProductDescription")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<Guid?>("ProductGeneralId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("ProductName")
                         .IsRequired()
@@ -299,9 +459,44 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("ProductGeneralId");
+
                     b.HasIndex("RestaurantId");
 
-                    b.ToTable("Product");
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.ProductAggregator.ProductIngredient", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("IngredientId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IngredientId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductIngredients");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.ProductGeneralAggregator.ProductGeneral", b =>
@@ -310,7 +505,7 @@ namespace FOV.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("CategoryId")
+                    b.Property<Guid?>("CategoryId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("Created")
@@ -340,7 +535,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("ProductGeneral");
+                    b.ToTable("ProductGenerals");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.ProductGeneralAggregator.ProductIngredientGeneral", b =>
@@ -355,7 +550,7 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("IngredientGeneralId")
+                    b.Property<Guid>("IngredientGeneralId")
                         .HasColumnType("uuid");
 
                     b.Property<bool>("IsDeleted")
@@ -367,8 +562,11 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("ProductGeneralId")
+                    b.Property<Guid>("ProductGeneralId")
                         .HasColumnType("uuid");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("numeric");
 
                     b.HasKey("Id");
 
@@ -376,7 +574,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("ProductGeneralId");
 
-                    b.ToTable("ProductIngredientGeneral");
+                    b.ToTable("ProductIngredientGenerals");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.RestaurantAggregator.Restaurant", b =>
@@ -424,6 +622,143 @@ namespace FOV.Infrastructure.Migrations
                     b.ToTable("Restaurant");
                 });
 
+            modelBuilder.Entity("FOV.Domain.Entities.TableAggregator.Table", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("RestaurantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("TableCode")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TableDescription")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TableImage")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TableNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TableQRCode")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TableState")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TableStatus")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TableType")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RestaurantId");
+
+                    b.ToTable("Table");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.UserAggregator.Customer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Customers");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.UserAggregator.Employee", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("EmployeeCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("HireDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("RestaurantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RestaurantId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Employees");
+                });
+
             modelBuilder.Entity("FOV.Domain.Entities.UserAggregator.User", b =>
                 {
                     b.Property<string>("Id")
@@ -442,6 +777,14 @@ namespace FOV.Infrastructure.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");
@@ -665,6 +1008,17 @@ namespace FOV.Infrastructure.Migrations
                     b.Navigation("Restaurant");
                 });
 
+            modelBuilder.Entity("FOV.Domain.Entities.IngredientAggregator.IngredientTransaction", b =>
+                {
+                    b.HasOne("FOV.Domain.Entities.IngredientAggregator.Ingredient", "Ingredient")
+                        .WithMany("IngredientTransactions")
+                        .HasForeignKey("IngredientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ingredient");
+                });
+
             modelBuilder.Entity("FOV.Domain.Entities.IngredientGeneralAggregator.IngredientGeneral", b =>
                 {
                     b.HasOne("FOV.Domain.Entities.IngredientAggregator.IngredientType", "IngredientType")
@@ -676,13 +1030,26 @@ namespace FOV.Infrastructure.Migrations
                     b.Navigation("IngredientType");
                 });
 
+            modelBuilder.Entity("FOV.Domain.Entities.OrderAggregator.Order", b =>
+                {
+                    b.HasOne("FOV.Domain.Entities.TableAggregator.Table", "Table")
+                        .WithMany("Orders")
+                        .HasForeignKey("TableId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Table");
+                });
+
             modelBuilder.Entity("FOV.Domain.Entities.ProductAggregator.Product", b =>
                 {
                     b.HasOne("FOV.Domain.Entities.ProductAggregator.Category", "Category")
                         .WithMany("Products")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
+
+                    b.HasOne("FOV.Domain.Entities.ProductGeneralAggregator.ProductGeneral", "ProductGeneral")
+                        .WithMany("Products")
+                        .HasForeignKey("ProductGeneralId");
 
                     b.HasOne("FOV.Domain.Entities.RestaurantAggregator.Restaurant", "Restaurant")
                         .WithMany("Products")
@@ -692,16 +1059,35 @@ namespace FOV.Infrastructure.Migrations
 
                     b.Navigation("Category");
 
+                    b.Navigation("ProductGeneral");
+
                     b.Navigation("Restaurant");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.ProductAggregator.ProductIngredient", b =>
+                {
+                    b.HasOne("FOV.Domain.Entities.IngredientAggregator.Ingredient", "Ingredient")
+                        .WithMany()
+                        .HasForeignKey("IngredientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FOV.Domain.Entities.ProductAggregator.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ingredient");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.ProductGeneralAggregator.ProductGeneral", b =>
                 {
                     b.HasOne("FOV.Domain.Entities.ProductAggregator.Category", "Category")
                         .WithMany("ProductGenerals")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.Navigation("Category");
                 });
@@ -710,15 +1096,60 @@ namespace FOV.Infrastructure.Migrations
                 {
                     b.HasOne("FOV.Domain.Entities.IngredientGeneralAggregator.IngredientGeneral", "IngredientGeneral")
                         .WithMany("ProductIngredientGenerals")
-                        .HasForeignKey("IngredientGeneralId");
+                        .HasForeignKey("IngredientGeneralId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("FOV.Domain.Entities.ProductGeneralAggregator.ProductGeneral", "ProductGeneral")
                         .WithMany("Ingredients")
-                        .HasForeignKey("ProductGeneralId");
+                        .HasForeignKey("ProductGeneralId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("IngredientGeneral");
 
                     b.Navigation("ProductGeneral");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.TableAggregator.Table", b =>
+                {
+                    b.HasOne("FOV.Domain.Entities.RestaurantAggregator.Restaurant", "Restaurant")
+                        .WithMany("Tables")
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Restaurant");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.UserAggregator.Customer", b =>
+                {
+                    b.HasOne("FOV.Domain.Entities.UserAggregator.User", "User")
+                        .WithOne("Customer")
+                        .HasForeignKey("FOV.Domain.Entities.UserAggregator.Customer", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.UserAggregator.Employee", b =>
+                {
+                    b.HasOne("FOV.Domain.Entities.RestaurantAggregator.Restaurant", "Restaurant")
+                        .WithMany("Employees")
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FOV.Domain.Entities.UserAggregator.User", "User")
+                        .WithOne("Employee")
+                        .HasForeignKey("FOV.Domain.Entities.UserAggregator.Employee", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Restaurant");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -777,6 +1208,11 @@ namespace FOV.Infrastructure.Migrations
                     b.Navigation("ProductCombos");
                 });
 
+            modelBuilder.Entity("FOV.Domain.Entities.IngredientAggregator.Ingredient", b =>
+                {
+                    b.Navigation("IngredientTransactions");
+                });
+
             modelBuilder.Entity("FOV.Domain.Entities.IngredientAggregator.IngredientType", b =>
                 {
                     b.Navigation("IngredientGenerals");
@@ -804,15 +1240,33 @@ namespace FOV.Infrastructure.Migrations
             modelBuilder.Entity("FOV.Domain.Entities.ProductGeneralAggregator.ProductGeneral", b =>
                 {
                     b.Navigation("Ingredients");
+
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.RestaurantAggregator.Restaurant", b =>
                 {
                     b.Navigation("Combos");
 
+                    b.Navigation("Employees");
+
                     b.Navigation("Ingredients");
 
                     b.Navigation("Products");
+
+                    b.Navigation("Tables");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.TableAggregator.Table", b =>
+                {
+                    b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.UserAggregator.User", b =>
+                {
+                    b.Navigation("Customer");
+
+                    b.Navigation("Employee");
                 });
 #pragma warning restore 612, 618
         }

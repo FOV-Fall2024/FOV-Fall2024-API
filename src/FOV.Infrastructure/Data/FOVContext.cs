@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using FOV.Domain.Entities.ComboAggregator;
 using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Domain.Entities.IngredientGeneralAggregator;
 using FOV.Domain.Entities.ProductAggregator;
@@ -38,6 +39,10 @@ public class FOVContext : IdentityDbContext<User>, IApplicationDbContext
     public DbSet<Employee> Employees => Set<Employee>();
 
     public DbSet<IngredientTransaction> IngredientTransactions => Set<IngredientTransaction>();
+
+    public DbSet<Combo> Combos => Set<Combo>();
+
+    public DbSet<ProductCombo> ProductCombos => Set<ProductCombo>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

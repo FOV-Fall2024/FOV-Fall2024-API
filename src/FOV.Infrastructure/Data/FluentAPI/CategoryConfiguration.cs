@@ -14,7 +14,7 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
         builder.HasData(
         new Category("Noodle")
         {
-            Id = Guid.NewGuid(),  // Assign a unique ID
+            Id = Guid.Parse("6535596e-a86a-4fcc-97e7-7e6182a5c011"),  // Assign a unique ID
             CategoryMain = "Noodle",
             Left = 1,
             Right = 2,
@@ -22,7 +22,7 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
         },
         new Category("Salad")
         {
-            Id = Guid.NewGuid(),  // Assign a unique ID
+            Id = Guid.Parse("3140b8af-2124-44fa-8f43-907cddc26c3d"),  // Assign a unique ID
             CategoryMain = "Salad",
             Left = 1,
             Right = 2,

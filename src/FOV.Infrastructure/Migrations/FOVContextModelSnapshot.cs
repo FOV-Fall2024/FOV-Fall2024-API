@@ -66,7 +66,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("RestaurantId");
 
-                    b.ToTable("Combo");
+                    b.ToTable("Combos");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.ComboAggregator.ProductCombo", b =>
@@ -102,7 +102,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductCombo");
+                    b.ToTable("ProductCombos");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.IngredientAggregator.Ingredient", b =>
