@@ -1,4 +1,5 @@
 ﻿using FluentResults;
+using FOV.Application.Common.Exceptions;
 using FOV.Domain.Entities.UserAggregator;
 using FOV.Domain.Entities.UserAggregator.Enums;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
@@ -25,32 +26,20 @@ public class UserRegisterHandler(UserManager<User> userManager, IUnitOfWorks uni
         };
 
         var result = await _userManager.CreateAsync(user, request.Password);
-        if (!result.Succeeded)
-        {
-            return Result.Fail(result.Errors.First().Description);
-        }
+        if (!result.Succeeded) throw new AppException(result.Errors.First().Description);
 
-        // Ensure the role exists
         if (!await _roleManager.RoleExistsAsync(Role.User))
         {
             var roleResult = await _roleManager.CreateAsync(new IdentityRole(Role.User));
-            if (!roleResult.Succeeded)
-            {
-                return Result.Fail(roleResult.Errors.First().Description);
-            }
+            if (!roleResult.Succeeded) throw new AppException(roleResult.Errors.First().Description);
         }
 
         // Assign the role to the user
         var roleAssignResult = await _userManager.AddToRoleAsync(user, Role.User);
-        if (!roleAssignResult.Succeeded)
-        {
-            return Result.Fail(roleAssignResult.Errors.First().Description);
-        }
+        if (!roleAssignResult.Succeeded) throw new AppException(roleAssignResult.Errors.First().Description);
 
-        // Save changes to ensure the user and role assignment are committed
         await _unitOfWorks.SaveChangeAsync();
 
-        // Create a customer associated with the user
         Customer customer = new()
         {
             Address = request.Address,

@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using FluentResults;
 using FOV.Domain.Entities.UserAggregator;
 using FOV.Domain.Entities.UserAggregator.Enums;
@@ -9,11 +8,10 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FOV.Application.Features.Authorize.Commands.CreateEmployee;
 
-//
 public sealed record CreateEmployeeCommand(string LastName, string FirstName, string Address, string Email, int RoleId, Guid RestaurantId) : IRequest<Result>;
 public sealed record GenerateRole(string RoleName, string Code);
 
-public class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager, RoleManager<IdentityRole> roleManager) : IRequestHandler<CreateEmployeeCommand, Result>
+public partial class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager, RoleManager<IdentityRole> roleManager) : IRequestHandler<CreateEmployeeCommand, Result>
 {
     private readonly UserManager<User> _userManager = userManager;
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
@@ -21,46 +19,33 @@ public class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> u
 
     public async Task<Result> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
     {
-        // Generate the role-specific code
         var generate = await GenerateCode(request.RoleId);
 
-        // Create a new user with the provided details
-        User user = new User
+        User user = new()
         {
             FirstName = request.FirstName,
             LastName = request.LastName,
             Email = request.Email,
-            UserName = request.Email // Ensure UserName is set, as it's required for UserManager
+            UserName = request.Email
         };
 
-        // Attempt to create the user
         var result = await _userManager.CreateAsync(user, "12345678!Fpt");
-        if (!result.Succeeded)
-        {
-            return Result.Fail(result.Errors.First().Description);
-        }
+        if (!result.Succeeded) throw new KeyNotFoundException(result.Errors.First().Description);
 
-        // Ensure the role exists
         if (!await _roleManager.RoleExistsAsync(generate.RoleName))
         {
             var roleResult = await _roleManager.CreateAsync(new IdentityRole(generate.RoleName));
-            if (!roleResult.Succeeded)
-            {
-                return Result.Fail(roleResult.Errors.First().Description);
-            }
+            if (!roleResult.Succeeded) throw new KeyNotFoundException(roleResult.Errors.First().Description);
         }
 
-        // Assign the role to the user
         var roleAssignResult = await _userManager.AddToRoleAsync(user, generate.RoleName);
         if (!roleAssignResult.Succeeded)
         {
             return Result.Fail(roleAssignResult.Errors.First().Description);
         }
 
-        // Create an Employee entity associated with the user
         Employee employee = new(generate.Code, user.Id, request.RestaurantId);
 
-        // Add the Employee entity to the repository and save changes
         await _unitOfWorks.EmployeeRepository.AddAsync(employee);
         await _unitOfWorks.SaveChangeAsync();
 
@@ -108,21 +93,17 @@ public class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> u
 
     public static string IncrementRoleCode(string roleCode)
     {
-        // Match the prefix and the numeric part separately
-        var match = Regex.Match(roleCode, @"^(.*?)(\d+)$");
+        var match = MyRegex().Match(roleCode);
         if (match.Success)
         {
             var prefix = match.Groups[1].Value;
             var numberPart = match.Groups[2].Value;
-
-            // Convert the numeric part to an integer, increment it, and format it back to the original length
             var incrementedNumber = (int.Parse(numberPart) + 1).ToString().PadLeft(numberPart.Length, '0');
-
-            // Concatenate the prefix and the incremented number
             return prefix + incrementedNumber;
         }
-
-        // If the role code doesn't match the expected pattern, return it as is
         return roleCode;
     }
+
+    [GeneratedRegex(@"^(.*?)(\d+)$")]
+    private static partial Regex MyRegex();
 }

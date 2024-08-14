@@ -8,3 +8,5 @@
 `docker-compose up -d`
 ### Database migrate 
 `dotnet ef database update -s .\FOV.Presentation\  -p .\FOV.Infrastructure\`
+
+## Connect in RedisInsight and PgAdmin4

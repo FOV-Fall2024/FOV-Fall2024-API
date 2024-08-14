@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using FOV.Application.Common.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -10,18 +11,7 @@ public class ValidationExceptionFilter : IExceptionFilter
     {
         if (context.Exception is ValidationException validationException)
         {
-            var errorMessages = validationException.Errors.Select(e => e.ErrorMessage).ToList();
-            var errorResponse = new
-            {
-                Status = 421,
-                Errors = errorMessages
-            };
-
-            context.Result = new ObjectResult(errorResponse)
-            {
-                StatusCode = 421
-            };
-            context.ExceptionHandled = true;
+            throw new AppException(validationException.Errors.Select(e => e.ErrorMessage).ToList());
         }
     }
 }

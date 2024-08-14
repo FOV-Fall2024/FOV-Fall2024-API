@@ -22,9 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\Exception\" />
     <Folder Include="Common\Models\" />
-    <Folder Include="Features\Authorize\Queries\" />
     <Folder Include="Features\IngredientGenerals\Commands\Inactive\" />
     <Folder Include="Features\Ingredients\Queries\GetIngredientDetail\" />
     <Folder Include="Features\Restaurants\Queries\Get\" />

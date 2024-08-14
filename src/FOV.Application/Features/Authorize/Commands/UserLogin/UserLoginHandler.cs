@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using FOV.Application.Common.Exceptions;
 using FOV.Domain.Entities.UserAggregator;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -18,11 +19,14 @@ public class UserLoginHandler(UserManager<User> userManager, IConfiguration conf
 
     public async Task<UserToken> Handle(UserLoginCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userManager.FindByEmailAsync(request.Email);
+        var user = await _userManager.FindByEmailAsync(request.Email) ?? throw new AppException("Wrong Email");
+
+        if (!_userManager.CheckPasswordAsync(user, request.Password).Result) throw new KeyNotFoundException("Wrong Password");
+
         var roles = await _userManager.GetRolesAsync(user);
 
 
-        string token = GenerateJWT(user, roles, _configuration["JWT:SecretKey"] ?? throw new Exception(), _configuration["JWT:ValidIssuer"] ?? throw new Exception(), _configuration["JWT:ValidAudience"] ?? throw new Exception());
+        string token = GenerateJWT(user, roles, _configuration["JWT:SecretKey"] ?? throw new AppException(), _configuration["JWT:ValidIssuer"] ?? throw new AppException(), _configuration["JWT:ValidAudience"] ?? throw new AppException());
         return new UserToken(token, "not");
     }
 
@@ -36,7 +40,7 @@ public class UserLoginHandler(UserManager<User> userManager, IConfiguration conf
         var claims = new List<Claim>
             {
                 new("UserId", user.Id.ToString()),
-                new(ClaimTypes.Name, user.UserName ?? throw new Exception() ),
+                new(ClaimTypes.Name, user.UserName ?? throw new AppException("Name not found") ),
                 new (ClaimTypes.Role,userRoles.First()),
             };
 

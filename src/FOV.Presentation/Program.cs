@@ -2,6 +2,7 @@
 using FOV.Domain.Entities.UserAggregator;
 using FOV.Infrastructure;
 using FOV.Presentation.Infrastructure;
+using Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
 var conn = builder.Configuration.GetConnectionString("PostgresConnection");
@@ -12,10 +13,13 @@ builder.Services.AddControllers(options =>
 });
 
 
+
+
 builder.Services.AddApplicationDI();
 builder.Services.AddPresentationDI(conn ?? throw new ArgumentNullException(nameof(conn), "Connection string cannot be null."), builder);
 builder.Services.AddInfrastructureDI();
 
+//? Background Servie
 
 
 var app = builder.Build();
@@ -38,5 +42,17 @@ app.MapIdentityApi<User>();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Use Hangfire dashboard.
+app.UseHangfireDashboard();
+
+// Add a recurring job.
+RecurringJob.AddOrUpdate(
+    "daily-email-job",
+    () => Console.WriteLine("Sending daily email..."),
+    Cron.Daily(8) // Runs every day at 8 AM
+);
+
+app.Run();
 
 app.Run();
