@@ -3,8 +3,6 @@ using FOV.Domain.Entities.UserAggregator;
 using FOV.Infrastructure.Data;
 using FOV.Infrastructure.Data.Configurations;
 using FOV.Presentation.Infrastructure.BackgroundServer;
-using Hangfire;
-using Hangfire.MemoryStorage;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -19,16 +17,12 @@ public static class DependencyInjection
     public static IServiceCollection AddPresentationDI(this IServiceCollection services, string connectionString, WebApplicationBuilder builder)
     {
 
+        //? Hang Fire Adding
+        services.AddHostedService<ScheduleCronJobWorker>();
+        services.AddHostedService<CheckIngredientWorker>();
+        services.AddHostedService<ScheduleCheckIngredientDailyWorker>();
 
-
-
-        services.AddHangfire(config => config
-                .UseSimpleAssemblyNameTypeSerializer()
-                .UseRecommendedSerializerSettings()
-                .UseMemoryStorage()
-                );
-        services.AddHangfireServer();
-
+        //? Background Servie
 
         services.AddOutputCache();
         services.AddDbContextPool<FOVContext>(options => options.UseNpgsql(connectionString));
