@@ -23,13 +23,12 @@
 
   <ItemGroup>
     <Folder Include="Common\Models\" />
-    <Folder Include="Features\Combos\Commands\Create\" />
     <Folder Include="Features\Combos\Commands\Update\" />
-    <Folder Include="Features\Combos\Queries\GetCombos\" />
     <Folder Include="Features\Combos\Queries\GetComboByUser\" />
     <Folder Include="Features\Combos\Queries\GetComboDetail\" />
     <Folder Include="Features\IngredientGenerals\Commands\Inactive\" />
     <Folder Include="Features\Ingredients\Queries\GetIngredientDetail\" />
+    <Folder Include="Features\Orders\Queries\" />
     <Folder Include="Features\Restaurants\Queries\Get\" />
     <Folder Include="Features\Restaurants\Queries\Detail\" />
   </ItemGroup>

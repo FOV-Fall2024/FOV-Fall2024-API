@@ -35,5 +35,12 @@ public class Ingredient : BaseAuditableEntity
     }
 
     public void AddQuantity(decimal quantity) => IngredientAmount += quantity;
+
+    public void UpdateExpriedQuantity(decimal quantity)
+    {
+        ExpriedQuantity += quantity;
+        IngredientAmount -= quantity;
+        if(ExpriedQuantity < 0) ExpriedQuantity = 0; 
+    }
 }
 

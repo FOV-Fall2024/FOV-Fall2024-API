@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FOV.Domain.Common;
+﻿using FOV.Domain.Common;
+using FOV.Domain.Entities.OrderAggregator.Enums;
 using FOV.Domain.Entities.TableAggregator;
 
 namespace FOV.Domain.Entities.OrderAggregator;
@@ -36,4 +32,6 @@ public class Order : BaseAuditableEntity
         this.TotalPrice = totalPrice;
         this.TableId = tableId;
     }
+
+
 }

@@ -7,9 +7,9 @@ namespace FOV.Domain.Entities.ComboAggregator;
 
 public class Combo : BaseAuditableEntity, IsSoftDeleted
 {
-    public required string ComboName { get; set; }
+    public string ComboName { get; set; }
 
-    public required Status Status { get; set; }
+    public Status Status { get; set; }
     public bool IsDeleted { get; set; }
 
     public int Quantity { get; set; }
@@ -24,4 +24,20 @@ public class Combo : BaseAuditableEntity, IsSoftDeleted
 
     public ICollection<ProductCombo> ProductCombos { get; set; } = [];
     public ICollection<OrderDetail> OrderDetails { get; set; } = [];
+
+    public Combo()
+    {
+
+    }
+    public Combo(string comboName, int quantity, decimal price, DateTime expiredDate, Guid restaurantId)
+    {
+        ComboName = comboName;
+        Status = Status.InStock;
+        Quantity = quantity;
+        Price = price;
+        ExpiredDate = expiredDate;
+        RestaurantId = restaurantId;
+    }
+
+    public void UpdateState(bool isDeleted) => IsDeleted = isDeleted;
 }

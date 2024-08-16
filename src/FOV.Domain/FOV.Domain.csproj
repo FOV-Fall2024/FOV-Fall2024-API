@@ -15,7 +15,7 @@
 		<Folder Include="Entities\IngredientGeneralAggregator\Enums\" />
 		<Folder Include="Entities\IngredientGeneralAggregator\ValueObject\" />
 		<Folder Include="Entities\IngredientGeneralAggregator\Primitives\" />
-		<Folder Include="Entities\OrderAggregator\Enums\" />
+		<Folder Include="Entities\OrderAggregator\ValueObjects\" />
 		<Folder Include="Entities\OrderAggregator\ValueObjects\" />
 		<Folder Include="Entities\OrderAggregator\Primitives\" />
 		<Folder Include="Entities\ProductAggregator\Enums\" />

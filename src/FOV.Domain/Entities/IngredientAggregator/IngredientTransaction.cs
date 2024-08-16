@@ -13,6 +13,7 @@ public class IngredientTransaction : BaseAuditableEntity, IsSoftDeleted
     public Ingredient? Ingredient { get; set; }
 
     public Guid IngredientId { get; set; }
+
     public bool IsDeleted { get; set; }
 
     public IngredientTransaction()
