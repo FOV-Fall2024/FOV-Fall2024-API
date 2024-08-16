@@ -11,5 +11,6 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
     {
         builder.HasKey(x => x.Id);
         builder.HasMany(x => x.ProductCombos).WithOne(x => x.Product).HasForeignKey(x => x.ProductId);
+        builder.HasMany(x => x.OrderDetails).WithOne(x => x.Product).HasForeignKey(x => x.ProductId);
     }
 }

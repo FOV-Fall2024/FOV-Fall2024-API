@@ -18,5 +18,9 @@ public interface IUnitOfWorks
     public IIngredientRepository IngredientRepository { get; }
 
     public ICategoryRepository CategoryRepository { get; }
+    public IOrderRepository OrderRepository { get; }
+    public IOrderDetailRepository OrderDetailRepository { get; }
+    public IShiftRepository ShiftRepository { get; }
+    public IWaiterScheduleRepository WaiterScheduleRepository { get; }
     public Task<int> SaveChangeAsync();
 }

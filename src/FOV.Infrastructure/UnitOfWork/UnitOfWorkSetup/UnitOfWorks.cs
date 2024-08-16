@@ -16,8 +16,13 @@ public class UnitOfWorks : IUnitOfWorks
     private readonly IProductRepository _productRepository;
     private readonly IIngredientRepository _ingredientRepository;
     private readonly IProductIngredientRepository _productIngredientRepository;
-
-    public UnitOfWorks(FOVContext context, IIngredientTypeRepository ingredientTypeRepository, IIngredientGeneralRepository ingredientGeneralRepository, IProductGeneralRepository productGeneralRepository, IProductIngredientGeneralRepository productIngredientGeneralRepository, ITableRepository tableRepository, IRestaurantRepository restaurantRepository, ICategoryRepository categoryRepository, IProductRepository productRepository, IIngredientRepository ingredientRepository, IProductIngredientRepository productIngredientRepository)
+    private readonly IOrderRepository _orderRepository;
+    private readonly IOrderDetailRepository _orderDetailRepository;
+    private readonly IShiftRepository _shiftRepository;
+    private readonly IWaiterScheduleRepository _waiterScheduleRepository;
+    public UnitOfWorks(FOVContext context, IIngredientTypeRepository ingredientTypeRepository, IIngredientGeneralRepository ingredientGeneralRepository, IProductGeneralRepository productGeneralRepository, IProductIngredientGeneralRepository productIngredientGeneralRepository, ITableRepository tableRepository, 
+        IRestaurantRepository restaurantRepository, ICategoryRepository categoryRepository, IProductRepository productRepository, IIngredientRepository ingredientRepository, IProductIngredientRepository productIngredientRepository, IOrderRepository orderRepository, IOrderDetailRepository orderDetailRepository, 
+        IShiftRepository shiftRepository, IWaiterScheduleRepository waiterScheduleRepository)
     {
         _context = context;
         _ingredientTypeRepository = ingredientTypeRepository;
@@ -30,6 +35,10 @@ public class UnitOfWorks : IUnitOfWorks
         _productRepository = productRepository;
         _ingredientRepository = ingredientRepository;
         _productIngredientRepository = productIngredientRepository;
+        _orderRepository = orderRepository;
+        _orderDetailRepository = orderDetailRepository;
+        _shiftRepository = shiftRepository;
+        _waiterScheduleRepository = waiterScheduleRepository;
     }
     public IIngredientTypeRepository IngredientTypeRepository => _ingredientTypeRepository;
     public IIngredientGeneralRepository IngredientGeneralRepository => _ingredientGeneralRepository;
@@ -48,6 +57,11 @@ public class UnitOfWorks : IUnitOfWorks
 
     public IProductIngredientRepository ProductIngredientRepository => _productIngredientRepository;
 
+    public IOrderRepository OrderRepository => _orderRepository;
+
+    public IOrderDetailRepository OrderDetailRepository => _orderDetailRepository;
+    public IShiftRepository ShiftRepository => _shiftRepository;
+    public IWaiterScheduleRepository WaiterScheduleRepository => _waiterScheduleRepository;
     public async Task<int> SaveChangeAsync()
     {
         return await _context.SaveChangesAsync();

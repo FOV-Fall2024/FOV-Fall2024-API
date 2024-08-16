@@ -18,6 +18,10 @@ public static class DependencyInjection
         services.AddScoped<IIngredientRepository, IngredientRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IProductIngredientRepository, ProductIngredientRepository>();
+        services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
+        services.AddScoped<IShiftRepository, ShiftRepository>();
+        services.AddScoped<IWaiterScheduleRepository, WaiterScheduleRepository>();
         //services.AddScoped<IGenericRepository, GenericRepository>();
         services.AddScoped<IProductGeneralRepository, ProductGeneralRepository>();
         services.AddScoped<IProductIngredientGeneralRepository, ProductIngredientGeneralRepository>();

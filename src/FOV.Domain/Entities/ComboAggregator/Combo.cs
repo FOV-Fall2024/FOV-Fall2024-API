@@ -1,5 +1,6 @@
 ﻿using FOV.Domain.Common;
 using FOV.Domain.Entities.ComboAggregator.Enums;
+using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.RestaurantAggregator;
 
 namespace FOV.Domain.Entities.ComboAggregator;
@@ -22,4 +23,5 @@ public class Combo : BaseAuditableEntity, IsSoftDeleted
     public Guid RestaurantId { get; set; }
 
     public ICollection<ProductCombo> ProductCombos { get; set; } = [];
+    public ICollection<OrderDetail> OrderDetails { get; set; } = [];
 }

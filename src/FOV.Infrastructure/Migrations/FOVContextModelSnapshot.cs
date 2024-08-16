@@ -22,6 +22,48 @@ namespace FOV.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("FOV.Domain.Entities.AttendanceAggregator.Attendance", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CheckInTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("CheckOutTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("EmployeeId1")
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("WaiterScheduleId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId1");
+
+                    b.HasIndex("WaiterScheduleId");
+
+                    b.ToTable("Attendances");
+                });
+
             modelBuilder.Entity("FOV.Domain.Entities.ComboAggregator.Combo", b =>
                 {
                     b.Property<Guid>("Id")
@@ -102,7 +144,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductCombo");
+                    b.ToTable("ProductCombos");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.IngredientAggregator.Ingredient", b =>
@@ -256,27 +298,72 @@ namespace FOV.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("OrderStatus")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("OrderTime")
+                    b.Property<DateTime?>("OrderTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("OrderType")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<Guid>("TableId")
                         .HasColumnType("uuid");
 
-                    b.Property<decimal>("TotalPrice")
+                    b.Property<decimal?>("TotalPrice")
                         .HasColumnType("numeric");
 
                     b.HasKey("Id");
 
                     b.HasIndex("TableId");
 
-                    b.ToTable("Order");
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.OrderAggregator.OrderDetail", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("ComboId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("OrderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
+
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ComboId");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.ProductAggregator.Category", b =>
@@ -328,7 +415,7 @@ namespace FOV.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("CategoryId")
+                    b.Property<Guid?>("CategoryId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("Created")
@@ -519,6 +606,41 @@ namespace FOV.Infrastructure.Migrations
                     b.ToTable("Restaurant");
                 });
 
+            modelBuilder.Entity("FOV.Domain.Entities.ShiftAggregator.Shift", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("EndTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ShiftName")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("StartTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Shift");
+                });
+
             modelBuilder.Entity("FOV.Domain.Entities.TableAggregator.Table", b =>
                 {
                     b.Property<Guid>("Id")
@@ -571,7 +693,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("RestaurantId");
 
-                    b.ToTable("Table");
+                    b.ToTable("Tables");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.UserAggregator.User", b =>
@@ -636,6 +758,82 @@ namespace FOV.Infrastructure.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.WaiterSalaryAggregator.WaiterSalary", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("PayDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("TotalHours")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("TotalSalary")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("WaiterSalary");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.WaiterScheduleAggregator.WaiterSchedule", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ShiftId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShiftId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("WaiterSchedule");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -770,6 +968,23 @@ namespace FOV.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("FOV.Domain.Entities.AttendanceAggregator.Attendance", b =>
+                {
+                    b.HasOne("FOV.Domain.Entities.UserAggregator.User", "Employee")
+                        .WithMany("Attendances")
+                        .HasForeignKey("EmployeeId1");
+
+                    b.HasOne("FOV.Domain.Entities.WaiterScheduleAggregator.WaiterSchedule", "WaiterSchedule")
+                        .WithMany("Attendances")
+                        .HasForeignKey("WaiterScheduleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("WaiterSchedule");
+                });
+
             modelBuilder.Entity("FOV.Domain.Entities.ComboAggregator.Combo", b =>
                 {
                     b.HasOne("FOV.Domain.Entities.RestaurantAggregator.Restaurant", "Restaurant")
@@ -837,13 +1052,32 @@ namespace FOV.Infrastructure.Migrations
                     b.Navigation("Table");
                 });
 
+            modelBuilder.Entity("FOV.Domain.Entities.OrderAggregator.OrderDetail", b =>
+                {
+                    b.HasOne("FOV.Domain.Entities.ComboAggregator.Combo", "Combo")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("ComboId");
+
+                    b.HasOne("FOV.Domain.Entities.OrderAggregator.Order", "Order")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("OrderId");
+
+                    b.HasOne("FOV.Domain.Entities.ProductAggregator.Product", "Product")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("Combo");
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("FOV.Domain.Entities.ProductAggregator.Product", b =>
                 {
                     b.HasOne("FOV.Domain.Entities.ProductAggregator.Category", "Category")
                         .WithMany("Products")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.HasOne("FOV.Domain.Entities.RestaurantAggregator.Restaurant", "Restaurant")
                         .WithMany("Products")
@@ -914,6 +1148,32 @@ namespace FOV.Infrastructure.Migrations
                     b.Navigation("Restaurant");
                 });
 
+            modelBuilder.Entity("FOV.Domain.Entities.WaiterSalaryAggregator.WaiterSalary", b =>
+                {
+                    b.HasOne("FOV.Domain.Entities.UserAggregator.User", "User")
+                        .WithMany("WaiterSalaries")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.WaiterScheduleAggregator.WaiterSchedule", b =>
+                {
+                    b.HasOne("FOV.Domain.Entities.ShiftAggregator.Shift", "Shift")
+                        .WithMany("WaiterSchedules")
+                        .HasForeignKey("ShiftId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FOV.Domain.Entities.UserAggregator.User", "User")
+                        .WithMany("WaiterSchedules")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Shift");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -967,6 +1227,8 @@ namespace FOV.Infrastructure.Migrations
 
             modelBuilder.Entity("FOV.Domain.Entities.ComboAggregator.Combo", b =>
                 {
+                    b.Navigation("OrderDetails");
+
                     b.Navigation("ProductCombos");
                 });
 
@@ -982,6 +1244,11 @@ namespace FOV.Infrastructure.Migrations
                     b.Navigation("ProductIngredientGenerals");
                 });
 
+            modelBuilder.Entity("FOV.Domain.Entities.OrderAggregator.Order", b =>
+                {
+                    b.Navigation("OrderDetails");
+                });
+
             modelBuilder.Entity("FOV.Domain.Entities.ProductAggregator.Category", b =>
                 {
                     b.Navigation("ProductGenerals");
@@ -991,6 +1258,8 @@ namespace FOV.Infrastructure.Migrations
 
             modelBuilder.Entity("FOV.Domain.Entities.ProductAggregator.Product", b =>
                 {
+                    b.Navigation("OrderDetails");
+
                     b.Navigation("ProductCombos");
                 });
 
@@ -1010,9 +1279,28 @@ namespace FOV.Infrastructure.Migrations
                     b.Navigation("Tables");
                 });
 
+            modelBuilder.Entity("FOV.Domain.Entities.ShiftAggregator.Shift", b =>
+                {
+                    b.Navigation("WaiterSchedules");
+                });
+
             modelBuilder.Entity("FOV.Domain.Entities.TableAggregator.Table", b =>
                 {
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.UserAggregator.User", b =>
+                {
+                    b.Navigation("Attendances");
+
+                    b.Navigation("WaiterSalaries");
+
+                    b.Navigation("WaiterSchedules");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.WaiterScheduleAggregator.WaiterSchedule", b =>
+                {
+                    b.Navigation("Attendances");
                 });
 #pragma warning restore 612, 618
         }
