@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using MediatR;
 
-namespace FOV.Application.Features.Order.Commands.Update;
+namespace FOV.Application.Features.Orders.Commands.Update;
 public sealed record UpdateOrderCommand : IRequest<Guid>
 {
     [JsonIgnore]

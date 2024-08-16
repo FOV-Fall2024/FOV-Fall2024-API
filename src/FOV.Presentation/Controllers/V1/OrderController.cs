@@ -1,6 +1,6 @@
 ﻿using FOV.Application.Features.Order.Commands.Create;
-using FOV.Application.Features.Order.Commands.Update;
 using FOV.Application.Features.Order.Queries;
+using FOV.Application.Features.Orders.Commands.Update;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
