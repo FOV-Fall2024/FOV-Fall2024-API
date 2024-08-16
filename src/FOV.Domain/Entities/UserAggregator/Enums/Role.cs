@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace FOV.Domain.Entities.UserAggregator.Enums;
 
-namespace FOV.Domain.Entities.UserAggregator.Enums
+public static class Role
 {
-    public static class Role
-    {
-        public const string Administrator = nameof(Administrator);
-        public const string User = nameof(User);
-    }
+    public const string Administrator = nameof(Administrator);
+    public const string User = nameof(User);
+    public const string Cook = nameof(Cook);
+    public const string Manager = nameof(Manager);
+    public const string Waiter = nameof(Waiter);
+
 }

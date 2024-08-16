@@ -11,11 +11,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Common\Exception\" />
     <Folder Include="Data\Interceptors\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="FluentResults" Version="3.16.0" />
+    <PackageReference Include="Quartz" Version="3.13.0" />
+    <PackageReference Include="StackExchange.Redis" Version="2.8.0" />
   </ItemGroup>
 
 

@@ -1,5 +1,6 @@
 ﻿using FOV.Domain.Helpers.FirebaseHandler;
 using FOV.Domain.Helpers.QRCodeGeneratorHelper;
+using FOV.Infrastructure.Data.FluentAPI;
 using FOV.Infrastructure.Repository.IRepositories;
 using FOV.Infrastructure.Repository.Repositories;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
@@ -17,6 +18,8 @@ public static class DependencyInjection
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IIngredientRepository, IngredientRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<IProductComboRepository, ProductComboRepository>();
+        services.AddScoped<IComboRepository , ComboRepository>();
         services.AddScoped<IProductIngredientRepository, ProductIngredientRepository>();
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
@@ -28,6 +31,9 @@ public static class DependencyInjection
         services.AddSingleton<StorageHandler>();
         services.AddSingleton<QRCodeGeneratorHandler>();
         services.AddScoped<IUnitOfWorks, UnitOfWorks>();
+        services.AddScoped<IIngrdientTransactionRepository, IngrdientTransactionRepository>();
+        services.AddScoped<ICustomerRepository, CustomerRepository>();
+        services.AddScoped<IEmployeeRepository, EmployeeRepository>();
         return services;
 
     }

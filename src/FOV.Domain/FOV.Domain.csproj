@@ -10,7 +10,6 @@
 		<Folder Include="Constant\" />
 		<Folder Include="Entities\ComboAggregator\ValueObjects\" />
 		<Folder Include="Entities\ComboAggregator\Primitives\" />
-		<Folder Include="Entities\IngredientAggregator\Enums\" />
 		<Folder Include="Entities\IngredientAggregator\ValueObject\" />
 		<Folder Include="Entities\IngredientAggregator\Primitives\" />
 		<Folder Include="Entities\IngredientGeneralAggregator\Enums\" />
@@ -37,8 +36,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="FirebaseAuth" Version="2.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.7" />
+    <PackageReference Include="FirebaseAuth" Version="2.0.6" />
 		<PackageReference Include="FirebaseStorage.net" Version="1.0.3" />
+		<PackageReference Include="Microsoft.AspNetCore.Authorization" Version="8.0.4" />
 		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.4" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.4" />

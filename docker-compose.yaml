@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  # Service for the PostgreSQL database
+  database:
+    image: postgres:15
+    container_name: fov_database
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: RestaurantManagementDatabase
+    ports:
+      - "5436:5432"
+
+  # Service for the Redis cache
+  redis:
+    image: redis:7.0.12
+    container_name: redis-cache
+    ports:
+      - "6380:6379"
+

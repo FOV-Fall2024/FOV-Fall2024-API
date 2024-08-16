@@ -1,4 +1,6 @@
-﻿using FOV.Infrastructure.Repository.IRepositories;
+﻿using FOV.Infrastructure.Data.FluentAPI;
+using FOV.Infrastructure.Repository.IRepositories;
+using FOV.Infrastructure.Repository.Repositories;
 
 namespace FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 
@@ -15,6 +17,9 @@ public interface IUnitOfWorks
     public IProductIngredientRepository ProductIngredientRepository { get; }
     public IProductRepository ProductRepository { get; }
 
+    public IEmployeeRepository EmployeeRepository { get; }
+
+    public ICustomerRepository CustomerRepository { get; }
     public IIngredientRepository IngredientRepository { get; }
 
     public ICategoryRepository CategoryRepository { get; }
@@ -22,5 +27,12 @@ public interface IUnitOfWorks
     public IOrderDetailRepository OrderDetailRepository { get; }
     public IShiftRepository ShiftRepository { get; }
     public IWaiterScheduleRepository WaiterScheduleRepository { get; }
+
+    public IIngrdientTransactionRepository IngredientTransactionRepository { get; }
+
+    public IProductComboRepository ProductComboRepository { get; }
+
+    public IComboRepository ComboRepository { get; }
+
     public Task<int> SaveChangeAsync();
 }

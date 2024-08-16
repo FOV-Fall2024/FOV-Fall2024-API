@@ -20,6 +20,8 @@ public class Ingredient : BaseAuditableEntity
 
     public Guid? RestaurantId { get; set; }
 
+    public virtual ICollection<IngredientTransaction> IngredientTransactions { get; set; } = [];
+
     public Ingredient()
     {
 
@@ -32,5 +34,6 @@ public class Ingredient : BaseAuditableEntity
         IngredientTypeId = ingredientTypeId;
     }
 
+    public void AddQuantity(decimal quantity) => IngredientAmount += quantity;
 }
 

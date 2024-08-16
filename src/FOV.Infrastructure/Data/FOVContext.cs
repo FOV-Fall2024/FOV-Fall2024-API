@@ -6,8 +6,10 @@ using FOV.Domain.Entities.IngredientGeneralAggregator;
 using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.ProductAggregator;
 using FOV.Domain.Entities.ProductGeneralAggregator;
+using FOV.Domain.Entities.ShiftAggregator;
 using FOV.Domain.Entities.TableAggregator;
 using FOV.Domain.Entities.UserAggregator;
+using FOV.Domain.Entities.WaiterScheduleAggregator;
 using FOV.Infrastructure.Data.Configurations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -41,6 +43,17 @@ public class FOVContext : IdentityDbContext<User>, IApplicationDbContext
     public DbSet<OrderDetail> OrderDetails => Set<OrderDetail>();
     public DbSet<ProductCombo> ProductCombos => Set<ProductCombo>();
     public DbSet<Table> Tables => Set<Table>();
+
+    public DbSet<Customer> Customers => Set<Customer>();
+
+    public DbSet<Employee> Employees => Set<Employee>();
+
+    public DbSet<IngredientTransaction> IngredientTransactions => Set<IngredientTransaction>();
+
+    public DbSet<Combo> Combos => Set<Combo>();
+    public DbSet<Shift> Shifts => Set<Shift>();
+    public DbSet<WaiterSchedule> WaiterSchedules => Set<WaiterSchedule>();
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

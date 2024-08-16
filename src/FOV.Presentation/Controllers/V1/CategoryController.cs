@@ -14,7 +14,7 @@ public class CategoryController(IMediator mediator) : DefaultController
 
     private readonly IMediator _mediator = mediator;
 
-    // [ ] Get All Parent Categories
+    // [x] Get All Parent Categories
     [HttpGet]
     public async Task<IActionResult> GetParentCategory()
     {
@@ -22,7 +22,7 @@ public class CategoryController(IMediator mediator) : DefaultController
         return Ok(response);
     }
 
-    // [ ] Get All Children Categories follow ParentCategory 
+    // [x] Get All Children Categories follow ParentCategory 
     [HttpGet("{Id}")]
     public async Task<IActionResult> GetChildrenCategory(Guid Id)
     {
@@ -31,7 +31,7 @@ public class CategoryController(IMediator mediator) : DefaultController
     }
 
 
-    // [ ] Add New Parent Category
+    // [x] Add New Parent Category
     [HttpPost("parentcategory")]
     public async Task<IActionResult> AddParentCategory(AddNewParentCategoryCommand command)
     {
@@ -39,7 +39,7 @@ public class CategoryController(IMediator mediator) : DefaultController
         return Ok(response);
     }
 
-    // [ ] Add Child Category
+    // [x] Add Child Category
     [HttpPost("childcategory")]
     public async Task<IActionResult> AddChildCategory(AddNewChildCategoryCommand command)
     {
@@ -47,7 +47,7 @@ public class CategoryController(IMediator mediator) : DefaultController
         return Ok(response);
     }
 
-    // [ ] Update Name and Descriptiion 
+    // [ ] Update Name and Description 
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> Update(Guid id, [FromBody] string name)
     {

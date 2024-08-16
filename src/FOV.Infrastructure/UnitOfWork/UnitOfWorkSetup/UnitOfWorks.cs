@@ -1,4 +1,5 @@
 ﻿using FOV.Infrastructure.Data;
+using FOV.Infrastructure.Data.FluentAPI;
 using FOV.Infrastructure.Repository.IRepositories;
 
 namespace FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
@@ -16,13 +17,17 @@ public class UnitOfWorks : IUnitOfWorks
     private readonly IProductRepository _productRepository;
     private readonly IIngredientRepository _ingredientRepository;
     private readonly IProductIngredientRepository _productIngredientRepository;
+    private readonly ICustomerRepository _customerRepository;
+    private readonly IEmployeeRepository _employeeRepository;
+    private readonly IIngrdientTransactionRepository _ingrdientTransactionRepository;
+    private readonly IProductComboRepository _productComboRepository;
+    private readonly IComboRepository _comboRepository;
     private readonly IOrderRepository _orderRepository;
     private readonly IOrderDetailRepository _orderDetailRepository;
     private readonly IShiftRepository _shiftRepository;
     private readonly IWaiterScheduleRepository _waiterScheduleRepository;
-    public UnitOfWorks(FOVContext context, IIngredientTypeRepository ingredientTypeRepository, IIngredientGeneralRepository ingredientGeneralRepository, IProductGeneralRepository productGeneralRepository, IProductIngredientGeneralRepository productIngredientGeneralRepository, ITableRepository tableRepository, 
-        IRestaurantRepository restaurantRepository, ICategoryRepository categoryRepository, IProductRepository productRepository, IIngredientRepository ingredientRepository, IProductIngredientRepository productIngredientRepository, IOrderRepository orderRepository, IOrderDetailRepository orderDetailRepository, 
-        IShiftRepository shiftRepository, IWaiterScheduleRepository waiterScheduleRepository)
+
+    public UnitOfWorks(FOVContext context, IIngredientTypeRepository ingredientTypeRepository, IIngredientGeneralRepository ingredientGeneralRepository, IProductGeneralRepository productGeneralRepository, IProductIngredientGeneralRepository productIngredientGeneralRepository, ITableRepository tableRepository, IRestaurantRepository restaurantRepository, ICategoryRepository categoryRepository, IProductRepository productRepository, IIngredientRepository ingredientRepository, IProductIngredientRepository productIngredientRepository, ICustomerRepository customerRepository, IEmployeeRepository employeeRepository, IIngrdientTransactionRepository ingrdientTransactionRepository, IProductComboRepository productComboRepository, IComboRepository comboRepository, IOrderRepository orderRepository, IOrderDetailRepository orderDetailRepository,IShiftRepository shiftRepository, IWaiterScheduleRepository waiterScheduleRepository)
     {
         _context = context;
         _ingredientTypeRepository = ingredientTypeRepository;
@@ -35,6 +40,11 @@ public class UnitOfWorks : IUnitOfWorks
         _productRepository = productRepository;
         _ingredientRepository = ingredientRepository;
         _productIngredientRepository = productIngredientRepository;
+        _customerRepository = customerRepository;
+        _employeeRepository = employeeRepository;
+        _ingrdientTransactionRepository = ingrdientTransactionRepository;
+        _productComboRepository = productComboRepository;
+        _comboRepository = comboRepository;
         _orderRepository = orderRepository;
         _orderDetailRepository = orderDetailRepository;
         _shiftRepository = shiftRepository;
@@ -56,6 +66,16 @@ public class UnitOfWorks : IUnitOfWorks
     public IIngredientRepository IngredientRepository => _ingredientRepository;
 
     public IProductIngredientRepository ProductIngredientRepository => _productIngredientRepository;
+
+    public IEmployeeRepository EmployeeRepository => _employeeRepository;
+
+    public ICustomerRepository CustomerRepository => _customerRepository;
+
+    public IIngrdientTransactionRepository IngredientTransactionRepository => _ingrdientTransactionRepository;
+
+    public IProductComboRepository ProductComboRepository => _productComboRepository;
+
+    public IComboRepository ComboRepository => _comboRepository;
 
     public IOrderRepository OrderRepository => _orderRepository;
 

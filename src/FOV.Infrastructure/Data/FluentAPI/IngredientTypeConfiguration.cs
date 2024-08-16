@@ -11,5 +11,28 @@ public class IngredientTypeConfiguration : IEntityTypeConfiguration<IngredientTy
         builder.HasKey(x => x.Id);
         builder.HasMany(x => x.Ingredients).WithOne(x => x.IngredientType).HasForeignKey(x => x.IngredientTypeId);
         builder.HasMany(x => x.IngredientGenerals).WithOne(x => x.IngredientType).HasForeignKey(x => x.IngredientTypeId);
+        builder.HasData(
+     new IngredientType
+     {
+         Id = Guid.Parse("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a7"), // Ensure to provide a unique ID
+         IngredientName = "Processed Ingredient",
+         IngredientMain = "Processed",
+         Left = 1,
+         Right = 2,
+         ExpiredTime = 30,
+         IsDeleted = false
+     },
+     new IngredientType
+     {
+         Id = Guid.Parse("b8f66bab-13c9-4390-8582-545ddc7d2ec8"),  // Ensure to provide a unique ID
+         IngredientName = "Packaged Ingredient",
+         IngredientMain = "Packaged",
+         Left = 3,
+         Right = 4,
+         ExpiredTime = 60,
+         IsDeleted = false
+     }
+ );;
+
     }
 }

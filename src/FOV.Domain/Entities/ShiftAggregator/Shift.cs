@@ -12,7 +12,7 @@ public class Shift : BaseAuditableEntity, IsSoftDeleted
     public string? ShiftName { get; set; }
     public DateTime? StartTime { get; set; }
     public DateTime? EndTime { get; set; }
-    public ICollection<WaiterSchedule> WaiterSchedules { get; set; } = new List<WaiterSchedule>();
+    public ICollection<WaiterSchedule> WaiterSchedules { get; set; } = [];
     public bool IsDeleted { get; set; }
 
     public Shift()
