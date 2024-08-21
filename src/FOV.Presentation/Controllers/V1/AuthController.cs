@@ -1,10 +1,11 @@
-﻿using FOV.Application.Features.Authorize.Commands.EmployeeLogin;
+﻿using Azure;
+using FluentResults;
+using FOV.Application.Features.Authorize.Commands.EmployeeLogin;
 using FOV.Application.Features.Authorize.Commands.UserLogin;
 using FOV.Application.Features.Authorize.Commands.UserRegister;
 using FOV.Application.Features.Authorize.Queries.Profile;
-using FOV.Domain.Entities.UserAggregator;
+using FOV.Presentation.Infrastructure.Core;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FOV.Presentation.Controllers.V1;
@@ -18,7 +19,7 @@ public class AuthController(ISender sender) : DefaultController
     public async Task<IActionResult> Register(UserRegisterCommand command)
     {
         var response = await _sender.Send(command);
-        return response.IsSuccess ? Created() : BadRequest(response.Reasons);
+        return response.IsSuccess ? Ok(new OK_Result<string>("Register Successfully", response.Successes.ToList().First().Message)) : BadRequest(new Error<IReason>("", ErrorStatusCodeConfig.BAD_REQUEST, response.Reasons));
     }
 
     // [ ] Login (Employee)
@@ -26,7 +27,7 @@ public class AuthController(ISender sender) : DefaultController
     public async Task<IActionResult> Login(EmployeeLoginCommand request)
     {
         var response = await _sender.Send(request);
-        return Ok(response);
+        return Ok(new OK_Result<EmployeeLoginResponse>("Login Successfully",response));
     }
 
     // [x] Login (Customer)
@@ -34,7 +35,8 @@ public class AuthController(ISender sender) : DefaultController
     public async Task<IActionResult> CustomerLogin(UserLoginCommand command)
     {
         var response = await _sender.Send(command);
-        return Ok(response);
+
+        return Ok(new OK_Result<UserToken>("Login Successfully", response));
     }
 
     // [x] View Profile
@@ -42,7 +44,7 @@ public class AuthController(ISender sender) : DefaultController
     public async Task<IActionResult> Profile()
     {
         var response = await _sender.Send(new ViewProfileCommand());
-        return Ok(response);
+        return Ok(new OK_Result<ViewProfileResponse>("Login Successfully", response));
     }
 
     // [ ]  Update Profile 

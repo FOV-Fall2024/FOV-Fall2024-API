@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
-namespace FOV.Application.Features.Order.Commands.Create;
+namespace FOV.Application.Features.Orders.Commands.Create;
 
 public record OrderDetailDto(Guid? ComboId, Guid? ProductId, string Status, int Quantity, decimal Price);
 public record CreateOrderWithTableIdCommand(

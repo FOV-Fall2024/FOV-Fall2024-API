@@ -1,5 +1,4 @@
-﻿using FOV.Application.Features.Order.Commands.Create;
-using FOV.Application.Features.Order.Queries;
+﻿using FOV.Application.Features.Orders.Commands.Create;
 using FOV.Application.Features.Orders.Commands.Update;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -17,12 +16,13 @@ public class OrderController(ISender sender) : DefaultController
         var response = await _sender.Send(command);
         return Ok(response);
     }
-    [HttpGet]
-    public async Task<IActionResult> Get([FromQuery] GetOrderCommand command)
-    {
-        var response = await _sender.Send(command);
-        return Ok(response);
-    }
+
+    //[HttpGet]
+    //public async Task<IActionResult> Get([FromQuery] GetOrderCommand command)
+    //{
+    //    var response = await _sender.Send(command);
+    //    return Ok(response);
+    //}
     //[HttpPost("{orderId:guid}/details")]
     //public async Task<IActionResult> AddOrderDetail(Guid orderId, [FromBody] CreateOrderDetailCommand command)
     //{

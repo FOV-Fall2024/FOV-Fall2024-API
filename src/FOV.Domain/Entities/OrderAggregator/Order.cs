@@ -1,4 +1,5 @@
 ﻿using FOV.Domain.Common;
+using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Domain.Entities.OrderAggregator.Enums;
 using FOV.Domain.Entities.TableAggregator;
 
@@ -13,6 +14,8 @@ public class Order : BaseAuditableEntity
     public Table? Table { get; set; }
     public Guid TableId { get; set; }
     public ICollection<OrderDetail> OrderDetails { get; set; } = [];
+
+    public virtual ICollection<IngredientTransaction> IngredientTransactions { get; set; } = [];
     public Order()
     {
 

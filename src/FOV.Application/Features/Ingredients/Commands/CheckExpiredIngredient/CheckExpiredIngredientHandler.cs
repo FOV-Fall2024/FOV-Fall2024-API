@@ -14,6 +14,6 @@ public class CheckExpiredIngredientHandler(IUnitOfWorks unitOfWorks) : IRequestH
         //? Get All Ingredient follow ingredienet have exprired Date and Check it is alredy have in exprired
         //? Ví dụ hàng nhập ngày 2 thì một đợt hết 1 đợt chưa xử lý
 
-
+        throw new NotImplementedException();
     }
 }

@@ -49,7 +49,7 @@ public class UserRegisterHandler(UserManager<User> userManager, IUnitOfWorks uni
         await _unitOfWorks.CustomerRepository.AddAsync(customer);
         await _unitOfWorks.SaveChangeAsync();
 
-        return Result.Ok();
+        return Result.Ok().WithSuccess(customer.Id.ToString());
 
     }
 }

@@ -13,6 +13,7 @@
   <ItemGroup>
     <Folder Include="Common\Exception\" />
     <Folder Include="Data\Interceptors\" />
+    <Folder Include="Data\SQLQuery\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 

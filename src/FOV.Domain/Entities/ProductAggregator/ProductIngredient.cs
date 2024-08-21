@@ -8,6 +8,7 @@ public class ProductIngredient : BaseAuditableEntity
 
     public Guid ProductId { get; set; }
 
+    public decimal Quantity { get; set; }
     public Ingredient? Ingredient { get; set; }
 
     public Guid IngredientId { get; set; }

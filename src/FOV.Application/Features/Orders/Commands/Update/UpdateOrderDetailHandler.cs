@@ -8,7 +8,7 @@ using FOV.Domain.Entities.OrderAggregator;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
-namespace FOV.Application.Features.Order.Commands.Update;
+namespace FOV.Application.Features.Orders.Commands.Update;
 public class UpdateOrderDetailCommand : IRequest<Guid>
 {
     [JsonIgnore]

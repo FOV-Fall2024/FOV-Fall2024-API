@@ -15,6 +15,7 @@ namespace FOV.Infrastructure.Data.FluentAPI
         {
             builder.HasKey(x => x.Id);
             builder.HasMany(x => x.OrderDetails).WithOne(x => x.Order).HasForeignKey(x => x.OrderId);
+            builder.HasMany(x => x.IngredientTransactions).WithOne(x => x.Order).HasForeignKey(x => x.OrderId);
         }
     }
 
