@@ -579,6 +579,9 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uuid");
 
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("numeric");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IngredientId");

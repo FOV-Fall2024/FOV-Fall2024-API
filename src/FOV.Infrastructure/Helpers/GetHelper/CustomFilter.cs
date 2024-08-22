@@ -5,7 +5,7 @@ using System.Linq.Dynamic.Core;
 using System.Reflection;
 using FOV.Domain.Common;
 
-namespace FOV.Domain.Helpers.GetHelper;
+namespace FOV.Infrastructure.Helpers.GetHelper;
 
 public static class CustomFilter
 {

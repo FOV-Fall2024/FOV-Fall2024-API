@@ -1,6 +1,6 @@
 ﻿using FOV.Application.Features.Users.Mapper;
 using FOV.Domain.Entities.UserAggregator;
-using FOV.Domain.Helpers.GetHelper;
+using FOV.Infrastructure.Helpers.GetHelper;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 

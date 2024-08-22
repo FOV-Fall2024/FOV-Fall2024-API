@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Firebase.Storage;
 using Microsoft.Extensions.Configuration;
 
-namespace FOV.Domain.Helpers.FirebaseHandler;
+namespace FOV.Infrastructure.Helpers.FirebaseHandler;
 
 public record StorageFile
 {

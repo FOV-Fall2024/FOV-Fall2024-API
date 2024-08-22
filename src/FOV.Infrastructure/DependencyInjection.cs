@@ -1,10 +1,13 @@
-﻿using FOV.Domain.Helpers.FirebaseHandler;
-using FOV.Domain.Helpers.QRCodeGeneratorHelper;
+﻿using FOV.Infrastructure.Helpers.FirebaseHandler;
+using FOV.Infrastructure.Helpers.QRCodeGeneratorHelper;
 using FOV.Infrastructure.Data.FluentAPI;
 using FOV.Infrastructure.Repository.IRepositories;
 using FOV.Infrastructure.Repository.Repositories;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using Microsoft.Extensions.DependencyInjection;
+using FOV.Infrastructure.Caching.ICachingService;
+using FOV.Infrastructure.Caching.CachingService;
+using StackExchange.Redis;
 
 namespace FOV.Infrastructure;
 public static class DependencyInjection
@@ -25,12 +28,12 @@ public static class DependencyInjection
         services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
         services.AddScoped<IShiftRepository, ShiftRepository>();
         services.AddScoped<IWaiterScheduleRepository, WaiterScheduleRepository>();
-        //services.AddScoped<IGenericRepository, GenericRepository>();
         services.AddScoped<IProductGeneralRepository, ProductGeneralRepository>();
         services.AddScoped<IProductIngredientGeneralRepository, ProductIngredientGeneralRepository>();
         services.AddSingleton<StorageHandler>();
         services.AddSingleton<QRCodeGeneratorHandler>();
         services.AddScoped<IUnitOfWorks, UnitOfWorks>();
+        services.AddScoped<ILockingService, LockingService>();
         services.AddScoped<IIngrdientTransactionRepository, IngrdientTransactionRepository>();
         services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<IEmployeeRepository, EmployeeRepository>();

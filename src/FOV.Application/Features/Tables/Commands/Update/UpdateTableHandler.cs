@@ -7,8 +7,8 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using FOV.Domain.Entities.TableAggregator;
-using FOV.Domain.Helpers.FirebaseHandler;
-using FOV.Domain.Helpers.QRCodeGeneratorHelper;
+using FOV.Infrastructure.Helpers.FirebaseHandler;
+using FOV.Infrastructure.Helpers.QRCodeGeneratorHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 

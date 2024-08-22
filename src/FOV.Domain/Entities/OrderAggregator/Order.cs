@@ -7,8 +7,8 @@ namespace FOV.Domain.Entities.OrderAggregator;
 
 public class Order : BaseAuditableEntity
 {
-    public string? OrderStatus { get; set; }
-    public string? OrderType { get; set; }
+    public OrderStatus? OrderStatus { get; set; }
+    public OrderType? OrderType { get; set; }
     public DateTime? OrderTime { get; set; }
     public decimal? TotalPrice { get; set; }
     public Table? Table { get; set; }
@@ -20,14 +20,13 @@ public class Order : BaseAuditableEntity
     {
 
     }
-    public Order(string orderStatus, string orderType, DateTime orderTime, decimal totalPrice)
+    public Order(OrderType orderType, DateTime orderTime, decimal totalPrice)
     {
-        this.OrderStatus = orderStatus;
         this.OrderType = orderType;
         this.OrderTime = orderTime;
         this.TotalPrice = totalPrice;
     }
-    public void Update(string orderStatus, string orderType, DateTime orderTime, decimal totalPrice, Guid tableId)
+    public void Update(OrderStatus orderStatus, OrderType orderType, DateTime orderTime, decimal totalPrice, Guid tableId)
     {
         this.OrderStatus = orderStatus;
         this.OrderType = orderType;

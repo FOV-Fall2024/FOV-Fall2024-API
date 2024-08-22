@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FOV.Application.Features.Tables.Queries;
-using FOV.Domain.Helpers.GetHelper;
+using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 

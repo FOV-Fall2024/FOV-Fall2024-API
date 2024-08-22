@@ -71,12 +71,13 @@ public static class DependencyInjection
             option.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
             option.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
 
-        }).AddCookie("Cookies").AddGoogle(options =>
-        {
-            options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-            options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-            options.CallbackPath = "/signin-google";
         });
+        //    .AddCookie("Cookies").AddGoogle(options =>
+        //{
+        //    options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+        //    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+        //    options.CallbackPath = "/signin-google";
+        //});
         //? Add JWT Settings
         services.AddAuthentication(options =>
         {
