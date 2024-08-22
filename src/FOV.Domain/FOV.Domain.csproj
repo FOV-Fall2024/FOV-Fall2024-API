@@ -4,7 +4,8 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-	</PropertyGroup>
+	  <UserSecretsId>9dc255a5-86cb-4e1b-85ed-b0e62e0a95d2</UserSecretsId>
+  </PropertyGroup>
 
 	<ItemGroup>
 		<Folder Include="Constant\" />
