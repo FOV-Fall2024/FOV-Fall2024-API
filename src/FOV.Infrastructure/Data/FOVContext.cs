@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using FOV.Domain.Entities.AttendanceAggregator;
 using FOV.Domain.Entities.ComboAggregator;
+using FOV.Domain.Entities.GroupChatAggregator;
 using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Domain.Entities.IngredientGeneralAggregator;
 using FOV.Domain.Entities.OrderAggregator;
@@ -53,6 +54,10 @@ public class FOVContext : IdentityDbContext<User>, IApplicationDbContext
     public DbSet<Combo> Combos => Set<Combo>();
     public DbSet<Shift> Shifts => Set<Shift>();
     public DbSet<WaiterSchedule> WaiterSchedules => Set<WaiterSchedule>();
+
+    public DbSet<GroupChat> GroupChats => Set<GroupChat>();
+
+    public DbSet<GroupUser> GroupUsers => Set<GroupUser>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

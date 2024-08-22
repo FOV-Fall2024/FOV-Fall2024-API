@@ -1,4 +1,5 @@
 ﻿using FOV.Domain.Entities.AttendanceAggregator;
+using FOV.Domain.Entities.GroupChatAggregator;
 using FOV.Domain.Entities.WaiterSalaryAggregator;
 using FOV.Domain.Entities.WaiterScheduleAggregator;
 using Microsoft.AspNetCore.Identity;
@@ -27,6 +28,8 @@ public class User : IdentityUser
         Email = email;
         UserName = firstName + " " + lastName;
     }
+
+    public virtual ICollection<GroupUser> GroupUsers { get; set; } = [];
     public ICollection<WaiterSalary> WaiterSalaries { get; set; } = [];
     public ICollection<Attendance> Attendances { get; set; } = [];
     public ICollection<WaiterSchedule> WaiterSchedules { get; set; } = [];

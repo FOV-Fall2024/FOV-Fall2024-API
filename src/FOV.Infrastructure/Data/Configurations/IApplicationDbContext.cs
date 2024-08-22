@@ -1,4 +1,5 @@
 ﻿using FOV.Domain.Entities.ComboAggregator;
+using FOV.Domain.Entities.GroupChatAggregator;
 using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Domain.Entities.IngredientGeneralAggregator;
 using FOV.Domain.Entities.ProductAggregator;
@@ -36,4 +37,9 @@ public interface IApplicationDbContext
     DbSet<Combo> Combos { get; }
 
     DbSet<ProductCombo> ProductCombos { get; }
+
+    DbSet<GroupChat> GroupChats { get; }
+
+    DbSet<GroupUser> GroupUsers { get; }
+
 }
