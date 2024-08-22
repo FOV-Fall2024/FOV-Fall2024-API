@@ -26,8 +26,10 @@ app.UseHttpsRedirection();
 // Map the default Identity API endpoints except for registration
 app.MapIdentityApi<User>();
 
-app.UseAuthorization();
 
+app.UseCookiePolicy();
+app.UseAuthorization();
+app.UseCors("AllowAllOrigins");
 app.MapControllers();
 
 app.Run();

@@ -3,6 +3,8 @@ using FOV.Domain.Entities.UserAggregator;
 using FOV.Infrastructure.Data;
 using FOV.Infrastructure.Data.Configurations;
 using FOV.Presentation.Infrastructure.BackgroundServer;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +19,18 @@ public static class DependencyInjection
     public static IServiceCollection AddPresentationDI(this IServiceCollection services, string connectionString, WebApplicationBuilder builder)
     {
 
+        //? Add SignalR
+        services.AddSignalR();
+
+        //? Add CQRS
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAllOrigins",
+                builder => builder
+                    .AllowAnyOrigin()  // Allow any origin (you can restrict this to specific origins)
+                    .AllowAnyMethod()  // Allow any HTTP method (GET, POST, etc.)
+                    .AllowAnyHeader()); // Allow any headers
+        });
         //? Hang Fire Adding
         services.AddHostedService<ScheduleCronJobWorker>();
         services.AddHostedService<CheckIngredientWorker>();
@@ -50,6 +64,19 @@ public static class DependencyInjection
                   .AddEntityFrameworkStores<FOVContext>()
                   .AddApiEndpoints();
 
+
+
+        services.AddAuthentication(option =>
+        {
+            option.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
+            option.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+
+        }).AddCookie("Cookies").AddGoogle(options =>
+        {
+            options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+            options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+            options.CallbackPath = "/signin-google";
+        });
         //? Add JWT Settings
         services.AddAuthentication(options =>
         {
@@ -60,6 +87,9 @@ public static class DependencyInjection
             options.DefaultSignInScheme =
             options.DefaultSignOutScheme =
                 JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         }).AddJwtBearer(options =>
         {
             options.TokenValidationParameters = new TokenValidationParameters
@@ -75,20 +105,28 @@ public static class DependencyInjection
             };
         });
 
+
+
+        services.Configure<CookiePolicyOptions>(options =>
+        {
+            options.MinimumSameSitePolicy = SameSiteMode.None;
+            options.Secure = CookieSecurePolicy.Always;
+        });
+
         //? Swagger Configuration
-        services.AddEndpointsApiExplorer();
+        services.AddEndpointsApiExplorer(); 
         services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new() { Title = "Vegetarian Restaurant  API", Version = "v1" });
-            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-            {
-                In = ParameterLocation.Header,
-                Description = "Please enter token",
-                Name = "Authorization",
-                Type = SecuritySchemeType.Http,
-                BearerFormat = "JWT",
-                Scheme = "bearer",
-            });
+            //c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            //{
+            //    In = ParameterLocation.Header,
+            //    Description = "Please enter token",
+            //    Name = "Authorization",
+            //    Type = SecuritySchemeType.Http,
+            //    BearerFormat = "JWT",
+            //    Scheme = "bearer",
+            //});
             //opt.OperationFilter<AuthorizeOperationFilter>();
             c.AddSecurityRequirement(new OpenApiSecurityRequirement{
         {

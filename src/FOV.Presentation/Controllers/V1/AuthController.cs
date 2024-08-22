@@ -4,8 +4,12 @@ using FOV.Application.Features.Authorize.Commands.EmployeeLogin;
 using FOV.Application.Features.Authorize.Commands.UserLogin;
 using FOV.Application.Features.Authorize.Commands.UserRegister;
 using FOV.Application.Features.Authorize.Queries.Profile;
+using FOV.Domain.Entities.UserAggregator;
 using FOV.Presentation.Infrastructure.Core;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FOV.Presentation.Controllers.V1;
@@ -44,9 +48,39 @@ public class AuthController(ISender sender) : DefaultController
     public async Task<IActionResult> Profile()
     {
         var response = await _sender.Send(new ViewProfileCommand());
-        return Ok(new OK_Result<ViewProfileResponse>("Login Successfully", response));
+        return Ok(new OK_Result<ViewProfileResponse>("View Profile Successfully", response));
     }
 
+    [HttpGet("login-google")]
+    public IActionResult LoginWithGoogle()
+    {
+        var redirectUrl = Url.Action("GoogleResponse", "Auth");
+        var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
+        return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+    }
+
+    [HttpGet("signin-google")]
+    public async Task<IActionResult> GoogleResponse()
+    {
+        var result = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
+        if (!result.Succeeded)
+        {
+            return BadRequest("Error authenticating with Google");
+        }
+
+        var claims = result.Principal.Identities
+            .FirstOrDefault()?.Claims.Select(claim => new
+            {
+                claim.Issuer,
+                claim.OriginalIssuer,
+                claim.Type,
+                claim.Value
+            });
+
+        // Here, you would typically generate a JWT token or handle the claims as needed
+
+        return Ok(claims);
+    }
     // [ ]  Update Profile 
 
     // [ ] Login Google 
