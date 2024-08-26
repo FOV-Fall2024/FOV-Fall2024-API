@@ -1,5 +1,4 @@
-﻿using FOV.Infrastructure.Data.FluentAPI;
-using FOV.Infrastructure.Repository.IRepositories;
+﻿using FOV.Infrastructure.Repository.IRepositories;
 using FOV.Infrastructure.Repository.Repositories;
 
 namespace FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;

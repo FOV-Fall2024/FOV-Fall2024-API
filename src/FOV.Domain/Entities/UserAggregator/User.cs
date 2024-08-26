@@ -10,7 +10,7 @@ namespace FOV.Domain.Entities.UserAggregator;
 public class User : IdentityUser
 {
     public string FirstName { get; set; } = string.Empty;
-
+    
     public string LastName { get; set; } = string.Empty;
 
     public Customer? Customer { get; set; }
@@ -28,9 +28,9 @@ public class User : IdentityUser
         Email = email;
         UserName = firstName + " " + lastName;
     }
-
     public virtual ICollection<GroupUser> GroupUsers { get; set; } = [];
     public ICollection<WaiterSalary> WaiterSalaries { get; set; } = [];
     public ICollection<Attendance> Attendances { get; set; } = [];
     public ICollection<WaiterSchedule> WaiterSchedules { get; set; } = [];
+    public virtual ICollection<GroupMessage> GroupMessages { get; set; } = [];
 }

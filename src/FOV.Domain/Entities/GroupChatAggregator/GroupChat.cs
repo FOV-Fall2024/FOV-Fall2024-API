@@ -8,6 +8,8 @@ public class GroupChat : BaseAuditableEntity
 
     public virtual ICollection<GroupUser> GroupUsers { get; set; }
 
+    public virtual ICollection<GroupMessage> GroupMessages { get; set; }    
+
 
 
 

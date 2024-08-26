@@ -3,6 +3,7 @@ using System;
 using FOV.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FOV.Infrastructure.Migrations
 {
     [DbContext(typeof(FOVContext))]
-    partial class FOVContextModelSnapshot : ModelSnapshot
+    [Migration("20240823040518_DomainGroupMessage")]
+    partial class DomainGroupMessage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -393,8 +396,8 @@ namespace FOV.Infrastructure.Migrations
                             Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             ExpiredTime = 30,
                             IngredientDescription = "",
-                            IngredientMain = "Long-Storage",
-                            IngredientName = "Long Storage Ingredients",
+                            IngredientMain = "Processed",
+                            IngredientName = "Processed Ingredient",
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Left = 1,
@@ -406,8 +409,8 @@ namespace FOV.Infrastructure.Migrations
                             Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             ExpiredTime = 60,
                             IngredientDescription = "",
-                            IngredientMain = "Short-Storage",
-                            IngredientName = "Short Storage Ingredients",
+                            IngredientMain = "Packaged",
+                            IngredientName = "Packaged Ingredient",
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Left = 3,
@@ -452,38 +455,6 @@ namespace FOV.Infrastructure.Migrations
                     b.HasIndex("IngredientTypeId");
 
                     b.ToTable("IngredientGenerals");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a8"),
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            IngredientDescription = "Can last 6 months to a year or more if kept in a cool, dry place.",
-                            IngredientName = "Rice",
-                            IngredientTypeId = new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a7"),
-                            IsDeleted = false,
-                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
-                        },
-                        new
-                        {
-                            Id = new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a0"),
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            IngredientDescription = "Typically lasts 1-2 years when stored in an airtight container..",
-                            IngredientName = "Pasta",
-                            IngredientTypeId = new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a7"),
-                            IsDeleted = false,
-                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
-                        },
-                        new
-                        {
-                            Id = new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540b0"),
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            IngredientDescription = "Typically lasts 1-2 years when stored in an airtight container..",
-                            IngredientName = "Spinach",
-                            IngredientTypeId = new Guid("b8f66bab-13c9-4390-8582-545ddc7d2ec8"),
-                            IsDeleted = false,
-                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
-                        });
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.OrderAggregator.Order", b =>
@@ -619,8 +590,8 @@ namespace FOV.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c011"),
-                            CategoryMain = "Packaged",
-                            CategoryName = "Packaged",
+                            CategoryMain = "Noodle",
+                            CategoryName = "Noodle",
                             Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
@@ -630,8 +601,8 @@ namespace FOV.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"),
-                            CategoryMain = "Processed",
-                            CategoryName = "Processed",
+                            CategoryMain = "Salad",
+                            CategoryName = "Salad",
                             Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
@@ -687,20 +658,6 @@ namespace FOV.Infrastructure.Migrations
                     b.HasIndex("RestaurantId");
 
                     b.ToTable("Products");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540c3"),
-                            CategoryId = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c011"),
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            IsDeleted = false,
-                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ProductDescription = "Description",
-                            ProductGeneralId = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c013"),
-                            ProductName = "7up",
-                            RestaurantId = new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0")
-                        });
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.ProductAggregator.ProductIngredient", b =>
@@ -776,38 +733,6 @@ namespace FOV.Infrastructure.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("ProductGenerals");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c012"),
-                            CategoryId = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c011"),
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            IsDeleted = false,
-                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ProductDescription = "Coca-Cola ngon ",
-                            ProductName = "Coca-Cola"
-                        },
-                        new
-                        {
-                            Id = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c013"),
-                            CategoryId = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c011"),
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            IsDeleted = false,
-                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ProductDescription = "7up ngon ",
-                            ProductName = "7up"
-                        },
-                        new
-                        {
-                            Id = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c022"),
-                            CategoryId = new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"),
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            IsDeleted = false,
-                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ProductDescription = " Caprese Salad ngon ",
-                            ProductName = " Caprese Salad"
-                        });
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.ProductGeneralAggregator.ProductIngredientGeneral", b =>
@@ -847,18 +772,6 @@ namespace FOV.Infrastructure.Migrations
                     b.HasIndex("ProductGeneralId");
 
                     b.ToTable("ProductIngredientGenerals");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("9ccc8ec6-6b72-4467-aaeb-1e45dc0540b0"),
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            IngredientGeneralId = new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a8"),
-                            IsDeleted = false,
-                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ProductGeneralId = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c022"),
-                            Quantity = 2m
-                        });
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.RestaurantAggregator.Restaurant", b =>
@@ -904,20 +817,6 @@ namespace FOV.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Restaurant");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0"),
-                            Address = "Go Vap",
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            IsDeleted = false,
-                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            RestataurantCode = "RE_001",
-                            RestaurantName = "Default Restaurant",
-                            RestaurantPhone = "0902388123",
-                            Status = (byte)0
-                        });
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.ShiftAggregator.Shift", b =>

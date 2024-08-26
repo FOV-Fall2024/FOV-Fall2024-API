@@ -3,7 +3,7 @@ using FOV.Infrastructure.Caching.ICachingService;
 using StackExchange.Redis;
 
 namespace FOV.Infrastructure.Caching.CachingService;
-internal class LockingService : ILockingService, IDisposable
+public class LockingService : ILockingService, IDisposable
 {
     private readonly IDatabase _database;
     private readonly string _lockKey;

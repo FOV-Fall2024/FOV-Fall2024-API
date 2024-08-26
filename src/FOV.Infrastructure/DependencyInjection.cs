@@ -1,6 +1,5 @@
 ﻿using FOV.Domain.Helpers.FirebaseHandler;
 using FOV.Domain.Helpers.QRCodeGeneratorHelper;
-using FOV.Infrastructure.Data.FluentAPI;
 using FOV.Infrastructure.Repository.IRepositories;
 using FOV.Infrastructure.Repository.Repositories;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;

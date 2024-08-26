@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FOV.Domain.Entities.GroupChatAggregator;
+﻿using FOV.Domain.Entities.GroupChatAggregator;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -14,5 +9,6 @@ internal class GroupChatConfiguration : IEntityTypeConfiguration<GroupChat>
     {
         builder.HasKey(x => x.Id);
         builder.HasMany(x => x.GroupUsers).WithOne(x => x.GroupChat).HasForeignKey(x => x.GroupChatId);
+        builder.HasMany(x => x.GroupMessages).WithOne(x => x.GroupChat).HasForeignKey(x => x.GroupChatId);
     }
 }

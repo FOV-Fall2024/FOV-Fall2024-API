@@ -1,7 +1,6 @@
 ﻿using FOV.Domain.Entities.UserAggregator;
-using FOV.Infrastructure.Repository.IRepositories;
 
-namespace FOV.Infrastructure.Data.FluentAPI;
+namespace FOV.Infrastructure.Repository.IRepositories;
 public interface ICustomerRepository : IGenericRepository<Customer>
 {
 }

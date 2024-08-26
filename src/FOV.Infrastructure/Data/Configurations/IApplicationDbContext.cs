@@ -42,4 +42,6 @@ public interface IApplicationDbContext
 
     DbSet<GroupUser> GroupUsers { get; }
 
+    DbSet<GroupMessage> GroupMessages { get; }
+
 }

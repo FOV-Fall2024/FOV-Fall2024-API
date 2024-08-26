@@ -59,6 +59,8 @@ public class FOVContext : IdentityDbContext<User>, IApplicationDbContext
 
     public DbSet<GroupUser> GroupUsers => Set<GroupUser>();
 
+    public DbSet<GroupMessage> GroupMessages => Set<GroupMessage>();
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
