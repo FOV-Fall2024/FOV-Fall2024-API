@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FOV.Presentation", "FOV.Pre
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{9364902C-C53F-46A2-9AAB-67AF772F2B55}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FOV.UI", "MessageTesting\FOV.UI.csproj", "{E175FE79-0B46-4053-A97F-53FB4EB2AE11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FOV.UI", "MessageTesting\FOV.UI.csproj", "{E175FE79-0B46-4053-A97F-53FB4EB2AE11}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

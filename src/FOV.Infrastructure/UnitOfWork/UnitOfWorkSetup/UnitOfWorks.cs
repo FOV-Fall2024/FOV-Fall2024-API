@@ -25,8 +25,12 @@ public class UnitOfWorks : IUnitOfWorks
     private readonly IOrderDetailRepository _orderDetailRepository;
     private readonly IShiftRepository _shiftRepository;
     private readonly IWaiterScheduleRepository _waiterScheduleRepository;
+    private readonly IGroupUserRepository _groupUserRepository;
+    private readonly IGroupMessageRepository _groupMessageRepository;
+    private readonly IGroupChatRepository _groupChatRepository;
 
-    public UnitOfWorks(FOVContext context, IIngredientTypeRepository ingredientTypeRepository, IIngredientGeneralRepository ingredientGeneralRepository, IProductGeneralRepository productGeneralRepository, IProductIngredientGeneralRepository productIngredientGeneralRepository, ITableRepository tableRepository, IRestaurantRepository restaurantRepository, ICategoryRepository categoryRepository, IProductRepository productRepository, IIngredientRepository ingredientRepository, IProductIngredientRepository productIngredientRepository, ICustomerRepository customerRepository, IEmployeeRepository employeeRepository, IIngrdientTransactionRepository ingrdientTransactionRepository, IProductComboRepository productComboRepository, IComboRepository comboRepository, IOrderRepository orderRepository, IOrderDetailRepository orderDetailRepository,IShiftRepository shiftRepository, IWaiterScheduleRepository waiterScheduleRepository)
+    public UnitOfWorks(FOVContext context, IIngredientTypeRepository ingredientTypeRepository, IIngredientGeneralRepository ingredientGeneralRepository, IProductGeneralRepository productGeneralRepository, IProductIngredientGeneralRepository productIngredientGeneralRepository, ITableRepository tableRepository, IRestaurantRepository restaurantRepository, ICategoryRepository categoryRepository, IProductRepository productRepository, IIngredientRepository ingredientRepository, IProductIngredientRepository productIngredientRepository, ICustomerRepository customerRepository, IEmployeeRepository employeeRepository, IIngrdientTransactionRepository ingrdientTransactionRepository, IProductComboRepository productComboRepository, IComboRepository comboRepository, IOrderRepository orderRepository, IOrderDetailRepository orderDetailRepository,IShiftRepository shiftRepository, IWaiterScheduleRepository waiterScheduleRepository,
+        IGroupChatRepository groupChatRepository,IGroupMessageRepository groupMessageRepository,IGroupUserRepository groupUserRepository)
     {
         _context = context;
         _ingredientTypeRepository = ingredientTypeRepository;
@@ -48,6 +52,9 @@ public class UnitOfWorks : IUnitOfWorks
         _orderDetailRepository = orderDetailRepository;
         _shiftRepository = shiftRepository;
         _waiterScheduleRepository = waiterScheduleRepository;
+        _groupChatRepository = groupChatRepository;
+        _groupMessageRepository = groupMessageRepository;
+        _groupUserRepository = groupUserRepository;
     }
     public IIngredientTypeRepository IngredientTypeRepository => _ingredientTypeRepository;
     public IIngredientGeneralRepository IngredientGeneralRepository => _ingredientGeneralRepository;
@@ -81,6 +88,13 @@ public class UnitOfWorks : IUnitOfWorks
     public IOrderDetailRepository OrderDetailRepository => _orderDetailRepository;
     public IShiftRepository ShiftRepository => _shiftRepository;
     public IWaiterScheduleRepository WaiterScheduleRepository => _waiterScheduleRepository;
+
+    public IGroupChatRepository GroupChatRepository => _groupChatRepository;
+
+    public IGroupMessageRepository GroupMessageRepository => _groupMessageRepository;
+
+    public IGroupUserRepository GroupUserRepository => _groupUserRepository;
+
     public async Task<int> SaveChangeAsync()
     {
         return await _context.SaveChangesAsync();

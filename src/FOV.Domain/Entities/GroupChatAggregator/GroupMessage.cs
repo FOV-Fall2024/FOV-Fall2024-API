@@ -13,6 +13,16 @@ public class GroupMessage : BaseAuditableEntity
     public string Content { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
 
+    public GroupMessage()
+    {
+        
+    }
 
+    public GroupMessage(string content,string userId,Guid groupChatId )
+    {
+        Content = content;
+        UserId = userId;
+        GroupChatId = groupChatId;
+    }
 
 }

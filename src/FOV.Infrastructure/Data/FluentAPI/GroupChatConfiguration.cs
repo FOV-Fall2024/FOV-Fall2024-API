@@ -10,5 +10,11 @@ internal class GroupChatConfiguration : IEntityTypeConfiguration<GroupChat>
         builder.HasKey(x => x.Id);
         builder.HasMany(x => x.GroupUsers).WithOne(x => x.GroupChat).HasForeignKey(x => x.GroupChatId);
         builder.HasMany(x => x.GroupMessages).WithOne(x => x.GroupChat).HasForeignKey(x => x.GroupChatId);
+        builder.HasData(new GroupChat
+        {
+            Id = Guid.Parse("9ffc9ec6-6b72-4467-aaeb-1e45dc0110b0"),
+            GroupName = "DefaultGroupChat",
+            RestaurantId = Guid.Parse("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0"),
+        });
     }
 }

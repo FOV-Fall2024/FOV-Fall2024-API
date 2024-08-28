@@ -100,7 +100,7 @@ namespace FOV.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Restaurant",
+                name: "Restaurants",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -117,7 +117,7 @@ namespace FOV.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Restaurant", x => x.Id);
+                    table.PrimaryKey("PK_Restaurants", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -364,9 +364,9 @@ namespace FOV.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Combos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Combos_Restaurant_RestaurantId",
+                        name: "FK_Combos_Restaurants_RestaurantId",
                         column: x => x.RestaurantId,
-                        principalTable: "Restaurant",
+                        principalTable: "Restaurants",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -396,11 +396,33 @@ namespace FOV.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Employees_Restaurant_RestaurantId",
+                        name: "FK_Employees_Restaurants_RestaurantId",
                         column: x => x.RestaurantId,
-                        principalTable: "Restaurant",
+                        principalTable: "Restaurants",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GroupChats",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    GroupName = table.Column<string>(type: "text", nullable: false),
+                    RestaurantId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<string>(type: "text", nullable: true),
+                    LastModified = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    LastModifiedBy = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GroupChats", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GroupChats_Restaurants_RestaurantId",
+                        column: x => x.RestaurantId,
+                        principalTable: "Restaurants",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -427,9 +449,9 @@ namespace FOV.Infrastructure.Migrations
                         principalTable: "IngredientTypes",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Ingredients_Restaurant_RestaurantId",
+                        name: "FK_Ingredients_Restaurants_RestaurantId",
                         column: x => x.RestaurantId,
-                        principalTable: "Restaurant",
+                        principalTable: "Restaurants",
                         principalColumn: "Id");
                 });
 
@@ -457,9 +479,9 @@ namespace FOV.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Tables", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Tables_Restaurant_RestaurantId",
+                        name: "FK_Tables_Restaurants_RestaurantId",
                         column: x => x.RestaurantId,
-                        principalTable: "Restaurant",
+                        principalTable: "Restaurants",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -523,9 +545,9 @@ namespace FOV.Infrastructure.Migrations
                         principalTable: "ProductGenerals",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Products_Restaurant_RestaurantId",
+                        name: "FK_Products_Restaurants_RestaurantId",
                         column: x => x.RestaurantId,
-                        principalTable: "Restaurant",
+                        principalTable: "Restaurants",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -557,6 +579,66 @@ namespace FOV.Infrastructure.Migrations
                         name: "FK_ProductIngredientGenerals_ProductGenerals_ProductGeneralId",
                         column: x => x.ProductGeneralId,
                         principalTable: "ProductGenerals",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GroupMessages",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    GroupChatId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    Content = table.Column<string>(type: "text", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<string>(type: "text", nullable: true),
+                    LastModified = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    LastModifiedBy = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GroupMessages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GroupMessages_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GroupMessages_GroupChats_GroupChatId",
+                        column: x => x.GroupChatId,
+                        principalTable: "GroupChats",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GroupUsers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    GroupChatId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<string>(type: "text", nullable: true),
+                    LastModified = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    LastModifiedBy = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GroupUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GroupUsers_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GroupUsers_GroupChats_GroupChatId",
+                        column: x => x.GroupChatId,
+                        principalTable: "GroupChats",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -654,6 +736,7 @@ namespace FOV.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ProductId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Quantity = table.Column<decimal>(type: "numeric", nullable: false),
                     IngredientId = table.Column<Guid>(type: "uuid", nullable: false),
                     Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
@@ -750,8 +833,8 @@ namespace FOV.Infrastructure.Migrations
                 columns: new[] { "Id", "CategoryMain", "CategoryName", "CategoryParentId", "Created", "CreatedBy", "IsDeleted", "LastModified", "LastModifiedBy", "Left", "Right" },
                 values: new object[,]
                 {
-                    { new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"), "Salad", "Salad", null, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, 1, 2 },
-                    { new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c011"), "Noodle", "Noodle", null, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, 1, 2 }
+                    { new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"), "Processed", "Processed", null, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, 1, 2 },
+                    { new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c011"), "Packaged", "Packaged", null, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, 1, 2 }
                 });
 
             migrationBuilder.InsertData(
@@ -759,9 +842,44 @@ namespace FOV.Infrastructure.Migrations
                 columns: new[] { "Id", "Created", "CreatedBy", "ExpiredTime", "IngredientDescription", "IngredientMain", "IngredientName", "IsDeleted", "LastModified", "LastModifiedBy", "Left", "ParentId", "Right" },
                 values: new object[,]
                 {
-                    { new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a7"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, 30, "", "Processed", "Processed Ingredient", false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, 1, null, 2 },
-                    { new Guid("b8f66bab-13c9-4390-8582-545ddc7d2ec8"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, 60, "", "Packaged", "Packaged Ingredient", false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, 3, null, 4 }
+                    { new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a7"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, 30, "", "Long-Storage", "Long Storage Ingredients", false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, 1, null, 2 },
+                    { new Guid("b8f66bab-13c9-4390-8582-545ddc7d2ec8"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, 60, "", "Short-Storage", "Short Storage Ingredients", false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, 3, null, 4 }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Restaurants",
+                columns: new[] { "Id", "Address", "Created", "CreatedBy", "IsDeleted", "LastModified", "LastModifiedBy", "RestataurantCode", "RestaurantName", "RestaurantPhone", "Status" },
+                values: new object[] { new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0"), "Go Vap", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, "RE_001", "Default Restaurant", "0902388123", (byte)0 });
+
+            migrationBuilder.InsertData(
+                table: "IngredientGenerals",
+                columns: new[] { "Id", "Created", "CreatedBy", "IngredientDescription", "IngredientName", "IngredientTypeId", "IsDeleted", "LastModified", "LastModifiedBy" },
+                values: new object[,]
+                {
+                    { new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a0"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, "Typically lasts 1-2 years when stored in an airtight container..", "Pasta", new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a7"), false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null },
+                    { new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a8"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, "Can last 6 months to a year or more if kept in a cool, dry place.", "Rice", new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a7"), false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null },
+                    { new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540b0"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, "Typically lasts 1-2 years when stored in an airtight container..", "Spinach", new Guid("b8f66bab-13c9-4390-8582-545ddc7d2ec8"), false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ProductGenerals",
+                columns: new[] { "Id", "CategoryId", "Created", "CreatedBy", "IsDeleted", "LastModified", "LastModifiedBy", "ProductDescription", "ProductName" },
+                values: new object[,]
+                {
+                    { new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c012"), new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c011"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, "Coca-Cola ngon ", "Coca-Cola" },
+                    { new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c013"), new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c011"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, "7up ngon ", "7up" },
+                    { new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c022"), new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, " Caprese Salad ngon ", " Caprese Salad" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ProductIngredientGenerals",
+                columns: new[] { "Id", "Created", "CreatedBy", "IngredientGeneralId", "IsDeleted", "LastModified", "LastModifiedBy", "ProductGeneralId", "Quantity" },
+                values: new object[] { new Guid("9ccc8ec6-6b72-4467-aaeb-1e45dc0540b0"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a8"), false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c022"), 2m });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "Id", "CategoryId", "Created", "CreatedBy", "IsDeleted", "LastModified", "LastModifiedBy", "ProductDescription", "ProductGeneralId", "ProductName", "RestaurantId" },
+                values: new object[] { new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540c3"), new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c011"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, "Description", new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c013"), "7up", new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0") });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -831,6 +949,31 @@ namespace FOV.Infrastructure.Migrations
                 table: "Employees",
                 column: "UserId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GroupChats_RestaurantId",
+                table: "GroupChats",
+                column: "RestaurantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GroupMessages_GroupChatId",
+                table: "GroupMessages",
+                column: "GroupChatId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GroupMessages_UserId",
+                table: "GroupMessages",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GroupUsers_GroupChatId",
+                table: "GroupUsers",
+                column: "GroupChatId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GroupUsers_UserId",
+                table: "GroupUsers",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_IngredientGenerals_IngredientTypeId",
@@ -976,6 +1119,12 @@ namespace FOV.Infrastructure.Migrations
                 name: "Employees");
 
             migrationBuilder.DropTable(
+                name: "GroupMessages");
+
+            migrationBuilder.DropTable(
+                name: "GroupUsers");
+
+            migrationBuilder.DropTable(
                 name: "IngredientTransactions");
 
             migrationBuilder.DropTable(
@@ -998,6 +1147,9 @@ namespace FOV.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "WaiterSchedules");
+
+            migrationBuilder.DropTable(
+                name: "GroupChats");
 
             migrationBuilder.DropTable(
                 name: "Orders");
@@ -1030,7 +1182,7 @@ namespace FOV.Infrastructure.Migrations
                 name: "ProductGenerals");
 
             migrationBuilder.DropTable(
-                name: "Restaurant");
+                name: "Restaurants");
 
             migrationBuilder.DropTable(
                 name: "Categories");

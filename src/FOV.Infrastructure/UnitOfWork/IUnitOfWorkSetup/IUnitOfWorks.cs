@@ -1,5 +1,4 @@
 ﻿using FOV.Infrastructure.Repository.IRepositories;
-using FOV.Infrastructure.Repository.Repositories;
 
 namespace FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 
@@ -31,6 +30,12 @@ public interface IUnitOfWorks
 
     public IProductComboRepository ProductComboRepository { get; }
 
+    public IGroupChatRepository GroupChatRepository { get; }
+
+    public IGroupMessageRepository GroupMessageRepository { get; }
+
+
+    public IGroupUserRepository GroupUserRepository { get; }
     public IComboRepository ComboRepository { get; }
 
     public Task<int> SaveChangeAsync();

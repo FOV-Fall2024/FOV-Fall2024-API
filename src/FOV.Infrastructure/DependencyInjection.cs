@@ -33,6 +33,9 @@ public static class DependencyInjection
         services.AddScoped<IIngrdientTransactionRepository, IngrdientTransactionRepository>();
         services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+        services.AddScoped<IGroupUserRepository, GroupUserRepository>();
+        services.AddScoped<IGroupMessageRepository, GroupMessageRepository>();
+        services.AddScoped<IGroupChatRepository ,GroupChatRepository>();
         return services;
 
     }

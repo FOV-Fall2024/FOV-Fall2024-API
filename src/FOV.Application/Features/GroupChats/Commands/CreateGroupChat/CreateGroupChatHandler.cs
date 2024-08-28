@@ -1,15 +1,26 @@
-﻿using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
+﻿using FluentResults;
+using FOV.Domain.Entities.GroupChatAggregator;
+using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 
 namespace FOV.Application.Features.GroupChats.Commands.CreateGroupChat;
-public sealed record CreateGroupChatCommand : IRequest<IResult>;
-internal class CreateGroupChatHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<CreateGroupChatCommand, IResult>
+public sealed record CreateGroupChatCommand(Guid RestaurantId) : IRequest<Result>;
+internal class CreateGroupChatHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<CreateGroupChatCommand, Result>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
 
-    public Task<IResult> Handle(CreateGroupChatCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(CreateGroupChatCommand request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var groupChat = new GroupChat
+        {
+            GroupName = "My Group Name",
+            RestaurantId = request.RestaurantId,
+        };
+        await _unitOfWorks.GroupChatRepository.AddAsync(groupChat);
+        await _unitOfWorks.SaveChangeAsync();
+
+        return Result.Ok();
+        
+
     }
 }

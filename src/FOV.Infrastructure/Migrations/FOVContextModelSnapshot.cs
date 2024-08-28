@@ -169,9 +169,24 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("RestaurantId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("RestaurantId");
+
                     b.ToTable("GroupChats");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0110b0"),
+                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            GroupName = "DefaultGroupChat",
+                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            RestaurantId = new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0")
+                        });
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.GroupChatAggregator.GroupMessage", b =>
@@ -903,7 +918,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Restaurant");
+                    b.ToTable("Restaurants");
 
                     b.HasData(
                         new
@@ -1419,6 +1434,15 @@ namespace FOV.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("FOV.Domain.Entities.GroupChatAggregator.GroupChat", b =>
+                {
+                    b.HasOne("FOV.Domain.Entities.RestaurantAggregator.Restaurant", "Restaurant")
+                        .WithMany("GroupChats")
+                        .HasForeignKey("RestaurantId");
+
+                    b.Navigation("Restaurant");
+                });
+
             modelBuilder.Entity("FOV.Domain.Entities.GroupChatAggregator.GroupMessage", b =>
                 {
                     b.HasOne("FOV.Domain.Entities.GroupChatAggregator.GroupChat", "GroupChat")
@@ -1784,6 +1808,8 @@ namespace FOV.Infrastructure.Migrations
                     b.Navigation("Combos");
 
                     b.Navigation("Employees");
+
+                    b.Navigation("GroupChats");
 
                     b.Navigation("Ingredients");
 
