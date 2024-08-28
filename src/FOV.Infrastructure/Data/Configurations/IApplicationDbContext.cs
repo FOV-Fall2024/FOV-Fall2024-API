@@ -1,8 +1,10 @@
 ﻿using FOV.Domain.Entities.ComboAggregator;
+using FOV.Domain.Entities.GroupChatAggregator;
 using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Domain.Entities.IngredientGeneralAggregator;
 using FOV.Domain.Entities.ProductAggregator;
 using FOV.Domain.Entities.ProductGeneralAggregator;
+using FOV.Domain.Entities.RestaurantAggregator;
 using FOV.Domain.Entities.UserAggregator;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +14,7 @@ public interface IApplicationDbContext
 {
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 
+    DbSet<Restaurant> Restaurants { get; }
     DbSet<Ingredient> Ingredients { get; }
 
     DbSet<Category> Categories { get; }
@@ -36,4 +39,11 @@ public interface IApplicationDbContext
     DbSet<Combo> Combos { get; }
 
     DbSet<ProductCombo> ProductCombos { get; }
+
+    DbSet<GroupChat> GroupChats { get; }
+
+    DbSet<GroupUser> GroupUsers { get; }
+
+    DbSet<GroupMessage> GroupMessages { get; }
+
 }

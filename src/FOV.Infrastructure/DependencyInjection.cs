@@ -1,4 +1,4 @@
-﻿using FOV.Infrastructure.Helpers.FirebaseHandler;
+using FOV.Infrastructure.Helpers.FirebaseHandler;
 using FOV.Infrastructure.Helpers.QRCodeGeneratorHelper;
 using FOV.Infrastructure.Data.FluentAPI;
 using FOV.Infrastructure.Repository.IRepositories;
@@ -37,6 +37,9 @@ public static class DependencyInjection
         services.AddScoped<IIngrdientTransactionRepository, IngrdientTransactionRepository>();
         services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+        services.AddScoped<IGroupUserRepository, GroupUserRepository>();
+        services.AddScoped<IGroupMessageRepository, GroupMessageRepository>();
+        services.AddScoped<IGroupChatRepository ,GroupChatRepository>();
         return services;
 
     }
