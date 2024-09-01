@@ -33,8 +33,10 @@ public static class DependencyInjection
         services.AddSingleton<StorageHandler>();
         services.AddSingleton<QRCodeGeneratorHandler>();
         services.AddScoped<IUnitOfWorks, UnitOfWorks>();
-        services.AddScoped<ILockingService, LockingService>();
+      // services.AddScoped<ILockingService, LockingService>();
         services.AddScoped<IIngrdientTransactionRepository, IngrdientTransactionRepository>();
+        services.AddScoped<IProductImageRepository, ProductImageRepository>();
+        services.AddScoped<IRatingRepository, RatingRepository>();
         services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<IEmployeeRepository, EmployeeRepository>();
         services.AddScoped<IGroupUserRepository, GroupUserRepository>();

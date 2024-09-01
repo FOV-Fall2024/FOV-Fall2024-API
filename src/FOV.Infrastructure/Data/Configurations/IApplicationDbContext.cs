@@ -2,6 +2,7 @@
 using FOV.Domain.Entities.GroupChatAggregator;
 using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Domain.Entities.IngredientGeneralAggregator;
+using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.ProductAggregator;
 using FOV.Domain.Entities.ProductGeneralAggregator;
 using FOV.Domain.Entities.RestaurantAggregator;
@@ -14,6 +15,9 @@ public interface IApplicationDbContext
 {
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 
+    DbSet<ProductImage> ProductImages { get; }
+
+    DbSet<Rating> Ratings { get; }
     DbSet<Restaurant> Restaurants { get; }
     DbSet<Ingredient> Ingredients { get; }
 

@@ -1,9 +1,12 @@
 ﻿using FOV.Infrastructure.Repository.IRepositories;
+using FOV.Infrastructure.Repository.Repositories;
 
 namespace FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 
 public interface IUnitOfWorks
 {
+
+    public IProductImageRepository ProductImageRepository { get; }
     public IIngredientTypeRepository IngredientTypeRepository { get; }
 
     public IIngredientGeneralRepository IngredientGeneralRepository { get; }

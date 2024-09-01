@@ -62,7 +62,10 @@ public class FOVContext : IdentityDbContext<User>, IApplicationDbContext
 
     public DbSet<GroupMessage> GroupMessages => Set<GroupMessage>();
 
-    public DbSet<Restaurant> Restaurants => Set<Restaurant>();  
+    public DbSet<Restaurant> Restaurants => Set<Restaurant>();
+
+    public DbSet<ProductImage> ProductImages => Set<ProductImage>();    
+    public DbSet<Rating> Ratings => Set<Rating>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

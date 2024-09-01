@@ -29,21 +29,19 @@
     public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand, Guid>
     {
         private readonly IUnitOfWorks _unitOfWorks;
-        private readonly ILockingService _lockingService;
 
-        public CreateOrderHandler(IUnitOfWorks unitOfWorks, ILockingService lockingService)
+        public CreateOrderHandler(IUnitOfWorks unitOfWorks)
         {
             _unitOfWorks = unitOfWorks;
-            _lockingService = lockingService;
         }
 
         public async Task<Guid> Handle(CreateOrderWithTableIdCommand request, CancellationToken cancellationToken)
         {
             string lockKey = $"order:table:{request.TableId}";
-            if (!await _lockingService.AcquireLockAsync())
-            {
-                throw new Exception("Table is being used by another waiter");
-            };
+            //if (!await _lockingService.AcquireLockAsync())
+            //{
+            //    throw new Exception("Table is being used by another waiter");
+            //};
 
             var order = new Domain.Entities.OrderAggregator.Order(request.OrderType, request.OrderTime, request.TotalPrice)
             {
@@ -68,10 +66,10 @@
             await _unitOfWorks.OrderRepository.AddAsync(order);
             await _unitOfWorks.SaveChangeAsync();
 
-            if (request.OrderStatus == OrderStatus.Finish)
-            {
-                await _lockingService.ReleaseLockAsync();
-            }
+            //if (request.OrderStatus == OrderStatus.Finish)
+            //{
+            //    await _lockingService.ReleaseLockAsync();
+            //}
 
         return order.Id;
         }

@@ -28,9 +28,13 @@ public class UnitOfWorks : IUnitOfWorks
     private readonly IGroupUserRepository _groupUserRepository;
     private readonly IGroupMessageRepository _groupMessageRepository;
     private readonly IGroupChatRepository _groupChatRepository;
+    private readonly IProductImageRepository _productImageRepository;
+    private readonly IRatingRepository _ratingRepository;
 
     public UnitOfWorks(FOVContext context, IIngredientTypeRepository ingredientTypeRepository, IIngredientGeneralRepository ingredientGeneralRepository, IProductGeneralRepository productGeneralRepository, IProductIngredientGeneralRepository productIngredientGeneralRepository, ITableRepository tableRepository, IRestaurantRepository restaurantRepository, ICategoryRepository categoryRepository, IProductRepository productRepository, IIngredientRepository ingredientRepository, IProductIngredientRepository productIngredientRepository, ICustomerRepository customerRepository, IEmployeeRepository employeeRepository, IIngrdientTransactionRepository ingrdientTransactionRepository, IProductComboRepository productComboRepository, IComboRepository comboRepository, IOrderRepository orderRepository, IOrderDetailRepository orderDetailRepository,IShiftRepository shiftRepository, IWaiterScheduleRepository waiterScheduleRepository,
-        IGroupChatRepository groupChatRepository,IGroupMessageRepository groupMessageRepository,IGroupUserRepository groupUserRepository)
+        IGroupChatRepository groupChatRepository,IGroupMessageRepository groupMessageRepository,IGroupUserRepository groupUserRepository,
+        IProductImageRepository productImageRepository,
+        IRatingRepository ratingRepository)
     {
         _context = context;
         _ingredientTypeRepository = ingredientTypeRepository;
@@ -55,6 +59,8 @@ public class UnitOfWorks : IUnitOfWorks
         _groupChatRepository = groupChatRepository;
         _groupMessageRepository = groupMessageRepository;
         _groupUserRepository = groupUserRepository;
+        _productImageRepository = productImageRepository;
+        _ratingRepository = ratingRepository;
     }
     public IIngredientTypeRepository IngredientTypeRepository => _ingredientTypeRepository;
     public IIngredientGeneralRepository IngredientGeneralRepository => _ingredientGeneralRepository;
@@ -94,6 +100,8 @@ public class UnitOfWorks : IUnitOfWorks
     public IGroupMessageRepository GroupMessageRepository => _groupMessageRepository;
 
     public IGroupUserRepository GroupUserRepository => _groupUserRepository;
+
+    public IProductImageRepository ProductImageRepository => throw new NotImplementedException();
 
     public async Task<int> SaveChangeAsync()
     {

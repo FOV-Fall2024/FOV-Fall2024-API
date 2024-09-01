@@ -12,6 +12,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.HasKey(x => x.Id);
         builder.HasMany(x => x.ProductCombos).WithOne(x => x.Product).HasForeignKey(x => x.ProductId);
         builder.HasMany(x => x.OrderDetails).WithOne(x => x.Product).HasForeignKey(x => x.ProductId);
+        builder.HasMany(x => x.ProductImages).WithOne(x => x.Product).HasForeignKey(x => x.ProductId);
         builder.HasData(new Product
         {
             Id = Guid.Parse("9ffc9ec6-6b72-4467-aaeb-1e45dc0540c3"),

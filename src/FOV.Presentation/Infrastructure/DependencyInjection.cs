@@ -32,9 +32,9 @@ public static class DependencyInjection
                     .AllowAnyHeader()); // Allow any headers
         });
         //? Hang Fire Adding
-        services.AddHostedService<ScheduleCronJobWorker>();
-        services.AddHostedService<CheckIngredientWorker>();
-        services.AddHostedService<ScheduleCheckIngredientDailyWorker>();
+        //services.AddHostedService<ScheduleCronJobWorker>();
+        //services.AddHostedService<CheckIngredientWorker>();
+        //services.AddHostedService<ScheduleCheckIngredientDailyWorker>();
 
         //? Background Servie
 
@@ -66,45 +66,31 @@ public static class DependencyInjection
 
 
 
-        services.AddAuthentication(option =>
-        {
-            option.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
-            option.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-
-        });
-        //    .AddCookie("Cookies").AddGoogle(options =>
-        //{
-        //    options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-        //    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-        //    options.CallbackPath = "/signin-google";
-        //});
-        //? Add JWT Settings
         services.AddAuthentication(options =>
         {
-            options.DefaultAuthenticateScheme =
-            options.DefaultChallengeScheme =
-            options.DefaultForbidScheme =
-            options.DefaultScheme =
-            options.DefaultSignInScheme =
-            options.DefaultSignOutScheme =
-                JwtBearerDefaults.AuthenticationScheme;
+            // Set the default schemes
             options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(options =>
-        {
-            options.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuer = false,
-                ValidateAudience = false,
-                ValidateIssuerSigningKey = true,
-                RequireExpirationTime = true,
-                IssuerSigningKey = new SymmetricSecurityKey(
-                  System.Text.Encoding.UTF8.GetBytes(
-                      builder.Configuration["JWT:SecretKey"])
-              )
-            };
-        });
+            options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+        })
+    .AddCookie("Cookies")
+    .AddGoogle(options =>
+    {
+        options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+        options.CallbackPath = "/signin-google";
+    })
+    .AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateIssuerSigningKey = true,
+        RequireExpirationTime = true,
+        IssuerSigningKey = new SymmetricSecurityKey(
+                System.Text.Encoding.UTF8.GetBytes(
+                    builder.Configuration["JWT:SecretKey"])
+            )
+    });
 
 
 
