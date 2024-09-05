@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FOV.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class DomainV2 : Migration
+    public partial class UpdateDomain : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -97,6 +97,22 @@ namespace FOV.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_IngredientTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PaymentMethods",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    PaymentMethodName = table.Column<string>(type: "text", nullable: true),
+                    Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<string>(type: "text", nullable: true),
+                    LastModified = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    LastModifiedBy = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaymentMethods", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -353,6 +369,7 @@ namespace FOV.Infrastructure.Migrations
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     Quantity = table.Column<int>(type: "integer", nullable: false),
                     Price = table.Column<decimal>(type: "numeric", nullable: false),
+                    PercentReduce = table.Column<decimal>(type: "numeric", nullable: false),
                     ExpiredDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     RestaurantId = table.Column<Guid>(type: "uuid", nullable: false),
                     Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
@@ -523,6 +540,7 @@ namespace FOV.Infrastructure.Migrations
                     ProductName = table.Column<string>(type: "text", nullable: false),
                     ProductDescription = table.Column<string>(type: "text", nullable: false),
                     CategoryId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Price = table.Column<decimal>(type: "numeric", nullable: true),
                     RestaurantId = table.Column<Guid>(type: "uuid", nullable: false),
                     ProductGeneralId = table.Column<Guid>(type: "uuid", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
@@ -651,7 +669,7 @@ namespace FOV.Infrastructure.Migrations
                     OrderStatus = table.Column<byte>(type: "smallint", nullable: true),
                     OrderType = table.Column<byte>(type: "smallint", nullable: true),
                     OrderTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    TotalPrice = table.Column<decimal>(type: "numeric", nullable: true),
+                    TotalPrice = table.Column<decimal>(type: "numeric", nullable: false),
                     TableId = table.Column<Guid>(type: "uuid", nullable: false),
                     Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
@@ -731,6 +749,30 @@ namespace FOV.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProductImages",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ImageUrl = table.Column<string>(type: "text", nullable: false),
+                    IsMain = table.Column<bool>(type: "boolean", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<string>(type: "text", nullable: true),
+                    LastModified = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    LastModifiedBy = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductImages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductImages_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProductIngredients",
                 columns: table => new
                 {
@@ -800,7 +842,7 @@ namespace FOV.Infrastructure.Migrations
                     ComboId = table.Column<Guid>(type: "uuid", nullable: true),
                     ProductId = table.Column<Guid>(type: "uuid", nullable: true),
                     OrderId = table.Column<Guid>(type: "uuid", nullable: true),
-                    Status = table.Column<string>(type: "text", nullable: true),
+                    Status = table.Column<byte>(type: "smallint", nullable: true),
                     Quantity = table.Column<int>(type: "integer", nullable: false),
                     Price = table.Column<decimal>(type: "numeric", nullable: false),
                     Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
@@ -826,6 +868,65 @@ namespace FOV.Infrastructure.Migrations
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Payments",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    PaymentDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Amount = table.Column<decimal>(type: "numeric", nullable: false),
+                    PaymentStatus = table.Column<byte>(type: "smallint", nullable: false),
+                    OrderId = table.Column<Guid>(type: "uuid", nullable: false),
+                    PaymentMethodId = table.Column<Guid>(type: "uuid", nullable: false),
+                    PaymentMethodsId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<string>(type: "text", nullable: true),
+                    LastModified = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    LastModifiedBy = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Payments_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Payments_PaymentMethods_PaymentMethodsId",
+                        column: x => x.PaymentMethodsId,
+                        principalTable: "PaymentMethods",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Ratings",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    RatingStart = table.Column<int>(type: "integer", nullable: false),
+                    Comment = table.Column<string>(type: "text", nullable: false),
+                    ImageUrl = table.Column<string>(type: "text", nullable: false),
+                    OrderId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UsefulQuantity = table.Column<int>(type: "integer", nullable: false),
+                    NonUsefulQuantity = table.Column<int>(type: "integer", nullable: false),
+                    Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<string>(type: "text", nullable: true),
+                    LastModified = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    LastModifiedBy = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ratings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Ratings_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -883,8 +984,8 @@ namespace FOV.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Products",
-                columns: new[] { "Id", "CategoryId", "Created", "CreatedBy", "IsDeleted", "LastModified", "LastModifiedBy", "ProductDescription", "ProductGeneralId", "ProductName", "RestaurantId" },
-                values: new object[] { new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540c3"), new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c011"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, "Description", new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c013"), "7up", new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0") });
+                columns: new[] { "Id", "CategoryId", "Created", "CreatedBy", "IsDeleted", "LastModified", "LastModifiedBy", "Price", "ProductDescription", "ProductGeneralId", "ProductName", "RestaurantId" },
+                values: new object[] { new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540c3"), new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c011"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, 0m, "Description", new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c013"), "7up", new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0") });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -1026,6 +1127,16 @@ namespace FOV.Infrastructure.Migrations
                 column: "TableId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Payments_OrderId",
+                table: "Payments",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Payments_PaymentMethodsId",
+                table: "Payments",
+                column: "PaymentMethodsId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProductCombos_ComboId",
                 table: "ProductCombos",
                 column: "ComboId");
@@ -1039,6 +1150,11 @@ namespace FOV.Infrastructure.Migrations
                 name: "IX_ProductGenerals_CategoryId",
                 table: "ProductGenerals",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductImages_ProductId",
+                table: "ProductImages",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductIngredientGenerals_IngredientGeneralId",
@@ -1074,6 +1190,12 @@ namespace FOV.Infrastructure.Migrations
                 name: "IX_Products_RestaurantId",
                 table: "Products",
                 column: "RestaurantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ratings_OrderId",
+                table: "Ratings",
+                column: "OrderId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tables_RestaurantId",
@@ -1136,13 +1258,22 @@ namespace FOV.Infrastructure.Migrations
                 name: "OrderDetails");
 
             migrationBuilder.DropTable(
+                name: "Payments");
+
+            migrationBuilder.DropTable(
                 name: "ProductCombos");
+
+            migrationBuilder.DropTable(
+                name: "ProductImages");
 
             migrationBuilder.DropTable(
                 name: "ProductIngredientGenerals");
 
             migrationBuilder.DropTable(
                 name: "ProductIngredients");
+
+            migrationBuilder.DropTable(
+                name: "Ratings");
 
             migrationBuilder.DropTable(
                 name: "WaiterSalary");
@@ -1157,7 +1288,7 @@ namespace FOV.Infrastructure.Migrations
                 name: "GroupChats");
 
             migrationBuilder.DropTable(
-                name: "Orders");
+                name: "PaymentMethods");
 
             migrationBuilder.DropTable(
                 name: "Combos");
@@ -1172,13 +1303,13 @@ namespace FOV.Infrastructure.Migrations
                 name: "Products");
 
             migrationBuilder.DropTable(
+                name: "Orders");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Shifts");
-
-            migrationBuilder.DropTable(
-                name: "Tables");
 
             migrationBuilder.DropTable(
                 name: "IngredientTypes");
@@ -1187,10 +1318,13 @@ namespace FOV.Infrastructure.Migrations
                 name: "ProductGenerals");
 
             migrationBuilder.DropTable(
-                name: "Restaurants");
+                name: "Tables");
 
             migrationBuilder.DropTable(
                 name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "Restaurants");
         }
     }
 }

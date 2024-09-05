@@ -15,7 +15,6 @@ public class Product : BaseAuditableEntity, IsSoftDeleted
     public virtual ICollection<ProductCombo> ProductCombos { get; set; } = [];
     public ICollection<OrderDetail> OrderDetails { get; set; } = []; 
     public virtual ICollection<ProductImage> ProductImages { get; set; } = [];
-    public ICollection<OrderDetail> OrderDetails { get; set; } = [];
     public Category? Category { get; set; }
     public Guid? CategoryId { get; set; }
 
