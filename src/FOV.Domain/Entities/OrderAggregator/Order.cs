@@ -17,6 +17,8 @@ public class Order : BaseAuditableEntity
     public ICollection<OrderDetail> OrderDetails { get; set; } = [];
     public ICollection<Payments> Payments { get; set; } = [];
 
+    public Rating? Rating { get; set; }
+
     public virtual ICollection<IngredientTransaction> IngredientTransactions { get; set; } = [];
     public Order()
     {

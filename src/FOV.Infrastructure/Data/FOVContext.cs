@@ -1,11 +1,13 @@
 ﻿using System.Reflection;
 using FOV.Domain.Entities.AttendanceAggregator;
 using FOV.Domain.Entities.ComboAggregator;
+using FOV.Domain.Entities.GroupChatAggregator;
 using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Domain.Entities.IngredientGeneralAggregator;
 using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.ProductAggregator;
 using FOV.Domain.Entities.ProductGeneralAggregator;
+using FOV.Domain.Entities.RestaurantAggregator;
 using FOV.Domain.Entities.ShiftAggregator;
 using FOV.Domain.Entities.TableAggregator;
 using FOV.Domain.Entities.UserAggregator;
@@ -53,6 +55,17 @@ public class FOVContext : IdentityDbContext<User>, IApplicationDbContext
     public DbSet<Combo> Combos => Set<Combo>();
     public DbSet<Shift> Shifts => Set<Shift>();
     public DbSet<WaiterSchedule> WaiterSchedules => Set<WaiterSchedule>();
+
+    public DbSet<GroupChat> GroupChats => Set<GroupChat>();
+
+    public DbSet<GroupUser> GroupUsers => Set<GroupUser>();
+
+    public DbSet<GroupMessage> GroupMessages => Set<GroupMessage>();
+
+    public DbSet<Restaurant> Restaurants => Set<Restaurant>();
+
+    public DbSet<ProductImage> ProductImages => Set<ProductImage>();    
+    public DbSet<Rating> Ratings => Set<Rating>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

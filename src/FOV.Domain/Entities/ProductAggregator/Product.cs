@@ -13,10 +13,13 @@ public class Product : BaseAuditableEntity, IsSoftDeleted
     public string ProductDescription { get; set; } = string.Empty;
 
     public virtual ICollection<ProductCombo> ProductCombos { get; set; } = [];
+    public ICollection<OrderDetail> OrderDetails { get; set; } = []; 
+    public virtual ICollection<ProductImage> ProductImages { get; set; } = [];
     public ICollection<OrderDetail> OrderDetails { get; set; } = [];
     public Category? Category { get; set; }
     public Guid? CategoryId { get; set; }
 
+    public decimal? Price { get; set; } = 0;
     public Restaurant? Restaurant { get; set; }
 
     public Guid RestaurantId { get; set; }
@@ -31,12 +34,12 @@ public class Product : BaseAuditableEntity, IsSoftDeleted
 
     }
 
-    public Product(string name, Guid restaurantId, Guid? categoryId, Guid produuctGeneralId)
+    public Product(string name, Guid restaurantId, Guid? categoryId, Guid productGeneralId)
     {
         ProductName = name;
         CategoryId = categoryId;
         RestaurantId = restaurantId;
-        ProductGeneralId = produuctGeneralId;
+        ProductGeneralId = productGeneralId;
 
     }
 

@@ -1,10 +1,11 @@
 ﻿using FOV.Application.Common.Behaviours.Claim;
 using FOV.Domain.Entities.ComboAggregator;
+using FOV.Domain.Entities.ProductAggregator;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Combos.Commands.Create;
-public sealed record CreateComboCommand(List<ProductInCombo> ProductInCombos, string ComboName, string Status, int Quantity, decimal Price, DateTime ExpiredDate) : IRequest<Guid>;
+public sealed record CreateComboCommand(List<Guid> ProductInCombos, string ComboName, string Status, int Quantity, decimal Price, DateTime ExpiredDate) : IRequest<Guid>;
 public sealed record ProductInCombo(Guid ProductId);
 public class CreateComboHandler(IUnitOfWorks unitOfWorks, IClaimService claimService) : IRequestHandler<CreateComboCommand, Guid>
 {
@@ -13,13 +14,18 @@ public class CreateComboHandler(IUnitOfWorks unitOfWorks, IClaimService claimSer
 
     public async Task<Guid> Handle(CreateComboCommand request, CancellationToken cancellationToken)
     {
+        Guid restaurantId = _claimService.RestaurantId;
         Combo combo = new(request.ComboName, request.Quantity, request.Price, request.ExpiredDate, _claimService.RestaurantId);
         await _unitOfWorks.ComboRepository.AddAsync(combo);
+        decimal totalPrice = 0;
         foreach (var item in request.ProductInCombos)
         {
-            await _unitOfWorks.ProductComboRepository.AddAsync(new(item.ProductId, combo.Id));
+            Product product = await _unitOfWorks.ProductRepository.FirstOrDefaultAsync(x => x.RestaurantId == restaurantId && x.Id == item) ?? throw new Exception();
+            totalPrice += (decimal)product.Price;
+            await _unitOfWorks.ProductComboRepository.AddAsync(new(item, combo.Id));
         }
 
+        combo.PercentReduce = totalPrice;
         await _unitOfWorks.SaveChangeAsync();
         return combo.Id;
     }

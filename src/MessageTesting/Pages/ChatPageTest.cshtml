@@ -1,0 +1,43 @@
+﻿@page
+@model FOV.UI.Pages.ChatPageTestModel
+@{
+}
+<div id="chat-box">
+    <ul id="messagesList">
+        @foreach (var message in Model.Messages)
+        {
+            <li><strong>@message.UserName:</strong> @message.Content</li>
+        }
+    </ul>
+</div>
+
+<input type="text" id="userInput" placeholder="Enter your name..." />
+<input type="text" id="messageInput" placeholder="Type a message..." />
+<button id="sendButton">Send</button>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.11/signalr.min.js"></script>
+    <script>
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/ReceiveMessage")
+            .build();
+
+        document.getElementById("sendButton").addEventListener("click", async () => {
+            const user = document.getElementById("userInput").value;
+            const message = document.getElementById("messageInput").value;
+
+            if (user && message) {
+                await connection.invoke("SendMessage", user, message);
+                document.getElementById("messageInput").value = "";
+            }
+        });
+
+        connection.on("ReceiveMessage", (user, message) => {
+            const msg = document.createElement("li");
+            msg.textContent = `${user}: ${message}`;
+            document.getElementById("messagesList").appendChild(msg);
+        });
+
+        connection.start().catch(err => console.error(err));
+    </script>
+}

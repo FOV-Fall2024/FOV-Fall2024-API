@@ -1,15 +1,12 @@
-﻿using Azure;
-using FluentResults;
+﻿using FluentResults;
 using FOV.Application.Features.Authorize.Commands.EmployeeLogin;
 using FOV.Application.Features.Authorize.Commands.UserLogin;
 using FOV.Application.Features.Authorize.Commands.UserRegister;
 using FOV.Application.Features.Authorize.Queries.Profile;
-using FOV.Domain.Entities.UserAggregator;
 using FOV.Presentation.Infrastructure.Core;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FOV.Presentation.Controllers.V1;
@@ -59,6 +56,7 @@ public class AuthController(ISender sender) : DefaultController
         return Challenge(properties, GoogleDefaults.AuthenticationScheme);
     }
 
+    // Handle Google OAuth Response
     [HttpGet("signin-google")]
     public async Task<IActionResult> GoogleResponse()
     {
@@ -81,7 +79,9 @@ public class AuthController(ISender sender) : DefaultController
 
         return Ok(claims);
     }
+
+    // [ ] login Facebook
+
     // [ ]  Update Profile 
 
-    // [ ] Login Google 
 }

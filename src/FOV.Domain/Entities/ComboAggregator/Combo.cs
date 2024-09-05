@@ -16,6 +16,8 @@ public class Combo : BaseAuditableEntity, IsSoftDeleted
 
     public decimal Price { get; set; }
 
+    public decimal PercentReduce { get ; set; }
+
     public DateTime ExpiredDate { get; set; }
 
     public Restaurant? Restaurant { get; set; }
@@ -38,6 +40,8 @@ public class Combo : BaseAuditableEntity, IsSoftDeleted
         ExpiredDate = expiredDate;
         RestaurantId = restaurantId;
     }
+
+    
 
     public void UpdateState(bool isDeleted) => IsDeleted = isDeleted;
 }

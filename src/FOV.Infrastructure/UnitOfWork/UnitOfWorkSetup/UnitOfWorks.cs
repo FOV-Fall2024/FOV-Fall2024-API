@@ -1,5 +1,4 @@
 ﻿using FOV.Infrastructure.Data;
-using FOV.Infrastructure.Data.FluentAPI;
 using FOV.Infrastructure.Repository.IRepositories;
 
 namespace FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
@@ -26,9 +25,17 @@ public class UnitOfWorks : IUnitOfWorks
     private readonly IOrderDetailRepository _orderDetailRepository;
     private readonly IShiftRepository _shiftRepository;
     private readonly IWaiterScheduleRepository _waiterScheduleRepository;
+    private readonly IGroupUserRepository _groupUserRepository;
+    private readonly IGroupMessageRepository _groupMessageRepository;
+    private readonly IGroupChatRepository _groupChatRepository;
+    private readonly IProductImageRepository _productImageRepository;
+    private readonly IRatingRepository _ratingRepository;
     private readonly IPaymentRepository _paymentRepository;
 
-    public UnitOfWorks(FOVContext context, IIngredientTypeRepository ingredientTypeRepository, IIngredientGeneralRepository ingredientGeneralRepository, IProductGeneralRepository productGeneralRepository, IProductIngredientGeneralRepository productIngredientGeneralRepository, ITableRepository tableRepository, IRestaurantRepository restaurantRepository, ICategoryRepository categoryRepository, IProductRepository productRepository, IIngredientRepository ingredientRepository, IProductIngredientRepository productIngredientRepository, ICustomerRepository customerRepository, IEmployeeRepository employeeRepository, IIngrdientTransactionRepository ingrdientTransactionRepository, IProductComboRepository productComboRepository, IComboRepository comboRepository, IOrderRepository orderRepository, IOrderDetailRepository orderDetailRepository, IShiftRepository shiftRepository, IWaiterScheduleRepository waiterScheduleRepository, IPaymentRepository paymentRepository)
+    public UnitOfWorks(FOVContext context, IIngredientTypeRepository ingredientTypeRepository, IIngredientGeneralRepository ingredientGeneralRepository, IProductGeneralRepository productGeneralRepository, IProductIngredientGeneralRepository productIngredientGeneralRepository, ITableRepository tableRepository, IRestaurantRepository restaurantRepository, ICategoryRepository categoryRepository, IProductRepository productRepository, IIngredientRepository ingredientRepository, IProductIngredientRepository productIngredientRepository, ICustomerRepository customerRepository, IEmployeeRepository employeeRepository, IIngrdientTransactionRepository ingrdientTransactionRepository, IProductComboRepository productComboRepository, IComboRepository comboRepository, IOrderRepository orderRepository, IOrderDetailRepository orderDetailRepository,IShiftRepository shiftRepository, IWaiterScheduleRepository waiterScheduleRepository,
+        IGroupChatRepository groupChatRepository,IGroupMessageRepository groupMessageRepository,IGroupUserRepository groupUserRepository,
+        IProductImageRepository productImageRepository,
+        IRatingRepository ratingRepository, IPaymentRepository paymentRepository)
     {
         _context = context;
         _ingredientTypeRepository = ingredientTypeRepository;
@@ -50,6 +57,11 @@ public class UnitOfWorks : IUnitOfWorks
         _orderDetailRepository = orderDetailRepository;
         _shiftRepository = shiftRepository;
         _waiterScheduleRepository = waiterScheduleRepository;
+        _groupChatRepository = groupChatRepository;
+        _groupMessageRepository = groupMessageRepository;
+        _groupUserRepository = groupUserRepository;
+        _productImageRepository = productImageRepository;
+        _ratingRepository = ratingRepository;
         _paymentRepository = paymentRepository;
     }
     public IIngredientTypeRepository IngredientTypeRepository => _ingredientTypeRepository;
@@ -84,6 +96,15 @@ public class UnitOfWorks : IUnitOfWorks
     public IOrderDetailRepository OrderDetailRepository => _orderDetailRepository;
     public IShiftRepository ShiftRepository => _shiftRepository;
     public IWaiterScheduleRepository WaiterScheduleRepository => _waiterScheduleRepository;
+
+    public IGroupChatRepository GroupChatRepository => _groupChatRepository;
+
+    public IGroupMessageRepository GroupMessageRepository => _groupMessageRepository;
+
+    public IGroupUserRepository GroupUserRepository => _groupUserRepository;
+
+    public IProductImageRepository ProductImageRepository => throw new NotImplementedException();
+
     public IPaymentRepository PaymentRepository => _paymentRepository;
     public async Task<int> SaveChangeAsync()
     {

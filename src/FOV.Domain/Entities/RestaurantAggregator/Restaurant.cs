@@ -1,5 +1,6 @@
 ﻿using FOV.Domain.Common;
 using FOV.Domain.Entities.ComboAggregator;
+using FOV.Domain.Entities.GroupChatAggregator;
 using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Domain.Entities.ProductAggregator;
 using FOV.Domain.Entities.RestaurantAggregator.Enums;
@@ -25,6 +26,8 @@ public class Restaurant : BaseAuditableEntity, IsSoftDeleted
     public virtual ICollection<Product> Products { get; set; } = [];
     public virtual ICollection<Table> Tables { get; set; } = [];
     public virtual ICollection<Combo> Combos { get; set; } = [];
+
+    public virtual ICollection<GroupChat> GroupChats { get; set; } = [];
     public bool IsDeleted { get; set; }
 
     public Restaurant()

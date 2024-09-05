@@ -11,17 +11,17 @@ public abstract class CronJobBackgroundService : BackgroundService
         var cron = new CronExpression(Cron);
         var next = cron.GetNextValidTimeAfter(DateTimeOffset.Now);
 
-        while (!stoppingToken.IsCancellationRequested)
-        {
-            if (DateTimeOffset.Now > next)
-            {
-                await DoWork(stoppingToken);
+        //while (!stoppingToken.IsCancellationRequested)
+        //{
+        //    if (DateTimeOffset.Now > next)
+        //    {
+        //        await DoWork(stoppingToken);
 
-                next = cron.GetNextValidTimeAfter(DateTimeOffset.Now);
-            }
+        //        next = cron.GetNextValidTimeAfter(DateTimeOffset.Now);
+        //    }
 
-            await Task.Delay(1000, stoppingToken);
-        }
+        //    await Task.Delay(1000, stoppingToken);
+        //}
     }
     protected abstract Task DoWork(CancellationToken stoppingToken);
 }
