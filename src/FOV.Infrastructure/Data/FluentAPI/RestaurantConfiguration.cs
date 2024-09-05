@@ -1,4 +1,5 @@
-﻿using FOV.Domain.Entities.RestaurantAggregator;
+﻿using Elastic.Clients.Elasticsearch;
+using FOV.Domain.Entities.RestaurantAggregator;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -17,12 +18,23 @@ public class RestaurantConfiguration : IEntityTypeConfiguration<Restaurant>
         builder.HasMany(x => x.GroupChats).WithOne(x => x.Restaurant).HasForeignKey(x => x.RestaurantId);
         builder.HasData(new Restaurant
         {
-         Id  = Guid.Parse("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0"),
-         RestaurantName = "Default Restaurant",
-         IsDeleted = false,
-         RestaurantPhone = "0902388123",
-         Address = "Go Vap",
-         RestataurantCode = "RE_001"
-        });
+            Id  = Guid.Parse("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0"),
+            RestaurantName = "Default Restaurant",
+            IsDeleted = false,
+            RestaurantPhone = "0902388123",
+            Address = "Go Vap",
+            RestataurantCode = "RE_001"
+        },
+        new Restaurant
+        {
+            Id = Guid.Parse("d42cf3c6-cbe4-4431-ac91-9eae870fa007"),
+            RestaurantName = "Vege Thu Duc",
+            IsDeleted = false,
+            RestaurantPhone = "0867960120",
+            Address = "Thu Duc",
+            RestataurantCode = "RE_002"
+        }
+
+        );
     }
 }

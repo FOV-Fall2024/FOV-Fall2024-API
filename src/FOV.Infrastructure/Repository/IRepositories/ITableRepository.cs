@@ -9,4 +9,5 @@ namespace FOV.Infrastructure.Repository.IRepositories;
 
 public interface ITableRepository : IGenericRepository<Table>
 {
+    public Task<int?> GetHighestTableNumberAsync(Guid restaurantId);
 }

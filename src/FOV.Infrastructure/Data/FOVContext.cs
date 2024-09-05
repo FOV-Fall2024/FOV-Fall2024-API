@@ -5,6 +5,7 @@ using FOV.Domain.Entities.GroupChatAggregator;
 using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Domain.Entities.IngredientGeneralAggregator;
 using FOV.Domain.Entities.OrderAggregator;
+using FOV.Domain.Entities.PaymentAggregator;
 using FOV.Domain.Entities.ProductAggregator;
 using FOV.Domain.Entities.ProductGeneralAggregator;
 using FOV.Domain.Entities.RestaurantAggregator;
@@ -65,6 +66,7 @@ public class FOVContext : IdentityDbContext<User>, IApplicationDbContext
     public DbSet<Restaurant> Restaurants => Set<Restaurant>();
 
     public DbSet<ProductImage> ProductImages => Set<ProductImage>();    
+    public DbSet<Payments> Payments => Set<Payments>();
     public DbSet<Rating> Ratings => Set<Rating>();
 
     protected override void OnModelCreating(ModelBuilder builder)

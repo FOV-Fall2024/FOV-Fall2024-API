@@ -1,31 +1,17 @@
 ﻿using FOV.Domain.Common;
 using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.RestaurantAggregator;
+using FOV.Domain.Entities.TableAggregator.Enums;
 
 namespace FOV.Domain.Entities.TableAggregator;
 public class Table : BaseAuditableEntity, IsSoftDeleted
 {
-    [StringAttribute]
-    public string? TableNumber { get; set; }
-    [StringAttribute]
+    public int TableNumber { get; set; }
     public string? TableCode { get; set; }
-    [StringAttribute]
-    public string? TableStatus { get; set; }
-    [StringAttribute]
-    public string? TableState { get; set; }
-    [StringAttribute]
-    public string? TableType { get; set; }
-    [StringAttribute]
-    public string? TableDescription { get; set; }
-    [StringAttribute]
-    public string? TableImage { get; set; }
-    [StringAttribute]
+    public Status TableStatus { get; set; }
     public string? TableQRCode { get; set; }
-    [BooleanAttribute]
     public bool IsDeleted { get; set; }
-    [ChildAttribute]
     public Restaurant? Restaurant { get; set; }
-    [GuidAttribute]
     public Guid RestaurantId { get; set; }
     public virtual ICollection<Order> Orders { get; set; } = [];
 
@@ -34,26 +20,15 @@ public class Table : BaseAuditableEntity, IsSoftDeleted
 
     }
 
-    public Table(string tableNumber, string tableCode, string tableStatus, string tableState, string tableType, string tableDescription, string tableImage)
+    public Table(Status tableStatus)
     {
-        //this.RestaurantId = restaurantId; Guid restaurantId,
-        this.TableNumber = tableNumber;
-        this.TableCode = tableCode;
         this.TableStatus = tableStatus;
-        this.TableState = tableState;
-        this.TableType = tableType;
-        this.TableDescription = tableDescription;
-        this.TableImage = tableImage;
     }
-    public void Update(string tableNumber, string tableCode, string tableStatus, string tableState, string tableType, string tableDescription, string tableImage, string TableQRCode)
+    public void Update(int tableNumber, string tableCode, Status tableStatus, string TableQRCode)
     {
         this.TableNumber = tableNumber;
         this.TableCode = tableCode;
         this.TableStatus = tableStatus;
-        this.TableState = tableState;
-        this.TableType = tableType;
-        this.TableDescription = tableDescription;
-        this.TableImage = tableImage;
         this.TableQRCode = TableQRCode;
     }
     public void UpdateState(bool state) => IsDeleted = state;

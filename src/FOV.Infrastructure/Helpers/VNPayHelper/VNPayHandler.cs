@@ -120,32 +120,27 @@ public class Utils
     }
 
 
-    public static string GetIpAddress(HttpContext context)
+    public static string GetIpAddress()
     {
-        var ipAddress = string.Empty;
+        string ipAddress;
         try
         {
-            var remoteIpAddress = context.Connection.RemoteIpAddress;
-
-            if (remoteIpAddress != null)
+            ipAddress = "";
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
             {
-                if (remoteIpAddress.AddressFamily == AddressFamily.InterNetworkV6)
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
                 {
-                    remoteIpAddress = Dns.GetHostEntry(remoteIpAddress).AddressList
-                        .FirstOrDefault(x => x.AddressFamily == AddressFamily.InterNetwork);
+                    ipAddress = ip.ToString();
                 }
-
-                if (remoteIpAddress != null) ipAddress = remoteIpAddress.ToString();
-
-                return ipAddress;
             }
         }
         catch (Exception ex)
         {
-            return "Invalid IP:" + ex.Message;
+            ipAddress = "Invalid IP:" + ex.Message;
         }
 
-        return "127.0.0.1";
+        return ipAddress;
     }
 }
 

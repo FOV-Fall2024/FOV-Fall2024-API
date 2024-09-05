@@ -1,6 +1,8 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
+using System.Text.Json.Serialization;
 using FOV.Domain.Entities.TableAggregator;
+using FOV.Domain.Entities.TableAggregator.Enums;
 using FOV.Infrastructure.Helpers.FirebaseHandler;
 using FOV.Infrastructure.Helpers.QRCodeGeneratorHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
@@ -8,8 +10,9 @@ using MediatR;
 
 namespace FOV.Application.Features.Tables.Commands.Create;
 
-public record CreateTableCommand(string TableNumber, string TableCode, string TableStatus, string TableState, string TableType, string TableDescription, string TableImage) : IRequest<Guid>
+public record CreateTableCommand(Status TableStatus) : IRequest<Guid>
 {
+    [JsonIgnore]
     public Guid RestaurantId { get; set; }
 }
 public class CreateTableHandler(IUnitOfWorks unitOfWorks, StorageHandler storageHandler, QRCodeGeneratorHandler qrCodeGeneratorHandler) : IRequestHandler<CreateTableCommand, Guid>
@@ -20,13 +23,29 @@ public class CreateTableHandler(IUnitOfWorks unitOfWorks, StorageHandler storage
 
     public async Task<Guid> Handle(CreateTableCommand request, CancellationToken cancellationToken)
     {
-        Table table = new(request.TableNumber, request.TableCode, request.TableStatus, request.TableState, request.TableType, request.TableDescription, request.TableImage);
+        Table table = new(request.TableStatus);
+        int nextTableNumber = await GetNextTableNumberAsync(request.RestaurantId);
+
+        string tableCode = $"Tab_{nextTableNumber.ToString("D3")}";
+
+        // Generate TableCode based on the next TableNumber
         table.RestaurantId = request.RestaurantId;
-        table.TableQRCode = await GenerateAndUploadQRCodeAsync(request.RestaurantId, request.TableCode);
+        table.TableCode = tableCode;
+        table.TableQRCode = await GenerateAndUploadQRCodeAsync(request.RestaurantId, tableCode);
+
         await _unitOfWorks.TableRepository.AddAsync(table);
         await _unitOfWorks.SaveChangeAsync();
         return table.Id;
     }
+    
+    private async Task<int> GetNextTableNumberAsync(Guid restaurantId)
+    {
+        var highestTableNumber = await _unitOfWorks.TableRepository
+            .GetHighestTableNumberAsync(restaurantId);
+
+        return (highestTableNumber ?? 0) + 1;
+    }
+
     private async Task<string> GenerateAndUploadQRCodeAsync(Guid RestaurantId, string TableCode)
     {
         var restaurant = await _unitOfWorks.RestaurantRepository.GetByIdAsync(RestaurantId);
