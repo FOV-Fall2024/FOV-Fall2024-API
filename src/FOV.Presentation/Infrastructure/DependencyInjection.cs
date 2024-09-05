@@ -1,5 +1,6 @@
 ﻿using FOV.Application.Common.Exceptions;
 using FOV.Domain.Entities.UserAggregator;
+using FOV.Infrastructure.Configuration;
 using FOV.Infrastructure.Data;
 using FOV.Infrastructure.Data.Configurations;
 using FOV.Presentation.Infrastructure.BackgroundServer;
@@ -18,6 +19,9 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddPresentationDI(this IServiceCollection services, string connectionString, WebApplicationBuilder builder)
     {
+
+        //? Add Els
+        services.Configure<ElasticSettings>(builder.Configuration.GetSection("ElasticSettings"));
 
         //? Add SignalR
         services.AddSignalR();
@@ -101,7 +105,7 @@ public static class DependencyInjection
         });
 
         //? Swagger Configuration
-        services.AddEndpointsApiExplorer(); 
+        services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new() { Title = "Vegetarian Restaurant  API", Version = "v1" });

@@ -8,12 +8,22 @@ using Microsoft.Extensions.DependencyInjection;
 using FOV.Infrastructure.Caching.ICachingService;
 using FOV.Infrastructure.Caching.CachingService;
 using StackExchange.Redis;
+using FOV.Infrastructure.Elastic.IService;
+using FOV.Infrastructure.Elastic.Service;
 
 namespace FOV.Infrastructure;
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructureDI(this IServiceCollection services)
+    public static object AddInfrastructureDI(this IServiceCollection services)
     {
+
+        //? DI with ElasticSearch Db
+        //  services.AddSingleton<IElasticService, ElasticService>();
+        services.AddSingleton<IUserElasticService, UserElasticService>();
+
+
+
+        //? DI with Main Db
         services.AddScoped<IIngredientGeneralRepository, IngredientGeneralRepository>();
         services.AddScoped<IIngredientTypeRepository, IngredientTypeRepository>();
         services.AddScoped<ITableRepository, TableRepository>();
@@ -22,7 +32,7 @@ public static class DependencyInjection
         services.AddScoped<IIngredientRepository, IngredientRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IProductComboRepository, ProductComboRepository>();
-        services.AddScoped<IComboRepository , ComboRepository>();
+        services.AddScoped<IComboRepository, ComboRepository>();
         services.AddScoped<IProductIngredientRepository, ProductIngredientRepository>();
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
@@ -33,7 +43,7 @@ public static class DependencyInjection
         services.AddSingleton<StorageHandler>();
         services.AddSingleton<QRCodeGeneratorHandler>();
         services.AddScoped<IUnitOfWorks, UnitOfWorks>();
-      // services.AddScoped<ILockingService, LockingService>();
+        // services.AddScoped<ILockingService, LockingService>();
         services.AddScoped<IIngrdientTransactionRepository, IngrdientTransactionRepository>();
         services.AddScoped<IProductImageRepository, ProductImageRepository>();
         services.AddScoped<IRatingRepository, RatingRepository>();
@@ -41,7 +51,7 @@ public static class DependencyInjection
         services.AddScoped<IEmployeeRepository, EmployeeRepository>();
         services.AddScoped<IGroupUserRepository, GroupUserRepository>();
         services.AddScoped<IGroupMessageRepository, GroupMessageRepository>();
-        services.AddScoped<IGroupChatRepository ,GroupChatRepository>();
+        services.AddScoped<IGroupChatRepository, GroupChatRepository>();
         return services;
 
     }
