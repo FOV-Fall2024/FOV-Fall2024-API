@@ -32,7 +32,7 @@ public class IngredientTypeConfiguration : IEntityTypeConfiguration<IngredientTy
          ExpiredTime = 60,
          IsDeleted = false
      }
- );;
+ ); ;
 
     }
 }

@@ -370,14 +370,14 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
 
-                    b.Property<string>("OrderStatus")
-                        .HasColumnType("text");
+                    b.Property<byte?>("OrderStatus")
+                        .HasColumnType("smallint");
 
                     b.Property<DateTime?>("OrderTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("OrderType")
-                        .HasColumnType("text");
+                    b.Property<byte?>("OrderType")
+                        .HasColumnType("smallint");
 
                     b.Property<Guid>("TableId")
                         .HasColumnType("uuid");
@@ -425,8 +425,8 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("text");
+                    b.Property<byte?>("Status")
+                        .HasColumnType("smallint");
 
                     b.HasKey("Id");
 
@@ -437,6 +437,77 @@ namespace FOV.Infrastructure.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("OrderDetails");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.PaymentAggregator.PaymentMethods", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PaymentMethodName")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PaymentMethods");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.PaymentAggregator.Payments", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("PaymentMethodId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("PaymentMethodsId")
+                        .HasColumnType("uuid");
+
+                    b.Property<byte>("PaymentStatus")
+                        .HasColumnType("smallint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("PaymentMethodsId");
+
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.ProductAggregator.Category", b =>
@@ -1288,6 +1359,23 @@ namespace FOV.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("FOV.Domain.Entities.PaymentAggregator.Payments", b =>
+                {
+                    b.HasOne("FOV.Domain.Entities.OrderAggregator.Order", "Order")
+                        .WithMany("Payments")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FOV.Domain.Entities.PaymentAggregator.PaymentMethods", "PaymentMethods")
+                        .WithMany("Payments")
+                        .HasForeignKey("PaymentMethodsId");
+
+                    b.Navigation("Order");
+
+                    b.Navigation("PaymentMethods");
+                });
+
             modelBuilder.Entity("FOV.Domain.Entities.ProductAggregator.Product", b =>
                 {
                     b.HasOne("FOV.Domain.Entities.ProductAggregator.Category", "Category")
@@ -1505,6 +1593,13 @@ namespace FOV.Infrastructure.Migrations
                     b.Navigation("IngredientTransactions");
 
                     b.Navigation("OrderDetails");
+
+                    b.Navigation("Payments");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.PaymentAggregator.PaymentMethods", b =>
+                {
+                    b.Navigation("Payments");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.ProductAggregator.Category", b =>

@@ -13,7 +13,7 @@ public static class ReasonStatusCodeConfig
 {
     public const string CREATED = "Created!";
     public const string OK = "Success";
-    public const string UPDATED = "Updated!"; 
+    public const string UPDATED = "Updated!";
     public const string DELETED = "Deleted!";
 
 }

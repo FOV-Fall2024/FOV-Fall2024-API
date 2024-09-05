@@ -12,7 +12,7 @@ public class UserLoginValidator : AbstractValidator<UserLoginCommand>
             .Matches(@"^[^@\s]+@[^@\s]+\.[^@\s]+$")
             .WithMessage("Invalid email format.");
         RuleFor(x => x.Password).NotNull();
-    
+
 
     }
 }

@@ -15,11 +15,11 @@ public class ProductCombo : BaseAuditableEntity, IsSoftDeleted
 
     public ProductCombo()
     {
-        
+
     }
 
 
-    
+
     public ProductCombo(Guid productId, Guid comboId)
     {
         ComboId = comboId;

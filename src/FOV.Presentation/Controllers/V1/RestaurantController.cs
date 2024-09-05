@@ -23,7 +23,7 @@ public class RestaurantController(IMediator mediator) : DefaultController
         return Ok(response);
     }
 
-    
+
 
     /* XXX  Demo 1
     1. Add New Account Manager (Admin )

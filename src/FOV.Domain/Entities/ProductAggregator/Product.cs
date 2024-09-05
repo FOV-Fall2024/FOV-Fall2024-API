@@ -13,7 +13,7 @@ public class Product : BaseAuditableEntity, IsSoftDeleted
     public string ProductDescription { get; set; } = string.Empty;
 
     public virtual ICollection<ProductCombo> ProductCombos { get; set; } = [];
-    public ICollection<OrderDetail> OrderDetails { get; set; } = []; 
+    public ICollection<OrderDetail> OrderDetails { get; set; } = [];
     public Category? Category { get; set; }
     public Guid? CategoryId { get; set; }
 

@@ -30,10 +30,10 @@ internal class AddProductHandler(IUnitOfWorks unitOfWorks, IClaimService claimSe
         var ingredients = await _unitOfWorks.IngredientGeneralRepository.WhereAsync(x => x.ProductIngredientGenerals.Any(pig => pig.ProductGeneralId == productId));
         foreach (var item in ingredients)
         {
-           
-            if(_unitOfWorks.IngredientRepository.WhereAsync(x => x.IngredientName == item.IngredientName) is null)
+
+            if (_unitOfWorks.IngredientRepository.WhereAsync(x => x.IngredientName == item.IngredientName) is null)
             {
-               await  _unitOfWorks.IngredientRepository.AddAsync(new Domain.Entities.IngredientAggregator.Ingredient(item.IngredientName, item.IngredientTypeId, _claimService.RestaurantId));
+                await _unitOfWorks.IngredientRepository.AddAsync(new Domain.Entities.IngredientAggregator.Ingredient(item.IngredientName, item.IngredientTypeId, _claimService.RestaurantId));
             }
         }
     }

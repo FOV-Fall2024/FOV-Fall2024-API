@@ -29,9 +29,6 @@
 		<Folder Include="Entities\RestaurantAggregator\Primitives\" />
 		<Folder Include="Entities\TableAggregator\ValueObjects\" />
 		<Folder Include="Entities\TableAggregator\Primitives\" />
-		<Folder Include="Entities\TransactionAggregator\Enums\" />
-		<Folder Include="Entities\TransactionAggregator\ValueObjects\" />
-		<Folder Include="Entities\TransactionAggregator\Primitives\" />
 		<Folder Include="Entities\UserAggregator\ValueObject\" />
 		<Folder Include="Entities\UserAggregator\Primitives\" />
 	</ItemGroup>

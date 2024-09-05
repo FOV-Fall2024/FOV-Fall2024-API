@@ -115,7 +115,7 @@ public static class DependencyInjection
         });
 
         //? Swagger Configuration
-        services.AddEndpointsApiExplorer(); 
+        services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new() { Title = "Vegetarian Restaurant  API", Version = "v1" });

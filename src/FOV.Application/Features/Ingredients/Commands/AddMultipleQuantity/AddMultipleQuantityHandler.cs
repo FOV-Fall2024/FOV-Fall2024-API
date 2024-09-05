@@ -14,10 +14,10 @@ public class AddMultipleQuantityHandler(IUnitOfWorks unitOfWorks) : IRequestHand
         foreach (var item in request.Adding)
         {
             Ingredient ingredient = await _unitOfWorks.IngredientRepository.GetByIdAsync(item.IngreidentId) ?? throw new Exception();
-            IngredientTransaction ingredientTransaction = new(item.Quantity,Domain.Entities.IngredientAggregator.Enums.IngredientTransactionType.Add,ingredient.Id);
+            IngredientTransaction ingredientTransaction = new(item.Quantity, Domain.Entities.IngredientAggregator.Enums.IngredientTransactionType.Add, ingredient.Id);
             ingredient.AddQuantity(item.Quantity);
             await _unitOfWorks.IngredientTransactionRepository.AddAsync(ingredientTransaction);
-             _unitOfWorks.IngredientRepository.Update(ingredient);
+            _unitOfWorks.IngredientRepository.Update(ingredient);
         }
         await _unitOfWorks.SaveChangeAsync();
         return Result.Ok();

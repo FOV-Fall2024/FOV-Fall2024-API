@@ -15,7 +15,7 @@ internal class StateCacheManagerService : IStateCacheManagerService
     {
         var state = await _database.StringGetAsync(GetLockKey(tableId));
 
-        return  state == State(1);
+        return state == State(1);
     }
 
     public async ValueTask SetServiceState(Guid tableId) => await _database.StringSetAsync(GetLockKey(tableId), State(1));

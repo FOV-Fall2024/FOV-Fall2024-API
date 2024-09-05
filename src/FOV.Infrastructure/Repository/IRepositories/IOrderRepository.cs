@@ -8,4 +8,5 @@ using FOV.Domain.Entities.OrderAggregator;
 namespace FOV.Infrastructure.Repository.IRepositories;
 public interface IOrderRepository : IGenericRepository<Order>
 {
+    Task<Order> GetByTableIdAsync(Guid tableId);
 }

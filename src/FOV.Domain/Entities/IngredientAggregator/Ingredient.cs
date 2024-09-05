@@ -40,7 +40,7 @@ public class Ingredient : BaseAuditableEntity
     {
         ExpriedQuantity += quantity;
         IngredientAmount -= quantity;
-        if(ExpriedQuantity < 0) ExpriedQuantity = 0; 
+        if (ExpriedQuantity < 0) ExpriedQuantity = 0;
     }
 }
 

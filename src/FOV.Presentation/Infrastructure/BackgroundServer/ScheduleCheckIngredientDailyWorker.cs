@@ -15,7 +15,7 @@ public class ScheduleCheckIngredientDailyWorker : CronJobBackgroundService
         Cron = "0 3 * * * ? *"; // Every day at 3 AM
     }
 
-    protected override  async Task DoWork(CancellationToken stoppingToken)
+    protected override async Task DoWork(CancellationToken stoppingToken)
     {
         try
         {

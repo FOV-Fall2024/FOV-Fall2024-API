@@ -7,8 +7,8 @@ using FOV.Application.Features.Authorize.Queries.Profile;
 using FOV.Domain.Entities.UserAggregator;
 using FOV.Presentation.Infrastructure.Core;
 using MediatR;
-using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,7 +31,7 @@ public class AuthController(ISender sender) : DefaultController
     public async Task<IActionResult> Login(EmployeeLoginCommand request)
     {
         var response = await _sender.Send(request);
-        return Ok(new OK_Result<EmployeeLoginResponse>("Login Successfully",response));
+        return Ok(new OK_Result<EmployeeLoginResponse>("Login Successfully", response));
     }
 
     // [x] Login (Customer)

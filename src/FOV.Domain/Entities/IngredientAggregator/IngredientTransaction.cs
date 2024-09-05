@@ -25,10 +25,10 @@ public class IngredientTransaction : BaseAuditableEntity, IsSoftDeleted
 
     public IngredientTransaction()
     {
-        
+
     }
 
-    public IngredientTransaction(decimal quantity,IngredientTransactionType type,Guid ingredientId)
+    public IngredientTransaction(decimal quantity, IngredientTransactionType type, Guid ingredientId)
     {
         Quantity = quantity;
         Type = type;

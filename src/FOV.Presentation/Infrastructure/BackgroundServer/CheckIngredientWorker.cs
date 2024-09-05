@@ -9,7 +9,7 @@ public class CheckIngredientWorker : BackgroundService
     {
         _logger = logger;
     }
-    protected override  async Task ExecuteAsync(CancellationToken stoppingToken)
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _logger.LogDebug("SendEmailService is starting.");
         await DoWork(stoppingToken);
@@ -21,20 +21,20 @@ public class CheckIngredientWorker : BackgroundService
         {
             _logger.LogDebug($"SendEmail task doing background work.");
 
-       
-               // var sendEmailsCommand = new SendEmailMessagesCommand();
 
-                //using (var scope = _services.CreateScope())
-                //{
-                //    var dispatcher = scope.ServiceProvider.GetRequiredService<Dispatcher>();
+            // var sendEmailsCommand = new SendEmailMessagesCommand();
 
-                //}
+            //using (var scope = _services.CreateScope())
+            //{
+            //    var dispatcher = scope.ServiceProvider.GetRequiredService<Dispatcher>();
 
-                //if (sendEmailsCommand.SentMessagesCount == 0)
-                //{
-                    await Task.Delay(10000, stoppingToken);
-                //}
-           
+            //}
+
+            //if (sendEmailsCommand.SentMessagesCount == 0)
+            //{
+            await Task.Delay(10000, stoppingToken);
+            //}
+
         }
 
         _logger.LogDebug($"SendEmail background task is stopping.");

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FOV.Infrastructure.Migrations
 {
     [DbContext(typeof(FOVContext))]
-    [Migration("20240822043205_FixDomainV3")]
-    partial class FixDomainV3
+    [Migration("20240826121017_FixDomainV1")]
+    partial class FixDomainV1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -373,14 +373,14 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
 
-                    b.Property<string>("OrderStatus")
-                        .HasColumnType("text");
+                    b.Property<byte?>("OrderStatus")
+                        .HasColumnType("smallint");
 
                     b.Property<DateTime?>("OrderTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("OrderType")
-                        .HasColumnType("text");
+                    b.Property<byte?>("OrderType")
+                        .HasColumnType("smallint");
 
                     b.Property<Guid>("TableId")
                         .HasColumnType("uuid");
@@ -428,8 +428,8 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("text");
+                    b.Property<byte?>("Status")
+                        .HasColumnType("smallint");
 
                     b.HasKey("Id");
 

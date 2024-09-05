@@ -33,6 +33,7 @@ public interface IUnitOfWorks
     public IProductComboRepository ProductComboRepository { get; }
 
     public IComboRepository ComboRepository { get; }
+    public IPaymentRepository PaymentRepository { get; }
 
     public Task<int> SaveChangeAsync();
 }

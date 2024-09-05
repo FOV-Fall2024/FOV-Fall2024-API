@@ -16,7 +16,7 @@ public class AddSingleQuantityHandler(IUnitOfWorks unitOfWorks) : IRequestHandle
         IngredientTransaction ingredientTransaction = new(request.Quantity, Domain.Entities.IngredientAggregator.Enums.IngredientTransactionType.Add, ingredient.Id);
         ingredient.AddQuantity(request.Quantity);
         await _unitOfWorks.IngredientTransactionRepository.AddAsync(ingredientTransaction);
-         _unitOfWorks.IngredientRepository.Update(ingredient);
+        _unitOfWorks.IngredientRepository.Update(ingredient);
         await _unitOfWorks.SaveChangeAsync();
         return Result.Ok();
     }

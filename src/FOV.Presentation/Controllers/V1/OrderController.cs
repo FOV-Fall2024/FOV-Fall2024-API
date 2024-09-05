@@ -1,5 +1,11 @@
-﻿using FOV.Application.Features.Orders.Commands.CreateOrder;
+﻿using FOV.Application.Features.Orders.Commands.AddProduct;
+using FOV.Application.Features.Orders.Commands.ChangeStateOrder;
+using FOV.Application.Features.Orders.Commands.CreateOrder;
+using FOV.Application.Features.Orders.Commands.RefundOrder;
 using FOV.Application.Features.Orders.Commands.Update;
+using FOV.Application.Features.Orders.Queries;
+using FOV.Application.Features.Orders.Queries.GetOrderDetails;
+using FOV.Application.Features.Orders.Queries.GetOrders;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,23 +23,48 @@ public class OrderController(ISender sender) : DefaultController
         return Ok(response);
     }
 
-    //[HttpGet]
-    //public async Task<IActionResult> Get([FromQuery] GetOrderCommand command)
-    //{
-    //    var response = await _sender.Send(command);
-    //    return Ok(response);
-    //}
-    //[HttpPost("{orderId:guid}/details")]
-    //public async Task<IActionResult> AddOrderDetail(Guid orderId, [FromBody] CreateOrderDetailCommand command)
-    //{
-    //    var createOrderDetailCommand = new CreateOrderDetailWithOrderIdCommand(orderId, command.ComboId, command.ProductId, command.Status, command.Quantity, command.Price);
-    //    var response = await _sender.Send(createOrderDetailCommand);
-    //    return Ok(response);
-    //}
-    [HttpPatch("{orderDetailId:guid}/details")]
-    public async Task<IActionResult> UpdateOrderDetail(Guid orderDetailId, [FromBody] UpdateOrderDetailCommand command)
+    [HttpGet]
+    public async Task<IActionResult> Get([FromQuery] GetOrdersRequest command)
     {
-        command.Id = orderDetailId;
+        var response = await _sender.Send(command);
+        return Ok(response);
+    }
+
+    [HttpPatch("{orderId:guid}/cook")]
+    public async Task<IActionResult> ConfirmOrderToCook(Guid orderId)
+    {
+        var command = new ConfirmOrderToCookCommand(orderId);
+        var response = await _sender.Send(command);
+        return Ok(response);
+    }
+
+    [HttpPatch("{orderId:guid}/serve")]
+    public async Task<IActionResult> ConfirmOrderToServe(Guid orderId)
+    {
+        var command = new ConfirmOrderToServeCommand(orderId);
+        var response = await _sender.Send(command);
+        return Ok(response);
+    }
+
+    [HttpGet("{orderId:guid}/details")]
+    public async Task<IActionResult> GetOrderDetails(Guid orderId)
+    {
+        var command = new GetOrderDetailsCommand(orderId);
+        var response = await _sender.Send(command);
+        return Ok(response);
+    }
+
+    [HttpPost("{orderId:guid}/add-products")]
+    public async Task<IActionResult> AddProductsToOrder(Guid orderId, [FromBody] AddProductsToOrdersCommand command)
+    {
+        command.OrderId = orderId;
+        var response = await _sender.Send(command);
+        return Ok(response);
+    }
+    [HttpPatch("{orderId:guid}/refund")]
+    public async Task<IActionResult> RefundOrder(Guid orderId, [FromBody] RefundOrderCommand command)
+    {
+        command = command with { OrderId = orderId };
         var response = await _sender.Send(command);
         return Ok(response);
     }

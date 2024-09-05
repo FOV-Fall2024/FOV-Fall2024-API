@@ -29,7 +29,7 @@ public class UpdateOrderDetailHandler : IRequestHandler<UpdateOrderDetailCommand
     public async Task<Guid> Handle(UpdateOrderDetailCommand request, CancellationToken cancellationToken)
     {
         OrderDetail orderDetail = await _unitOfWorks.OrderDetailRepository.GetByIdAsync(request.Id) ?? throw new Exception();
-        orderDetail.Update(request.ComboId, request.ProductId, request.Status, request.Quantity, request.Price);
+        orderDetail.Update(request.ComboId, request.ProductId, request.Quantity, request.Price);
         _unitOfWorks.OrderDetailRepository.Update(orderDetail);
         await _unitOfWorks.SaveChangeAsync();
         return orderDetail.Id;

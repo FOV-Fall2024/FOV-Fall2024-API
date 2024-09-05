@@ -9,7 +9,7 @@ using StackExchange.Redis;
 
 namespace FOV.Presentation.Controllers.V1;
 
-public class UserController(IMediator mediator,IDatabase database) : DefaultController
+public class UserController(IMediator mediator, IDatabase database) : DefaultController
 {
 
     //[ ] Active User  

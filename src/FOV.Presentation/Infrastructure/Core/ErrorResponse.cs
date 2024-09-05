@@ -22,7 +22,7 @@ public class Error<T>
 
     public Error()
     {
-        
+
     }
 
     public Error(string message = ErrorReasonStatusCodeConfig.BAD_REQUEST, int statusCode = ErrorStatusCodeConfig.BAD_REQUEST, List<T> errors = null)

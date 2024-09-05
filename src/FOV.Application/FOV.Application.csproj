@@ -28,7 +28,6 @@
     <Folder Include="Features\Combos\Queries\GetComboDetail\" />
     <Folder Include="Features\IngredientGenerals\Commands\Inactive\" />
     <Folder Include="Features\Ingredients\Queries\GetIngredientDetail\" />
-    <Folder Include="Features\Orders\Queries\" />
     <Folder Include="Features\Restaurants\Queries\Get\" />
     <Folder Include="Features\Restaurants\Queries\Detail\" />
   </ItemGroup>

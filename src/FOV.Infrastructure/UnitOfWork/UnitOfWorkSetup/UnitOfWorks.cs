@@ -26,8 +26,9 @@ public class UnitOfWorks : IUnitOfWorks
     private readonly IOrderDetailRepository _orderDetailRepository;
     private readonly IShiftRepository _shiftRepository;
     private readonly IWaiterScheduleRepository _waiterScheduleRepository;
+    private readonly IPaymentRepository _paymentRepository;
 
-    public UnitOfWorks(FOVContext context, IIngredientTypeRepository ingredientTypeRepository, IIngredientGeneralRepository ingredientGeneralRepository, IProductGeneralRepository productGeneralRepository, IProductIngredientGeneralRepository productIngredientGeneralRepository, ITableRepository tableRepository, IRestaurantRepository restaurantRepository, ICategoryRepository categoryRepository, IProductRepository productRepository, IIngredientRepository ingredientRepository, IProductIngredientRepository productIngredientRepository, ICustomerRepository customerRepository, IEmployeeRepository employeeRepository, IIngrdientTransactionRepository ingrdientTransactionRepository, IProductComboRepository productComboRepository, IComboRepository comboRepository, IOrderRepository orderRepository, IOrderDetailRepository orderDetailRepository,IShiftRepository shiftRepository, IWaiterScheduleRepository waiterScheduleRepository)
+    public UnitOfWorks(FOVContext context, IIngredientTypeRepository ingredientTypeRepository, IIngredientGeneralRepository ingredientGeneralRepository, IProductGeneralRepository productGeneralRepository, IProductIngredientGeneralRepository productIngredientGeneralRepository, ITableRepository tableRepository, IRestaurantRepository restaurantRepository, ICategoryRepository categoryRepository, IProductRepository productRepository, IIngredientRepository ingredientRepository, IProductIngredientRepository productIngredientRepository, ICustomerRepository customerRepository, IEmployeeRepository employeeRepository, IIngrdientTransactionRepository ingrdientTransactionRepository, IProductComboRepository productComboRepository, IComboRepository comboRepository, IOrderRepository orderRepository, IOrderDetailRepository orderDetailRepository, IShiftRepository shiftRepository, IWaiterScheduleRepository waiterScheduleRepository, IPaymentRepository paymentRepository)
     {
         _context = context;
         _ingredientTypeRepository = ingredientTypeRepository;
@@ -49,6 +50,7 @@ public class UnitOfWorks : IUnitOfWorks
         _orderDetailRepository = orderDetailRepository;
         _shiftRepository = shiftRepository;
         _waiterScheduleRepository = waiterScheduleRepository;
+        _paymentRepository = paymentRepository;
     }
     public IIngredientTypeRepository IngredientTypeRepository => _ingredientTypeRepository;
     public IIngredientGeneralRepository IngredientGeneralRepository => _ingredientGeneralRepository;
@@ -82,6 +84,7 @@ public class UnitOfWorks : IUnitOfWorks
     public IOrderDetailRepository OrderDetailRepository => _orderDetailRepository;
     public IShiftRepository ShiftRepository => _shiftRepository;
     public IWaiterScheduleRepository WaiterScheduleRepository => _waiterScheduleRepository;
+    public IPaymentRepository PaymentRepository => _paymentRepository;
     public async Task<int> SaveChangeAsync()
     {
         return await _context.SaveChangesAsync();

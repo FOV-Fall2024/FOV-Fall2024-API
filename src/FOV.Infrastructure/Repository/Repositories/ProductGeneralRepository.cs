@@ -16,7 +16,7 @@ public class ProductGeneralRepository : GenericRepository<ProductGeneral>, IProd
 
     public List<ProductCheckDTO> GetProduct(Guid restaurantId) => GetProducts(_context, restaurantId).ToList();
 
-    public List<ComboCheckDTO> GetCombo(Guid restaurantId) => GetCombos(_context,restaurantId).ToList();
+    public List<ComboCheckDTO> GetCombo(Guid restaurantId) => GetCombos(_context, restaurantId).ToList();
 
     public static IEnumerable<ComboCheckDTO> GetCombos(FOVContext context, Guid RestaurantId)
     {
