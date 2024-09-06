@@ -8,5 +8,5 @@ public class GroupUser : BaseAuditableEntity
     public Guid GroupChatId { get; set; }
 
     public User User { get; set; }
-    public string UserId { get ; set; }
+    public string UserId { get; set; }
 }

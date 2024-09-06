@@ -17,13 +17,13 @@ public class GroupChat : BaseAuditableEntity
 
     public GroupChat()
     {
-        
+
     }
 
     public GroupChat(string groupName, Guid restaurantId)
     {
         GroupName = groupName;
-        RestaurantId = restaurantId;    
+        RestaurantId = restaurantId;
     }
 
 }

@@ -20,7 +20,7 @@ internal class CreateGroupChatHandler(IUnitOfWorks unitOfWorks) : IRequestHandle
         await _unitOfWorks.SaveChangeAsync();
 
         return Result.Ok();
-        
+
 
     }
 }

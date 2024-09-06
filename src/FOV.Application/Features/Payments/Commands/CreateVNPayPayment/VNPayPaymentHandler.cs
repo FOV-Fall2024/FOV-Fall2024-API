@@ -47,23 +47,25 @@ public class VNPayPaymentHandler : IRequestHandler<VNPayPaymentCommand, VNPayPay
             throw new Exception("No valid items for payment.");
         }
 
+        var txnRef = $"{request.OrderId.ToString()}_{DateTime.UtcNow:yyyyMMddHHmmss}";
+        Console.WriteLine($"Generated txnRef: {txnRef}");
+
         var payment = new Domain.Entities.PaymentAggregator.Payments
         {
             OrderId = request.OrderId,
             Amount = totalAmount,
+            VnpTxnRef = txnRef,
             PaymentDate = DateTime.UtcNow,
             PaymentMethods = Domain.Entities.PaymentAggregator.Enums.PaymentMethods.VNPay,
             PaymentStatus = Domain.Entities.PaymentAggregator.Enums.PaymentStatus.Pending
         };
 
-
         await _unitOfWorks.PaymentRepository.AddAsync(payment);
         await _unitOfWorks.SaveChangeAsync();
 
         string formatDate = $"{DateTime.UtcNow:yyyyMMddHHmmss}";
-
+        #region VNPay Request
         VnPayHandler vnPayHandler = new VnPayHandler();
-
         vnPayHandler.AddRequestData("vnp_Version", "2.1.0");
         vnPayHandler.AddRequestData("vnp_Command", "pay");
         vnPayHandler.AddRequestData("vnp_TmnCode", tmn_code);
@@ -76,7 +78,8 @@ public class VNPayPaymentHandler : IRequestHandler<VNPayPaymentCommand, VNPayPay
         vnPayHandler.AddRequestData("vnp_OrderInfo", "Payment for Order");
         vnPayHandler.AddRequestData("vnp_OrderType", "other");
         vnPayHandler.AddRequestData("vnp_ReturnUrl", returnUrl);
-        vnPayHandler.AddRequestData("vnp_TxnRef", formatDate);
+        vnPayHandler.AddRequestData("vnp_TxnRef", txnRef);
+        #endregion
 
         string paymentUrl = vnPayHandler.CreateRequestUrl(url, hash_secret);
 

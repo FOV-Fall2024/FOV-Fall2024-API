@@ -37,7 +37,7 @@ public class CreateTableHandler(IUnitOfWorks unitOfWorks, StorageHandler storage
         await _unitOfWorks.SaveChangeAsync();
         return table.Id;
     }
-    
+
     private async Task<int> GetNextTableNumberAsync(Guid restaurantId)
     {
         var highestTableNumber = await _unitOfWorks.TableRepository

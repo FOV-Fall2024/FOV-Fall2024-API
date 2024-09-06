@@ -119,7 +119,7 @@ namespace FOV.Infrastructure.Migrations
                             Id = new Guid("941bcca9-52a6-41f7-9403-06cc5fa703ea"),
                             ComboName = "Combo 1",
                             Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ExpiredDate = new DateTime(2024, 10, 5, 10, 25, 29, 383, DateTimeKind.Utc).AddTicks(276),
+                            ExpiredDate = new DateTime(2024, 10, 6, 7, 59, 51, 580, DateTimeKind.Utc).AddTicks(8138),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             PercentReduce = 10.0m,
@@ -133,7 +133,7 @@ namespace FOV.Infrastructure.Migrations
                             Id = new Guid("3907a193-c2ae-4f40-936b-9a2438595123"),
                             ComboName = "Combo 2",
                             Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ExpiredDate = new DateTime(2024, 11, 5, 10, 25, 29, 383, DateTimeKind.Utc).AddTicks(292),
+                            ExpiredDate = new DateTime(2024, 11, 6, 7, 59, 51, 580, DateTimeKind.Utc).AddTicks(8152),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             PercentReduce = 5.0m,
@@ -147,7 +147,7 @@ namespace FOV.Infrastructure.Migrations
                             Id = new Guid("921b269a-db6e-4a1d-b285-70df523e010e"),
                             ComboName = "Combo 3",
                             Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ExpiredDate = new DateTime(2024, 11, 5, 10, 25, 29, 383, DateTimeKind.Utc).AddTicks(295),
+                            ExpiredDate = new DateTime(2024, 11, 6, 7, 59, 51, 580, DateTimeKind.Utc).AddTicks(8155),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             PercentReduce = 5.0m,
@@ -713,6 +713,10 @@ namespace FOV.Infrastructure.Migrations
 
                     b.Property<byte>("PaymentStatus")
                         .HasColumnType("smallint");
+
+                    b.Property<string>("VnpTxnRef")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 

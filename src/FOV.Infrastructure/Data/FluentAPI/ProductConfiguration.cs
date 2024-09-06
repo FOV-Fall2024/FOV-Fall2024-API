@@ -21,7 +21,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             ProductDescription = "Description",
             ProductGeneralId = Guid.Parse("6535596e-a86a-4fcc-97e7-7e6182a5c013"),
             RestaurantId = Guid.Parse("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0")
-        }, 
+        },
         new Product
         {
             Id = Guid.Parse("e311d82d-452c-4603-a029-762a2a4e5e19"),
@@ -30,7 +30,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             ProductDescription = "Siêu rẻ",
             ProductGeneralId = Guid.Parse("2b9941ee-2f72-4417-8a0a-2e14a6d00fbb"),
             RestaurantId = Guid.Parse("d42cf3c6-cbe4-4431-ac91-9eae870fa007")
-        }, 
+        },
         new Product
         {
             Id = Guid.Parse("9d40c875-bd7f-403a-9734-c7b5dbba5e78"),

@@ -8,6 +8,7 @@ public class Payments : BaseAuditableEntity
 {
     public DateTime PaymentDate { get; set; } = DateTime.UtcNow;
     public decimal Amount { get; set; }
+    public string VnpTxnRef { get; set; } // VNPay transaction reference
     public PaymentStatus PaymentStatus { get; set; }
     public PaymentMethods PaymentMethods { get; set; }
     public Guid OrderId { get; set; }

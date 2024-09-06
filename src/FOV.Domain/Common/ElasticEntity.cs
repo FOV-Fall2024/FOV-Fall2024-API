@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 namespace FOV.Domain.Common;
 public abstract class ElasticEntity
 {
-   public abstract  string DefaultName { get; set; }
+    public abstract string DefaultName { get; set; }
 }

@@ -10,4 +10,5 @@ namespace FOV.Infrastructure.Repository.IRepositories;
 public interface IPaymentRepository : IGenericRepository<Payments>
 {
     Task<Payments> GetFirstOrDefaultAsync(Func<Payments, bool> predicate);
+    Task<Payments> GetPaymentByTxnRefAsync(string txnRef);
 }

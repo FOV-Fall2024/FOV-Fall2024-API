@@ -1,9 +1,10 @@
-﻿using FOV.Application.Features.Payments.Commands;
-using System.Web;
+﻿using System.Web;
+using FOV.Application.Features.Payments.Commands;
 using FOV.Application.Features.Payments.Commands.Create;
 using FOV.Application.Features.Payments.Commands.CreateVNPayPayment;
 using FOV.Application.Features.Payments.Commands.FinishPayment;
 using FOV.Application.Features.Payments.Queries;
+using FOV.Infrastructure.Helpers.VNPayHelper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -48,27 +49,34 @@ public class PaymentController(ISender sender) : DefaultController
     {
         if (Request.QueryString.HasValue)
         {
-            var queryString = Request.QueryString.Value;
-            var json = HttpUtility.ParseQueryString(queryString);
-
-            var vnpTxnRef = json["vnp_TxnRef"];
-            var amount = json["vnp_Amount"];
-            var responseCode = json["vnp_ResponseCode"];
-            var secureHash = json["vnp_SecureHash"];
-
-            var command = new VNPayCallbackCommand(vnpTxnRef, amount, responseCode, secureHash);
-            var result = await _sender.Send(command);
-
-            if (result.Success)
+            var queryString = HttpUtility.ParseQueryString(Request.QueryString.Value);
+            #region VNPay QueryString
+            var command = new VNPayCallbackCommand(
+                vnp_Amount: queryString["vnp_Amount"],
+                vnp_BankCode: queryString["vnp_BankCode"],
+                vnp_BankTranNo: queryString["vnp_BankTranNo"],
+                vnp_CardType: queryString["vnp_CardType"],
+                orderInfo: queryString["vnp_OrderInfo"],
+                vnp_PayDate: queryString["vnp_PayDate"],
+                vnp_ResponseCode: queryString["vnp_ResponseCode"],
+                vnp_TmnCode: queryString["vnp_TmnCode"],
+                vnpayTranId: Convert.ToInt64(queryString["vnp_TransactionNo"]),
+                vnp_TransactionStatus: queryString["vnp_TransactionStatus"],
+                vnp_TxnRef: queryString["vnp_TxnRef"],
+                vnp_SecureHash: queryString["vnp_SecureHash"],
+                responseQuery: Request.QueryString.Value.Substring(1, Request.QueryString.Value.IndexOf("&vnp_SecureHash") - 1)
+            );
+            #endregion
+            var response = await _sender.Send(command);
+            if (response.Success)
             {
-                return Ok(result.Message);
+                return Ok(response);
             }
             else
             {
-                return BadRequest(result.Message);
+                return BadRequest(response);
             }
         }
-
-        return Redirect("INVALID_RESPONSE_URL"); // Redirect for invalid responses
+        return BadRequest();
     }
 }

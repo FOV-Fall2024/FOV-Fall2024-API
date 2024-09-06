@@ -15,10 +15,10 @@ public class GroupMessage : BaseAuditableEntity
 
     public GroupMessage()
     {
-        
+
     }
 
-    public GroupMessage(string content,string userId,Guid groupChatId )
+    public GroupMessage(string content, string userId, Guid groupChatId)
     {
         Content = content;
         UserId = userId;

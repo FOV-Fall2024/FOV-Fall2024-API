@@ -12,7 +12,7 @@ public interface IElasticGenericService<T> where T : ElasticEntity
 
     Task<bool> AddOrUpdate(T entity);
 
-    Task<bool> AddOrUpdateBulk(IEnumerable<T> entities,string indexName);
+    Task<bool> AddOrUpdateBulk(IEnumerable<T> entities, string indexName);
 
     Task<T> Get(string key);
 

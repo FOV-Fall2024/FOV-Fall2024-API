@@ -18,7 +18,7 @@ public class RestaurantConfiguration : IEntityTypeConfiguration<Restaurant>
         builder.HasMany(x => x.GroupChats).WithOne(x => x.Restaurant).HasForeignKey(x => x.RestaurantId);
         builder.HasData(new Restaurant
         {
-            Id  = Guid.Parse("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0"),
+            Id = Guid.Parse("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0"),
             RestaurantName = "Default Restaurant",
             IsDeleted = false,
             RestaurantPhone = "0902388123",

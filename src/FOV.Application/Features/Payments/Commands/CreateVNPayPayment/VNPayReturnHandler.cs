@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace FOV.Application.Features.Payments.Commands
 {
-    public record VNPayCallbackCommand(string vnp_TxnRef, string VnpAmount, string VnpResponseCode, string VnpSecureHash) : IRequest<VNPayCallbackResponse>;
+    public record VNPayCallbackCommand(string vnp_Amount, string vnp_BankCode, string vnp_BankTranNo, string vnp_CardType, string orderInfo, string vnp_PayDate, string vnp_ResponseCode, string vnp_TmnCode, long vnpayTranId, string vnp_TransactionStatus, string vnp_TxnRef, string vnp_SecureHash, string responseQuery) : IRequest<VNPayCallbackResponse>;
     public record VNPayCallbackResponse
     {
         public bool Success { get; init; }
@@ -28,16 +28,9 @@ namespace FOV.Application.Features.Payments.Commands
         public async Task<VNPayCallbackResponse> Handle(VNPayCallbackCommand request, CancellationToken cancellationToken)
         {
             var hashSecret = _configuration["VNPay:VnPayHashSecret"];
-            var tmnCode = _configuration["VNPay:VnPayTmnCode"];
 
-            var rspraw = $"vnp_TxnRef={request.vnp_TxnRef}&vnp_Amount={request.VnpAmount}&vnp_ResponseCode={request.VnpResponseCode}";
-            //var vnPayHandler = new VnPayHandler();
-            //vnPayHandler.AddResponseData("vnp_TxnRef", request.vnp_TxnRef);
-            //vnPayHandler.AddResponseData("vnp_Amount", request.VnpAmount);
-            //vnPayHandler.AddResponseData("vnp_ResponseCode", request.VnpResponseCode);
-            //vnPayHandler.AddResponseData("vnp_SecureHash", request.VnpSecureHash);
-
-            bool isValidSignature = ValidateSignature(rspraw, request.VnpSecureHash, hashSecret);
+            #region Validate VNPay signature
+            bool isValidSignature = ValidateSignature(request.responseQuery, request.vnp_SecureHash, hashSecret);
             if (!isValidSignature)
             {
                 return new VNPayCallbackResponse
@@ -46,25 +39,35 @@ namespace FOV.Application.Features.Payments.Commands
                     Message = "Invalid VNPay signature."
                 };
             }
+            #endregion
 
-            //var payment = await _unitOfWorks.PaymentRepository.GetFirstOrDefaultAsync(p => p.OrderId == Guid.Parse(request.OrderId));
-            //if (payment == null)
-            //{
-            //    return new VNPayCallbackResponse
-            //    {
-            //        Success = false,
-            //        Message = "Payment not found."
-            //    };
-            //}
+            if (request.vnp_ResponseCode != "00")
+            {
+                return new VNPayCallbackResponse
+                {
+                    Success = false,
+                    Message = "Payment failed. Response code: " + request.vnp_ResponseCode + " - " + request.vnp_TransactionStatus
+                };
+            }
 
-            //// Step 3: Update the payment status based on VNPay's response
-            //payment.PaymentStatus = request.VnpResponseCode == "00"
-            //    ? Domain.Entities.PaymentAggregator.Enums.PaymentStatus.Paid
-            //    : Domain.Entities.PaymentAggregator.Enums.PaymentStatus.Failed;
+            var payment = await _unitOfWorks.PaymentRepository.GetPaymentByTxnRefAsync(request.vnp_TxnRef);
+            if (payment == null)
+            {
+                return new VNPayCallbackResponse
+                {
+                    Success = false,
+                    Message = "Payment not found for the provided TxnRef."
+                };
+            }
 
-            //payment.PaymentDate = DateTime.UtcNow;
-            //_unitOfWorks.PaymentRepository.Update(payment);
-            //await _unitOfWorks.SaveChangeAsync();
+            var order = await _unitOfWorks.OrderRepository.GetByIdAsync(payment.OrderId);
+
+            payment.PaymentStatus = Domain.Entities.PaymentAggregator.Enums.PaymentStatus.Paid;
+            order.OrderStatus = Domain.Entities.OrderAggregator.Enums.OrderStatus.Finish;
+
+            _unitOfWorks.PaymentRepository.Update(payment);
+            _unitOfWorks.OrderRepository.Update(order);
+            await _unitOfWorks.SaveChangeAsync();
 
             return new VNPayCallbackResponse
             {
@@ -72,8 +75,7 @@ namespace FOV.Application.Features.Payments.Commands
                 Message = "Payment status updated successfully."
             };
         }
-
-        public bool ValidateSignature(string rspraw, string inputHash, string secretKey)
+        private bool ValidateSignature(string rspraw, string inputHash, string secretKey)
         {
             string myChecksum = Utils.HmacSHA512(secretKey, rspraw);
             return myChecksum.Equals(inputHash, StringComparison.InvariantCultureIgnoreCase);

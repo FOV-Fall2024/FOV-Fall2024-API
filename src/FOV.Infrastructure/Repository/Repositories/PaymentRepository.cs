@@ -21,4 +21,9 @@ public class PaymentRepository : GenericRepository<Payments>, IPaymentRepository
     {
         return await _context.Payments.AsQueryable().FirstOrDefaultAsync(p => predicate(p));
     }
+
+    public async Task<Payments> GetPaymentByTxnRefAsync(string txnRef)
+    {
+        return await _context.Payments.FirstOrDefaultAsync(p => p.VnpTxnRef == txnRef);
+    }
 }

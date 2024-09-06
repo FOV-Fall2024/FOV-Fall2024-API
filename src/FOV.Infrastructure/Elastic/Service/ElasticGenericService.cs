@@ -60,7 +60,7 @@ public class ElasticGenericService<TEntity> : IElasticGenericService<TEntity> wh
 
     public async Task<bool> Remove(string key)
     {
-        var response = await _client.DeleteAsync<TEntity>(key,g => g.Index(_elasticSettings.DefaultIndex));
+        var response = await _client.DeleteAsync<TEntity>(key, g => g.Index(_elasticSettings.DefaultIndex));
         return response.IsValidResponse;
     }
 

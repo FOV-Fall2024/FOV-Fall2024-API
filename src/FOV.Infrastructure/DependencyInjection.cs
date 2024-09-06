@@ -1,6 +1,8 @@
 using FOV.Infrastructure.Caching.CachingService;
 using FOV.Infrastructure.Caching.ICachingService;
 using FOV.Infrastructure.Data.FluentAPI;
+using FOV.Infrastructure.Elastic.IService;
+using FOV.Infrastructure.Elastic.Service;
 using FOV.Infrastructure.Helpers.FirebaseHandler;
 using FOV.Infrastructure.Helpers.QRCodeGeneratorHelper;
 using FOV.Infrastructure.Repository.IRepositories;
@@ -8,8 +10,6 @@ using FOV.Infrastructure.Repository.Repositories;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
-using FOV.Infrastructure.Elastic.IService;
-using FOV.Infrastructure.Elastic.Service;
 
 namespace FOV.Infrastructure;
 public static class DependencyInjection

@@ -41,7 +41,7 @@ public class TestELkController : DefaultController
     [HttpGet("get-user/{key}")]
     public async Task<IActionResult> GetUser(string key)
     {
-        var user = await _userElasticService.Get(key);  
+        var user = await _userElasticService.Get(key);
         return user != null ? Ok(user) : NotFound();
     }
 
