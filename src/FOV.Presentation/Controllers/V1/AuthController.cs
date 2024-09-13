@@ -1,5 +1,8 @@
-﻿using FluentResults;
+﻿using System.Security.Claims;
+using FluentResults;
+using FOV.Application.Features.Authorize.Commands.EditProfile;
 using FOV.Application.Features.Authorize.Commands.EmployeeLogin;
+using FOV.Application.Features.Authorize.Commands.UserGoogleLogin;
 using FOV.Application.Features.Authorize.Commands.UserLogin;
 using FOV.Application.Features.Authorize.Commands.UserRegister;
 using FOV.Application.Features.Authorize.Queries.Profile;
@@ -14,6 +17,14 @@ namespace FOV.Presentation.Controllers.V1;
 public class AuthController(ISender sender) : DefaultController
 {
     private readonly ISender _sender = sender;
+
+    // [ ] Edit Profile
+    [HttpPost("edit-profile")]
+    public async Task<IActionResult> Update(EditProfileCommand command)
+    {
+        var response = await _sender.Send(command);
+        return Ok(new OK_Result<string>("Edit Profile Successfully", response.Successes.ToList().First().Message));
+    }
 
     // [x] Register 
     [HttpPost("register")]
@@ -66,6 +77,10 @@ public class AuthController(ISender sender) : DefaultController
             return BadRequest("Error authenticating with Google");
         }
 
+        var response = await _sender.Send(new UserGoogleLoginCommand(result.Principal.FindFirstValue(ClaimTypes.NameIdentifier),
+            result.Principal.FindFirstValue(ClaimTypes.Email),
+            result.Principal.FindFirstValue(ClaimTypes.Name),
+            result.Principal.FindFirstValue("picture")));
         var claims = result.Principal.Identities
             .FirstOrDefault()?.Claims.Select(claim => new
             {

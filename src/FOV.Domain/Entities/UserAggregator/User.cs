@@ -28,6 +28,12 @@ public class User : IdentityUser
         Email = email;
         UserName = firstName + " " + lastName;
     }
+
+    public void Update(string firstName, string lastName)
+    {
+        FirstName = firstName;
+        LastName = lastName;
+    }
     public virtual ICollection<GroupUser> GroupUsers { get; set; } = [];
     public ICollection<WaiterSalary> WaiterSalaries { get; set; } = [];
     public ICollection<Attendance> Attendances { get; set; } = [];

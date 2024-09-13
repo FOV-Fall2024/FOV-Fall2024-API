@@ -29,4 +29,9 @@ public class Customer : BaseAuditableEntity, IsSoftDeleted
 
     public void UpdateState(bool isDeleted) => IsDeleted = isDeleted;
 
+    public void Update(string address)
+    {
+        Address = address;
+    }
+
 }

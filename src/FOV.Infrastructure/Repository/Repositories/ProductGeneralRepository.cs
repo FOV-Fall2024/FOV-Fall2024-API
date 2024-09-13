@@ -1,5 +1,5 @@
-﻿using FOV.Domain.Entities.ComboAggregator;
-using FOV.Domain.Entities.DTOs;
+﻿using FOV.Domain.DTOs;
+using FOV.Domain.Entities.ComboAggregator;
 using FOV.Domain.Entities.ProductGeneralAggregator;
 using FOV.Infrastructure.Data;
 using FOV.Infrastructure.Repository.IRepositories;
