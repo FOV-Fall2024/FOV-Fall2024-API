@@ -12,7 +12,7 @@ public class Attendance : BaseAuditableEntity
 {
     public DateTime CheckInTime { get; set; }
     public DateTime? CheckOutTime { get; set; }
-    public Guid EmployeeId { get; set; }
+    public string EmployeeId { get; set; }
     public User? Employee { get; set; }
     public Guid WaiterScheduleId { get; set; }
     public WaiterSchedule? WaiterSchedule { get; set; }

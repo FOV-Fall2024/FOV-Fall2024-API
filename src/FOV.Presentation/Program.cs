@@ -34,6 +34,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.ApplyMigrations();
 await app.InitializeDatabaseAsync();
 app.UseHttpsRedirection();
 // Map the default Identity API endpoints except for registration

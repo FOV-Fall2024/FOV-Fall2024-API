@@ -40,10 +40,8 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("EmployeeId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("EmployeeId1")
+                    b.Property<string>("EmployeeId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTimeOffset>("LastModified")
@@ -57,7 +55,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeId1");
+                    b.HasIndex("EmployeeId");
 
                     b.HasIndex("WaiterScheduleId");
 
@@ -119,7 +117,7 @@ namespace FOV.Infrastructure.Migrations
                             Id = new Guid("941bcca9-52a6-41f7-9403-06cc5fa703ea"),
                             ComboName = "Combo 1",
                             Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ExpiredDate = new DateTime(2024, 10, 6, 7, 59, 51, 580, DateTimeKind.Utc).AddTicks(8138),
+                            ExpiredDate = new DateTime(2024, 10, 13, 8, 5, 8, 697, DateTimeKind.Utc).AddTicks(5813),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             PercentReduce = 10.0m,
@@ -133,7 +131,7 @@ namespace FOV.Infrastructure.Migrations
                             Id = new Guid("3907a193-c2ae-4f40-936b-9a2438595123"),
                             ComboName = "Combo 2",
                             Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ExpiredDate = new DateTime(2024, 11, 6, 7, 59, 51, 580, DateTimeKind.Utc).AddTicks(8152),
+                            ExpiredDate = new DateTime(2024, 11, 13, 8, 5, 8, 697, DateTimeKind.Utc).AddTicks(5825),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             PercentReduce = 5.0m,
@@ -147,7 +145,7 @@ namespace FOV.Infrastructure.Migrations
                             Id = new Guid("921b269a-db6e-4a1d-b285-70df523e010e"),
                             ComboName = "Combo 3",
                             Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ExpiredDate = new DateTime(2024, 11, 6, 7, 59, 51, 580, DateTimeKind.Utc).AddTicks(8155),
+                            ExpiredDate = new DateTime(2024, 11, 13, 8, 5, 8, 697, DateTimeKind.Utc).AddTicks(5830),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             PercentReduce = 5.0m,
@@ -716,7 +714,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.Property<string>("VnpTxnRef")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(max)");
 
                     b.HasKey("Id");
 
@@ -1613,7 +1611,9 @@ namespace FOV.Infrastructure.Migrations
                 {
                     b.HasOne("FOV.Domain.Entities.UserAggregator.User", "Employee")
                         .WithMany("Attendances")
-                        .HasForeignKey("EmployeeId1");
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("FOV.Domain.Entities.WaiterScheduleAggregator.WaiterSchedule", "WaiterSchedule")
                         .WithMany("Attendances")

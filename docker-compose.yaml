@@ -1,7 +1,15 @@
-version: "3.9"
-
 services:
-  # Service for the PostgreSQL database
+  fov.presentation:
+    container_name: fov_api
+    image: ${DOCKER_REGISTRY-}fovpresentation
+    build:
+      context: .
+      dockerfile: src/FOV.Presentation/Dockerfile
+    volumes:
+      - data-protection-keys:/home/app/.aspnet/DataProtection-Keys
+    networks:
+      - monitoring
+
   database:
     image: postgres:15
     container_name: fov_database
@@ -10,17 +18,24 @@ services:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
       POSTGRES_DB: RestaurantManagementDatabase
+    volumes:
+      - ./.containers/products-db:/var/lib/postgresql/data
     ports:
       - "5436:5432"
+    networks:
+      - monitoring
 
-  # Service for the Redis cache
   redis:
     image: redis:7.0.12
     container_name: redis-cache
     ports:
       - "6380:6379"
+    networks:
+      - monitoring
+
   prometheus:
     image: prom/prometheus:latest
+    container_name: prometheus
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
@@ -30,6 +45,7 @@ services:
 
   grafana:
     image: grafana/grafana:latest
+    container_name: grafana
     ports:
       - "3000:3000"
     networks:
@@ -37,7 +53,7 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
-  
+
   elasticsearch:
     container_name: els
     image: elasticsearch:8.15.0
@@ -63,7 +79,6 @@ services:
     networks:
       - monitoring
 
-
 networks:
   monitoring:
     name: monitoring
@@ -71,3 +86,4 @@ networks:
 
 volumes:
   elasticsearch-data:
+  data-protection-keys:
