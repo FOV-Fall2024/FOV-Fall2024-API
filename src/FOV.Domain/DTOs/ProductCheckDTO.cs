@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FOV.Domain.Entities.DTOs;
+namespace FOV.Domain.DTOs;
 public class ProductCheckDTO
 {
 

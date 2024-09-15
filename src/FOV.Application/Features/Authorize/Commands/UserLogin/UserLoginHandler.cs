@@ -31,7 +31,7 @@ public class UserLoginHandler(UserManager<User> userManager, IConfiguration conf
     }
 
 
-    private static string GenerateJWT(User user, IList<string> userRoles, string secretKey, string issuer, string audience)
+    public static string GenerateJWT(User user, IList<string> userRoles, string secretKey, string issuer, string audience)
     {
 
         DateTime secretKeyDatetime = DateTime.UtcNow;
