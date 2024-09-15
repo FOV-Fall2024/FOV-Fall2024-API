@@ -19,11 +19,12 @@ jobs:
           timeout: 60s
           script: |
             cd /home/vktrng/deployment/
-            
+
             if [ -d ./FOV-Fall2024-API ]; then
               echo "Directory exists. Pulling latest changes..."
-              cd FOV-Fall2024-API
-              git pull origin main
+                sudo su Viktor1507
+
+              rm -rf FOV-Fall2024-API
             else
               echo "Cloning the repository..."
               git clone https://github.com/FOV-Fall2024/FOV-Fall2024-API.git
