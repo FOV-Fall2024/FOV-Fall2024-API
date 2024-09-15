@@ -21,8 +21,7 @@ jobs:
           cd /home/vktrng/deployment/
           ls -la
           if [ -d ./FOV-Fall2024-API ]; then
-            echo "Removing old project directory..."
-            rm -rf FOV-Fall2024-API
+            git pull origin main
           fi
 
           git clone https://github.com/FOV-Fall2024/FOV-Fall2024-API.git
