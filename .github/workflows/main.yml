@@ -22,8 +22,8 @@ jobs:
 
             if [ -d ./FOV-Fall2024-API ]; then
               echo "Directory exists. Pulling latest changes..."
-                sudo su Viktor1507
-
+                sudo su
+                cd deployment
               rm -rf FOV-Fall2024-API
             else
               echo "Cloning the repository..."
