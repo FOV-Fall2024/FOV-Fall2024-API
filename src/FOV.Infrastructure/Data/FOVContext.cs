@@ -75,9 +75,9 @@ public class FOVContext : IdentityDbContext<User>, IApplicationDbContext
     {
         base.OnModelCreating(builder);
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-        builder.Entity<Payments>()
-    .Property(p => p.VnpTxnRef)
-    .HasColumnType("varchar(max)"); // or "text"
+    //    builder.Entity<Payments>()
+    //.Property(p => p.VnpTxnRef)
+    //.HasColumnType("varchar(max)"); // or "text"
 
     }
 }
