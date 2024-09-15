@@ -1,0 +1,29 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ docker_config ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:       
+    - name: Deploy using ssh
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        port: 2222
+        timeout: 60s
+        script: |
+          cd /home/vktrng/deployment/
+          if [ -d ./FOV-Fall2024-API ]; then
+            cd FOV-Fall2024-API
+            git pull origin main
+          else
+            git clone https://github.com/FOV-Fall2024/FOV-Fall2024-API.git
+            cd FOV-Fall2024-API
+          fi
+          docker-compose --project-name fov up -d
