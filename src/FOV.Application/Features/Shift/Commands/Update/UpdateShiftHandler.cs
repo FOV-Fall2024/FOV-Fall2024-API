@@ -9,7 +9,7 @@ using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Shift.Commands.Update;
-public sealed record UpdateShiftCommand(Guid Id, string? ShiftName, DateTime? StartTime, DateTime? EndTime) : IRequest<Result>;
+public sealed record UpdateShiftCommand(Guid Id, string? ShiftName, TimeSpan? StartTime, TimeSpan? EndTime) : IRequest<Result>;
 public class UpdateShiftHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<UpdateShiftCommand, Result>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FOV.Infrastructure.Migrations
 {
     [DbContext(typeof(FOVContext))]
-    [Migration("20240905095531_SeedData")]
-    partial class SeedData
+    [Migration("20240907025333_Domain")]
+    partial class Domain
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -122,7 +122,7 @@ namespace FOV.Infrastructure.Migrations
                             Id = new Guid("941bcca9-52a6-41f7-9403-06cc5fa703ea"),
                             ComboName = "Combo 1",
                             Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ExpiredDate = new DateTime(2024, 10, 5, 9, 55, 31, 396, DateTimeKind.Utc).AddTicks(2766),
+                            ExpiredDate = new DateTime(2024, 10, 7, 2, 53, 33, 355, DateTimeKind.Utc).AddTicks(3108),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             PercentReduce = 10.0m,
@@ -136,7 +136,7 @@ namespace FOV.Infrastructure.Migrations
                             Id = new Guid("3907a193-c2ae-4f40-936b-9a2438595123"),
                             ComboName = "Combo 2",
                             Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ExpiredDate = new DateTime(2024, 11, 5, 9, 55, 31, 396, DateTimeKind.Utc).AddTicks(2779),
+                            ExpiredDate = new DateTime(2024, 11, 7, 2, 53, 33, 355, DateTimeKind.Utc).AddTicks(3119),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             PercentReduce = 5.0m,
@@ -150,7 +150,7 @@ namespace FOV.Infrastructure.Migrations
                             Id = new Guid("921b269a-db6e-4a1d-b285-70df523e010e"),
                             ComboName = "Combo 3",
                             Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ExpiredDate = new DateTime(2024, 11, 5, 9, 55, 31, 396, DateTimeKind.Utc).AddTicks(2782),
+                            ExpiredDate = new DateTime(2024, 11, 7, 2, 53, 33, 355, DateTimeKind.Utc).AddTicks(3124),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             PercentReduce = 5.0m,
@@ -717,6 +717,10 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<byte>("PaymentStatus")
                         .HasColumnType("smallint");
 
+                    b.Property<string>("VnpTxnRef")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
@@ -1180,8 +1184,8 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("EndTime")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<TimeSpan?>("EndTime")
+                        .HasColumnType("interval");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -1195,8 +1199,8 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("ShiftName")
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("StartTime")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<TimeSpan?>("StartTime")
+                        .HasColumnType("interval");
 
                     b.HasKey("Id");
 
@@ -1230,26 +1234,14 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("TableCode")
                         .HasColumnType("text");
 
-                    b.Property<string>("TableDescription")
-                        .HasColumnType("text");
-
-                    b.Property<string>("TableImage")
-                        .HasColumnType("text");
-
-                    b.Property<string>("TableNumber")
-                        .HasColumnType("text");
+                    b.Property<int>("TableNumber")
+                        .HasColumnType("integer");
 
                     b.Property<string>("TableQRCode")
                         .HasColumnType("text");
 
-                    b.Property<string>("TableState")
-                        .HasColumnType("text");
-
-                    b.Property<string>("TableStatus")
-                        .HasColumnType("text");
-
-                    b.Property<string>("TableType")
-                        .HasColumnType("text");
+                    b.Property<byte>("TableStatus")
+                        .HasColumnType("smallint");
 
                     b.HasKey("Id");
 

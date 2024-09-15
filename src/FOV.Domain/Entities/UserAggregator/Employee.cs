@@ -1,5 +1,6 @@
 ﻿using FOV.Domain.Common;
 using FOV.Domain.Entities.RestaurantAggregator;
+using FOV.Domain.Entities.WaiterScheduleAggregator;
 
 namespace FOV.Domain.Entities.UserAggregator;
 public class Employee : BaseAuditableEntity, IsSoftDeleted
@@ -11,7 +12,7 @@ public class Employee : BaseAuditableEntity, IsSoftDeleted
     public User? User { get; set; }
     public string UserId { get; set; } = string.Empty;
     public bool IsDeleted { get; set; }
-
+    public ICollection<WaiterSchedule> WaiterSchedules { get; set; } = [];
     public Restaurant? Restaurant { get; set; }
 
     public Guid RestaurantId { get; set; }

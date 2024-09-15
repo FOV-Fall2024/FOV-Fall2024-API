@@ -14,6 +14,5 @@ public class WaiterScheduleConfiguration : IEntityTypeConfiguration<WaiterSchedu
     {
         builder.HasKey(x => x.Id);
         builder.HasMany(x => x.Attendances).WithOne(x => x.WaiterSchedule).HasForeignKey(x => x.WaiterScheduleId);
-        builder.HasOne(x => x.User).WithMany(x => x.WaiterSchedules).HasForeignKey(x => x.UserId);
     }
 }

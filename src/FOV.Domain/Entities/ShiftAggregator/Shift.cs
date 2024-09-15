@@ -10,8 +10,8 @@ namespace FOV.Domain.Entities.ShiftAggregator;
 public class Shift : BaseAuditableEntity, IsSoftDeleted
 {
     public string? ShiftName { get; set; }
-    public DateTime? StartTime { get; set; }
-    public DateTime? EndTime { get; set; }
+    public TimeSpan? StartTime { get; set; }
+    public TimeSpan? EndTime { get; set; }
     public ICollection<WaiterSchedule> WaiterSchedules { get; set; } = [];
     public bool IsDeleted { get; set; }
 
@@ -19,13 +19,13 @@ public class Shift : BaseAuditableEntity, IsSoftDeleted
     {
 
     }
-    public Shift(string? shiftName, DateTime? startTime, DateTime? endTime)
+    public Shift(string? shiftName, TimeSpan? startTime, TimeSpan? endTime)
     {
         this.ShiftName = shiftName;
         this.StartTime = startTime;
         this.EndTime = endTime;
     }
-    public void Update(string? shiftName, DateTime? startTime, DateTime? endTime)
+    public void Update(string? shiftName, TimeSpan? startTime, TimeSpan? endTime)
     {
         this.ShiftName = shiftName;
         this.StartTime = startTime;

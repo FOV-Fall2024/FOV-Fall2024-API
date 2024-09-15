@@ -11,26 +11,26 @@ using FOV.Domain.Entities.UserAggregator;
 namespace FOV.Domain.Entities.WaiterScheduleAggregator;
 public class WaiterSchedule : BaseAuditableEntity
 {
-    public DateTime DateTime { get; set; }
-    public string? UserId { get; set; }
+    public DateOnly DateTime { get; set; }
+    public string? EmployeeId { get; set; }
     public Guid ShiftId { get; set; }
     public Shift? Shift { get; set; }
-    public User? User { get; set; }
+    public Employee? Employee { get; set; }
     public ICollection<Attendance> Attendances { get; set; } = [];
     public WaiterSchedule()
     {
 
     }
-    public WaiterSchedule(DateTime dateTime, Guid shiftId, string? userId)
+    public WaiterSchedule(DateOnly dateTime, Guid shiftId, string? employeeId)
     {
         this.DateTime = dateTime;
         this.ShiftId = shiftId;
-        this.UserId = userId;
+        this.EmployeeId = employeeId;
     }
-    public void Update(DateTime dateTime, Guid shiftId, string? userId)
+    public void Update(DateOnly dateTime, Guid shiftId, string? employeeId)
     {
         this.DateTime = dateTime;
         this.ShiftId = shiftId;
-        this.UserId = userId;
+        this.EmployeeId = employeeId;
     }
 }

@@ -7,7 +7,7 @@ using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Shift.Commands.Create;
-public record CreateShiftCommand(string ShiftName, DateTime StartTime, DateTime EndTime) : IRequest<Guid>;
+public record CreateShiftCommand(string ShiftName, TimeSpan StartTime, TimeSpan EndTime) : IRequest<Guid>;
 public class CreateShiftHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<CreateShiftCommand, Guid>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
