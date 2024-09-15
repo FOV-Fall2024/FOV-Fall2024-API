@@ -31,4 +31,5 @@ jobs:
             fi
             
             echo "Starting Docker containers..."
+            cd ..
             docker-compose --project-name fov up -d
