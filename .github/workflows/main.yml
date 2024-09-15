@@ -31,5 +31,4 @@ jobs:
             fi
             
             ls
-            cd ../
             docker-compose --project-name fov up -d
