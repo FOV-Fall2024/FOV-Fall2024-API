@@ -24,7 +24,7 @@ jobs:
               echo "Directory exists. Pulling latest changes..."
                 sudo su
                 cd deployment
-              rm -rf FOV-Fall2024-API
+              git clone origin main
             else
               echo "Cloning the repository..."
               git clone https://github.com/FOV-Fall2024/FOV-Fall2024-API.git
