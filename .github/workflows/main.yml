@@ -26,4 +26,5 @@ jobs:
             git clone https://github.com/FOV-Fall2024/FOV-Fall2024-API.git
             cd FOV-Fall2024-API
           fi
+          Get-ChildItem -Path .
           docker-compose --project-name fov up -d
