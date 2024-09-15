@@ -65,7 +65,7 @@ public class CreateTableHandler(IUnitOfWorks unitOfWorks, StorageHandler storage
             qrCodeImage.Save(memoryStream, ImageFormat.Png);
             memoryStream.Seek(0, SeekOrigin.Begin);
 
-            var storageFile = await _storageHandler.UploadQrImageAsync(memoryStream, fileName);
+            var storageFile = await _storageHandler.UploadQrImageForTableAsync(memoryStream, fileName);
             return storageFile.FileUrl;
         }
     }

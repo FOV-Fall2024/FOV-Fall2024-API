@@ -27,10 +27,23 @@ public class StorageHandler
         });
     }
 
-    public async Task<StorageFile> UploadQrImageAsync(Stream qrImageStream, string fileName)
+    public async Task<StorageFile> UploadQrImageForTableAsync(Stream qrImageStream, string fileName)
     {
         var fileUrl = await _firebaseStorage
             .Child("qrcodes")
+            .Child(fileName)
+            .PutAsync(qrImageStream);
+
+        return new StorageFile
+        {
+            FileName = fileName,
+            FileUrl = fileUrl
+        };
+    }
+    public async Task<StorageFile> UploadQrImageForAttendanceAsync(Stream qrImageStream, string fileName)
+    {
+        var fileUrl = await _firebaseStorage
+            .Child("attendance")
             .Child(fileName)
             .PutAsync(qrImageStream);
 
