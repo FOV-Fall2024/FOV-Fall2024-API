@@ -18,20 +18,7 @@ jobs:
         port: 2222
         timeout: 60s
         script: |
-          cd /home/vktrng/deployment/
-          
-          # Remove old directory if it exists
-          if [ -d ./FOV-Fall2024-API ]; then
-            echo "Removing old project directory..."
-            rm -rf FOV-Fall2024-API
-          fi
-
-          # Clone the latest version from the docker_config branch
-          git clone --branch docker_config https://github.com/FOV-Fall2024/FOV-Fall2024-API.git
-          cd FOV-Fall2024-API
-          
-          # List files to verify successful clone
-          ls -al
-          
+          cd /home/vktrng/deployment/FOV-Fall2024-API
+          git pull origin docker_config
           # Bring up the Docker container
           docker-compose --project-name fov up -d
