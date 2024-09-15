@@ -32,7 +32,7 @@ services:
      POSTGRES_PASSWORD: admin
      POSTGRES_DB: RestaurantManagementDatabase
     volumes:
-     - ./.containers/products-db:/var/lib/postgresql/data
+     - postgres_data:/var/lib/postgresql/data
     ports:
      - "5433:5432"
     networks:
@@ -98,5 +98,6 @@ networks:
     driver: bridge
 
 volumes:
+  postgres_data: {} 
   elasticsearch-data:
   data-protection-keys:
