@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Reflection.Emit;
 using FOV.Domain.Entities.AttendanceAggregator;
 using FOV.Domain.Entities.ComboAggregator;
 using FOV.Domain.Entities.GroupChatAggregator;
@@ -16,6 +17,7 @@ using FOV.Domain.Entities.WaiterScheduleAggregator;
 using FOV.Infrastructure.Data.Configurations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using static Elastic.Clients.Elasticsearch.JoinField;
 
 namespace FOV.Infrastructure.Data;
 
@@ -73,5 +75,9 @@ public class FOVContext : IdentityDbContext<User>, IApplicationDbContext
     {
         base.OnModelCreating(builder);
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+    //    builder.Entity<Payments>()
+    //.Property(p => p.VnpTxnRef)
+    //.HasColumnType("varchar(max)"); // or "text"
+
     }
 }
