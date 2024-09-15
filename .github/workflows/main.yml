@@ -30,6 +30,6 @@ jobs:
               cd FOV-Fall2024-API
             fi
             
-            echo "Starting Docker containers..."
-            cd ..
+            ls
+            cd ../
             docker-compose --project-name fov up -d
