@@ -23,7 +23,7 @@ jobs:
             if [ -d ./FOV-Fall2024-API ]; then
               sudo su
               ls
-              cd ./deployment/FOV-Fall2024-API
+              cd ./FOV-Fall2024-API
               git pull origin main
             else
               echo "Cloning the repository..."
