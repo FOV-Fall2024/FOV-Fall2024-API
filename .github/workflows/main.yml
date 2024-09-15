@@ -23,7 +23,7 @@ jobs:
             if [ -d ./FOV-Fall2024-API ]; then
               echo "Directory exists. Pulling latest changes..."
               sudo su
-              cd deployment/FOV-Fall2024-API
+              cd ./deployment/FOV-Fall2024-API
               git pull origin main
             else
               echo "Cloning the repository..."
