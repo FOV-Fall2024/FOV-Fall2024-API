@@ -7,6 +7,9 @@ services:
       dockerfile: src/FOV.Presentation/Dockerfile
     depends_on:
       - database
+    ports:
+      - "5000:5000"
+      - "5001:5001"
     volumes:
       - data-protection-keys:/home/app/.aspnet/DataProtection-Keys
     networks:
