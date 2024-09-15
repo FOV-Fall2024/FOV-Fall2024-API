@@ -8,23 +8,27 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    steps:       
-    - name: Deploy using ssh
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
-        port: 2222
-        timeout: 60s
-        script: |
-          cd /home/vktrng/deployment/
-          ls -la
-          if [ -d ./FOV-Fall2024-API ]; then
-            git pull origin main
-          fi
-
-          git clone https://github.com/FOV-Fall2024/FOV-Fall2024-API.git
-          cd FOV-Fall2024-API
-          
-          docker-compose --project-name fov up -d
+    steps:
+      - name: Deploy using SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: 2222
+          timeout: 60s
+          script: |
+            cd /home/vktrng/deployment/
+            
+            if [ -d ./FOV-Fall2024-API ]; then
+              echo "Directory exists. Pulling latest changes..."
+              cd FOV-Fall2024-API
+              git pull origin main
+            else
+              echo "Cloning the repository..."
+              git clone https://github.com/FOV-Fall2024/FOV-Fall2024-API.git
+              cd FOV-Fall2024-API
+            fi
+            
+            echo "Starting Docker containers..."
+            docker-compose --project-name fov up -d
