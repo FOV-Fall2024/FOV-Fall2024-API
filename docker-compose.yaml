@@ -7,9 +7,17 @@ services:
       dockerfile: src/FOV.Presentation/Dockerfile
     depends_on:
       - database
+      - redis
     ports:
       - "5000:5000"
       - "5001:5001"
+      - "8080:8080"
+      - "8081:8081"
+    environment:
+      - "/etc/timezone:/etc/timezone:ro" 
+      - "/etc/localtime:/etc/localtime:ro"
+      - CONNECTIONSTRINGS__PostgresConnection=Server=fov_database;Port=5432;Database=RestaurantManagementDatabase;Username=admin;Password=admin;
+      - CONNECTIONSTRINGS__RedisConnection=Server=redis:6380
     volumes:
       - data-protection-keys:/home/app/.aspnet/DataProtection-Keys
     networks:
@@ -20,15 +28,20 @@ services:
     container_name: fov_database
     restart: always
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: RestaurantManagementDatabase
+     POSTGRES_USER: admin
+     POSTGRES_PASSWORD: admin
+     POSTGRES_DB: RestaurantManagementDatabase
     volumes:
-      - ./.containers/products-db:/var/lib/postgresql/data
+     - ./.containers/products-db:/var/lib/postgresql/data
     ports:
-      - "5433:5432"
+     - "5433:5432"
     networks:
-      - monitoring
+    - monitoring
+    healthcheck:
+     test: ["CMD-SHELL", "pg_isready -U admin -d RestaurantManagementDatabase"]
+     interval: 10s
+     timeout: 5s
+     retries: 5
 
   redis:
     image: redis:7.0.12
