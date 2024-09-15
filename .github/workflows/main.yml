@@ -19,6 +19,7 @@ jobs:
         timeout: 60s
         script: |
           cd /home/vktrng/deployment/FOV-Fall2024-API
+          git checkout main
           git pull origin main
           # Bring up the Docker container
           docker-compose --project-name fov up -d
