@@ -8,7 +8,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    steps:
+    steps:       
     - name: Deploy using ssh
       uses: appleboy/ssh-action@master
       with:
@@ -19,15 +19,13 @@ jobs:
         timeout: 60s
         script: |
           cd /home/vktrng/deployment/
-          
+          ls -la
           if [ -d ./FOV-Fall2024-API ]; then
             echo "Removing old project directory..."
-            sudo rm -rf FOV-Fall2024-API || { echo "Failed to remove directory"; exit 1; }
+            rm -rf FOV-Fall2024-API
           fi
 
-          echo "Cloning the repository..."
-          git clone https://github.com/FOV-Fall2024/FOV-Fall2024-API.git || { echo "Failed to clone repository"; exit 1; }
+          git clone https://github.com/FOV-Fall2024/FOV-Fall2024-API.git
           cd FOV-Fall2024-API
-
-          echo "Starting Docker containers..."
-          docker-compose --project-name fov up -d || { echo "Failed to start containers"; exit 1; }
+          
+          docker-compose --project-name fov up -d
