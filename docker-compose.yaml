@@ -1,3 +1,5 @@
+version: '3.8'  # Specify the version of Docker Compose
+
 services:
   fov.presentation:
     container_name: fov_api
@@ -14,10 +16,9 @@ services:
       - "8080:8080"
       - "8081:8081"
     environment:
-      - "/etc/timezone:/etc/timezone:ro" 
-      - "/etc/localtime:/etc/localtime:ro"
-      - CONNECTIONSTRINGS__PostgresConnection=Server=vktrng.ddns.net;Port=5433;Database=RestaurantManagementDatabase;Username=admin;Password=admin;
-      - CONNECTIONSTRINGS__RedisConnection=Server=redis:6380
+      - TZ=Etc/UTC  # Set timezone
+      - CONNECTIONSTRINGS__PostgresConnection=Host=fov_database;Port=5432;Database=RestaurantManagementDatabase;Username=admin;Password=admin;
+      - CONNECTIONSTRINGS__RedisConnection=redis:6379
     volumes:
       - data-protection-keys:/home/app/.aspnet/DataProtection-Keys
     networks:
@@ -28,15 +29,15 @@ services:
     container_name: fov_database
     restart: always
     environment:
-     POSTGRES_USER: admin
-     POSTGRES_PASSWORD: admin
-     POSTGRES_DB: RestaurantManagementDatabase
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: RestaurantManagementDatabase
     volumes:
-     - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     ports:
-     - "5433:5432"
+      - "5433:5432"
     networks:
-    - monitoring
+      - monitoring
 
   redis:
     image: redis:7.0.12
@@ -94,10 +95,9 @@ services:
 
 networks:
   monitoring:
-    name: monitoring
     driver: bridge
 
 volumes:
-  postgres_data: {} 
-  elasticsearch-data:
-  data-protection-keys:
+  postgres_data: {}
+  elasticsearch-data: {}
+  data-protection-keys: {}
