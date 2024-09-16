@@ -22,6 +22,8 @@ public class Ingredient : BaseAuditableEntity
 
     public virtual ICollection<IngredientTransaction> IngredientTransactions { get; set; } = [];
 
+    public virtual ICollection<IngredientUnit> IngredientUnits { get; set; } = [];
+
     public Ingredient()
     {
 
