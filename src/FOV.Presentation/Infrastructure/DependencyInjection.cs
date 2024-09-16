@@ -108,7 +108,8 @@ public static class DependencyInjection
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(c =>
         {
-            c.SwaggerDoc("v1", new() { Title = "Vegetarian Restaurant  API", Version = "v1" });
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "FOV API", Version = "v1" });
+            c.EnableAnnotations();
             //c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             //{
             //    In = ParameterLocation.Header,

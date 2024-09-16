@@ -29,7 +29,7 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.UseSwagger();
-app.UseSwaggerUI();
+
 app.ApplyMigrations();
 
 await app.InitializeDatabaseAsync();
@@ -43,5 +43,8 @@ app.UseCookiePolicy();
 app.UseAuthorization();
 app.UseCors("AllowAllOrigins");
 app.MapControllers();
-
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "FOV API V1");
+});
 app.Run();

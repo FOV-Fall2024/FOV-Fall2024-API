@@ -6,7 +6,7 @@ namespace FOV.Application.Features.IngredientTypes.Commands.Create;
 public record CreateIngredientTypeCommand(string Name, string Description) : IRequest<Guid>;
 
 
-public class CreateIngredientTypeHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<CreateIngredientTypeCommand, Guid>
+public class CreateParentIngredientTypeHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<CreateIngredientTypeCommand, Guid>
 {
 
     private readonly IUnitOfWorks _unitOfWork = unitOfWorks;

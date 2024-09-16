@@ -4,9 +4,9 @@ using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 
 namespace FOV.Application.Features.IngredientTypes.Commands.Create;
 
-public sealed class CreateIngredientTypeValidator : AbstractValidator<CreateIngredientTypeCommand>
+public sealed class CreateParentIngredientTypeValidator : AbstractValidator<CreateIngredientTypeCommand>
 {
-    public CreateIngredientTypeValidator(IngredientTypeValidator validator)
+    public CreateParentIngredientTypeValidator(IngredientTypeValidator validator)
     {
         RuleFor(x => x.Name).NotEmpty().SetValidator(validator);
         RuleFor(x => x.Description).NotNull();
