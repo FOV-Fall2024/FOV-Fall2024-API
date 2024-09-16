@@ -10,14 +10,15 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace FOV.Application.Features.Authorize.Commands.UserLogin;
 
-public sealed record UserLoginCommand(string Email, string Password) : IRequest<UserToken>;
+public sealed record UserLoginCommand(string Email, string Password) : IRequest<UserResponse>;
 public sealed record UserToken(string AccessToken, string RefreshToken);
-public class UserLoginHandler(UserManager<User> userManager, IConfiguration configuration) : IRequestHandler<UserLoginCommand, UserToken>
+public sealed record UserResponse(string Id, string FirstName, string LastName, string Email, string Role, string AccessToken, string RefreshToken);
+public class UserLoginHandler(UserManager<User> userManager, IConfiguration configuration) : IRequestHandler<UserLoginCommand, UserResponse>
 {
     private readonly UserManager<User> _userManager = userManager;
     private readonly IConfiguration _configuration = configuration;
 
-    public async Task<UserToken> Handle(UserLoginCommand request, CancellationToken cancellationToken)
+    public async Task<UserResponse> Handle(UserLoginCommand request, CancellationToken cancellationToken)
     {
         var user = await _userManager.FindByEmailAsync(request.Email) ?? throw new AppException("Wrong Email");
 
@@ -27,7 +28,7 @@ public class UserLoginHandler(UserManager<User> userManager, IConfiguration conf
 
 
         string token = GenerateJWT(user, roles, _configuration["JWT:SecretKey"] ?? throw new AppException(), _configuration["JWT:ValidIssuer"] ?? throw new AppException(), _configuration["JWT:ValidAudience"] ?? throw new AppException());
-        return new UserToken(token, "not");
+        return new UserResponse(user.Id, user.FirstName, user.LastName, user.Email, roles.FirstOrDefault() ,token, "not");
     }
 
 

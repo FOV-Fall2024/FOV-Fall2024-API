@@ -48,7 +48,7 @@ public class AuthController(ISender sender) : DefaultController
     {
         var response = await _sender.Send(command);
 
-        return Ok(new OK_Result<UserToken>("Login Successfully", response));
+        return Ok(new OK_Result<UserResponse>("Login Successfully", response));
     }
 
     // [x] View Profile
