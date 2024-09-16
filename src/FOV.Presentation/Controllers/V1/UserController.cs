@@ -3,6 +3,7 @@ using FOV.Application.Features.Users.Commands.Active;
 using FOV.Application.Features.Users.Commands.Inactive;
 using FOV.Application.Features.Users.Queries.GetAllEmployee;
 using FOV.Application.Features.Users.Queries.GetAllUser;
+using FOV.Presentation.Infrastructure.Core;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using StackExchange.Redis;
@@ -24,7 +25,13 @@ public class UserController(IMediator mediator, IDatabase database) : DefaultCon
     [HttpPost]
     public async Task<IActionResult> Create(CreateEmployeeCommand request)
     {
-        return Ok(await _mediator.Send(request));
+        var response = await _mediator.Send(request);
+
+        if (response.IsSuccess)
+        {
+            return Ok(new OK_Result<string>(response.Value, null));
+        }
+        return BadRequest(new OK_Result<List<string>>("Tạo tài khoản thất bại", response.Errors.Select(e => e.Message).ToList()));
     }
 
     [HttpGet("users")]

@@ -5,6 +5,7 @@ using FOV.Application.Features.Products.Commons.Update;
 using FOV.Application.Features.Products.Queries.GetMenu;
 using FOV.Application.Features.Products.Queries.GetProduct;
 using FOV.Application.Features.Restaurants.Commons.Create;
+using FOV.Application.Features.Restaurants.Queries.Get;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,6 +21,13 @@ public class RestaurantController(IMediator mediator) : DefaultController
     public async Task<IActionResult> AddRestaurant(CreateRestaurantCommand command)
     {
         var response = await _mediator.Send(command);
+        return Ok(response);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetMenu([FromQuery] GetRestaurantCommand query)
+    {
+        var response = await _mediator.Send(query);
         return Ok(response);
     }
 

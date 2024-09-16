@@ -8,16 +8,16 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FOV.Application.Features.Authorize.Commands.CreateEmployee;
 
-public sealed record CreateEmployeeCommand(string LastName, string FirstName, string Address, string Email, int RoleId, Guid RestaurantId) : IRequest<Result>;
+public sealed record CreateEmployeeCommand(string LastName, string FirstName, string Address, string Email, int RoleId, Guid RestaurantId) : IRequest<Result<string>>;
 public sealed record GenerateRole(string RoleName, string Code);
 
-public partial class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager, RoleManager<IdentityRole> roleManager) : IRequestHandler<CreateEmployeeCommand, Result>
+public partial class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager, RoleManager<IdentityRole> roleManager) : IRequestHandler<CreateEmployeeCommand, Result<string>>
 {
     private readonly UserManager<User> _userManager = userManager;
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     private readonly RoleManager<IdentityRole> _roleManager = roleManager;
 
-    public async Task<Result> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
+    public async Task<Result<string>> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
     {
         var generate = await GenerateCode(request.RoleId);
 
@@ -49,7 +49,14 @@ public partial class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager
         await _unitOfWorks.EmployeeRepository.AddAsync(employee);
         await _unitOfWorks.SaveChangeAsync();
 
-        return Result.Ok();
+        string message = request.RoleId switch
+        {
+            1 => "Tạo tài khoản quản lý thành công",
+            2 => "Tạo tài khoản nhân viên thành công",
+            _ => "Tạo tài khoản thành công"
+        };
+
+        return Result.Ok(message);
     }
 
     // 1. Manager 2.Waiter 3.Cook
@@ -86,7 +93,7 @@ public partial class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager
         var users = await _userManager.GetUsersInRoleAsync(UserRole(roleId));
         return users.Count == 0
             ? new GenerateRole(UserRole(roleId), DefaultRoleValue(roleId))
-            : new GenerateRole(UserRole(roleId), IncrementRoleCode(users.FirstOrDefault().Employee.EmployeeCode));
+            : new GenerateRole(UserRole(roleId), IncrementRoleCode(users.FirstOrDefault()?.Employee?.EmployeeCode ?? DefaultRoleValue(roleId)));
 
     }
 
