@@ -27,8 +27,8 @@ public class IngredientTypeController(ISender sender) : DefaultController
     [HttpGet("{parentId}")]
     public async Task<IActionResult> GetChildrenIngredientType(Guid parentId)
     {
-        var resposne = await _sender.Send(new GetChildCategoriesCommand(parentId));
-        return Ok(resposne);
+        var response = await _sender.Send(new GetChildCategoriesCommand(parentId));
+        return Ok(response);
     }
 
     //[x] Create 

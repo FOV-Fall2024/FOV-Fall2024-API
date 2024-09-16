@@ -3,7 +3,7 @@ version: '3.8'  # Specify the version of Docker Compose
 services:
   fov.presentation:
     container_name: fov_api
-    image: ${DOCKER_REGISTRY-}fovpresentation
+    image: ${DOCKER_REGISTRY:-fovpresentation}
     build:
       context: .
       dockerfile: src/FOV.Presentation/Dockerfile
@@ -22,7 +22,7 @@ services:
     volumes:
       - data-protection-keys:/home/app/.aspnet/DataProtection-Keys
     networks:
-      - monitoring
+      - fov_network
 
   database:
     image: postgres:15
@@ -37,7 +37,7 @@ services:
     ports:
       - "5433:5432"
     networks:
-      - monitoring
+      - fov_network
 
   redis:
     image: redis:7.0.12
@@ -45,17 +45,17 @@ services:
     ports:
       - "6380:6379"
     networks:
-      - monitoring
+      - fov_network
 
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
     volumes:
-      - ./prometheus/prometheus.yml:/etc/docker/prometheus/prometheus.yml
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
     networks:
-      - monitoring
+      - fov_network
 
   grafana:
     image: grafana/grafana:latest
@@ -63,7 +63,7 @@ services:
     ports:
       - "3000:3000"
     networks:
-      - monitoring
+      - fov_network
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
@@ -79,7 +79,7 @@ services:
       - discovery.type=single-node
       - xpack.security.enabled=false
     networks:
-      - monitoring
+      - fov_network
 
   kibana:
     container_name: kibana
@@ -89,12 +89,12 @@ services:
     depends_on:
       - elasticsearch
     environment:
-      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
     networks:
-      - monitoring
+      - fov_network
 
 networks:
-  monitoring:
+  fov_network:
     driver: bridge
 
 volumes:
