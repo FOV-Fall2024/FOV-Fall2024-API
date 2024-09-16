@@ -16,7 +16,7 @@ services:
     environment:
       - "/etc/timezone:/etc/timezone:ro" 
       - "/etc/localtime:/etc/localtime:ro"
-      - CONNECTIONSTRINGS__PostgresConnection=Server=fov_database;Port=5433;Database=RestaurantManagementDatabase;Username=admin;Password=admin;
+      - CONNECTIONSTRINGS__PostgresConnection=Server=vktrng.ddns.net;Port=5433;Database=RestaurantManagementDatabase;Username=admin;Password=admin;
       - CONNECTIONSTRINGS__RedisConnection=Server=redis:6380
     volumes:
       - data-protection-keys:/home/app/.aspnet/DataProtection-Keys
