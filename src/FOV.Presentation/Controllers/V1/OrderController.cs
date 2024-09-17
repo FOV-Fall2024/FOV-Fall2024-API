@@ -2,8 +2,6 @@
 using FOV.Application.Features.Orders.Commands.ChangeStateOrder;
 using FOV.Application.Features.Orders.Commands.CreateOrder;
 using FOV.Application.Features.Orders.Commands.RefundOrder;
-using FOV.Application.Features.Orders.Commands.Update;
-using FOV.Application.Features.Orders.Queries;
 using FOV.Application.Features.Orders.Queries.GetOrderDetails;
 using FOV.Application.Features.Orders.Queries.GetOrders;
 using MediatR;
