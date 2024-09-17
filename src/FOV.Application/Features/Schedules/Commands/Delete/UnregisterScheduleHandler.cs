@@ -7,7 +7,7 @@ using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Schedules.Commands.Delete;
-public record UnregisterScheduleCommand(string EmployeeId, Guid ScheduleId) : IRequest<bool>;
+public record UnregisterScheduleCommand(Guid EmployeeId, Guid ScheduleId) : IRequest<bool>;
 public class UnregisterScheduleHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<UnregisterScheduleCommand, bool>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;

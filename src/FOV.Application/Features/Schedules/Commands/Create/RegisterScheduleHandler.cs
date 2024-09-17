@@ -10,7 +10,7 @@ using MediatR;
 namespace FOV.Application.Features.Schedules.Commands.Create;
 public record RegisterScheduleCommand(
     Dictionary<DateOnly, List<Guid>> DateShift,
-    string EmployeeId
+    Guid EmployeeId
     ) : IRequest<List<Guid>>;
 public class RegisterScheduleHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<RegisterScheduleCommand, List<Guid>>
 {

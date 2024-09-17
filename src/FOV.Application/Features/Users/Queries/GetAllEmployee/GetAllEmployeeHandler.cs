@@ -1,4 +1,5 @@
 ﻿using FOV.Domain.Entities.UserAggregator;
+using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -16,27 +17,37 @@ public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> u
     {
         var employees = await _unitOfWorks.EmployeeRepository.GetAllAsync(x => x.User);
 
-        // Filter the employees based on the request parameters
-        var filteredEmployees = employees
-            .Where(x =>
-                (string.IsNullOrEmpty(request.UserName) || x.User.UserName.Contains(request.UserName, StringComparison.OrdinalIgnoreCase)) &&
-                (string.IsNullOrEmpty(request.FirstName) || x.User.FirstName.Contains(request.FirstName, StringComparison.OrdinalIgnoreCase)) &&
-                (string.IsNullOrEmpty(request.LastName) || x.User.LastName.Contains(request.LastName, StringComparison.OrdinalIgnoreCase)) &&
-                (string.IsNullOrEmpty(request.Email) || x.User.Email.Contains(request.Email, StringComparison.OrdinalIgnoreCase)) &&
-                (string.IsNullOrEmpty(request.EmployeeCode) || x.EmployeeCode.Contains(request.EmployeeCode, StringComparison.OrdinalIgnoreCase))
-            )
-            .Select(x => new GetAllEmployeeResponse(
-                x.User.Id,
-                x.User.UserName,
-                x.User.FirstName,
-                x.User.LastName,
-                x.User.Email,
-                x.EmployeeCode,
-                x.HireDate,
-               _userManager.GetRolesAsync(x.User).Result.First()
-            ))
-            .ToList();
+        var filterEntity = employees.AsQueryable().CustomFilterV1(new Employee
+        {
+            User = new User
+            {
+                UserName = request.UserName ?? string.Empty,
+                FirstName = request.FirstName ?? string.Empty,
+                Email = request.Email ?? string.Empty,
+                LastName = request.LastName ?? string.Empty,
+            },
+            EmployeeCode = request.EmployeeCode ?? string.Empty
+        });
 
-        return filteredEmployees;
+        var result = new List<GetAllEmployeeResponse>();
+
+        foreach (var employee in filterEntity)
+        {
+            var roles = await _userManager.GetRolesAsync(employee.User);
+            var roleName = roles.FirstOrDefault() ?? string.Empty;
+
+            result.Add(new GetAllEmployeeResponse(
+                employee.User.Id,
+                employee.User.UserName,
+                employee.User.FirstName,
+                employee.User.LastName,
+                employee.User.Email,
+                employee.EmployeeCode,
+                employee.HireDate,
+                roleName
+            ));
+        }
+
+        return result;
     }
 }

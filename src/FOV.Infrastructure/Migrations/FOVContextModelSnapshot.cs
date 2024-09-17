@@ -28,10 +28,10 @@ namespace FOV.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CheckInTime")
+                    b.Property<DateTimeOffset>("CheckInTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime?>("CheckOutTime")
+                    b.Property<DateTimeOffset?>("CheckOutTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTimeOffset>("Created")
@@ -40,14 +40,16 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
-                    b.Property<string>("EmployeeId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
                         .HasColumnType("text");
 
                     b.Property<Guid>("WaiterScheduleId")
@@ -56,6 +58,8 @@ namespace FOV.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeId");
+
+                    b.HasIndex("UserId");
 
                     b.HasIndex("WaiterScheduleId");
 
@@ -117,7 +121,7 @@ namespace FOV.Infrastructure.Migrations
                             Id = new Guid("941bcca9-52a6-41f7-9403-06cc5fa703ea"),
                             ComboName = "Combo 1",
                             Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ExpiredDate = new DateTime(2024, 10, 16, 5, 30, 12, 508, DateTimeKind.Utc).AddTicks(1487),
+                            ExpiredDate = new DateTime(2024, 10, 16, 17, 7, 4, 26, DateTimeKind.Utc).AddTicks(5122),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             PercentReduce = 10.0m,
@@ -131,7 +135,7 @@ namespace FOV.Infrastructure.Migrations
                             Id = new Guid("3907a193-c2ae-4f40-936b-9a2438595123"),
                             ComboName = "Combo 2",
                             Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ExpiredDate = new DateTime(2024, 11, 16, 5, 30, 12, 508, DateTimeKind.Utc).AddTicks(1500),
+                            ExpiredDate = new DateTime(2024, 11, 16, 17, 7, 4, 26, DateTimeKind.Utc).AddTicks(5134),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             PercentReduce = 5.0m,
@@ -145,7 +149,7 @@ namespace FOV.Infrastructure.Migrations
                             Id = new Guid("921b269a-db6e-4a1d-b285-70df523e010e"),
                             ComboName = "Combo 3",
                             Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ExpiredDate = new DateTime(2024, 11, 16, 5, 30, 12, 508, DateTimeKind.Utc).AddTicks(1505),
+                            ExpiredDate = new DateTime(2024, 11, 16, 17, 7, 4, 26, DateTimeKind.Utc).AddTicks(5140),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             PercentReduce = 5.0m,
@@ -1373,7 +1377,7 @@ namespace FOV.Infrastructure.Migrations
                             Created = new DateTimeOffset(new DateTime(2022, 1, 15, 10, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "admin",
                             EmployeeCode = "EMP001",
-                            HireDate = new DateTime(2024, 9, 16, 5, 30, 12, 508, DateTimeKind.Utc).AddTicks(4700),
+                            HireDate = new DateTime(2024, 9, 16, 17, 7, 4, 26, DateTimeKind.Utc).AddTicks(7999),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(2022, 1, 15, 10, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             LastModifiedBy = "admin",
@@ -1386,7 +1390,7 @@ namespace FOV.Infrastructure.Migrations
                             Created = new DateTimeOffset(new DateTime(2022, 5, 10, 9, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "manager",
                             EmployeeCode = "EMP002",
-                            HireDate = new DateTime(2024, 9, 16, 5, 30, 12, 508, DateTimeKind.Utc).AddTicks(4799),
+                            HireDate = new DateTime(2024, 9, 16, 17, 7, 4, 26, DateTimeKind.Utc).AddTicks(8131),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(2022, 5, 10, 9, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             LastModifiedBy = "manager",
@@ -1399,7 +1403,7 @@ namespace FOV.Infrastructure.Migrations
                             Created = new DateTimeOffset(new DateTime(2023, 3, 20, 14, 15, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "admin",
                             EmployeeCode = "EMP003",
-                            HireDate = new DateTime(2024, 9, 16, 5, 30, 12, 508, DateTimeKind.Utc).AddTicks(4811),
+                            HireDate = new DateTime(2024, 9, 16, 17, 7, 4, 26, DateTimeKind.Utc).AddTicks(8143),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(2023, 3, 20, 14, 15, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             LastModifiedBy = "admin",
@@ -1594,10 +1598,7 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<DateOnly>("DateTime")
                         .HasColumnType("date");
 
-                    b.Property<string>("EmployeeId")
-                        .HasColumnType("text");
-
-                    b.Property<Guid?>("EmployeeId1")
+                    b.Property<Guid?>("EmployeeId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("LastModified")
@@ -1614,7 +1615,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeId1");
+                    b.HasIndex("EmployeeId");
 
                     b.HasIndex("ShiftId");
 
@@ -1757,11 +1758,15 @@ namespace FOV.Infrastructure.Migrations
 
             modelBuilder.Entity("FOV.Domain.Entities.AttendanceAggregator.Attendance", b =>
                 {
-                    b.HasOne("FOV.Domain.Entities.UserAggregator.User", "Employee")
+                    b.HasOne("FOV.Domain.Entities.UserAggregator.Employee", "Employee")
                         .WithMany("Attendances")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("FOV.Domain.Entities.UserAggregator.User", null)
+                        .WithMany("Attendances")
+                        .HasForeignKey("UserId");
 
                     b.HasOne("FOV.Domain.Entities.WaiterScheduleAggregator.WaiterSchedule", "WaiterSchedule")
                         .WithMany("Attendances")
@@ -2102,7 +2107,7 @@ namespace FOV.Infrastructure.Migrations
                 {
                     b.HasOne("FOV.Domain.Entities.UserAggregator.Employee", "Employee")
                         .WithMany("WaiterSchedules")
-                        .HasForeignKey("EmployeeId1");
+                        .HasForeignKey("EmployeeId");
 
                     b.HasOne("FOV.Domain.Entities.ShiftAggregator.Shift", "Shift")
                         .WithMany("WaiterSchedules")
@@ -2269,6 +2274,8 @@ namespace FOV.Infrastructure.Migrations
 
             modelBuilder.Entity("FOV.Domain.Entities.UserAggregator.Employee", b =>
                 {
+                    b.Navigation("Attendances");
+
                     b.Navigation("WaiterSchedules");
                 });
 

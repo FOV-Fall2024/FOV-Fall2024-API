@@ -41,6 +41,7 @@ public interface IUnitOfWorks
     public IGroupUserRepository GroupUserRepository { get; }
     public IComboRepository ComboRepository { get; }
     public IPaymentRepository PaymentRepository { get; }
+    public IAttendanceRepository AttendanceRepository { get; }
 
     public Task<int> SaveChangeAsync();
 }

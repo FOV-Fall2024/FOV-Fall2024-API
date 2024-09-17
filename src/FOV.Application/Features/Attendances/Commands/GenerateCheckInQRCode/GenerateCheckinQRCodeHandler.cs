@@ -14,7 +14,7 @@ namespace FOV.Application.Features.Attendances.Commands.GenerateCheckInQRCode;
 public record GenerateCheckInQRCodeCommand : IRequest<string>
 {
     public Guid RestaurantId { get; set; }
-    public Guid ShiftId { get; set; }
+    public Guid WaiterScheduleId { get; set; }
     public DateOnly Date { get; set; }
 }
 public class GenerateCheckinQRCodeHandler(IUnitOfWorks unitOfWorks, QRCodeGeneratorHandler qRCodeGeneratorHandler, StorageHandler storage) : IRequestHandler<GenerateCheckInQRCodeCommand, string>
@@ -23,21 +23,21 @@ public class GenerateCheckinQRCodeHandler(IUnitOfWorks unitOfWorks, QRCodeGenera
     private readonly QRCodeGeneratorHandler _qRCodeGeneratorHandler = qRCodeGeneratorHandler;
     private readonly StorageHandler _storageHandler = storage;
 
-    public Task<string> Handle(GenerateCheckInQRCodeCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(GenerateCheckInQRCodeCommand request, CancellationToken cancellationToken)
     {
-        return null;
+        return await GenerateAndUploadQRCodeAsync(request.Date, request.RestaurantId, request.WaiterScheduleId);
     } 
-    private async Task<string> GenerateAndUploadQRCodeAsync(DateOnly date, Guid restaurantId, Guid shiftId)
+    private async Task<string> GenerateAndUploadQRCodeAsync(DateOnly date, Guid restaurantId, Guid waiterScheduleId)
     {
         var restaurant = _unitOfWorks.RestaurantRepository.GetByIdAsync(restaurantId);
         if (restaurant == null)
         {
             throw new Exception("Restaurant not found");
         }
-        var shift = _unitOfWorks.ShiftRepository.GetByIdAsync(shiftId) ?? throw new Exception("Shift not found");
+        var waiterSchedule = _unitOfWorks.WaiterScheduleRepository.GetByIdAsync(waiterScheduleId) ?? throw new Exception("Schedule not found");
 
         var fileName = $"Restaurant_{restaurant}_Date_{date}";
-        var qrUrl = $"https://localhost:7107/api/Attendance?restaurantId={restaurantId}&date={date}";
+        var qrUrl = $"https://localhost:7107/api/Attendance?restaurant={restaurantId}&date={date}&schedule={waiterScheduleId}";
 
         Bitmap qrCodeImage = _qRCodeGeneratorHandler.GenerateQRCode(qrUrl);
         using (var memoryStream = new MemoryStream())

@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FOV.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Domain : Migration
+    public partial class FixAttendanceDomain : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -558,9 +558,8 @@ namespace FOV.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     DateTime = table.Column<DateOnly>(type: "date", nullable: false),
-                    EmployeeId = table.Column<string>(type: "text", nullable: true),
+                    EmployeeId = table.Column<Guid>(type: "uuid", nullable: true),
                     ShiftId = table.Column<Guid>(type: "uuid", nullable: false),
-                    EmployeeId1 = table.Column<Guid>(type: "uuid", nullable: true),
                     UserId = table.Column<string>(type: "text", nullable: true),
                     Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
@@ -576,8 +575,8 @@ namespace FOV.Infrastructure.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_WaiterSchedules_Employees_EmployeeId1",
-                        column: x => x.EmployeeId1,
+                        name: "FK_WaiterSchedules_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
                         principalTable: "Employees",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -644,6 +643,37 @@ namespace FOV.Infrastructure.Migrations
                         name: "FK_GroupUsers_GroupChats_GroupChatId",
                         column: x => x.GroupChatId,
                         principalTable: "GroupChats",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "IngredientUnit",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    IngredientId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UnitName = table.Column<string>(type: "text", nullable: false),
+                    ConversionFactor = table.Column<decimal>(type: "numeric", nullable: false),
+                    IngredientUnitParentId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<string>(type: "text", nullable: true),
+                    LastModified = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    LastModifiedBy = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IngredientUnit", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_IngredientUnit_IngredientUnit_IngredientUnitParentId",
+                        column: x => x.IngredientUnitParentId,
+                        principalTable: "IngredientUnit",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_IngredientUnit_Ingredients_IngredientId",
+                        column: x => x.IngredientId,
+                        principalTable: "Ingredients",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -763,10 +793,11 @@ namespace FOV.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    CheckInTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    CheckOutTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    EmployeeId = table.Column<string>(type: "text", nullable: false),
+                    CheckInTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CheckOutTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    EmployeeId = table.Column<Guid>(type: "uuid", nullable: false),
                     WaiterScheduleId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: true),
                     Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
@@ -776,9 +807,14 @@ namespace FOV.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Attendances", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Attendances_AspNetUsers_EmployeeId",
-                        column: x => x.EmployeeId,
+                        name: "FK_Attendances_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Attendances_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -953,9 +989,9 @@ namespace FOV.Infrastructure.Migrations
                 columns: new[] { "Id", "ComboName", "Created", "CreatedBy", "ExpiredDate", "IsDeleted", "LastModified", "LastModifiedBy", "PercentReduce", "Price", "Quantity", "RestaurantId", "Status" },
                 values: new object[,]
                 {
-                    { new Guid("3907a193-c2ae-4f40-936b-9a2438595123"), "Combo 2", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, new DateTime(2024, 11, 15, 16, 12, 55, 544, DateTimeKind.Utc).AddTicks(9844), false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, 5.0m, 30.00m, 10, new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"), (byte)0 },
-                    { new Guid("921b269a-db6e-4a1d-b285-70df523e010e"), "Combo 3", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, new DateTime(2024, 11, 15, 16, 12, 55, 544, DateTimeKind.Utc).AddTicks(9849), false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, 5.0m, 30.00m, 10, new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"), (byte)0 },
-                    { new Guid("941bcca9-52a6-41f7-9403-06cc5fa703ea"), "Combo 1", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, new DateTime(2024, 10, 15, 16, 12, 55, 544, DateTimeKind.Utc).AddTicks(9828), false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, 10.0m, 50.00m, 20, new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0"), (byte)0 }
+                    { new Guid("3907a193-c2ae-4f40-936b-9a2438595123"), "Combo 2", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, new DateTime(2024, 11, 16, 17, 7, 4, 26, DateTimeKind.Utc).AddTicks(5134), false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, 5.0m, 30.00m, 10, new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"), (byte)0 },
+                    { new Guid("921b269a-db6e-4a1d-b285-70df523e010e"), "Combo 3", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, new DateTime(2024, 11, 16, 17, 7, 4, 26, DateTimeKind.Utc).AddTicks(5140), false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, 5.0m, 30.00m, 10, new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"), (byte)0 },
+                    { new Guid("941bcca9-52a6-41f7-9403-06cc5fa703ea"), "Combo 1", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, new DateTime(2024, 10, 16, 17, 7, 4, 26, DateTimeKind.Utc).AddTicks(5122), false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, 10.0m, 50.00m, 20, new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0"), (byte)0 }
                 });
 
             migrationBuilder.InsertData(
@@ -963,9 +999,9 @@ namespace FOV.Infrastructure.Migrations
                 columns: new[] { "Id", "Created", "CreatedBy", "EmployeeCode", "HireDate", "IsDeleted", "LastModified", "LastModifiedBy", "RestaurantId", "UserId" },
                 values: new object[,]
                 {
-                    { new Guid("a07496ad-bda3-4ac5-9279-81cae66ba253"), new DateTimeOffset(new DateTime(2022, 5, 10, 9, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "manager", "EMP002", new DateTime(2024, 9, 15, 16, 12, 55, 545, DateTimeKind.Utc).AddTicks(3837), false, new DateTimeOffset(new DateTime(2022, 5, 10, 9, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "manager", new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"), "f5404c4e-88b5-428e-8b07-b44af0d35979" },
-                    { new Guid("be4e8a98-7c95-4ef1-a407-6b8093b0e13a"), new DateTimeOffset(new DateTime(2022, 1, 15, 10, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "admin", "EMP001", new DateTime(2024, 9, 15, 16, 12, 55, 545, DateTimeKind.Utc).AddTicks(3674), false, new DateTimeOffset(new DateTime(2022, 1, 15, 10, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "admin", new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"), "6fb87153-242c-4024-a3af-f787b3919760" },
-                    { new Guid("ce84ef13-3ce9-40c3-a14c-4a93dce72eb9"), new DateTimeOffset(new DateTime(2023, 3, 20, 14, 15, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "admin", "EMP003", new DateTime(2024, 9, 15, 16, 12, 55, 545, DateTimeKind.Utc).AddTicks(3848), false, new DateTimeOffset(new DateTime(2023, 3, 20, 14, 15, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "admin", new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"), "5680415f-f3b6-4288-899f-c01a357f150f" }
+                    { new Guid("a07496ad-bda3-4ac5-9279-81cae66ba253"), new DateTimeOffset(new DateTime(2022, 5, 10, 9, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "manager", "EMP002", new DateTime(2024, 9, 16, 17, 7, 4, 26, DateTimeKind.Utc).AddTicks(8131), false, new DateTimeOffset(new DateTime(2022, 5, 10, 9, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "manager", new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"), "f5404c4e-88b5-428e-8b07-b44af0d35979" },
+                    { new Guid("be4e8a98-7c95-4ef1-a407-6b8093b0e13a"), new DateTimeOffset(new DateTime(2022, 1, 15, 10, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "admin", "EMP001", new DateTime(2024, 9, 16, 17, 7, 4, 26, DateTimeKind.Utc).AddTicks(7999), false, new DateTimeOffset(new DateTime(2022, 1, 15, 10, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "admin", new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"), "6fb87153-242c-4024-a3af-f787b3919760" },
+                    { new Guid("ce84ef13-3ce9-40c3-a14c-4a93dce72eb9"), new DateTimeOffset(new DateTime(2023, 3, 20, 14, 15, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "admin", "EMP003", new DateTime(2024, 9, 16, 17, 7, 4, 26, DateTimeKind.Utc).AddTicks(8143), false, new DateTimeOffset(new DateTime(2023, 3, 20, 14, 15, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "admin", new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"), "5680415f-f3b6-4288-899f-c01a357f150f" }
                 });
 
             migrationBuilder.InsertData(
@@ -1053,6 +1089,11 @@ namespace FOV.Infrastructure.Migrations
                 column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Attendances_UserId",
+                table: "Attendances",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Attendances_WaiterScheduleId",
                 table: "Attendances",
                 column: "WaiterScheduleId");
@@ -1128,6 +1169,16 @@ namespace FOV.Infrastructure.Migrations
                 name: "IX_IngredientTransactions_OrderId",
                 table: "IngredientTransactions",
                 column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IngredientUnit_IngredientId",
+                table: "IngredientUnit",
+                column: "IngredientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IngredientUnit_IngredientUnitParentId",
+                table: "IngredientUnit",
+                column: "IngredientUnitParentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderDetails_ComboId",
@@ -1226,9 +1277,9 @@ namespace FOV.Infrastructure.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_WaiterSchedules_EmployeeId1",
+                name: "IX_WaiterSchedules_EmployeeId",
                 table: "WaiterSchedules",
-                column: "EmployeeId1");
+                column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WaiterSchedules_ShiftId",
@@ -1273,6 +1324,9 @@ namespace FOV.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "IngredientTransactions");
+
+            migrationBuilder.DropTable(
+                name: "IngredientUnit");
 
             migrationBuilder.DropTable(
                 name: "OrderDetails");

@@ -1,4 +1,5 @@
-﻿using FOV.Application.Features.Attendances.Commands.GenerateCheckInQRCode;
+﻿using FOV.Application.Features.Attendances.Commands.CheckAttendance;
+using FOV.Application.Features.Attendances.Commands.GenerateCheckInQRCode;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,5 +13,11 @@ public class AttendanceController(ISender sender) : DefaultController
     {
         var result = await _sender.Send(command);
         return Ok(result);
+    }
+    [HttpPost]
+    public async Task<IActionResult> CheckAttendance(CheckAttendanceCommand command)
+    {
+        var result = await _sender.Send(command);
+        return Ok(new { message = result });
     }
 }

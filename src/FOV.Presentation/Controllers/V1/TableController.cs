@@ -2,6 +2,7 @@
 using FOV.Application.Features.Tables.Commands.Create;
 using FOV.Application.Features.Tables.Commands.Inactive;
 using FOV.Application.Features.Tables.Queries;
+using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Presentation.Controllers.V1;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -38,7 +39,7 @@ public class TableController(ISender sender) : DefaultController
         return Ok(response);
     }
     [HttpGet]
-    public async Task<IActionResult> Get([FromQuery] GetTableCommand command)
+    public async Task<IActionResult> Get([FromQuery] PagingRequest paging, [FromQuery] GetTableCommand command)
     {
         var response = await _sender.Send(command);
         return Ok(response);

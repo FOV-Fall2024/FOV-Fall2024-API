@@ -23,6 +23,6 @@ public class GetAllUserHandler(UserManager<User> userManager) : IRequestHandler<
             LastName = request.LastName ?? string.Empty,
         });
 
-        return [.. filterUser.Select(x => x.MapAllDTO())];
+        return [.. filterUser.Select(x => x.MapAllDTO())];  
     }
 }

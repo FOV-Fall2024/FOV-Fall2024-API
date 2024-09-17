@@ -31,11 +31,12 @@ public class UnitOfWorks : IUnitOfWorks
     private readonly IProductImageRepository _productImageRepository;
     private readonly IRatingRepository _ratingRepository;
     private readonly IPaymentRepository _paymentRepository;
+    private readonly IAttendanceRepository _attendanceRepository;
 
     public UnitOfWorks(FOVContext context, IIngredientTypeRepository ingredientTypeRepository, IIngredientGeneralRepository ingredientGeneralRepository, IProductGeneralRepository productGeneralRepository, IProductIngredientGeneralRepository productIngredientGeneralRepository, ITableRepository tableRepository, IRestaurantRepository restaurantRepository, ICategoryRepository categoryRepository, IProductRepository productRepository, IIngredientRepository ingredientRepository, IProductIngredientRepository productIngredientRepository, ICustomerRepository customerRepository, IEmployeeRepository employeeRepository, IIngrdientTransactionRepository ingrdientTransactionRepository, IProductComboRepository productComboRepository, IComboRepository comboRepository, IOrderRepository orderRepository, IOrderDetailRepository orderDetailRepository, IShiftRepository shiftRepository, IWaiterScheduleRepository waiterScheduleRepository,
         IGroupChatRepository groupChatRepository, IGroupMessageRepository groupMessageRepository, IGroupUserRepository groupUserRepository,
         IProductImageRepository productImageRepository,
-        IRatingRepository ratingRepository, IPaymentRepository paymentRepository)
+        IRatingRepository ratingRepository, IPaymentRepository paymentRepository, IAttendanceRepository attendanceRepository)
     {
         _context = context;
         _ingredientTypeRepository = ingredientTypeRepository;
@@ -63,6 +64,7 @@ public class UnitOfWorks : IUnitOfWorks
         _productImageRepository = productImageRepository;
         _ratingRepository = ratingRepository;
         _paymentRepository = paymentRepository;
+        _attendanceRepository = attendanceRepository;
     }
     public IIngredientTypeRepository IngredientTypeRepository => _ingredientTypeRepository;
     public IIngredientGeneralRepository IngredientGeneralRepository => _ingredientGeneralRepository;
@@ -103,9 +105,12 @@ public class UnitOfWorks : IUnitOfWorks
 
     public IGroupUserRepository GroupUserRepository => _groupUserRepository;
 
-    public IProductImageRepository ProductImageRepository => throw new NotImplementedException();
+    public IProductImageRepository ProductImageRepository => _productImageRepository;
 
     public IPaymentRepository PaymentRepository => _paymentRepository;
+
+    public IAttendanceRepository AttendanceRepository => _attendanceRepository;
+
     public async Task<int> SaveChangeAsync()
     {
         return await _context.SaveChangesAsync();

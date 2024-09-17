@@ -8,6 +8,13 @@ public class AttendanceConfiguration : IEntityTypeConfiguration<Attendance>
     public void Configure(EntityTypeBuilder<Attendance> builder)
     {
         builder.HasKey(x => x.Id);
-        builder.HasOne(x => x.Employee).WithMany(x => x.Attendances).HasForeignKey(x => x.EmployeeId);
+
+        builder.HasOne(a => a.Employee)
+               .WithMany(e => e.Attendances)
+               .HasForeignKey(a => a.EmployeeId);
+
+        builder.HasOne(a => a.WaiterSchedule)
+               .WithMany(ws => ws.Attendances)
+               .HasForeignKey(a => a.WaiterScheduleId);
     }
 }
