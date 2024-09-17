@@ -1,65 +1,83 @@
 ﻿using FOV.Application.Features.Categories.Commands.AddNewChildCategory;
-using FOV.Application.Features.Categories.Commands.AddNewParentCategory;
 using FOV.Application.Features.Categories.Commands.Delete;
 using FOV.Application.Features.Categories.Commands.Update;
-using FOV.Application.Features.Categories.Queries.GetChildCategories;
 using FOV.Application.Features.Categories.Queries.GetParentCategories;
+using FOV.Presentation.Infrastructure.Core;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace FOV.Presentation.Controllers.V1;
 
-public class CategoryController(IMediator mediator) : DefaultController
+[ApiController]
+[Route("api/v1/[controller]")]
+public class CategoryController : DefaultController
 {
+    private readonly IMediator _mediator;
 
-    private readonly IMediator _mediator = mediator;
+    public CategoryController(IMediator mediator)
+    {
+        _mediator = mediator;
+    }
 
-    // [x] Get All Parent Categories
+    /// <summary>
+    /// Retrieves all parent categories.
+    /// </summary>
+    /// <returns>A list of parent categories.</returns>
     [HttpGet]
-    public async Task<IActionResult> GetParentCategory()
+    [SwaggerOperation(Summary = "Retrieves all parent categories.")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetCategory()
     {
-        var response = await _mediator.Send(new GetParentCategoriesCommand());
-        return Ok(response);
+        var response = await _mediator.Send(new GetCategoriesCommand());
+        return Ok(new OK_Result<List<GetParentCategoriesResponse>>("Retrieved categories successfully", response));
     }
 
-    // [x] Get All Children Categories follow ParentCategory 
-    [HttpGet("{Id}")]
-    public async Task<IActionResult> GetChildrenCategory(Guid Id)
-    {
-        var response = await _mediator.Send(new GetChilCategoriesCommand(Id));
-        return Ok(response);
-    }
-
-
-    // [x] Add New Parent Category
-    [HttpPost("parentcategory")]
-    public async Task<IActionResult> AddParentCategory(AddNewParentCategoryCommand command)
-    {
-        var response = await _mediator.Send(command);
-        return Ok(response);
-    }
-
-    // [x] Add Child Category
-    [HttpPost("childcategory")]
-    public async Task<IActionResult> AddChildCategory(AddNewChildCategoryCommand command)
+    /// <summary>
+    /// Adds a new child category.
+    /// </summary>
+    /// <param name="command">The command containing details of the new category.</param>
+    /// <returns>The ID of the newly created child category.</returns>
+    [HttpPost]
+    [SwaggerOperation(Summary = "Adds a new child category.")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> AddChildCategory([FromBody] AddNewCategoryCommand command)
     {
         var response = await _mediator.Send(command);
-        return Ok(response);
+        return Ok(new OK_Result<Guid>("Child category added successfully", response));
     }
 
-    // [ ] Update Name and Description 
+    /// <summary>
+    /// Updates the name and description of a category.
+    /// </summary>
+    /// <param name="id">The ID of the category to update.</param>
+    /// <param name="name">The new name for the category.</param>
+    /// <returns>The ID of the updated category.</returns>
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> Update(Guid id, [FromBody] string name)
+    [SwaggerOperation(Summary = "Updates the name and description of a category.")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateCategoryCommand command)
     {
-        var response = await _mediator.Send(new UpdateCategoryCommand { CategoryName = name, Id = id });
-        return Ok(response);
+        command.Id = id;
+        var response = await _mediator.Send(command);
+        return Ok(new OK_Result<string>("Category updated successfully", ""));
     }
 
-    // [ ] Delete Child Category
-    [HttpDelete]
+    /// <summary>
+    /// Deletes a child category.
+    /// </summary>
+    /// <param name="id">The ID of the category to delete.</param>
+    /// <returns>A success message.</returns>
+    [HttpDelete("{id:guid}")]
+    [SwaggerOperation(Summary = "Deletes a child category.")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Delete(Guid id)
     {
         var response = await _mediator.Send(new DeleteCategoryCommand(id));
-        return Ok(response);
+        return Ok(new OK_Result<string>("Child category deleted successfully", ""));
     }
 }

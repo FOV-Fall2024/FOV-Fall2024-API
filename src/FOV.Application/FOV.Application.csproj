@@ -7,7 +7,6 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="FluentValidation" Version="11.9.2" />
 		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.2" />
 		<PackageReference Include="IdentityModel" Version="7.0.0" />
 		<PackageReference Include="MediatR" Version="12.3.0" />
@@ -29,8 +28,10 @@
     <Folder Include="Features\Combos\Queries\GetComboDetail\" />
     <Folder Include="Features\GroupChats\Queries\" />
     <Folder Include="Features\GroupMessages\Queries\" />
-    <Folder Include="Features\IngredientGenerals\Commands\Inactive\" />
     <Folder Include="Features\Ingredients\Queries\GetIngredientDetail\" />
+    <Folder Include="Features\IngredientUnits\Commands\CreateNewIngredientUnit\" />
+    <Folder Include="Features\IngredientUnits\Commands\Update\" />
+    <Folder Include="Features\IngredientUnits\Commands\Remove\" />
     <Folder Include="Features\Restaurants\Queries\Detail\" />
   </ItemGroup>
 

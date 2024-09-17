@@ -1,6 +1,7 @@
 ﻿using FOV.Infrastructure.Data;
 using FOV.Infrastructure.Data.Configurations;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace FOV.Presentation.Infrastructure;
 
@@ -12,7 +13,21 @@ public static class MigrationExtensions
 
         using FOVContext dbContext = scope.ServiceProvider.GetRequiredService<FOVContext>();
 
-        dbContext.Database.Migrate();
+        try
+        {
+            dbContext.Database.Migrate();
+        }
+        catch (NpgsqlException ex) when (ex.Message.Contains("relation \"AspNetRoles\" already exists"))
+        {
+            // Handle the specific exception
+            Console.WriteLine("Table already exists. Skipping migration.");
+        }
+        catch (Exception ex)
+        {
+            // Handle other exceptions
+            Console.WriteLine($"An error occurred: {ex.Message}");
+            throw;
+        }
     }
 }
 

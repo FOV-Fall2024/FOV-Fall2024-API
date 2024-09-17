@@ -15,18 +15,5 @@ public class CategoryRepository : GenericRepository<Category>, ICategoryReposito
         _context = context;
     }
 
-    public async Task UpdateCategoryParent(Guid parentId, int rightValue)
-    {
-        var category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == parentId) ?? throw new Exception();
-        _context.Categories.Where(x => x.CategoryMain == category.CategoryMain && x.Right >= rightValue).ExecuteUpdate(x => x.SetProperty(b => b.Right, b => b.Right + 2));
-        _context.Categories.Where(x => x.CategoryMain == category.CategoryMain && x.Left > rightValue).ExecuteUpdate(x => x.SetProperty(b => b.Left, b => b.Right + 2));
-    }
-
-    public Task DeleteAndUpdateSubCategories(string categoryMain, int leftValue, int rightValue, int width)
-    {
-        _context.Categories.Where(x => x.CategoryMain == categoryMain && x.Left >= leftValue && x.Right <= rightValue).ExecuteDelete();
-        _context.Categories.Where(x => x.CategoryMain == categoryMain && x.Right > rightValue).ExecuteUpdate(x => x.SetProperty(x => x.Right, x => x.Right - width));
-        _context.Categories.Where(x => x.CategoryMain == categoryMain && x.Left > rightValue).ExecuteUpdate(x => x.SetProperty(x => x.Left, x => x.Left - width));
-        return Task.CompletedTask;
-    }
+ 
 }

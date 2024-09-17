@@ -1,5 +1,7 @@
 ﻿using FOV.Domain.Entities.IngredientAggregator;
+using FOV.Domain.Entities.IngredientAggregator.Enums;
 using FOV.Domain.Entities.IngredientGeneralAggregator;
+using FOV.Domain.Entities.IngredientGeneralAggregator.Enums;
 using FOV.Domain.Entities.ProductAggregator;
 using FOV.Domain.Entities.ProductGeneralAggregator;
 using FOV.Domain.Entities.RestaurantAggregator;
@@ -71,11 +73,29 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
             {
                 IngredientGeneral ingredientGeneral = await _unitOfWorks.IngredientGeneralRepository.FirstOrDefaultAsync(x => x.IngredientName == item) ?? throw new Exception();
                 Ingredient ingredient1 = new(ingredientGeneral.IngredientName, ingredientGeneral.IngredientTypeId, restaurantId);
+
                 await _unitOfWorks.IngredientRepository.AddAsync(ingredient1);
                 await _unitOfWorks.ProductIngredientRepository.AddAsync(new ProductIngredient(productId, ingredient1.Id));
+                await AddDefaultIngredientUnit(ingredient1.Id, ingredientGeneral.IngredientMeasure);
             }
         }
 
+
+    }
+
+    private async Task AddDefaultIngredientUnit(Guid ingredientId, IngredientMeasure minMeasure)
+    {
+        //Default IngredientUnit
+        IngredientUnit ingredientUnit = new(MeasureTransfer.ToSmallUnit(minMeasure), ingredientId);
+        await _unitOfWorks.IngredientUnitRepository.AddAsync(ingredientUnit);
+
+        if (minMeasure == IngredientMeasure.g || minMeasure == IngredientMeasure.ml)
+        {
+            IngredientUnit ingredientUnit2 = new(MeasureTransfer.ToLargeUnit(minMeasure), ingredientId, ingredientUnit.Id, 1000);
+            await _unitOfWorks.IngredientUnitRepository.AddAsync(ingredientUnit2);
+        }
+
+        await _unitOfWorks.SaveChangeAsync();
 
     }
 

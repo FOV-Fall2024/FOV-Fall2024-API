@@ -11,55 +11,103 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace FOV.Presentation.Controllers.V1;
 
-public class AuthController(ISender sender) : DefaultController
+[ApiController]
+[Route("api/v1/[controller]")]
+public class AuthController : DefaultController
 {
-    private readonly ISender _sender = sender;
+    private readonly ISender _sender;
 
-    // [ ] Edit Profile
+    public AuthController(ISender sender)
+    {
+        _sender = sender;
+    }
+
+    /// <summary>
+    /// Edits the user's profile.
+    /// </summary>
+    /// <param name="command">The command containing profile edit details.</param>
+    /// <returns>A success message.</returns>
     [HttpPost("edit-profile")]
+    [SwaggerOperation(Summary = "Edit user profile.")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update(EditProfileCommand command)
     {
         var response = await _sender.Send(command);
-        return Ok(new OK_Result<string>("Edit Profile Successfully", response.Successes.ToList().First().Message));
+        return Ok(new OK_Result<string>("Edit Profile Successfully", response.Successes.First().Message));
     }
 
-    // [x] Register 
+    /// <summary>
+    /// Registers a new user.
+    /// </summary>
+    /// <param name="command">The command containing user registration details.</param>
+    /// <returns>A success or error message.</returns>
     [HttpPost("register")]
+    [SwaggerOperation(Summary = "Register a new user.")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Register(UserRegisterCommand command)
     {
         var response = await _sender.Send(command);
-        return response.IsSuccess ? Ok(new OK_Result<string>("Register Successfully", response.Successes.ToList().First().Message)) : BadRequest(new Error<IReason>("", ErrorStatusCodeConfig.BAD_REQUEST, response.Reasons));
+        return response.IsSuccess ?
+            Ok(new OK_Result<string>("Register Successfully", response.Successes.First().Message)) :
+            BadRequest(new Error<IReason>("", ErrorStatusCodeConfig.BAD_REQUEST, response.Reasons));
     }
 
-    // [ ] Login (Employee)
+    /// <summary>
+    /// Logs in an employee.
+    /// </summary>
+    /// <param name="request">The command containing employee login details.</param>
+    /// <returns>A success message with login response.</returns>
     [HttpPost("login/employee")]
+    [SwaggerOperation(Summary = "Employee login.")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Login(EmployeeLoginCommand request)
     {
         var response = await _sender.Send(request);
         return Ok(new OK_Result<EmployeeLoginResponse>("Login Successfully", response));
     }
 
-    // [x] Login (Customer)
+    /// <summary>
+    /// Logs in a customer.
+    /// </summary>
+    /// <param name="command">The command containing customer login details.</param>
+    /// <returns>A success message with login response.</returns>
     [HttpPost("login/customer")]
+    [SwaggerOperation(Summary = "Customer login.")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CustomerLogin(UserLoginCommand command)
     {
         var response = await _sender.Send(command);
-
         return Ok(new OK_Result<UserResponse>("Login Successfully", response));
     }
 
-    // [x] View Profile
+    /// <summary>
+    /// Retrieves the user's profile.
+    /// </summary>
+    /// <returns>The user's profile information.</returns>
     [HttpGet("me")]
+    [SwaggerOperation(Summary = "View user profile.")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Profile()
     {
         var response = await _sender.Send(new ViewProfileCommand());
         return Ok(new OK_Result<ViewProfileResponse>("View Profile Successfully", response));
     }
 
+    /// <summary>
+    /// Initiates the Google login process.
+    /// </summary>
+    /// <returns>A challenge to authenticate with Google.</returns>
     [HttpGet("login-google")]
+    [SwaggerOperation(Summary = "Login with Google.")]
     public IActionResult LoginWithGoogle()
     {
         var redirectUrl = Url.Action("GoogleResponse", "Auth");
@@ -67,8 +115,12 @@ public class AuthController(ISender sender) : DefaultController
         return Challenge(properties, GoogleDefaults.AuthenticationScheme);
     }
 
-    // Handle Google OAuth Response
+    /// <summary>
+    /// Handles the Google OAuth response.
+    /// </summary>
+    /// <returns>A success message with user claims.</returns>
     [HttpGet("signin-google")]
+    [SwaggerOperation(Summary = "Google OAuth response handler.")]
     public async Task<IActionResult> GoogleResponse()
     {
         var result = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
@@ -77,10 +129,13 @@ public class AuthController(ISender sender) : DefaultController
             return BadRequest("Error authenticating with Google");
         }
 
-        var response = await _sender.Send(new UserGoogleLoginCommand(result.Principal.FindFirstValue(ClaimTypes.NameIdentifier),
+        var response = await _sender.Send(new UserGoogleLoginCommand(
+            result.Principal.FindFirstValue(ClaimTypes.NameIdentifier),
             result.Principal.FindFirstValue(ClaimTypes.Email),
             result.Principal.FindFirstValue(ClaimTypes.Name),
-            result.Principal.FindFirstValue("picture")));
+            result.Principal.FindFirstValue("picture")
+        ));
+
         var claims = result.Principal.Identities
             .FirstOrDefault()?.Claims.Select(claim => new
             {
@@ -95,8 +150,5 @@ public class AuthController(ISender sender) : DefaultController
         return Ok(claims);
     }
 
-    // [ ] login Facebook
-
-    // [ ]  Update Profile 
-
+    // [ ] Update Profile
 }

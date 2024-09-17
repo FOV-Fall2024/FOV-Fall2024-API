@@ -1,4 +1,5 @@
-﻿using FOV.Application.Common.Exceptions;
+﻿using FluentValidation;
+using FOV.Application.Common.Exceptions;
 using FOV.Domain.Entities.UserAggregator;
 using FOV.Infrastructure.Configuration;
 using FOV.Infrastructure.Data;
@@ -22,6 +23,8 @@ public static class DependencyInjection
 
         //? Add Els
         services.Configure<ElasticSettings>(builder.Configuration.GetSection("ElasticSettings"));
+        services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+
 
         //? Add SignalR
         services.AddSignalR();

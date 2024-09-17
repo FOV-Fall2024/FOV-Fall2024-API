@@ -1,11 +1,32 @@
 ﻿using FluentValidation;
+using FOV.Application.Features.IngredientGenerals.Commands.Active;
+using FOV.Domain.Entities.IngredientGeneralAggregator;
+using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 
 namespace FOV.Application.Features.IngredientGenerals.Commands.Update;
 
 public class UpdateIngredientGeneralValidator : AbstractValidator<UpdateIngredientGeneralCommand>
 {
-    public UpdateIngredientGeneralValidator()
+    public UpdateIngredientGeneralValidator(IngredientGeneralIdValidator validator, IngredientNameValidator name)
     {
-        RuleFor(x => x.Id).NotEmpty().NotNull();
+        RuleFor(x => x.Id).NotEmpty().SetValidator(validator);
+        RuleFor(x => x.Name).NotEmpty().SetValidator(name);
+    }
+}
+
+public sealed class IngredientNameValidator : AbstractValidator<string>
+{
+    private readonly IUnitOfWorks _unitOfWorks;
+    public IngredientNameValidator(IUnitOfWorks unitOfWorks)
+    {
+        _unitOfWorks = unitOfWorks;
+        RuleFor(name => name).MustAsync(CheckDuplicateName).WithMessage("This name already exists in system");
+
+    }
+
+    private async Task<bool> CheckDuplicateName(string name, CancellationToken token)
+    {
+        IngredientGeneral? ingredientGeneral = await _unitOfWorks.IngredientGeneralRepository.FirstOrDefaultAsync(x => x.IngredientName == name);
+        return ingredientGeneral != null;
     }
 }

@@ -1,4 +1,5 @@
-﻿using FOV.Application;
+﻿using FluentValidation.AspNetCore;
+using FOV.Application;
 using FOV.Domain.Entities.UserAggregator;
 using FOV.Infrastructure;
 using FOV.Presentation.Infrastructure;
@@ -6,8 +7,9 @@ using OpenTelemetry.Metrics;
 
 var builder = WebApplication.CreateBuilder(args);
 var conn = builder.Configuration.GetConnectionString("PostgresConnection");
-// Add services to the container.
-builder.Services.AddControllers(options => options.Filters.Add<ValidationExceptionFilter>());
+// Add services to the container
+builder.Services.AddControllers();
+
 
 builder.Services.AddApplicationDI();
 builder.Services.AddPresentationDI(conn ?? throw new ArgumentNullException(nameof(conn), "Connection string cannot be null."), builder);

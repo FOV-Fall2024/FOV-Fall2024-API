@@ -1,6 +1,7 @@
 ﻿using FOV.Domain.Common;
 using FOV.Domain.Entities.ComboAggregator;
 using FOV.Domain.Entities.OrderAggregator;
+using FOV.Domain.Entities.ProductAggregator.Enums;
 using FOV.Domain.Entities.ProductGeneralAggregator;
 using FOV.Domain.Entities.RestaurantAggregator;
 
@@ -12,6 +13,7 @@ public class Product : BaseAuditableEntity, IsSoftDeleted
 
     public string ProductDescription { get; set; } = string.Empty;
 
+    public ProductType ProductType { get; set; }
     public virtual ICollection<ProductCombo> ProductCombos { get; set; } = [];
     public ICollection<OrderDetail> OrderDetails { get; set; } = [];
     public virtual ICollection<ProductImage> ProductImages { get; set; } = [];

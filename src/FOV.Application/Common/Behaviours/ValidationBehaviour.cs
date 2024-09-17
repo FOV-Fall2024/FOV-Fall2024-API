@@ -1,37 +1,61 @@
-﻿using FluentValidation;
+﻿using System.Text.Json;
+using FluentValidation;
+using FOV.Application.Common.Exceptions;
 using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 
 namespace FOV.Application.Common.Behaviours;
 
-public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-     where TRequest : notnull
+public sealed class ValidationBehavior<TRequest, TResponse>(
+    IServiceProvider serviceProvider,
+    ILogger<ValidationBehavior<TRequest, TResponse>> logger)
+    : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : IRequest<TResponse>
+    where TResponse : notnull
 {
-    private readonly IEnumerable<IValidator<TRequest>> _validators;
-
-    public ValidationBehaviour(IEnumerable<IValidator<TRequest>> validators)
+    public async Task<TResponse> Handle(
+        TRequest request,
+        RequestHandlerDelegate<TResponse> next,
+        CancellationToken cancellationToken)
     {
-        _validators = validators;
-    }
+        const string behavior = nameof(ValidationBehavior<TRequest, TResponse>);
 
-    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
-    {
-        if (_validators.Any())
-        {
-            var context = new ValidationContext<TRequest>(request);
+        logger.LogInformation(
+            "[{Behavior}] handle request={RequestData} and response={ResponseData}",
+            behavior, typeof(TRequest).FullName, typeof(TResponse).FullName);
 
-            var validationResults = await Task.WhenAll(
-                _validators.Select(v =>
-                    v.ValidateAsync(context, cancellationToken)));
+        logger.LogDebug(
+            "[{Behavior}] handle request={Request} with content={RequestData}",
+            behavior, typeof(TRequest).FullName, JsonSerializer.Serialize(request));
 
-            var failures = validationResults
-                .Where(r => r.Errors.Any())
-                .SelectMany(r => r.Errors)
-                .ToList();
+        var validators = serviceProvider
+                             .GetService<IEnumerable<IValidator<TRequest>>>()?.ToList()
+                         ?? throw new InvalidOperationException();
 
-            if (failures.Any())
-                throw new ValidationException(failures);
-        }
-        return await next();
+        if (validators.Count != 0)
+            await Task.WhenAll(
+                validators.Select(v => v.HandleValidationAsync(request))
+            );
+
+        var response = await next();
+
+        return response;
     }
 }
+public static class Validation
+{
+    public static async Task HandleValidationAsync<TRequest>(this IValidator<TRequest> validator, TRequest request)
+    {
+        var validationResult = await validator.ValidateAsync(request);
+        var failures = validationResult.Errors;
+
+        if (failures.Any())
+        {
+            var errorMessages = string.Join(", ", failures.Select(f => f.ErrorMessage));
+            throw new AppException(errorMessages);
+        }
+    }
+}
+

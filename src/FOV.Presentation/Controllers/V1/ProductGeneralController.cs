@@ -5,81 +5,132 @@ using FOV.Application.Features.ProductGenerals.Commands.Update;
 using FOV.Application.Features.ProductGenerals.Commands.UpdateIngredientQuantity;
 using FOV.Application.Features.ProductGenerals.Queries.GetProductGeneral;
 using FOV.Application.Features.ProductGenerals.Queries.GetProductGeneralDetail;
+using FOV.Presentation.Infrastructure.Core;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace FOV.Presentation.Controllers.V1;
 
-
-public class ProductGeneralController(ISender sender) : DefaultController
+[ApiController]
+[Route("api/v1/[controller]")]
+public class ProductGeneralController : DefaultController
 {
+    private readonly ISender _sender;
 
-    private readonly ISender _sender = sender;
+    public ProductGeneralController(ISender sender)
+    {
+        _sender = sender;
+    }
 
-    // [ ] Create 
+    /// <summary>
+    /// Creates a new product general.
+    /// </summary>
+    /// <param name="command">The command containing product details.</param>
+    /// <returns>The ID of the newly created product general.</returns>
     [HttpPost]
+    [SwaggerOperation(Summary = "Creates a new product general.")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Add(CreateProductGeneralCommand command)
     {
         var response = await _sender.Send(command);
-        return Ok(response);
+        return CreatedAtAction(nameof(GetDetail), new { id = response }, new CREATED_Result("Product general created successfully"));
     }
 
-    // [ ] Update Ingredient quantity
+    /// <summary>
+    /// Updates the ingredient quantity for a specific product.
+    /// </summary>
+    /// <param name="productId">The ID of the product.</param>
+    /// <param name="ingredientId">The ID of the ingredient.</param>
+    /// <param name="command">The command containing the new quantity.</param>
+    /// <returns>A success message.</returns>
     [HttpPatch("{productId}/ingredient/{ingredientId}")]
-    public async Task<IActionResult> UpdateQuantity(Guid productId, Guid ingredientId, UpdateIngredientQuantityCommand command)
+    [SwaggerOperation(Summary = "Updates the ingredient quantity for a specific product.")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> UpdateQuantity(Guid productId, Guid ingredientId, [FromBody] UpdateIngredientQuantityCommand command)
     {
-        var response = await _sender.Send(new UpdateIngredientQuantityCommand { ProductId = productId, IngredientId = ingredientId, Quantity = command.Quantity });
-        return Ok(response);
+        command.ProductId = productId;
+        command.IngredientId = ingredientId;
+        var response = await _sender.Send(command);
+        return Ok(new UPDATED_Result("Ingredient quantity updated successfully"));
     }
-    // [ ] Update
 
-    [HttpPost("{productId}")]
-    public async Task<IActionResult> Update(Guid productId, UpdateProductGeneralCommand command)
+    /// <summary>
+    /// Updates an existing product general.
+    /// </summary>
+    /// <param name="productId">The ID of the product to update.</param>
+    /// <param name="command">The command containing updated product details.</param>
+    /// <returns>The ID of the updated product general.</returns>
+    [HttpPut("{productId}")]
+    [SwaggerOperation(Summary = "Updates an existing product general.")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Update(Guid productId, [FromBody] UpdateProductGeneralCommand command)
     {
         command.Id = productId;
         var response = await _sender.Send(command);
-        return Ok(response);
+        return Ok(new UPDATED_Result("Product general updated successfully", response));
     }
 
-    // [ ] Active 
-
+    /// <summary>
+    /// Activates a product general.
+    /// </summary>
+    /// <param name="id">The ID of the product to activate.</param>
+    /// <returns>A success message.</returns>
     [HttpPost("{id:guid}/active")]
-    public async Task<IActionResult> Actvie(Guid id)
+    [SwaggerOperation(Summary = "Activates a product general.")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Active(Guid id)
     {
         var response = await _sender.Send(new ActiveProductGeneralCommand(id));
-        return Ok(response);
+        return Ok(new UPDATED_Result("Product general activated successfully"));
     }
 
-    // [ ] Inactive
+    /// <summary>
+    /// Deactivates a product general.
+    /// </summary>
+    /// <param name="id">The ID of the product to deactivate.</param>
+    /// <returns>A success message.</returns>
     [HttpPost("{id:guid}/inactive")]
+    [SwaggerOperation(Summary = "Deactivates a product general.")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Inactive(Guid id)
     {
         var response = await _sender.Send(new InactiveProductGeneralCommand(id));
-        return Ok(response);
+        return Ok(new DELETED_Result("Product general deactivated successfully"));
     }
 
-
-    // [ ] Get
+    /// <summary>
+    /// Retrieves all product generals.
+    /// </summary>
+    /// <param name="command">The command containing query parameters for retrieval.</param>
+    /// <returns>A list of product generals.</returns>
     [HttpGet]
+    [SwaggerOperation(Summary = "Retrieves all product generals.")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Get([FromQuery] GetProductGeneralCommand command)
     {
         var response = await _sender.Send(command);
-        return Ok(response);
+        return Ok(new OK_Result<List<GetProductGeneralResponse>>("Retrieved product generals successfully", response));
     }
 
-    // [ ] Detail 
-    [HttpGet("{Id}")]
-    public async Task<IActionResult> GetDetail(Guid Id)
+    /// <summary>
+    /// Retrieves detailed information about a specific product general.
+    /// </summary>
+    /// <param name="id">The ID of the product general to retrieve.</param>
+    /// <returns>The details of the specified product general.</returns>
+    [HttpGet("{id:guid}")]
+    [SwaggerOperation(Summary = "Retrieves detailed information about a specific product general.")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetDetail(Guid id)
     {
-        var response = await _sender.Send(new GetProductGeneralDetailCommand(Id));
-        return Ok(response);
+        var response = await _sender.Send(new GetProductGeneralDetailCommand(id));
+        return Ok(new OK_Result<GetProductGeneralDetailResponse>("Retrieved product general details successfully", response));
     }
-
-
-
-
-
-
-
-
 }

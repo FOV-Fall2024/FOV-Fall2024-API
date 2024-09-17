@@ -1,5 +1,4 @@
-﻿using FOV.Application.Features.Categories.Queries.GetChildCategories;
-using FOV.Application.Features.IngredientTypes.Commands.Active;
+﻿using FOV.Application.Features.IngredientTypes.Commands.Active;
 using FOV.Application.Features.IngredientTypes.Commands.Create;
 using FOV.Application.Features.IngredientTypes.Commands.CreateChild;
 using FOV.Application.Features.IngredientTypes.Commands.Inactive;

@@ -30,7 +30,7 @@ public sealed class IngredientTypeValidator : AbstractValidator<string>
     private async Task<bool> CheckDuplicateName(string name, CancellationToken token)
     {
         IngredientType? ingredientType = await _unitOfWorks.IngredientTypeRepository.FirstOrDefaultAsync(x => x.IngredientName == name);
-        return ingredientType == null;
+        return ingredientType != null;
     }
 
 }

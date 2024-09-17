@@ -43,5 +43,7 @@ public interface IUnitOfWorks
     public IPaymentRepository PaymentRepository { get; }
     public IAttendanceRepository AttendanceRepository { get; }
 
+    public IIngredientUnitRepository IngredientUnitRepository { get; }
+
     public Task<int> SaveChangeAsync();
 }

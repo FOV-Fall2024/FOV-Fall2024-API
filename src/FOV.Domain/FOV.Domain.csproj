@@ -13,13 +13,11 @@
 		<Folder Include="Entities\ComboAggregator\Primitives\" />
 		<Folder Include="Entities\IngredientAggregator\ValueObject\" />
 		<Folder Include="Entities\IngredientAggregator\Primitives\" />
-		<Folder Include="Entities\IngredientGeneralAggregator\Enums\" />
 		<Folder Include="Entities\IngredientGeneralAggregator\ValueObject\" />
 		<Folder Include="Entities\IngredientGeneralAggregator\Primitives\" />
 		<Folder Include="Entities\OrderAggregator\ValueObjects\" />
 		<Folder Include="Entities\OrderAggregator\ValueObjects\" />
 		<Folder Include="Entities\OrderAggregator\Primitives\" />
-		<Folder Include="Entities\ProductAggregator\Enums\" />
 		<Folder Include="Entities\ProductAggregator\ValueObjects\" />
 		<Folder Include="Entities\ProductAggregator\Primitives\" />
 		<Folder Include="Entities\ProductGeneralAggregator\Enums\" />
@@ -34,6 +32,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
     <PackageReference Include="FirebaseAuth" Version="2.0.6" />

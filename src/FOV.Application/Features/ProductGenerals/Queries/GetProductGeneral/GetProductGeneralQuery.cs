@@ -9,7 +9,7 @@ public sealed record GetProductGeneralCommand(string? Name, bool? IsDeleted, str
 
 public record GetProductGeneralResponse(Guid Id, string Name, string ProductDescription, bool IsDeleted, DateTimeOffset CreatedDate, DateTimeOffset UpdateTime);
 
-public class GetProductGeneralHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<GetProductGeneralCommand, List<GetProductGeneralResponse>>
+public class GetProductGeneralQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetProductGeneralCommand, List<GetProductGeneralResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
 

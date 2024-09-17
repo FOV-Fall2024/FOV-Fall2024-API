@@ -1,5 +1,8 @@
 ﻿using FluentResults;
 using FOV.Application.Common.Behaviours.Claim;
+using FOV.Domain.Entities.IngredientAggregator;
+using FOV.Domain.Entities.IngredientAggregator.Enums;
+using FOV.Domain.Entities.IngredientGeneralAggregator.Enums;
 using FOV.Domain.Entities.ProductAggregator;
 using FOV.Domain.Entities.ProductGeneralAggregator;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
@@ -33,8 +36,27 @@ internal class AddProductHandler(IUnitOfWorks unitOfWorks, IClaimService claimSe
 
             if (_unitOfWorks.IngredientRepository.WhereAsync(x => x.IngredientName == item.IngredientName) is null)
             {
-                await _unitOfWorks.IngredientRepository.AddAsync(new Domain.Entities.IngredientAggregator.Ingredient(item.IngredientName, item.IngredientTypeId, _claimService.RestaurantId));
+                Ingredient ingredient = new(item.IngredientName, item.IngredientTypeId, _claimService.RestaurantId);
+                await _unitOfWorks.IngredientRepository.AddAsync(ingredient);
+                await AddDefaultIngredientUnit(ingredient.Id, item.IngredientMeasure);
             }
         }
+    }
+
+
+    private async Task AddDefaultIngredientUnit(Guid ingredientId, IngredientMeasure minMeasure)
+    {
+        //Default IngredientUnit
+        IngredientUnit ingredientUnit = new(MeasureTransfer.ToSmallUnit(minMeasure), ingredientId);
+        await _unitOfWorks.IngredientUnitRepository.AddAsync(ingredientUnit);
+
+        if (minMeasure == IngredientMeasure.g || minMeasure == IngredientMeasure.ml)
+        {
+            IngredientUnit ingredientUnit2 = new(MeasureTransfer.ToLargeUnit(minMeasure), ingredientId, ingredientUnit.Id, 1000);
+            await _unitOfWorks.IngredientUnitRepository.AddAsync(ingredientUnit2);
+        }
+
+        await _unitOfWorks.SaveChangeAsync();
+
     }
 }

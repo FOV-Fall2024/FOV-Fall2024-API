@@ -1,4 +1,5 @@
-﻿using FluentResults;
+﻿using System.Text.Json.Serialization;
+using FluentResults;
 using FOV.Domain.Entities.ProductAggregator;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
@@ -7,6 +8,7 @@ namespace FOV.Application.Features.Categories.Commands.Update;
 
 public sealed record UpdateCategoryCommand : IRequest<Result>
 {
+    [JsonIgnore]
     public Guid Id { get; set; }
     public string CategoryName { get; set; } = string.Empty;
 }
