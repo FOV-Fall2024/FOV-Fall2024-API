@@ -10,12 +10,12 @@ using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Restaurants.Queries.Get;
-public record GetRestaurantCommand(Guid? RestaurantId, string? RestaurantName, string? Address, string? RestaurantPhone, string? RestaurantCode) : IRequest<List<GetRestaurantResponse>>;
-public record GetRestaurantResponse(Guid RestaurantId, string RestaurantName, string Address, string RestaurantPhone, string RestaurantCode, Status RestaurantStatus);
-public class GetRestaurantQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetRestaurantCommand, List<GetRestaurantResponse>>
+public record GetRestaurantCommand(PagingRequest? PagingRequest, Guid? RestaurantId, string? RestaurantName, string? Address, string? RestaurantPhone, string? RestaurantCode) : IRequest<PagedResult<GetRestaurantResponse>>;
+public record GetRestaurantResponse(Guid Id, string RestaurantName, string Address, string RestaurantPhone, string RestaurantCode, Status RestaurantStatus);
+public class GetRestaurantQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetRestaurantCommand, PagedResult<GetRestaurantResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
-    public async Task<List<GetRestaurantResponse>> Handle(GetRestaurantCommand request, CancellationToken cancellationToken)
+    public async Task<PagedResult<GetRestaurantResponse>> Handle(GetRestaurantCommand request, CancellationToken cancellationToken)
     {
         var restaurants = await _unitOfWorks.RestaurantRepository.GetAllAsync();
         var filterEntity = new Restaurant
@@ -27,7 +27,23 @@ public class GetRestaurantQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetR
             RestataurantCode = string.IsNullOrEmpty(request.RestaurantCode) ? string.Empty : request.RestaurantCode,
             Status = request.RestaurantId.HasValue ? Status.Active : Status.Inactive
         };
-        var filterRestaurant = restaurants.AsQueryable().CustomFilterV1(filterEntity);
-        return filterRestaurant.Select(restaurant => new GetRestaurantResponse(restaurant.Id, restaurant.RestaurantName ?? string.Empty, restaurant.Address ?? string.Empty, restaurant.RestaurantPhone ?? string.Empty, restaurant.RestataurantCode ?? string.Empty, restaurant.Status)).ToList();
+        var filteredRestaurants = restaurants.AsQueryable().CustomFilterV1(filterEntity);
+
+        var mappedRestaurants = filteredRestaurants.Select(restaurant => new GetRestaurantResponse(
+                restaurant.Id,
+                restaurant.RestaurantName ?? string.Empty,
+                restaurant.Address ?? string.Empty,
+                restaurant.RestaurantPhone ?? string.Empty,
+                restaurant.RestataurantCode ?? string.Empty,
+                restaurant.Status
+            )).ToList();
+
+        var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
+
+        var sortedResults = PaginationHelper<GetRestaurantResponse>.Sorting(sortType, mappedRestaurants, sortField);
+        var result = PaginationHelper<GetRestaurantResponse>.Paging(sortedResults, page, pageSize);
+
+        return result;
+        //return filterRestaurant.Select(restaurant => new GetRestaurantResponse(restaurant.Id, restaurant.RestaurantName ?? string.Empty, restaurant.Address ?? string.Empty, restaurant.RestaurantPhone ?? string.Empty, restaurant.RestataurantCode ?? string.Empty, restaurant.Status)).ToList();
     }
 }

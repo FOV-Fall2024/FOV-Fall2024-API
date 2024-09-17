@@ -9,6 +9,18 @@ using FOV.Domain.Common;
 namespace FOV.Infrastructure.Helpers.GetHelper;
 public class PaginationHelper<T> where T : class
 {
+    public static PagedResult<T> EmptyResult(int pageSize)
+    {
+        return new PagedResult<T>
+        {
+            Results = new List<T>(),
+            PageNumber = 1,
+            PageSize = pageSize,
+            TotalNumberOfPages = 0,
+            TotalNumberOfRecords = 0
+        };
+    }
+
     public static PagedResult<T> Paging(List<T> list, int? page, int? pageSize)
     {
         try

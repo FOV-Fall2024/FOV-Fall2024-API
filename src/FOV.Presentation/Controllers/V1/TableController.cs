@@ -1,4 +1,5 @@
-﻿using FOV.Application.Features.Tables.Commands.Active;
+﻿using Elastic.Clients.Elasticsearch;
+using FOV.Application.Features.Tables.Commands.Active;
 using FOV.Application.Features.Tables.Commands.Create;
 using FOV.Application.Features.Tables.Commands.Inactive;
 using FOV.Application.Features.Tables.Queries;
@@ -39,7 +40,7 @@ public class TableController(ISender sender) : DefaultController
         return Ok(response);
     }
     [HttpGet]
-    public async Task<IActionResult> Get([FromQuery] PagingRequest paging, [FromQuery] GetTableCommand command)
+    public async Task<IActionResult> Get([FromQuery] GetTableCommand command)
     {
         var response = await _sender.Send(command);
         return Ok(response);
