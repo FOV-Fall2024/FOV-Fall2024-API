@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Firebase.Storage;
+﻿using Firebase.Storage;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
 namespace FOV.Infrastructure.Helpers.FirebaseHandler;
@@ -53,4 +49,35 @@ public class StorageHandler
             FileUrl = fileUrl
         };
     }
+
+    public async Task<StorageFile> UploadImageAsync(IFormFile file, string fileName)
+    {
+        if (file == null || file.Length == 0)
+        {
+            throw new Exception("File does not exist or is empty.");
+        }
+
+        using var stream = file.OpenReadStream();
+        var cancellation = _firebaseStorage
+            .Child(fileName) // Specify the folder where you want to upload
+            .Child(file.FileName)
+            .PutAsync(stream, CancellationToken.None);
+
+        try
+        {
+            var result = await cancellation;
+
+            return new StorageFile
+            {
+                FileName = fileName,
+                FileUrl = result
+            };
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Failed to upload image: {ex.Message}");
+        }
+    }
+
+
 }

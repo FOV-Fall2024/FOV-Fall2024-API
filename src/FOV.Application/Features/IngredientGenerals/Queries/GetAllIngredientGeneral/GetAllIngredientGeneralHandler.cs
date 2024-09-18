@@ -1,27 +1,51 @@
-﻿using FOV.Application.Features.IngredientGenerals.Mapper;
-using FOV.Domain.Entities.IngredientGeneralAggregator;
+﻿using FOV.Domain.Entities.IngredientGeneralAggregator; // Adjust as necessary
 using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
-namespace FOV.Application.Features.IngredientGenerals.Queries.GetAllIngredientGeneral;
-
-public sealed record GetAllIngredientCommand(string? IngredientName, Guid? IngredientTypeId) : IRequest<List<GetAllIngredientResponse>>;
-
-public record GetAllIngredientResponse(Guid Id, string IngredientName, Guid IngredientTypeId, string IngredientDescription);
-public class GetAllIngredientGeneralHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<GetAllIngredientCommand, List<GetAllIngredientResponse>>
+namespace FOV.Application.Features.IngredientGenerals.Queries.GetAllIngredientGeneral
 {
-    private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
-    public async Task<List<GetAllIngredientResponse>> Handle(GetAllIngredientCommand request, CancellationToken cancellationToken)
+    public sealed record GetAllIngredientCommand(string? IngredientName, Guid? IngredientTypeId, PagingRequest PagingRequest) : IRequest<PagedResult<GetAllIngredientResponse>>;
+
+    public record GetAllIngredientResponse(Guid Id, string IngredientName, Guid IngredientTypeId, string IngredientDescription);
+
+    public class GetAllIngredientGeneralHandler : IRequestHandler<GetAllIngredientCommand, PagedResult<GetAllIngredientResponse>>
     {
-        var allIngredient = await _unitOfWorks.IngredientGeneralRepository.GetAllAsync();
-        var filteredIngredient = allIngredient.AsQueryable().CustomFilterV1(new IngredientGeneral
+        private readonly IUnitOfWorks _unitOfWorks;
+
+        public GetAllIngredientGeneralHandler(IUnitOfWorks unitOfWorks)
         {
-            IngredientName = request.IngredientName ?? string.Empty,
-            IngredientTypeId = request.IngredientTypeId ?? Guid.Empty,
-        });
+            _unitOfWorks = unitOfWorks;
+        }
 
-        return [.. filteredIngredient.Select(x => x.MapperGetAllDTO())];
+        public async Task<PagedResult<GetAllIngredientResponse>> Handle(GetAllIngredientCommand request, CancellationToken cancellationToken)
+        {
+            // Fetch all ingredients from the repository
+            var allIngredients = await _unitOfWorks.IngredientGeneralRepository.GetAllAsync();
+
+            // Filter ingredients based on the request parameters
+            var filteredIngredients = allIngredients.AsQueryable()
+                .CustomFilterV1(new IngredientGeneral
+                {
+                    IngredientName = request.IngredientName ?? string.Empty,
+                    IngredientTypeId = request.IngredientTypeId ?? Guid.Empty,
+                });
+
+            // Select and map to response DTO
+            var mappedIngredients = filteredIngredients.Select(x => new GetAllIngredientResponse(
+                x.Id,
+                x.IngredientName ?? string.Empty,
+                x.IngredientTypeId,
+                x.IngredientDescription ?? string.Empty)).ToList();
+
+            // Get pagination and sorting values
+            var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
+
+            // Sort and paginate the results
+            var sortedResults = PaginationHelper<GetAllIngredientResponse>.Sorting(sortType, mappedIngredients, sortField);
+            var result = PaginationHelper<GetAllIngredientResponse>.Paging(sortedResults, page, pageSize);
+
+            return result;
+        }
     }
-
 }

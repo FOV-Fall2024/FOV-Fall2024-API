@@ -5,6 +5,7 @@ using FOV.Application.Features.ProductGenerals.Commands.Update;
 using FOV.Application.Features.ProductGenerals.Commands.UpdateIngredientQuantity;
 using FOV.Application.Features.ProductGenerals.Queries.GetProductGeneral;
 using FOV.Application.Features.ProductGenerals.Queries.GetProductGeneralDetail;
+using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Presentation.Infrastructure.Core;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -35,7 +36,22 @@ public class ProductGeneralController : DefaultController
     public async Task<IActionResult> Add(CreateProductGeneralCommand command)
     {
         var response = await _sender.Send(command);
-        return CreatedAtAction(nameof(GetDetail), new { id = response }, new CREATED_Result("Product general created successfully"));
+        return CreatedAtAction(nameof(Add), new { id = response }, new CREATED_Result("Product general created successfully"));
+    }
+
+    /// <summary>
+    /// Uploads an image.
+    /// </summary>
+    /// <param name="imageFile">The image file to upload.</param>
+    /// <returns>The URL of the uploaded image.</returns>
+    [HttpPost("upload")]
+    [SwaggerOperation(Summary = "Uploads an image.")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> UploadImage([FromForm] UpdateIngredientQuantityCommand imageFile)
+    {
+
+        return CreatedAtAction(nameof(UploadImage), await _sender.Send(imageFile));
     }
 
     /// <summary>
@@ -116,7 +132,7 @@ public class ProductGeneralController : DefaultController
     public async Task<IActionResult> Get([FromQuery] GetProductGeneralCommand command)
     {
         var response = await _sender.Send(command);
-        return Ok(new OK_Result<List<GetProductGeneralResponse>>("Retrieved product generals successfully", response));
+        return Ok(new OK_Result<PagedResult<GetProductGeneralResponse>>("Retrieved product generals successfully", response));
     }
 
     /// <summary>

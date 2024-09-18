@@ -17,7 +17,7 @@ public class GetProductGeneralDetailHandler(IUnitOfWorks unitOfWorks) : IRequest
     public async Task<GetProductGeneralDetailResponse> Handle(GetProductGeneralDetailCommand request, CancellationToken cancellationToken)
     {
         var response = await _unitOfWorks.ProductGeneralRepository.GetByIdAsync(request.Id) ?? throw new Exception();
-        var ingredients = await _unitOfWorks.IngredientGeneralRepository.GetAllAsync(x => x.ProductIngredientGenerals.Where(x => x.ProductGeneralId == request.Id));
+        var ingredients = await _unitOfWorks.IngredientGeneralRepository.WhereAsync(x => x.ProductIngredientGenerals.Any(x => x.ProductGeneralId == request.Id),x => x.ProductIngredientGenerals);
         return response.MapperDetailDTO(ingredients.Select(x => x.MapperIngredientDTO(request.Id)).ToList());
     }
 }

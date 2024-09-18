@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using FluentResults;
+using FOV.Application.Features.Authorize.Commands.ChangePassword;
 using FOV.Application.Features.Authorize.Commands.EditProfile;
 using FOV.Application.Features.Authorize.Commands.EmployeeLogin;
 using FOV.Application.Features.Authorize.Commands.UserGoogleLogin;
@@ -39,6 +40,27 @@ public class AuthController : DefaultController
     {
         var response = await _sender.Send(command);
         return Ok(new OK_Result<string>("Edit Profile Successfully", response.Successes.First().Message));
+    }
+
+
+    /// <summary>
+    /// Changes the user's password.
+    /// </summary>
+    /// <param name="command">The command containing password change details.</param>
+    /// <returns>A success message or error details.</returns>
+    [HttpPost("change-password")]
+    [SwaggerOperation(Summary = "Change user password.")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> ChangePassword(ChangePasswordCommand command)
+    {
+        var result = await _sender.Send(command);
+        if (result.IsSuccess)
+        {
+            return Ok(new OK_Result<string>("Change Password Successfully", result.Successes.First().Message));
+        }
+
+        return BadRequest(result.Errors.Select(e => e.Message));
     }
 
     /// <summary>
