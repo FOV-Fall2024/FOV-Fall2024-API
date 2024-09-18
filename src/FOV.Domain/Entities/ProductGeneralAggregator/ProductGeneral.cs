@@ -11,8 +11,9 @@ public class ProductGeneral : BaseAuditableEntity, IsSoftDeleted
 
     public string ProductDescription { get; set; } = string.Empty;
 
-    public Category? Category { get; set; }
+    public string ProductImageDefault { get; set; } = string.Empty;
     public virtual ICollection<Product> Products { get; set; } = [];
+    public Category Category { get; set; }
     public Guid? CategoryId { get; set; }
     public bool IsDeleted { get; set; }
 
@@ -24,8 +25,9 @@ public class ProductGeneral : BaseAuditableEntity, IsSoftDeleted
 
     }
 
-    public ProductGeneral(string name, string description, Guid categoryId)
+    public ProductGeneral(string name, string description, Guid categoryId,string image)
     {
+        ProductImageDefault = image;
         ProductName = name;
         ProductDescription = description;
         CategoryId = categoryId;

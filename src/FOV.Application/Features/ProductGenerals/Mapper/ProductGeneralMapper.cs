@@ -8,7 +8,7 @@ public static class ProductGeneralMapper
 
     public static GetIngredientResponse MapperIngredientDTO(this IngredientGeneral ingredient, Guid productId)
     {
-        return new GetIngredientResponse(ingredient.Id, ingredient.IngredientName, ingredient.ProductIngredientGenerals.First(x => x.ProductGeneralId == productId).Quantity);
+        return new GetIngredientResponse(ingredient.Id, ingredient.IngredientName, ingredient.ProductIngredientGenerals.Where(x => x.ProductGeneralId == productId).FirstOrDefault().Quantity);
     }
 
     public static GetProductGeneralDetailResponse MapperDetailDTO(this ProductGeneral productGeneral, List<GetIngredientResponse> getIngredient)

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FOV.Domain.Entities.RestaurantAggregator;
+﻿using FOV.Domain.Entities.RestaurantAggregator;
 using FOV.Domain.Entities.RestaurantAggregator.Enums;
 using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
@@ -44,6 +39,5 @@ public class GetRestaurantQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetR
         var result = PaginationHelper<GetRestaurantResponse>.Paging(sortedResults, page, pageSize);
 
         return result;
-        //return filterRestaurant.Select(restaurant => new GetRestaurantResponse(restaurant.Id, restaurant.RestaurantName ?? string.Empty, restaurant.Address ?? string.Empty, restaurant.RestaurantPhone ?? string.Empty, restaurant.RestataurantCode ?? string.Empty, restaurant.Status)).ToList();
     }
 }

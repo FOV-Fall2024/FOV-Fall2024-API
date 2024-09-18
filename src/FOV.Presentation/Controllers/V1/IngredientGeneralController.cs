@@ -3,6 +3,7 @@ using FOV.Application.Features.IngredientGenerals.Commands.Create;
 using FOV.Application.Features.IngredientGenerals.Commands.Inactive;
 using FOV.Application.Features.IngredientGenerals.Commands.Update;
 using FOV.Application.Features.IngredientGenerals.Queries.GetAllIngredientGeneral;
+using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Presentation.Infrastructure.Core;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -95,6 +96,6 @@ public class IngredientGeneralController : DefaultController
     public async Task<IActionResult> Get([FromQuery] GetAllIngredientCommand command)
     {
         var response = await _sender.Send(command);
-        return Ok(new OK_Result<List<GetAllIngredientResponse>>("Retrieved ingredient generals successfully", response));
+        return Ok(new OK_Result<PagedResult<GetAllIngredientResponse>>("Retrieved ingredient generals successfully", response));
     }
 }
