@@ -12,8 +12,8 @@ public static class PaginationUtils
     {
         var page = request?.Page ?? 1;
         var pageSize = request?.PageSize ?? 10;
-        var sortType = request?.SortType ?? SortOrder.Ascending;
-        var sortField = request?.ColName ?? "Id";
+        var sortType = request?.SortType ?? SortOrder.Descending;
+        var sortField = request?.ColName ?? "created";
 
         return (page, pageSize, sortType, sortField);
     }

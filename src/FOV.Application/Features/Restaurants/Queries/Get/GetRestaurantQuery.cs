@@ -1,4 +1,5 @@
-﻿using FOV.Domain.Entities.RestaurantAggregator;
+﻿using System.Text.Json.Serialization;
+using FOV.Domain.Entities.RestaurantAggregator;
 using FOV.Domain.Entities.RestaurantAggregator.Enums;
 using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
@@ -6,13 +7,13 @@ using MediatR;
 
 namespace FOV.Application.Features.Restaurants.Queries.Get;
 public record GetRestaurantCommand(PagingRequest? PagingRequest, Guid? RestaurantId, string? RestaurantName, string? Address, string? RestaurantPhone, string? RestaurantCode) : IRequest<PagedResult<GetRestaurantResponse>>;
-public record GetRestaurantResponse(Guid Id, string RestaurantName, string Address, string RestaurantPhone, string RestaurantCode, Status RestaurantStatus);
+public record GetRestaurantResponse(Guid Id, string RestaurantName, string Address, string RestaurantPhone, string RestaurantCode, Status RestaurantStatus, DateTimeOffset Created);
 public class GetRestaurantQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetRestaurantCommand, PagedResult<GetRestaurantResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     public async Task<PagedResult<GetRestaurantResponse>> Handle(GetRestaurantCommand request, CancellationToken cancellationToken)
     {
-        var restaurants = (await _unitOfWorks.RestaurantRepository.GetAllAsync()).OrderByDescending(r => r.Created);
+        var restaurants = await _unitOfWorks.RestaurantRepository.GetAllAsync();
         var filterEntity = new Restaurant
         {
             Id = request.RestaurantId.HasValue ? request.RestaurantId.Value : Guid.Empty,
@@ -30,11 +31,12 @@ public class GetRestaurantQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetR
                 restaurant.Address ?? string.Empty,
                 restaurant.RestaurantPhone ?? string.Empty,
                 restaurant.RestataurantCode ?? string.Empty,
-                restaurant.Status
+                restaurant.Status,
+                restaurant.Created
             )).ToList();
 
         var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
-
+        sortField = "RestaurantCode";
         var sortedResults = PaginationHelper<GetRestaurantResponse>.Sorting(sortType, mappedRestaurants, sortField);
         var result = PaginationHelper<GetRestaurantResponse>.Paging(sortedResults, page, pageSize);
 

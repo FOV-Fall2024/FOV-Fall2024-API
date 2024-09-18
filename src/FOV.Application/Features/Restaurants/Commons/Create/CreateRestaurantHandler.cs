@@ -37,23 +37,42 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
     }
 
 
+    //private async Task<string> GeneratedCode()
+    //{
+    //    Restaurant? restaurant = (await _unitOfWorks.RestaurantRepository
+    //        .GetAllAsync())
+    //        .OrderByDescending(r => r.Created)
+    //        .FirstOrDefault();
+
+    //    if (restaurant is null)
+    //    {
+    //        return "RE_001";
+    //    }
+    //    string currentIdentifier = restaurant.RestataurantCode; // Assuming restaurant has a property 'Identifier' like 'RE_001'
+    //    int currentNumber = int.Parse(currentIdentifier.Substring(3));
+    //    int newNumber = currentNumber + 1;
+    //    return $"RE_{newNumber:D3}";
+
+    //}
     private async Task<string> GeneratedCode()
     {
-        Restaurant? restaurant = (await _unitOfWorks.RestaurantRepository
-            .GetAllAsync())
-            .OrderByDescending(r => r.Created)
-            .FirstOrDefault();
-
-        if (restaurant is null)
+        string GenerateNewCode(int number)
         {
-            return "RE_001";
+            return $"RE_{number:D3}";
         }
-        string currentIdentifier = restaurant.RestataurantCode; // Assuming restaurant has a property 'Identifier' like 'RE_001'
-        int currentNumber = int.Parse(currentIdentifier.Substring(3));
-        int newNumber = currentNumber + 1;
-        return $"RE_{newNumber:D3}";
 
+        string newCode;
+        int codeNumber = 1;
+
+        do
+        {
+            newCode = GenerateNewCode(codeNumber);
+            codeNumber++;
+        } while (await _unitOfWorks.RestaurantRepository.AnyAsync(r => r.RestataurantCode == newCode));
+
+        return newCode;
     }
+
 
     private async Task AddNewProdut(ICollection<Guid> products, Guid restaurantId)
     {

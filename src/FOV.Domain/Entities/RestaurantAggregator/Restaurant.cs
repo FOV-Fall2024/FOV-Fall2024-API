@@ -41,5 +41,6 @@ public class Restaurant : BaseAuditableEntity, IsSoftDeleted
         Address = address;
         RestaurantPhone = phone;
         RestataurantCode = code;
+        Created = DateTimeOffset.UtcNow.AddHours(7);
     }
 }

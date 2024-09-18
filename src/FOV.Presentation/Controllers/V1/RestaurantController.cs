@@ -1,5 +1,6 @@
 ﻿using FOV.Application.Features.Restaurants.Commons.Create;
 using FOV.Application.Features.Restaurants.Queries.Get;
+using FOV.Presentation.Infrastructure.Core;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,7 +16,7 @@ public class RestaurantController(IMediator mediator) : DefaultController
     public async Task<IActionResult> AddRestaurant(CreateRestaurantCommand command)
     {
         var response = await _mediator.Send(command);
-        return Ok(response);
+        return Ok(new OK_Result<Guid>("Add restaurant successfully", response));
     }
 
     [HttpGet]
