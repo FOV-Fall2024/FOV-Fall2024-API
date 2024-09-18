@@ -17,7 +17,7 @@ public class GetTableQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetTableC
 
     public async Task<PagedResult<GetTableResponse>> Handle(GetTableCommand command, CancellationToken cancellationToken)
     {
-        var tables = await _unitOfWorks.TableRepository.GetAllAsync();
+        var tables = (await _unitOfWorks.TableRepository.GetAllAsync()).OrderByDescending(t => t.Created);
         var filterEntity = new Table
         {
             Id = command.Id ?? Guid.Empty,

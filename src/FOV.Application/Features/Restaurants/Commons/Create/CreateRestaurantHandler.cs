@@ -29,7 +29,7 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
     public async Task<Guid> Handle(CreateRestaurantCommand request, CancellationToken cancellationToken)
     {
 
-        Restaurant restaurant = new(request.RestaurantName, request.Address, request.Phone, GeneratedCode());
+        Restaurant restaurant = new(request.RestaurantName, request.Address, request.Phone, await GeneratedCode());
         await _unitOfWorks.RestaurantRepository.AddAsync(restaurant);
         await AddNewProdut(request.Products, restaurant.Id);
         await _unitOfWorks.SaveChangeAsync();
@@ -37,9 +37,12 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
     }
 
 
-    private string GeneratedCode()
+    private async Task<string> GeneratedCode()
     {
-        Restaurant? restaurant = _unitOfWorks.RestaurantRepository.GetAllAsync().Result.LastOrDefault();
+        Restaurant? restaurant = (await _unitOfWorks.RestaurantRepository
+            .GetAllAsync())
+            .OrderByDescending(r => r.Created)
+            .FirstOrDefault();
 
         if (restaurant is null)
         {

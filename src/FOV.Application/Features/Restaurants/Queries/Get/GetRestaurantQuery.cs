@@ -17,7 +17,7 @@ public class GetRestaurantQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetR
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     public async Task<PagedResult<GetRestaurantResponse>> Handle(GetRestaurantCommand request, CancellationToken cancellationToken)
     {
-        var restaurants = await _unitOfWorks.RestaurantRepository.GetAllAsync();
+        var restaurants = (await _unitOfWorks.RestaurantRepository.GetAllAsync()).OrderByDescending(r => r.Created);
         var filterEntity = new Restaurant
         {
             Id = request.RestaurantId.HasValue ? request.RestaurantId.Value : Guid.Empty,
