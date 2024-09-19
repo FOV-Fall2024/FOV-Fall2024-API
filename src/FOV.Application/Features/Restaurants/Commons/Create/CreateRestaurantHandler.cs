@@ -45,13 +45,13 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
         }
 
         bool existPhone = await _unitOfWorks.RestaurantRepository.AnyAsync(r =>
-                          r.RestaurantPhone == request.Phone);
+                          r.RestaurantPhone == request.RestaurantPhone);
         if (existPhone)
         {
             throw new Exception("Đã có nhà hàng trùng số điện thoại");
         }
 
-        Restaurant restaurant = new(request.RestaurantName, request.Address, request.Phone, await GeneratedCode());
+        Restaurant restaurant = new(request.RestaurantName, request.Address, request.RestaurantPhone, await GeneratedCode());
         await _unitOfWorks.RestaurantRepository.AddAsync(restaurant);
         await AddNewProdut(request.Products, restaurant.Id);
         await _unitOfWorks.SaveChangeAsync();
