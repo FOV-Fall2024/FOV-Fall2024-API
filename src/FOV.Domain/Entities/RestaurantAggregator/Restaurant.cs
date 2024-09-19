@@ -42,6 +42,7 @@ public class Restaurant : BaseAuditableEntity, IsSoftDeleted
         RestaurantPhone = phone;
         RestataurantCode = code;
         Created = DateTimeOffset.UtcNow.AddHours(7);
+        Status = Status.Active;
     }
     public void Update(string name, string address, string phone)
     {

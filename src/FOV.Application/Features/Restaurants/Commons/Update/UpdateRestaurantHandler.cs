@@ -3,7 +3,7 @@ using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Restaurants.Commons.Update;
-public record UpdateRestaurantCommand(string? Address, string? RestaurantPhone) : IRequest<Guid>
+public record UpdateRestaurantCommand(string RestaurantName, string? Address, string? RestaurantPhone) : IRequest<Guid>
 {
     public Guid Id;
 }
@@ -19,6 +19,16 @@ public class UpdateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandler
         if (restaurant == null)
         {
             throw new AppException("Nhà hàng không tồn tại");
+        }
+        if (!string.IsNullOrEmpty(request.RestaurantName) && restaurant.RestaurantName != request.RestaurantName)
+        {
+            bool existRestaurantName = await _unitOfWorks.RestaurantRepository.AnyAsync(r =>
+                           r.RestaurantName == request.RestaurantName);
+
+            if (existRestaurantName)
+            {
+                fieldErrors.Add(new FieldError { Field = "restaurantName", Message = "Đã có nhà hàng trùng tên" });
+            }
         }
 
         if (!string.IsNullOrEmpty(request.Address) && restaurant.Address != request.Address)
@@ -46,6 +56,11 @@ public class UpdateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandler
         if (fieldErrors.Any())
         {
             throw new AppException("Lỗi khi cập nhật nhà hàng", fieldErrors);
+        }
+
+        if (!string.IsNullOrEmpty(request.RestaurantName))
+        {
+            restaurant.RestaurantName = request.RestaurantName;
         }
 
         if (!string.IsNullOrEmpty(request.Address))

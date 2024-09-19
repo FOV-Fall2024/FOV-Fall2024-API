@@ -23,7 +23,9 @@ public class RestaurantConfiguration : IEntityTypeConfiguration<Restaurant>
             IsDeleted = false,
             RestaurantPhone = "0902388123",
             Address = "Go Vap",
-            RestataurantCode = "RE_001"
+            RestataurantCode = "RE_001",
+            Status = Domain.Entities.TableAggregator.Enums.Status.Active
+
         },
         new Restaurant
         {
@@ -32,9 +34,9 @@ public class RestaurantConfiguration : IEntityTypeConfiguration<Restaurant>
             IsDeleted = false,
             RestaurantPhone = "0867960120",
             Address = "Thu Duc",
-            RestataurantCode = "RE_002"
+            RestataurantCode = "RE_002",
+            Status = Domain.Entities.TableAggregator.Enums.Status.Active
         }
-
         );
     }
 }
