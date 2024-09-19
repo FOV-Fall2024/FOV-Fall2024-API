@@ -2,6 +2,7 @@
 using FOV.Domain.Entities.GroupChatAggregator;
 using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Domain.Entities.IngredientGeneralAggregator;
+using FOV.Domain.Entities.NewProductRecommendAggregator;
 using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.ProductAggregator;
 using FOV.Domain.Entities.ProductGeneralAggregator;
@@ -49,5 +50,10 @@ public interface IApplicationDbContext
     DbSet<GroupUser> GroupUsers { get; }
 
     DbSet<GroupMessage> GroupMessages { get; }
+
+
+    DbSet<NewProductRecommend> NewProductRecommends { get; }
+
+    DbSet<NewProductRecommendLog> NewProductRecommendLogs { get; }
 
 }

@@ -29,9 +29,11 @@
     <Folder Include="Features\GroupChats\Queries\" />
     <Folder Include="Features\GroupMessages\Queries\" />
     <Folder Include="Features\Ingredients\Queries\GetIngredientDetail\" />
-    <Folder Include="Features\IngredientUnits\Commands\CreateNewIngredientUnit\" />
-    <Folder Include="Features\IngredientUnits\Commands\Update\" />
     <Folder Include="Features\IngredientUnits\Commands\Remove\" />
+    <Folder Include="Features\NewRecommendProductLog\Commands\" />
+    <Folder Include="Features\NewRecommendProductLog\Queries\" />
+    <Folder Include="Features\NewRecommendProducts\Queries\GetAll\" />
+    <Folder Include="Features\NewRecommendProducts\Queries\GetDetail\" />
     <Folder Include="Features\Restaurants\Queries\Detail\" />
   </ItemGroup>
 

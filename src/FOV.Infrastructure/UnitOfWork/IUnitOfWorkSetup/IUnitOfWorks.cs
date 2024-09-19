@@ -45,5 +45,10 @@ public interface IUnitOfWorks
 
     public IIngredientUnitRepository IngredientUnitRepository { get; }
 
+
+    public INewProductRecommendLogRepository NewProductRecommendLogRepository { get; }
+
+    public INewProductRecommendRepository NewProductRecommendRepository { get; }
+
     public Task<int> SaveChangeAsync();
 }

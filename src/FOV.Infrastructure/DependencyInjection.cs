@@ -55,6 +55,8 @@ public static class DependencyInjection
         services.AddScoped<IGroupChatRepository, GroupChatRepository>();
         services.AddScoped<IAttendanceRepository, AttendanceRepository>();
         services.AddScoped<IIngredientUnitRepository, IngredientUnitRepository>();
+        services.AddScoped<INewProductRecommendLogRepository, NewProductRecommendLogRepository>();
+        services.AddScoped<INewProductRecommendRepository, NewProductRecommendRepository>();
         return services;
 
     }

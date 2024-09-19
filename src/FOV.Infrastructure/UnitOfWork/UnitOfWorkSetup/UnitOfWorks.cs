@@ -1,5 +1,6 @@
 ﻿using FOV.Infrastructure.Data;
 using FOV.Infrastructure.Repository.IRepositories;
+using FOV.Infrastructure.Repository.Repositories;
 
 namespace FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 
@@ -33,11 +34,13 @@ public class UnitOfWorks : IUnitOfWorks
     private readonly IPaymentRepository _paymentRepository;
     private readonly IAttendanceRepository _attendanceRepository;
     private readonly IIngredientUnitRepository _ingredientUnitRepository;
+    private readonly INewProductRecommendLogRepository _newProductRecommendLogRepository;
+    private readonly INewProductRecommendRepository _newProductRecommendRepository;
 
     public UnitOfWorks(FOVContext context, IIngredientTypeRepository ingredientTypeRepository, IIngredientGeneralRepository ingredientGeneralRepository, IProductGeneralRepository productGeneralRepository, IProductIngredientGeneralRepository productIngredientGeneralRepository, ITableRepository tableRepository, IRestaurantRepository restaurantRepository, ICategoryRepository categoryRepository, IProductRepository productRepository, IIngredientRepository ingredientRepository, IProductIngredientRepository productIngredientRepository, ICustomerRepository customerRepository, IEmployeeRepository employeeRepository, IIngrdientTransactionRepository ingrdientTransactionRepository, IProductComboRepository productComboRepository, IComboRepository comboRepository, IOrderRepository orderRepository, IOrderDetailRepository orderDetailRepository, IShiftRepository shiftRepository, IWaiterScheduleRepository waiterScheduleRepository,
         IGroupChatRepository groupChatRepository, IGroupMessageRepository groupMessageRepository, IGroupUserRepository groupUserRepository,
         IProductImageRepository productImageRepository,
-        IRatingRepository ratingRepository, IPaymentRepository paymentRepository, IAttendanceRepository attendanceRepository,IIngredientUnitRepository ingredientUnitRepository)
+        IRatingRepository ratingRepository, IPaymentRepository paymentRepository, IAttendanceRepository attendanceRepository, IIngredientUnitRepository ingredientUnitRepository, INewProductRecommendRepository newProductRecommendRepository, INewProductRecommendLogRepository newProductRecommendLogRepository)
     {
         _context = context;
         _ingredientTypeRepository = ingredientTypeRepository;
@@ -68,6 +71,8 @@ public class UnitOfWorks : IUnitOfWorks
         _attendanceRepository = attendanceRepository;
         _ingredientUnitRepository = ingredientUnitRepository;
         _attendanceRepository = attendanceRepository;
+        _newProductRecommendLogRepository = newProductRecommendLogRepository;
+        _newProductRecommendRepository = newProductRecommendRepository;
     }
     public IIngredientTypeRepository IngredientTypeRepository => _ingredientTypeRepository;
     public IIngredientGeneralRepository IngredientGeneralRepository => _ingredientGeneralRepository;
@@ -115,6 +120,10 @@ public class UnitOfWorks : IUnitOfWorks
     public IAttendanceRepository AttendanceRepository => _attendanceRepository;
 
     public IIngredientUnitRepository IngredientUnitRepository => _ingredientUnitRepository;
+
+    public INewProductRecommendLogRepository NewProductRecommendLogRepository => _newProductRecommendLogRepository;
+
+    public INewProductRecommendRepository NewProductRecommendRepository => _newProductRecommendRepository;
 
     public async Task<int> SaveChangeAsync()
     {

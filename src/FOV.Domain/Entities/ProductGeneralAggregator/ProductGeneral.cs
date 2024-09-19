@@ -16,7 +16,7 @@ public class ProductGeneral : BaseAuditableEntity, IsSoftDeleted
     public Category Category { get; set; }
     public Guid? CategoryId { get; set; }
     public bool IsDeleted { get; set; }
-
+    public bool IsDraft { get; set; } = true;
     public virtual ICollection<ProductIngredientGeneral> Ingredients { get; set; } = [];
 
 
@@ -25,8 +25,9 @@ public class ProductGeneral : BaseAuditableEntity, IsSoftDeleted
 
     }
 
-    public ProductGeneral(string name, string description, Guid categoryId,string image)
+    public ProductGeneral(string name, string description, Guid categoryId,string image,bool isDraft)
     {
+        IsDraft = isDraft;
         ProductImageDefault = image;
         ProductName = name;
         ProductDescription = description;
@@ -42,5 +43,26 @@ public class ProductGeneral : BaseAuditableEntity, IsSoftDeleted
         CategoryId = categoryId;
     }
 
+    public void Update(string name, string description, string Image)
+    {
+        ProductName = name;
+        ProductDescription = description;
+        ProductImageDefault = Image;
+    }
+
+    public void Update(string name, string description, string Image,Guid categoryId)
+    {
+        ProductName = name;
+        ProductDescription = description;
+        ProductImageDefault = Image;
+        CategoryId = categoryId;
+    }
+
+
+
+
+
     public void SetState(bool isDeleted) => IsDeleted = isDeleted;
+
+    public void SetDraftState(bool isDraftState) => IsDraft = isDraftState;
 }
