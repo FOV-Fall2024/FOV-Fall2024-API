@@ -8,7 +8,8 @@ namespace FOV.Domain.Entities.TableAggregator.Enums
 {
     public enum Status : byte
     {
-        Active = 0,
-        Inactive = 1,
+        Unknown = 0,
+        Active = 1,
+        Inactive = 2
     }
 }

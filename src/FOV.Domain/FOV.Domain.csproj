@@ -23,6 +23,7 @@
 		<Folder Include="Entities\ProductGeneralAggregator\Enums\" />
 		<Folder Include="Entities\ProductGeneralAggregator\ValueObjet\" />
 		<Folder Include="Entities\ProductGeneralAggregator\Primitives\" />
+		<Folder Include="Entities\RestaurantAggregator\Enums\" />
 		<Folder Include="Entities\RestaurantAggregator\ValueObject\" />
 		<Folder Include="Entities\RestaurantAggregator\Primitives\" />
 		<Folder Include="Entities\TableAggregator\ValueObjects\" />

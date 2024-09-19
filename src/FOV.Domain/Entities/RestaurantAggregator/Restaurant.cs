@@ -3,8 +3,8 @@ using FOV.Domain.Entities.ComboAggregator;
 using FOV.Domain.Entities.GroupChatAggregator;
 using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Domain.Entities.ProductAggregator;
-using FOV.Domain.Entities.RestaurantAggregator.Enums;
 using FOV.Domain.Entities.TableAggregator;
+using FOV.Domain.Entities.TableAggregator.Enums;
 using FOV.Domain.Entities.UserAggregator;
 
 namespace FOV.Domain.Entities.RestaurantAggregator;

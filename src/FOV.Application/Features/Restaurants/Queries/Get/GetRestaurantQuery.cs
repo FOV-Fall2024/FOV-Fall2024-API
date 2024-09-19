@@ -1,12 +1,12 @@
 ﻿using System.Text.Json.Serialization;
 using FOV.Domain.Entities.RestaurantAggregator;
-using FOV.Domain.Entities.RestaurantAggregator.Enums;
+using FOV.Domain.Entities.TableAggregator.Enums;
 using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Restaurants.Queries.Get;
-public record GetRestaurantCommand(PagingRequest? PagingRequest, Guid? RestaurantId, string? RestaurantName, string? Address, string? RestaurantPhone, string? RestaurantCode) : IRequest<PagedResult<GetRestaurantResponse>>;
+public record GetRestaurantCommand(PagingRequest? PagingRequest, Guid? RestaurantId, string? RestaurantName, string? Address, string? RestaurantPhone, string? RestaurantCode, Status? RestaurantStatus) : IRequest<PagedResult<GetRestaurantResponse>>;
 public record GetRestaurantResponse(Guid Id, string RestaurantName, string Address, string RestaurantPhone, string RestaurantCode, Status RestaurantStatus, DateTimeOffset Created);
 public class GetRestaurantQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetRestaurantCommand, PagedResult<GetRestaurantResponse>>
 {
@@ -21,19 +21,23 @@ public class GetRestaurantQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetR
             Address = string.IsNullOrEmpty(request.Address) ? string.Empty : request.Address,
             RestaurantPhone = string.IsNullOrEmpty(request.RestaurantPhone) ? string.Empty : request.RestaurantPhone,
             RestataurantCode = string.IsNullOrEmpty(request.RestaurantCode) ? string.Empty : request.RestaurantCode,
-            Status = request.RestaurantId.HasValue ? Status.Active : Status.Inactive
         };
+        if (request.RestaurantStatus != null)
+        {
+            filterEntity.Status = request.RestaurantStatus.Value;
+        }
+
         var filteredRestaurants = restaurants.AsQueryable().CustomFilterV1(filterEntity);
 
         var mappedRestaurants = filteredRestaurants.Select(restaurant => new GetRestaurantResponse(
-                restaurant.Id,
-                restaurant.RestaurantName ?? string.Empty,
-                restaurant.Address ?? string.Empty,
-                restaurant.RestaurantPhone ?? string.Empty,
-                restaurant.RestataurantCode ?? string.Empty,
-                restaurant.Status,
-                restaurant.Created
-            )).ToList();
+            restaurant.Id,
+            restaurant.RestaurantName ?? string.Empty,
+            restaurant.Address ?? string.Empty,
+            restaurant.RestaurantPhone ?? string.Empty,
+            restaurant.RestataurantCode ?? string.Empty,
+            restaurant.Status,
+            restaurant.Created
+        )).ToList();
 
         var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
         sortField = "RestaurantCode";
@@ -42,4 +46,5 @@ public class GetRestaurantQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetR
 
         return result;
     }
+
 }

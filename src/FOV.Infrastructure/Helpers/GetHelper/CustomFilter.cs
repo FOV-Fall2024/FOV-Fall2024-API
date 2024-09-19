@@ -38,6 +38,24 @@ public static class CustomFilter
                     source = source.Where($"{propertyName} == @0", guidValue);
                 }
             }
+            else if (property.PropertyType.IsEnum)
+            {
+                var enumValue = (Enum)value;
+                // Check if the enum underlying type is byte
+                if (Enum.GetUnderlyingType(property.PropertyType) == typeof(byte))
+                {
+                    var byteValue = Convert.ToByte(value);
+                    if (byteValue == 0)
+                    {
+                        continue;
+                    }
+                    source = source.Where($"{propertyName} == @0", byteValue);
+                }
+                else
+                {
+                    source = source.Where($"{propertyName} == @0", enumValue);
+                }
+            }
             else if (property.CustomAttributes.Any(a => a.AttributeType == typeof(IntAttribute)))
             {
                 source = source.Where($"{propertyName} == @0", value);
