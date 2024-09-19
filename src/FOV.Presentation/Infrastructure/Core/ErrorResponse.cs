@@ -2,7 +2,7 @@
 
 public static class ErrorStatusCodeConfig
 {
-    public const int BAD_REQUEST = 404;
+    public const int BAD_REQUEST = 400;
     public const int CONFLICT = 403;
 }
 

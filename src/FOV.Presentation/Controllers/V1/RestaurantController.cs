@@ -17,8 +17,15 @@ public class RestaurantController(IMediator mediator) : DefaultController
     [HttpPost]
     public async Task<IActionResult> AddRestaurant(CreateRestaurantCommand command)
     {
-        var response = await _mediator.Send(command);
-        return Ok(new OK_Result<Guid>("Thêm nhà hàng mới thành công", response));
+        try
+        {
+            var response = await _mediator.Send(command);
+            return Ok(new OK_Result<Guid>("Thêm nhà hàng mới thành công", response));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new Error<string>("Thêm nhà hàng thất bại", ErrorStatusCodeConfig.BAD_REQUEST, new List<string> { ex.Message }));
+        }
     }
 
     [HttpGet]
@@ -31,15 +38,28 @@ public class RestaurantController(IMediator mediator) : DefaultController
     [HttpPost("{id:guid}/active")]
     public async Task<IActionResult> ActiveRestaurant(Guid id)
     {
-        var response = await _mediator.Send(new ActiveRestaurantCommand(id));
-        return Ok(new OK_Result<Guid>("Thay đổi trạng thái nhà hàng thành hoạt động thành công", response));
+        try
+        {
+            var response = await _mediator.Send(new ActiveRestaurantCommand(id));
+            return Ok(new OK_Result<Guid>("Thay đổi trạng thái nhà hàng thành hoạt động thành công", response));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new Error<string>("Kích hoạt thất bại", ErrorStatusCodeConfig.BAD_REQUEST, new List<string> { ex.Message }));
+        }
     }
 
     [HttpPost("{id:guid}/inactive")]
     public async Task<IActionResult> InactiveRestaurant(Guid id)
     {
-        var response = await _mediator.Send(new InactiveRestaurantCommand(id));
-        return Ok(new OK_Result<Guid>("Thay đổi trạng thái nhà hàng thành không hoạt động thành công", response));
+        try
+        {
+            var response = await _mediator.Send(new InactiveRestaurantCommand(id));
+            return Ok(new OK_Result<Guid>("Thay đổi trạng thái nhà hàng thành không hoạt động thành công", response));
+        } catch (Exception ex)
+        {
+            return BadRequest(new Error<string>("Không hoạt động thất bại", ErrorStatusCodeConfig.BAD_REQUEST, new List<string> { ex.Message }));
+        }
     }
 
     /* XXX  Demo 1
