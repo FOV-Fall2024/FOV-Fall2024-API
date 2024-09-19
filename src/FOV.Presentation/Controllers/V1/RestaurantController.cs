@@ -1,4 +1,5 @@
-﻿using FOV.Application.Features.Restaurants.Commons.Active;
+﻿using FOV.Application.Common.Exceptions;
+using FOV.Application.Features.Restaurants.Commons.Active;
 using FOV.Application.Features.Restaurants.Commons.Create;
 using FOV.Application.Features.Restaurants.Commons.Inactive;
 using FOV.Application.Features.Restaurants.Queries.Get;
@@ -22,9 +23,9 @@ public class RestaurantController(IMediator mediator) : DefaultController
             var response = await _mediator.Send(command);
             return Ok(new OK_Result<Guid>("Thêm nhà hàng mới thành công", response));
         }
-        catch (Exception ex)
+        catch (AppException ex)
         {
-            return BadRequest(new Error<string>("Thêm nhà hàng thất bại", ErrorStatusCodeConfig.BAD_REQUEST, new List<string> { ex.Message }));
+            return BadRequest(new Error<string>("Thêm nhà hàng thất bại", ErrorStatusCodeConfig.BAD_REQUEST, ex.Errors));
         }
     }
 

@@ -1,4 +1,5 @@
-﻿using FOV.Domain.Entities.IngredientAggregator;
+﻿using FOV.Application.Common.Exceptions;
+using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Domain.Entities.IngredientAggregator.Enums;
 using FOV.Domain.Entities.IngredientGeneralAggregator;
 using FOV.Domain.Entities.IngredientGeneralAggregator.Enums;
@@ -28,27 +29,35 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     public async Task<Guid> Handle(CreateRestaurantCommand request, CancellationToken cancellationToken)
     {
-        bool existRestaurantname = await _unitOfWorks.RestaurantRepository.AnyAsync(r =>
+        var errorMessages = new List<string>();
+
+        bool existRestaurantName = await _unitOfWorks.RestaurantRepository.AnyAsync(r =>
             r.RestaurantName == request.RestaurantName);
 
-        if (existRestaurantname)
+        if (existRestaurantName)
         {
-            throw new Exception("Đã có nhà hàng trùng tên");
+            errorMessages.Add("Đã có nhà hàng trùng tên");
         }
 
         bool existAddress = await _unitOfWorks.RestaurantRepository.AnyAsync(r =>
-                   r.Address == request.Address);
+            r.Address == request.Address);
 
         if (existAddress)
         {
-            throw new Exception("Đã có nhà hàng trùng địa chỉ");
+            errorMessages.Add("Đã có nhà hàng trùng địa chỉ");
         }
 
         bool existPhone = await _unitOfWorks.RestaurantRepository.AnyAsync(r =>
-                          r.RestaurantPhone == request.RestaurantPhone);
+            r.RestaurantPhone == request.RestaurantPhone);
+
         if (existPhone)
         {
-            throw new Exception("Đã có nhà hàng trùng số điện thoại");
+            errorMessages.Add("Đã có nhà hàng trùng số điện thoại");
+        }
+
+        if (errorMessages.Any())
+        {
+            throw new AppException(errorMessages);
         }
 
         Restaurant restaurant = new(request.RestaurantName, request.Address, request.RestaurantPhone, await GeneratedCode());
