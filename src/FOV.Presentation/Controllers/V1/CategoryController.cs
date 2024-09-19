@@ -31,7 +31,7 @@ public class CategoryController : DefaultController
     public async Task<IActionResult> GetCategory()
     {
         var response = await _mediator.Send(new GetCategoriesCommand());
-        return Ok(new OK_Result<List<GetParentCategoriesResponse>>("Retrieved categories successfully", response));
+        return Ok(new OK_Result<List<GetParentCategoriesResponse>>("Lấy danh mục thành công", response));
     }
 
     /// <summary>
@@ -46,7 +46,7 @@ public class CategoryController : DefaultController
     public async Task<IActionResult> AddChildCategory([FromBody] AddNewCategoryCommand command)
     {
         var response = await _mediator.Send(command);
-        return Ok(new OK_Result<Guid>("Child category added successfully", response));
+        return Ok(new OK_Result<Guid>("Thêm danh mục con thành công", response));
     }
 
     /// <summary>
@@ -63,7 +63,7 @@ public class CategoryController : DefaultController
     {
         command.Id = id;
         var response = await _mediator.Send(command);
-        return Ok(new OK_Result<string>("Category updated successfully", ""));
+        return Ok(new OK_Result<string>("Cập nhật danh mục thành công", ""));
     }
 
     /// <summary>
@@ -78,6 +78,6 @@ public class CategoryController : DefaultController
     public async Task<IActionResult> Delete(Guid id)
     {
         var response = await _mediator.Send(new DeleteCategoryCommand(id));
-        return Ok(new OK_Result<string>("Child category deleted successfully", ""));
+        return Ok(new OK_Result<string>("Xóa danh mục con thành công", ""));
     }
 }

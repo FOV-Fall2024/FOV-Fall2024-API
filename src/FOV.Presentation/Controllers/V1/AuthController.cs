@@ -39,7 +39,7 @@ public class AuthController : DefaultController
     public async Task<IActionResult> Update(EditProfileCommand command)
     {
         var response = await _sender.Send(command);
-        return Ok(new OK_Result<string>("Edit Profile Successfully", response.Successes.First().Message));
+        return Ok(new OK_Result<string>("Thay đổi hồ sơ cá nhân thành công", response.Successes.First().Message));
     }
 
 
@@ -57,7 +57,7 @@ public class AuthController : DefaultController
         var result = await _sender.Send(command);
         if (result.IsSuccess)
         {
-            return Ok(new OK_Result<string>("Change Password Successfully", result.Successes.First().Message));
+            return Ok(new OK_Result<string>("Thay đổi mật khẩu thành công", result.Successes.First().Message));
         }
 
         return BadRequest(result.Errors.Select(e => e.Message));
@@ -76,7 +76,7 @@ public class AuthController : DefaultController
     {
         var response = await _sender.Send(command);
         return response.IsSuccess ?
-            Ok(new OK_Result<string>("Register Successfully", response.Successes.First().Message)) :
+            Ok(new OK_Result<string>("Đăng ký thành công", response.Successes.First().Message)) :
             BadRequest(new Error<IReason>("", ErrorStatusCodeConfig.BAD_REQUEST, response.Reasons));
     }
 
@@ -92,7 +92,7 @@ public class AuthController : DefaultController
     public async Task<IActionResult> Login(EmployeeLoginCommand request)
     {
         var response = await _sender.Send(request);
-        return Ok(new OK_Result<EmployeeLoginResponse>("Login Successfully", response));
+        return Ok(new OK_Result<EmployeeLoginResponse>("Đăng nhập thành công", response));
     }
 
     /// <summary>
@@ -107,7 +107,7 @@ public class AuthController : DefaultController
     public async Task<IActionResult> CustomerLogin(UserLoginCommand command)
     {
         var response = await _sender.Send(command);
-        return Ok(new OK_Result<UserResponse>("Login Successfully", response));
+        return Ok(new OK_Result<UserResponse>("Đăng nhập thành công", response));
     }
 
     /// <summary>

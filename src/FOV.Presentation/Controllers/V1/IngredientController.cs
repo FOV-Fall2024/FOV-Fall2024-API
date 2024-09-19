@@ -33,7 +33,7 @@ namespace FOV.Presentation.Controllers.V1
             var result = await _mediator.Send(command);
             if (result.IsSuccess)
             {
-                return Ok(new OK_Result<string>("Added Multiple Ingredients Successfully", result.Successes.First().Message));
+                return Ok(new OK_Result<string>("Thêm nguyên liệu thành công", result.Successes.First().Message));
             }
             return BadRequest(result.Errors.Select(e => e.Message));
         }
@@ -52,7 +52,7 @@ namespace FOV.Presentation.Controllers.V1
             var result = await _mediator.Send(command);
             if (result.IsSuccess)
             {
-                return Ok(new OK_Result<string>("Added Single Ingredient Successfully", result.Successes.First().Message));
+                return Ok(new OK_Result<string>("Thêm nguyên liệu thành công", result.Successes.First().Message));
             }
             return BadRequest(result.Errors.Select(e => e.Message));
         }
@@ -69,7 +69,7 @@ namespace FOV.Presentation.Controllers.V1
         public async Task<IActionResult> Get([FromQuery] GetIngredientsCommand command)
         {
             var result = await _mediator.Send(command);
-            return Ok(new OK_Result<PagedResult<GetIngredientsResponse>>("Successfully",result));
+            return Ok(new OK_Result<PagedResult<GetIngredientsResponse>>("Thành công",result));
         }
     }
 }
