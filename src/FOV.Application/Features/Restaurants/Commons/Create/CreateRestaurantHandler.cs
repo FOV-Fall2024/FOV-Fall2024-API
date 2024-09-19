@@ -28,6 +28,15 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     public async Task<Guid> Handle(CreateRestaurantCommand request, CancellationToken cancellationToken)
     {
+        bool restaurantExists = await _unitOfWorks.RestaurantRepository.AnyAsync(r =>
+            r.RestaurantName == request.RestaurantName &&
+            r.Address == request.Address &&
+            r.RestaurantPhone == request.Phone);
+
+        if (restaurantExists)
+        {
+            throw new Exception("Đã có nhà hàng trùng tên/địa chỉ hoặc là số điện thoại");
+        }
 
         Restaurant restaurant = new(request.RestaurantName, request.Address, request.Phone, await GeneratedCode());
         await _unitOfWorks.RestaurantRepository.AddAsync(restaurant);

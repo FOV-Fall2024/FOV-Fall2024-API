@@ -1,4 +1,6 @@
-﻿using FOV.Application.Features.Restaurants.Commons.Create;
+﻿using FOV.Application.Features.Restaurants.Commons.Active;
+using FOV.Application.Features.Restaurants.Commons.Create;
+using FOV.Application.Features.Restaurants.Commons.Inactive;
 using FOV.Application.Features.Restaurants.Queries.Get;
 using FOV.Presentation.Infrastructure.Core;
 using MediatR;
@@ -16,7 +18,7 @@ public class RestaurantController(IMediator mediator) : DefaultController
     public async Task<IActionResult> AddRestaurant(CreateRestaurantCommand command)
     {
         var response = await _mediator.Send(command);
-        return Ok(new OK_Result<Guid>("Add restaurant successfully", response));
+        return Ok(new OK_Result<Guid>("Thêm nhà hàng mới thành công", response));
     }
 
     [HttpGet]
@@ -26,7 +28,19 @@ public class RestaurantController(IMediator mediator) : DefaultController
         return Ok(response);
     }
 
+    [HttpPost("{id:guid}/active")]
+    public async Task<IActionResult> ActiveRestaurant(Guid id)
+    {
+        var response = await _mediator.Send(new ActiveRestaurantCommand(id));
+        return Ok(new OK_Result<Guid>("Thay đổi trạng thái nhà hàng thành hoạt động thành công", response));
+    }
 
+    [HttpPost("{id:guid}/inactive")]
+    public async Task<IActionResult> InactiveRestaurant(Guid id)
+    {
+        var response = await _mediator.Send(new InactiveRestaurantCommand(id));
+        return Ok(new OK_Result<Guid>("Thay đổi trạng thái nhà hàng thành không hoạt động thành công", response));
+    }
 
     /* XXX  Demo 1
     1. Add New Account Manager (Admin )

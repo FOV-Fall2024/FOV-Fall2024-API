@@ -19,14 +19,14 @@ public static class CustomFilter
         foreach (PropertyInfo property in entity.GetType().GetProperties())
         {
             var value = property.GetValue(entity);
-            if (value == null || property.CustomAttributes.Any(a => a.AttributeType == typeof(SkipAttribute)))
+            if (value == null || (value is string str && string.IsNullOrEmpty(str)) || (value is Guid guid && guid == Guid.Empty) || property.CustomAttributes.Any(a => a.AttributeType == typeof(SkipAttribute)))
             {
                 continue;
             }
 
             var propertyName = property.Name;
 
-            if (property.CustomAttributes.Any(a => a.AttributeType == typeof(StringAttribute)))
+            if (property.PropertyType == typeof(string))
             {
                 var stringValue = value.ToString().ToLower();
                 source = source.Where($"{propertyName}.ToLower().Contains(@0)", stringValue);
