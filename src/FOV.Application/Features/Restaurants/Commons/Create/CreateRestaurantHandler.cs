@@ -16,7 +16,7 @@ public sealed record CreateRestaurantCommand : IRequest<Guid>
 
     public required string Address { get; set; }
 
-    public required string Phone { get; set; }
+    public required string RestaurantPhone { get; set; }
 
     public ICollection<Guid> Products { get; set; } = [];
 }
