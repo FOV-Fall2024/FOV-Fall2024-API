@@ -22,21 +22,20 @@ public sealed record CreateRestaurantCommand : IRequest<Guid>
     public ICollection<Guid> Products { get; set; } = [];
 }
 
-
-
 internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<CreateRestaurantCommand, Guid>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     public async Task<Guid> Handle(CreateRestaurantCommand request, CancellationToken cancellationToken)
     {
-        var errorMessages = new List<string>();
+        #region Validate
+        var fieldErrors = new List<FieldError>();
 
         bool existRestaurantName = await _unitOfWorks.RestaurantRepository.AnyAsync(r =>
             r.RestaurantName == request.RestaurantName);
 
         if (existRestaurantName)
         {
-            errorMessages.Add("Đã có nhà hàng trùng tên");
+            fieldErrors.Add(new FieldError { Field = "restaurantName", Message = "Đã có nhà hàng trùng tên" });
         }
 
         bool existAddress = await _unitOfWorks.RestaurantRepository.AnyAsync(r =>
@@ -44,7 +43,7 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
 
         if (existAddress)
         {
-            errorMessages.Add("Đã có nhà hàng trùng địa chỉ");
+            fieldErrors.Add(new FieldError { Field = "address", Message = "Đã có nhà hàng trùng địa chỉ" });
         }
 
         bool existPhone = await _unitOfWorks.RestaurantRepository.AnyAsync(r =>
@@ -52,21 +51,22 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
 
         if (existPhone)
         {
-            errorMessages.Add("Đã có nhà hàng trùng số điện thoại");
+            fieldErrors.Add(new FieldError { Field = "restaurantPhone", Message = "Đã có nhà hàng trùng số điện thoại" });
         }
 
-        if (errorMessages.Any())
+        if (fieldErrors.Any())
         {
-            throw new AppException(errorMessages);
+            throw new AppException("Lỗi khi tạo nhà hàng mới", fieldErrors);
         }
+        #endregion
 
         Restaurant restaurant = new(request.RestaurantName, request.Address, request.RestaurantPhone, await GeneratedCode());
         await _unitOfWorks.RestaurantRepository.AddAsync(restaurant);
         await AddNewProdut(request.Products, restaurant.Id);
         await _unitOfWorks.SaveChangeAsync();
+
         return restaurant.Id;
     }
-
 
     //private async Task<string> GeneratedCode()
     //{

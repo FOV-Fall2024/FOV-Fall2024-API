@@ -25,7 +25,7 @@ public class RestaurantController(IMediator mediator) : DefaultController
         }
         catch (AppException ex)
         {
-            return BadRequest(new Error<string>("Thêm nhà hàng thất bại", ErrorStatusCodeConfig.BAD_REQUEST, ex.Errors));
+            return BadRequest(new Error<FieldError>("Thêm nhà hàng thất bại", ErrorStatusCodeConfig.BAD_REQUEST, ex.FieldErrors));
         }
     }
 
