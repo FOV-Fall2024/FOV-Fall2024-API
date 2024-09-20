@@ -40,9 +40,12 @@ public class NewRequestHandler(IUnitOfWorks unitOfWorks, IClaimService claimServ
 
         NewProductRecommend newRecommend = new(_claimService.RestaurantId, productGeneral.Id, NewProductRecommendStatus.Pending);
         await _unitOfWorks.NewProductRecommendRepository.AddAsync(newRecommend);
+        Console.WriteLine(newRecommend.Id);
+        //error at this
         NewProductRecommendLog recommendLog = new(request.Note, newRecommend.Id, LogType.Request, _claimService.UserId);
-        await _unitOfWorks.SaveChangeAsync();
+        await _unitOfWorks.NewProductRecommendLogRepository.AddAsync(recommendLog);
 
+        await _unitOfWorks.SaveChangeAsync();
         return newRecommend.Id;
         //? Create New Request
         //? Check Log

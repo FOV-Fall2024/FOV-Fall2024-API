@@ -25,9 +25,11 @@ public class NewProductRecommend : BaseAuditableEntity
         
     }
 
-    public NewProductRecommend(Guid restaurantId,Guid productGeneralId,NewProductRecommendStatus status)
+    public NewProductRecommend(Guid restaurantId, Guid productGeneralId, NewProductRecommendStatus status)
     {
-        
+        RestaurantId = restaurantId;
+        ProductGeneralId = productGeneralId;
+        Status = status;
     }
 
     public void UpdateState(NewProductRecommendStatus status) => Status = status;
