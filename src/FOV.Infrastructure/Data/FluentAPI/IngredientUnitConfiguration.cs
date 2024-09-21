@@ -9,6 +9,6 @@ public class IngredientUnitConfiguration : IEntityTypeConfiguration<IngredientUn
     {
         builder.HasKey(x => x.Id);
         builder.HasOne(x => x.Ingredient).WithMany(x => x.IngredientUnits).HasForeignKey(x => x.IngredientId);
-        builder.HasOne(x => x.IngredientUnitParent).WithMany(x => x.ChildUnits).HasForeignKey(x =>x.IngredientUnitParentId);
+        builder.HasOne(x => x.IngredientUnitParent).WithMany(x => x.ChildUnits).HasForeignKey(x => x.IngredientUnitParentId);
     }
 }

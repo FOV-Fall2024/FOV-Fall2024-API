@@ -20,7 +20,7 @@ public static class DependencyInjection
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>),
                         ServiceLifetime.Scoped);
         });
-       // services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        // services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddScoped<IClaimService, ClaimService>();
         return services;
     }

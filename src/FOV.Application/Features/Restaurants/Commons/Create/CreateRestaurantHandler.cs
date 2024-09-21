@@ -87,7 +87,7 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
     //}
     private async Task<string> GeneratedCode()
     {
-        string GenerateNewCode(int number)
+        static string GenerateNewCode(int number)
         {
             return $"RE_{number:D3}";
         }

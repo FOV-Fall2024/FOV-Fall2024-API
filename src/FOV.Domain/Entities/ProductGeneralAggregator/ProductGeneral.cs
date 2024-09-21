@@ -25,7 +25,7 @@ public class ProductGeneral : BaseAuditableEntity, IsSoftDeleted
 
     }
 
-    public ProductGeneral(string name, string description, Guid categoryId,string image,bool isDraft)
+    public ProductGeneral(string name, string description, Guid categoryId, string image, bool isDraft)
     {
         IsDraft = isDraft;
         ProductImageDefault = image;
@@ -50,7 +50,7 @@ public class ProductGeneral : BaseAuditableEntity, IsSoftDeleted
         ProductImageDefault = Image;
     }
 
-    public void Update(string name, string description, string Image,Guid categoryId)
+    public void Update(string name, string description, string Image, Guid categoryId)
     {
         ProductName = name;
         ProductDescription = description;

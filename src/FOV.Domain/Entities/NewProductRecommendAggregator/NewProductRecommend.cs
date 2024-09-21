@@ -22,7 +22,7 @@ public class NewProductRecommend : BaseAuditableEntity
 
     public NewProductRecommend()
     {
-        
+
     }
 
     public NewProductRecommend(Guid restaurantId, Guid productGeneralId, NewProductRecommendStatus status)

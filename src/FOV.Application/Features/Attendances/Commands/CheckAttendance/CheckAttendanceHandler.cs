@@ -21,7 +21,7 @@ public class CheckAttendanceHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<
         {
             throw new Exception("Invalid date");
         }
-        
+
         if (waiterSchedule.EmployeeId != request.EmployeeId)
         {
             throw new Exception("Invalid employee");

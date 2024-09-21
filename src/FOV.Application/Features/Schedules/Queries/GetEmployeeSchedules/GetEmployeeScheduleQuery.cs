@@ -9,28 +9,30 @@ using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Schedules.Queries.GetEmployeeSchedules;
-public record GetEmployeeScheduleRequest(Guid? ScheduleId, Guid? EmployeeId, Guid? ShiftId, DateOnly? Date) : IRequest<List<GetEmployeeScheduleResponse>>;
-public record GetEmployeeScheduleResponse(Guid ScheduleId, Guid EmployeeId, ShiftDto shift, DateOnly Date);
+public record GetEmployeeScheduleRequest(PagingRequest? PagingRequest, Guid? Id, Guid? EmployeeId, Guid? ShiftId) : IRequest<PagedResult<GetEmployeeScheduleResponse>>;
+public record GetEmployeeScheduleResponse(Guid Id, EmployeeDto Employee, ShiftDto Shift, DateOnly Date);
 public record ShiftDto(Guid ShiftId, string ShiftName);
-public class GetEmployeeScheduleQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetEmployeeScheduleRequest, List<GetEmployeeScheduleResponse>>
+public record EmployeeDto(Guid EmployeeId, string EmployeeCode);
+public class GetEmployeeScheduleQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetEmployeeScheduleRequest, PagedResult<GetEmployeeScheduleResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
-    public async Task<List<GetEmployeeScheduleResponse>> Handle(GetEmployeeScheduleRequest request, CancellationToken cancellationToken)
+    public async Task<PagedResult<GetEmployeeScheduleResponse>> Handle(GetEmployeeScheduleRequest request, CancellationToken cancellationToken)
     {
-        var schedule = await _unitOfWorks.WaiterScheduleRepository.GetAllAsync(s => s.Shift);
+        var schedule = await _unitOfWorks.WaiterScheduleRepository.GetAllAsync(s => s.Shift, s => s.Employee);
         var filterEntities = new WaiterSchedule
         {
-            Id = request.ScheduleId.HasValue ? request.ScheduleId.Value : Guid.Empty,
+            Id = request.Id.HasValue ? request.Id.Value : Guid.Empty,
             EmployeeId = request.EmployeeId.HasValue ? request.EmployeeId.Value : Guid.Empty,
             ShiftId = request.ShiftId.HasValue ? request.ShiftId.Value : Guid.Empty,
-            DateTime = request.Date.HasValue ? request.Date.Value : new DateOnly()
         };
         var filterTable = schedule.AsQueryable().CustomFilterV1(filterEntities);
-        return filterTable.Select(schedule => new GetEmployeeScheduleResponse(
-                schedule.Id,
-                schedule.EmployeeId ?? Guid.Empty,
-                new ShiftDto(schedule.ShiftId, schedule.Shift.ShiftName),
-                schedule.DateTime
-            )).ToList();
+
+        var mappedSchedule = filterTable.Select(s => new GetEmployeeScheduleResponse(s.Id, new EmployeeDto(s.EmployeeId, s.Employee.EmployeeCode), new ShiftDto(s.ShiftId, s.Shift.ShiftName), s.DateTime)).ToList();
+
+        var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
+
+        var sortedResults = PaginationHelper<GetEmployeeScheduleResponse>.Sorting(sortType, mappedSchedule, sortField);
+        var result = PaginationHelper<GetEmployeeScheduleResponse>.Paging(sortedResults, page, pageSize);
+        return result;
     }
 }

@@ -11,10 +11,10 @@ namespace FOV.Application.Features.NewRecommendProducts.Queries.GetAll;
 public sealed record GetNewProductRecommendCommand(PagingRequest? PagingRequest) : IRequest<PagedResult<GetNewProductRecommendResponse>>;
 //public sealed record NewProductRecommmend(Guid Id, Guid ProductGeneralId, Guid RestaurantId, string Status);
 public sealed record GetNewProductRecommendResponse(Guid Id, string ProductName, string Status);
-public sealed class GetNewProductRecommendQuery(IUnitOfWorks unitOfWorks,IClaimService claimService) : IRequestHandler<GetNewProductRecommendCommand, PagedResult<GetNewProductRecommendResponse>>
+public sealed class GetNewProductRecommendQuery(IUnitOfWorks unitOfWorks, IClaimService claimService) : IRequestHandler<GetNewProductRecommendCommand, PagedResult<GetNewProductRecommendResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
-    private readonly IClaimService _claimService = claimService;   
+    private readonly IClaimService _claimService = claimService;
     public async Task<PagedResult<GetNewProductRecommendResponse>> Handle(GetNewProductRecommendCommand request, CancellationToken cancellationToken)
     {
         List<NewProductRecommend> response = new List<NewProductRecommend>();

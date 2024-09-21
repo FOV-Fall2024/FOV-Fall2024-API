@@ -7,7 +7,7 @@ namespace FOV.Application.Features.ProductGenerals.Queries.GetProductGeneral
 {
     public sealed record GetProductGeneralCommand(string? Name, string? ProductDescription, Guid? CategoryId, PagingRequest PagingRequest) : IRequest<PagedResult<GetProductGeneralResponse>>;
 
-    public record GetProductGeneralResponse(Guid Id, string Name, string ProductDescription, bool IsDeleted,string ProductImage,Guid CategoryId, DateTimeOffset CreatedDate, DateTimeOffset UpdateTime);
+    public record GetProductGeneralResponse(Guid Id, string Name, string ProductDescription, bool IsDeleted, string ProductImage, Guid CategoryId, DateTimeOffset CreatedDate, DateTimeOffset UpdateTime);
 
     public class GetProductGeneralQuery : IRequestHandler<GetProductGeneralCommand, PagedResult<GetProductGeneralResponse>>
     {

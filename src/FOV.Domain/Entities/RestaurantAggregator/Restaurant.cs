@@ -29,7 +29,7 @@ public class Restaurant : BaseAuditableEntity, IsSoftDeleted
     public virtual ICollection<Combo> Combos { get; set; } = [];
 
     public virtual ICollection<NewProductRecommend> NewProductRecommends { get; set; } = [];
-    
+
     public virtual ICollection<GroupChat> GroupChats { get; set; } = [];
     public bool IsDeleted { get; set; }
 

@@ -13,7 +13,7 @@ public sealed record DenyResponseCommand(string Note) : IRequest<Result>
     [JsonIgnore]
     public Guid NewProductRecommendId { get; set; }
 }
-internal class DenyResponseHandler(IUnitOfWorks unitOfWorks,IClaimService claimService) : IRequestHandler<DenyResponseCommand, Result>
+internal class DenyResponseHandler(IUnitOfWorks unitOfWorks, IClaimService claimService) : IRequestHandler<DenyResponseCommand, Result>
 {
     private readonly IClaimService _claimService = claimService;
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;

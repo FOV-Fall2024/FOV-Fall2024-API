@@ -1,5 +1,6 @@
 ﻿using FOV.Application.Features.Schedules.Commands.Create;
 using FOV.Application.Features.Schedules.Commands.Delete;
+using FOV.Application.Features.Schedules.Queries.GetDailySchedules;
 using FOV.Application.Features.Schedules.Queries.GetEmployeeSchedules;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +27,12 @@ public class ScheduleController(ISender sender) : DefaultController
     }
     [HttpGet]
     public async Task<IActionResult> GetSchedule([FromQuery] GetEmployeeScheduleRequest request)
+    {
+        var result = await _sender.Send(request);
+        return Ok(result);
+    }
+    [HttpGet("daily")]
+    public async Task<IActionResult> GetDailySchedule([FromQuery] GetDailyScheduleCommand request)
     {
         var result = await _sender.Send(request);
         return Ok(result);

@@ -2,7 +2,7 @@
 using FOV.Domain.Entities.IngredientAggregator;
 
 namespace FOV.Application.Features.IngredientUnits.Mapper;
-public  static class IngredientUnitMapper
+public static class IngredientUnitMapper
 {
     public static GetIngredientUnitResponse MapperIngredientUnitDTO(this IngredientUnit ingredientUnit)
     {

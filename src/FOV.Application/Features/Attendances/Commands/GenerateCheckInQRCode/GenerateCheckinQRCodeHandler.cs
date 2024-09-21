@@ -26,7 +26,7 @@ public class GenerateCheckinQRCodeHandler(IUnitOfWorks unitOfWorks, QRCodeGenera
     public async Task<string> Handle(GenerateCheckInQRCodeCommand request, CancellationToken cancellationToken)
     {
         return await GenerateAndUploadQRCodeAsync(request.Date, request.RestaurantId, request.WaiterScheduleId);
-    } 
+    }
     private async Task<string> GenerateAndUploadQRCodeAsync(DateOnly date, Guid restaurantId, Guid waiterScheduleId)
     {
         var restaurant = _unitOfWorks.RestaurantRepository.GetByIdAsync(restaurantId);
@@ -43,7 +43,7 @@ public class GenerateCheckinQRCodeHandler(IUnitOfWorks unitOfWorks, QRCodeGenera
         using (var memoryStream = new MemoryStream())
         {
             qrCodeImage.Save(memoryStream, ImageFormat.Png);
-            memoryStream.Seek(0, SeekOrigin.Begin); 
+            memoryStream.Seek(0, SeekOrigin.Begin);
 
             var storageFile = await _storageHandler.UploadQrImageForAttendanceAsync(memoryStream, fileName);
             return storageFile.FileUrl;

@@ -41,7 +41,7 @@ public class IngredientUnit : BaseAuditableEntity
         IngredientUnitParentId = ingredientUnitParentId;
     }
 
-    public void Update(string unitName,decimal conversionFactor)
+    public void Update(string unitName, decimal conversionFactor)
     {
         UnitName = unitName;
         ConversionFactor = conversionFactor;

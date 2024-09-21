@@ -28,7 +28,7 @@ public class UserLoginHandler(UserManager<User> userManager, IConfiguration conf
 
 
         string token = GenerateJWT(user, roles, _configuration["JWT:SecretKey"] ?? throw new AppException(), _configuration["JWT:ValidIssuer"] ?? throw new AppException(), _configuration["JWT:ValidAudience"] ?? throw new AppException());
-        return new UserResponse(user.Id, user.FirstName, user.LastName, user.Email, roles.FirstOrDefault() ,token, "not");
+        return new UserResponse(user.Id, user.FirstName, user.LastName, user.Email, roles.FirstOrDefault(), token, "not");
     }
 
 

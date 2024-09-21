@@ -58,7 +58,8 @@ public class RestaurantController(IMediator mediator) : DefaultController
         {
             var response = await _mediator.Send(new InactiveRestaurantCommand(id));
             return Ok(new OK_Result<Guid>("Thay đổi trạng thái nhà hàng thành không hoạt động thành công", response));
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             return BadRequest(new Error<string>("Không hoạt động thất bại", ErrorStatusCodeConfig.BAD_REQUEST, new List<string> { ex.Message }));
         }

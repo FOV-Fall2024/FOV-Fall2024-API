@@ -69,7 +69,7 @@ namespace FOV.Presentation.Controllers.V1
         public async Task<IActionResult> Get([FromQuery] GetIngredientsCommand command)
         {
             var result = await _mediator.Send(command);
-            return Ok(new OK_Result<PagedResult<GetIngredientsResponse>>("Thành công",result));
+            return Ok(new OK_Result<PagedResult<GetIngredientsResponse>>("Thành công", result));
         }
     }
 }

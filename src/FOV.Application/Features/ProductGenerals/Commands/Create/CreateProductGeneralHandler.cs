@@ -23,9 +23,9 @@ public class CreateProductGeneralHandler(IUnitOfWorks unitOfWorks) : IRequestHan
 
     public async Task<Guid> Handle(CreateProductGeneralCommand request, CancellationToken cancellationToken)
     {
-       
 
-        ProductGeneral productGeneral = new(request.ProductName, request.Description, request.CategoryId, request.ImageDefault,false);
+
+        ProductGeneral productGeneral = new(request.ProductName, request.Description, request.CategoryId, request.ImageDefault, false);
         await _unitOfWorks.ProductGeneralRepository.AddAsync(productGeneral);
 
         await AddIngredient(request.Ingredients, productGeneral.Id);

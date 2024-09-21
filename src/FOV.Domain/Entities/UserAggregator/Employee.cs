@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using FOV.Domain.Common;
 using FOV.Domain.Entities.AttendanceAggregator;
-using FOV.Domain.Entities.WaiterScheduleAggregator;
 using FOV.Domain.Entities.RestaurantAggregator;
+using FOV.Domain.Entities.WaiterScheduleAggregator;
 
 namespace FOV.Domain.Entities.UserAggregator;
 public class Employee : BaseAuditableEntity, IsSoftDeleted

@@ -56,4 +56,4 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
             }
         );
     }
-}   
+}
