@@ -51,7 +51,7 @@ public class CreateTableHandler(IUnitOfWorks unitOfWorks, StorageHandler storage
         var restaurant = await _unitOfWorks.RestaurantRepository.GetByIdAsync(RestaurantId);
         if (restaurant == null)
         {
-            throw new Exception("Restaurant not found");
+            throw new Exception("Nhà hàng không tồn tại");
         }
         string restaurantCode = restaurant.RestataurantCode;
 

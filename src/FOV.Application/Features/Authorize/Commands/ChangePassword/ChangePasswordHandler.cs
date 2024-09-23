@@ -29,14 +29,14 @@ namespace FOV.Application.Features.Authorize.Commands.ChangePassword
             // Validate that the new password and confirm password match
             if (request.NewPassword != request.ConfirmPassword)
             {
-                return Result.Fail("New password and confirm password do not match.");
+                return Result.Fail("Mật khẩu mới và xác nhận mật khẩu chưa trùng nhau");
             }
 
             // Find the user by ID
             User? user = await _userManager.FindByIdAsync(_claimService.UserId);
             if (user == null)
             {
-                return Result.Fail("User not found.");
+                return Result.Fail("Không tìm thấy người dùng");
             }
 
             // Attempt to change the password

@@ -22,7 +22,7 @@ public class AddProductsToOrdersHandler(IUnitOfWorks unitOfWorks) : IRequestHand
     public async Task<Guid> Handle(AddProductsToOrdersCommand request, CancellationToken cancellationToken)
     {
         var orders = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.OrderDetails)
-            ?? throw new Exception("Order not found!");
+            ?? throw new Exception("Không tìm thấy đơn hàng");
 
         foreach (var detail in request.NewOrderDetails)
         {

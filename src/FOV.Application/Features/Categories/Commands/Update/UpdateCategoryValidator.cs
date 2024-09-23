@@ -19,7 +19,7 @@ public sealed class CheckCategoryIdValidator : AbstractValidator<Guid>
     public CheckCategoryIdValidator(IUnitOfWorks unitOfWorks)
     {
         _unitOfWorks = unitOfWorks;
-        RuleFor(categoryId => categoryId).MustAsync(CheckExistId).WithMessage("Not found Category");
+        RuleFor(categoryId => categoryId).MustAsync(CheckExistId).WithMessage("Không tìm thấy loại");
     }
 
     private async Task<bool> CheckExistId(Guid categoryId, CancellationToken token)

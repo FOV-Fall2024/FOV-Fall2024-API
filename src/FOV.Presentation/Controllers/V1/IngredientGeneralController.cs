@@ -34,7 +34,7 @@ public class IngredientGeneralController : DefaultController
     public async Task<IActionResult> Create(CreateIngredientGeneralCommand command)
     {
         var response = await _sender.Send(command);
-        return Created("", new CREATED_Result("Ingredient general created successfully"));
+        return Created("", new CREATED_Result("Tạo nguyên liệu gốc thành công"));
     }
 
     /// <summary>
@@ -51,7 +51,7 @@ public class IngredientGeneralController : DefaultController
     {
         command.Id = id;
         var response = await _sender.Send(command);
-        return Ok(new UPDATED_Result("Ingredient general updated successfully", response));
+        return Ok(new UPDATED_Result("Cập nhật nguyên liệu gốc thành công", response));
     }
 
     /// <summary>
@@ -66,7 +66,7 @@ public class IngredientGeneralController : DefaultController
     public async Task<IActionResult> Active(Guid id)
     {
         var response = await _sender.Send(new ActiveIngredientGeneralCommand(id));
-        return Ok(new OK_Result<string>("Ingredient general activated successfully", ""));
+        return Ok(new OK_Result<string>("Mở trạng thái hoạt động của nguyên liệu gốc thành công", ""));
     }
 
     /// <summary>
@@ -81,7 +81,7 @@ public class IngredientGeneralController : DefaultController
     public async Task<IActionResult> Inactive(Guid id)
     {
         var response = await _sender.Send(new InactiveIngredientGeneralCommand(id));
-        return Ok(new OK_Result<string>("Ingredient general deactivated successfully", ""));
+        return Ok(new OK_Result<string>("Đóng trạng thái hoạt động của nguyên liệu gốc thành công", ""));
     }
 
     /// <summary>
@@ -96,6 +96,6 @@ public class IngredientGeneralController : DefaultController
     public async Task<IActionResult> Get([FromQuery] GetAllIngredientCommand command)
     {
         var response = await _sender.Send(command);
-        return Ok(new OK_Result<PagedResult<GetAllIngredientResponse>>("Retrieved ingredient generals successfully", response));
+        return Ok(new OK_Result<PagedResult<GetAllIngredientResponse>>("Lấy thông tin nguyên liệu gốc thành công", response));
     }
 }

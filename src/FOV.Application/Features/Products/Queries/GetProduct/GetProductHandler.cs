@@ -2,7 +2,7 @@
 using MediatR;
 
 namespace FOV.Application.Features.Products.Queries.GetProduct;
-public sealed record GetProductCommand(string ProductName, string ProductDescription, string RestaurantId) : IRequest<List<GetProductResponse>>;
+public sealed record GetProductCommand(string? ProductName, string? ProductDescription, string? RestaurantId) : IRequest<List<GetProductResponse>>;
 
 public sealed record GetProductResponse(Guid ProductId, string ProductName, string ProductDescription);
 internal class GetProductHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<GetProductCommand, List<GetProductResponse>>

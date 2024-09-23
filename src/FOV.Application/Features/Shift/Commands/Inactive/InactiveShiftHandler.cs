@@ -17,7 +17,7 @@ public class InactiveShiftHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<In
         var shift = await _unitOfWorks.ShiftRepository.GetByIdAsync(request.ShiftId);
         if (shift == null)
         {
-            return Result.Fail("Shift not found");
+            return Result.Fail("Không tìm thấy ca làm nào");
         }
         shift.UpdateState(true);
         _unitOfWorks.ShiftRepository.Update(shift);

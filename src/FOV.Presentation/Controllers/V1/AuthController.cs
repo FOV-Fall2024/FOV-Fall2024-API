@@ -121,7 +121,7 @@ public class AuthController : DefaultController
     public async Task<IActionResult> Profile()
     {
         var response = await _sender.Send(new ViewProfileCommand());
-        return Ok(new OK_Result<ViewProfileResponse>("View Profile Successfully", response));
+        return Ok(new OK_Result<ViewProfileResponse>("Xem thông tin cá nhân thành công", response));
     }
 
     /// <summary>

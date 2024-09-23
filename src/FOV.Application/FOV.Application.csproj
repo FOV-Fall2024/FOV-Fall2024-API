@@ -33,7 +33,6 @@
     <Folder Include="Features\NewRecommendProductLog\Queries\" />
     <Folder Include="Features\NewRecommendProducts\Queries\GetAll\" />
     <Folder Include="Features\NewRecommendProducts\Queries\GetDetail\" />
-    <Folder Include="Features\Restaurants\Queries\Detail\" />
   </ItemGroup>
 
 </Project>

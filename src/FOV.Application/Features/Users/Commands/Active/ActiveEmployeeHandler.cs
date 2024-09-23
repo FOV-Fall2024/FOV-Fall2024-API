@@ -16,7 +16,7 @@ public class ActiveEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> u
     public async Task<Result> Handle(ActiveEmployeeCommand request, CancellationToken cancellationToken)
     {
         var user = await _userManager.FindByIdAsync(request.Id);
-        Employee employee = await _unitOfWorks.EmployeeRepository.GetByIdAsync(user.Customer.Id) ?? throw new Exception("Employee not found.");
+        Employee employee = await _unitOfWorks.EmployeeRepository.GetByIdAsync(user.Customer.Id) ?? throw new Exception("Không tìm thấy nhân viên");
 
         employee.UpdateState(false);
         _unitOfWorks.EmployeeRepository.Update(employee);

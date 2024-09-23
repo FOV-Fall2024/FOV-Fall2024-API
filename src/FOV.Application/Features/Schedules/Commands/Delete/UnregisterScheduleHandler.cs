@@ -16,7 +16,7 @@ public class UnregisterScheduleHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
         var schedule = await _unitOfWorks.WaiterScheduleRepository.GetByIdAsync(request.ScheduleId);
         if (schedule.EmployeeId != request.EmployeeId)
         {
-            throw new Exception("You are not authorized to delete this schedule");
+            throw new Exception("Bạn không có quyền để xem thông tin của người này");
         }
         _unitOfWorks.WaiterScheduleRepository.Remove(schedule);
         await _unitOfWorks.SaveChangeAsync();

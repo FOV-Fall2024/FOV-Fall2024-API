@@ -36,7 +36,7 @@ public class ProductGeneralController : DefaultController
     public async Task<IActionResult> Add(CreateProductGeneralCommand command)
     {
         var response = await _sender.Send(command);
-        return CreatedAtAction(nameof(Add), new { id = response }, new CREATED_Result("Product general created successfully"));
+        return CreatedAtAction(nameof(Add), new { id = response }, new CREATED_Result("Tạo product general thành công"));
     }
 
     /// <summary>
@@ -70,7 +70,7 @@ public class ProductGeneralController : DefaultController
         command.ProductId = productId;
         command.IngredientId = ingredientId;
         var response = await _sender.Send(command);
-        return Ok(new UPDATED_Result("Ingredient quantity updated successfully"));
+        return Ok(new UPDATED_Result("Cập nhật số lượng nguyên liệu thành công"));
     }
 
     /// <summary>
@@ -87,7 +87,7 @@ public class ProductGeneralController : DefaultController
     {
         command.Id = productId;
         var response = await _sender.Send(command);
-        return Ok(new UPDATED_Result("Product general updated successfully", response));
+        return Ok(new UPDATED_Result("Cập nhật product general thành công", response));
     }
 
     /// <summary>
@@ -102,7 +102,7 @@ public class ProductGeneralController : DefaultController
     public async Task<IActionResult> Active(Guid id)
     {
         var response = await _sender.Send(new ActiveProductGeneralCommand(id));
-        return Ok(new UPDATED_Result("Product general activated successfully"));
+        return Ok(new UPDATED_Result("Kích hoạt product general thành công"));
     }
 
     /// <summary>
@@ -117,7 +117,7 @@ public class ProductGeneralController : DefaultController
     public async Task<IActionResult> Inactive(Guid id)
     {
         var response = await _sender.Send(new InactiveProductGeneralCommand(id));
-        return Ok(new DELETED_Result("Product general deactivated successfully"));
+        return Ok(new DELETED_Result("Vô hiệu hóa product general thành công"));
     }
 
     /// <summary>
@@ -132,7 +132,7 @@ public class ProductGeneralController : DefaultController
     public async Task<IActionResult> Get([FromQuery] GetProductGeneralCommand command)
     {
         var response = await _sender.Send(command);
-        return Ok(new OK_Result<PagedResult<GetProductGeneralResponse>>("Retrieved product generals successfully", response));
+        return Ok(new OK_Result<PagedResult<GetProductGeneralResponse>>("Lấy product generals thành công", response));
     }
 
     /// <summary>
@@ -147,6 +147,6 @@ public class ProductGeneralController : DefaultController
     public async Task<IActionResult> GetDetail(Guid id)
     {
         var response = await _sender.Send(new GetProductGeneralDetailCommand(id));
-        return Ok(new OK_Result<GetProductGeneralDetailResponse>("Retrieved product general details successfully", response));
+        return Ok(new OK_Result<GetProductGeneralDetailResponse>("Lấy chi tiết product general thành công", response));
     }
 }

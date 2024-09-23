@@ -21,7 +21,7 @@ public sealed class IngredientGeneralIdValidator : AbstractValidator<Guid>
         _unitOfWorks = unitOfWorks;
         RuleFor(id => id)
       .MustAsync(CheckExist)
-       .WithMessage("Not found this Ingredient General");
+       .WithMessage("Không tìm thấy nguyên liệu gốc");
 
     }
 

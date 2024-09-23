@@ -20,9 +20,9 @@ public class UserLoginHandler(UserManager<User> userManager, IConfiguration conf
 
     public async Task<UserResponse> Handle(UserLoginCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userManager.FindByEmailAsync(request.Email) ?? throw new AppException("Wrong Email");
+        var user = await _userManager.FindByEmailAsync(request.Email) ?? throw new AppException("Sai Email");
 
-        if (!_userManager.CheckPasswordAsync(user, request.Password).Result) throw new KeyNotFoundException("Wrong Password");
+        if (!_userManager.CheckPasswordAsync(user, request.Password).Result) throw new KeyNotFoundException("Sai mật khẩu");
 
         var roles = await _userManager.GetRolesAsync(user);
 
@@ -41,7 +41,7 @@ public class UserLoginHandler(UserManager<User> userManager, IConfiguration conf
         var claims = new List<Claim>
             {
                 new("UserId", user.Id.ToString()),
-                new(ClaimTypes.Name, user.UserName ?? throw new AppException("Name not found") ),
+                new(ClaimTypes.Name, user.UserName ?? throw new AppException("Không tìm thất tên") ),
                 new (ClaimTypes.Role,userRoles.First()),
             };
 

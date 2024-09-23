@@ -22,7 +22,7 @@ public sealed class CheckDuplicateName : AbstractValidator<string>
         _unitOfWorks = unitOfWorks;
         RuleFor(name => name)
             .MustAsync(CheckDuplicateCategoryName)
-            .WithMessage("Name already exits in system");
+            .WithMessage("Tên này đã tồn tại trong hệ thống");
     }
 
     private async Task<bool> CheckDuplicateCategoryName(string name, CancellationToken token)

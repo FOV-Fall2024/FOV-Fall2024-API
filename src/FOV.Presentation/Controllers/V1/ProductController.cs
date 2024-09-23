@@ -34,7 +34,7 @@ public class ProductController : DefaultController
     public async Task<IActionResult> AddNewProduct(AddProductCommand command)
     {
         var response = await _mediator.Send(command);
-        return Created("", new CREATED_Result("Product created successfully", response));
+        return Created("", new CREATED_Result("Tạo món ăn thành công", response));
     }
 
     /// <summary>
@@ -79,7 +79,7 @@ public class ProductController : DefaultController
     public async Task<IActionResult> GetMenu([FromQuery] GetMenuCommand command)
     {
         var response = await _mediator.Send(command);
-        return Ok(new OK_Result<List<GetMenuResponse>>("Menu retrieved successfully", response));
+        return Ok(new OK_Result<List<GetMenuResponse>>("Lấy menu thành công", response));
     }
 
     /// <summary>
@@ -94,7 +94,7 @@ public class ProductController : DefaultController
     public async Task<IActionResult> Get([FromQuery] GetProductCommand command)
     {
         var response = await _mediator.Send(command);
-        return Ok(new OK_Result<List<GetProductResponse>>("Product retrieved successfully", response));
+        return Ok(new OK_Result<List<GetProductResponse>>("Lấy món ăn thành công", response));
     }
 
     /// <summary>
@@ -111,6 +111,6 @@ public class ProductController : DefaultController
     {
         command.ProductId = id;
         var response = await _mediator.Send(command);
-        return Ok(new UPDATED_Result("Product updated successfully", response));
+        return Ok(new UPDATED_Result("Cập nhật món ăn thành công", response));
     }
 }

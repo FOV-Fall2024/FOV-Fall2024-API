@@ -21,7 +21,7 @@ public class CreatePaymentHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<Cr
     public async Task<Guid> Handle(CreatePaymentCommands request, CancellationToken cancellationToken)
     {
         var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.OrderDetails)
-            ?? throw new Exception("Order not found!");
+            ?? throw new Exception("Không tìm thấy đơn hàng nào");
 
         var totalAmount = order.OrderDetails
             .Where(od => od.Status != OrderDetailsStatus.Refund)

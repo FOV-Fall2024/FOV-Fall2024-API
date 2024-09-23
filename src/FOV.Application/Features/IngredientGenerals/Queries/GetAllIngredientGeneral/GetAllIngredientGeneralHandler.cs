@@ -5,7 +5,7 @@ using MediatR;
 
 namespace FOV.Application.Features.IngredientGenerals.Queries.GetAllIngredientGeneral
 {
-    public sealed record GetAllIngredientCommand(string? IngredientName, Guid? IngredientTypeId, PagingRequest PagingRequest) : IRequest<PagedResult<GetAllIngredientResponse>>;
+    public sealed record GetAllIngredientCommand(string? IngredientName, Guid? IngredientTypeId, PagingRequest? PagingRequest) : IRequest<PagedResult<GetAllIngredientResponse>>;
 
     public record GetAllIngredientResponse(Guid Id, string IngredientName, Guid IngredientTypeId, string IngredientDescription);
 

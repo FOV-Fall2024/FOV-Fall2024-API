@@ -32,9 +32,9 @@ public class GenerateCheckinQRCodeHandler(IUnitOfWorks unitOfWorks, QRCodeGenera
         var restaurant = _unitOfWorks.RestaurantRepository.GetByIdAsync(restaurantId);
         if (restaurant == null)
         {
-            throw new Exception("Restaurant not found");
+            throw new Exception("Không tìm thấy nhà hàng");
         }
-        var waiterSchedule = _unitOfWorks.WaiterScheduleRepository.GetByIdAsync(waiterScheduleId) ?? throw new Exception("Schedule not found");
+        var waiterSchedule = _unitOfWorks.WaiterScheduleRepository.GetByIdAsync(waiterScheduleId) ?? throw new Exception("Không tìm thấy lịch nhân viên");
 
         var fileName = $"Restaurant_{restaurant}_Date_{date}";
         var qrUrl = $"https://localhost:7107/api/Attendance?restaurant={restaurantId}&date={date}&schedule={waiterScheduleId}";

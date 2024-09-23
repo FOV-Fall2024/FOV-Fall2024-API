@@ -36,7 +36,7 @@ public class VNPayPaymentHandler : IRequestHandler<VNPayPaymentCommand, VNPayPay
         var url = _configuration["VNPay:VnPayUrl"];
 
         var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.OrderDetails)
-            ?? throw new Exception("Order not found!");
+            ?? throw new Exception("Không tìm thấy đơn hàng");
 
         var totalAmount = order.OrderDetails
             .Where(od => od.Status != OrderDetailsStatus.Refund)

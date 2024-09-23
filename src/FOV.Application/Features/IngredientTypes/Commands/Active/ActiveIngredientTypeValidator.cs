@@ -23,7 +23,7 @@ public sealed class IngredientIdValidator : AbstractValidator<Guid>
         _unitOfWorks = unitOfWorks;
         RuleFor(id => id)
             .MustAsync(CheckExist)
-             .WithMessage("Not found this Ingredient");
+             .WithMessage("Không tìm thấy nguyên liệu");
     }
 
     private async Task<bool> CheckExist(Guid id, CancellationToken token)

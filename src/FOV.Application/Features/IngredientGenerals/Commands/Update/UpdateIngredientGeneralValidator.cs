@@ -20,7 +20,7 @@ public sealed class IngredientNameValidator : AbstractValidator<string>
     public IngredientNameValidator(IUnitOfWorks unitOfWorks)
     {
         _unitOfWorks = unitOfWorks;
-        RuleFor(name => name).MustAsync(CheckDuplicateName).WithMessage("This name already exists in system");
+        RuleFor(name => name).MustAsync(CheckDuplicateName).WithMessage("Tên này đã có trong hệ thống");
 
     }
 

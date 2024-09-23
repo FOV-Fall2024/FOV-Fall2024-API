@@ -66,7 +66,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
         if (tableOrders.Any(o => o.OrderStatus != OrderStatus.Finish))
         {
             await lockService.ReleaseLockAsync();
-            throw new Exception("Cannot create a new order. The table is occupied by an order that is not yet finished.");
+            throw new Exception("Không thể đặt hàng vào lúc này, hiện tại đang có 1 đơn hàng đang hoạt động ở bàn này");
         }
 
         var order = new Domain.Entities.OrderAggregator.Order(request.OrderType, request.OrderTime, request.TotalPrice)

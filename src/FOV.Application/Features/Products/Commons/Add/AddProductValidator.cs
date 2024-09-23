@@ -24,7 +24,7 @@ public sealed class ProductValidator : AbstractValidator<Guid>
         _claimService = claimService;
         RuleFor(name => name)
              .MustAsync(CheckDuplicateProductId)
-             .WithMessage("This Product have already in system");
+             .WithMessage("Món ăn này đã có trong hệ thống");
     }
 
     private async Task<bool> CheckDuplicateProductId(Guid productId, CancellationToken cancellationToken)

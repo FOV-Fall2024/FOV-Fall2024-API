@@ -21,14 +21,14 @@ public class RefundOrderHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<Refu
     public async Task<Guid> Handle(RefundOrderCommand request, CancellationToken cancellationToken)
     {
         var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.OrderDetails)
-            ?? throw new Exception("Order not found!");
+            ?? throw new Exception("Không tìm thấy đơn hàng nào");
 
         var orderDetail = order.OrderDetails.FirstOrDefault(od => od.Id == request.OrderDetailId)
-            ?? throw new Exception("Order detail not found!");
+            ?? throw new Exception("Không tìm thấy món ăn này trong đơn hàng");
 
         if (request.RefundQuantity > orderDetail.Quantity || request.RefundQuantity <= 0)
         {
-            throw new Exception("Invalid refund quantity!");
+            throw new Exception("Số lượng hoàn trả không hợp lệ");
         }
 
         if (request.RefundQuantity == orderDetail.Quantity) //Refund all

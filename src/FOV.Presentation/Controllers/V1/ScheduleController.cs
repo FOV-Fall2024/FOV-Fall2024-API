@@ -22,7 +22,7 @@ public class ScheduleController(ISender sender) : DefaultController
         var result = await _sender.Send(command);
         return result == true ? Ok(new
         {
-            message = "Schedule deleted successfully"
+            message = "Xóa lịch làm thành công"
         }) : BadRequest();
     }
     [HttpGet]

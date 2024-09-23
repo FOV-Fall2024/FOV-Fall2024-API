@@ -19,12 +19,12 @@ public class FinishPaymentHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<Fi
     public async Task<Guid> Handle(FinishPaymentCommand request, CancellationToken cancellationToken)
     {
         var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.Payments)
-            ?? throw new Exception("Order not found!");
+            ?? throw new Exception("Đơn hàng không tồn tại");
 
         var payment = order.Payments.FirstOrDefault();
         if (payment == null)
         {
-            throw new Exception("Payment not found!");
+            throw new Exception("Thông tin thanh toán không tồn tại");
         }
 
         if (payment.PaymentStatus != PaymentStatus.Paid)

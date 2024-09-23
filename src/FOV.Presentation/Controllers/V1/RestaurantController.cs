@@ -3,6 +3,7 @@ using FOV.Application.Features.Restaurants.Commons.Active;
 using FOV.Application.Features.Restaurants.Commons.Create;
 using FOV.Application.Features.Restaurants.Commons.Inactive;
 using FOV.Application.Features.Restaurants.Commons.Update;
+using FOV.Application.Features.Restaurants.Queries.Detail;
 using FOV.Application.Features.Restaurants.Queries.Get;
 using FOV.Presentation.Infrastructure.Core;
 using MediatR;
@@ -76,6 +77,19 @@ public class RestaurantController(IMediator mediator) : DefaultController
         catch (AppException ex)
         {
             return BadRequest(new Error<FieldError>("Cập nhật nhà hàng thất bại", ErrorStatusCodeConfig.BAD_REQUEST, ex.FieldErrors));
+        }
+    }
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetRestaurant(Guid id)
+    {
+        try
+        {
+            var response = await _mediator.Send(new GetRestaurantDetailCommand(id));
+            return Ok(response);
+        }
+        catch (AppException ex)
+        {
+            return BadRequest(new Error<string>("Lấy thông tin nhà hàng thất bại", ErrorStatusCodeConfig.BAD_REQUEST, new List<string> { ex.Message }));
         }
     }
 

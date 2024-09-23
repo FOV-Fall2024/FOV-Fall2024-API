@@ -30,7 +30,7 @@ public sealed class RestaurantValidator : AbstractValidator<Guid>
     public RestaurantValidator(IUnitOfWorks unitOfWorks)
     {
         _unitOfWorks = unitOfWorks;
-        RuleFor(id => id).MustAsync(CheckIsExistId).WithMessage("Not found RestaurantId");
+        RuleFor(id => id).MustAsync(CheckIsExistId).WithMessage("Không tìm thấy nhà hàng");
     }
 
     private async Task<bool> CheckIsExistId(Guid restaurantId, CancellationToken token)
