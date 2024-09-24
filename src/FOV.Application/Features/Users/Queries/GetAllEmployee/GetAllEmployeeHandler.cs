@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FOV.Application.Features.Users.Queries.GetAllEmployee;
 
-public sealed record GetAllEmployeeCommand(PagingRequest? PagingRequest, string? Role, Guid? RestaurantId, string? FirstName, string? Email, string? EmployeeCode, Status? Status = Status.Unknown) : IRequest<PagedResult<GetAllEmployeeResponse>>;
+public sealed record GetAllEmployeeCommand(PagingRequest? PagingRequest, string? Role, Guid? RestaurantId, string? FullName, string? Email, string? EmployeeCode, Status? Status = Status.Unknown) : IRequest<PagedResult<GetAllEmployeeResponse>>;
 
-public sealed record GetAllEmployeeResponse(string Id, string UserName, string FirstName, string LastName, string Email, string EmployeeCode, DateTime HireDate, string RoleName, Guid RestaurantId, Status Status, DateTimeOffset Created);
+public sealed record GetAllEmployeeResponse(string Id, string UserName, string FullName, string Email, string EmployeeCode, DateTime HireDate, string RoleName, Guid RestaurantId, Status Status, DateTimeOffset Created);
 
 public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager) : IRequestHandler<GetAllEmployeeCommand, PagedResult<GetAllEmployeeResponse>>
 {
@@ -27,16 +27,18 @@ public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> u
             employeesQuery = employeesQuery.Where(x => x.RestaurantId == request.RestaurantId);
         }
 
-        if (!string.IsNullOrEmpty(request.FirstName))
+        if (!string.IsNullOrEmpty(request.FullName))
         {
-            employeesQuery = employeesQuery.Where(x => x.User.FirstName.ToLower().Contains(request.FirstName.ToLower()));
+            // Concatenate FirstName and LastName to form FullName and make it case-insensitive
+            var fullName = request.FullName.ToLower();
+            employeesQuery = employeesQuery.Where(x =>
+                (x.User.FirstName + " " + x.User.LastName).ToLower().Contains(fullName));
         }
 
         var filterEntity = employeesQuery.CustomFilterV1(new Employee
         {
             User = new User
             {
-                FirstName = request.FirstName,
                 Email = request.Email,
             },
             EmployeeCode = request.EmployeeCode ?? string.Empty,
@@ -56,8 +58,7 @@ public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> u
                 result.Add(new GetAllEmployeeResponse(
                     employee.User.Id,
                     employee.User.UserName,
-                    employee.User.FirstName,
-                    employee.User.LastName,
+                    employee.User.FirstName + " " + employee.User.LastName,
                     employee.User.Email,
                     employee.EmployeeCode,
                     employee.HireDate,

@@ -117,37 +117,43 @@ public partial class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager
 
     public async Task<GenerateRole> GenerateCode(int roleId)
     {
+        // Ensure the role exists
         if (!await _roleManager.RoleExistsAsync(UserRole(roleId)))
         {
             var roleResult = await _roleManager.CreateAsync(new IdentityRole(UserRole(roleId)));
             if (!roleResult.Succeeded)
             {
-                throw new Exception();
+                throw new Exception("Error creating role.");
             }
-
         }
+
         await _unitOfWorks.SaveChangeAsync();
 
-        var users = await _userManager.GetUsersInRoleAsync(UserRole(roleId));
-        return users.Count == 0
-            ? new GenerateRole(UserRole(roleId), DefaultRoleValue(roleId))
-            : new GenerateRole(UserRole(roleId), IncrementRoleCode(users.FirstOrDefault()?.Employee?.EmployeeCode ?? DefaultRoleValue(roleId)));
+        var usersInRole = await _userManager.GetUsersInRoleAsync(UserRole(roleId));
 
+        int count = usersInRole.Count();
+
+        string nextEmployeeCode = DefaultRoleValue(roleId);
+        if (count > 0)
+        {
+            nextEmployeeCode = IncrementRoleCode(DefaultRoleValue(roleId), count + 1);
+        }
+
+        return new GenerateRole(UserRole(roleId), nextEmployeeCode);
     }
 
-
-    public static string IncrementRoleCode(string roleCode)
+    public static string IncrementRoleCode(string roleCode, int newCount)
     {
         var match = MyRegex().Match(roleCode);
         if (match.Success)
         {
             var prefix = match.Groups[1].Value;
-            var numberPart = match.Groups[2].Value;
-            var incrementedNumber = (int.Parse(numberPart) + 1).ToString().PadLeft(numberPart.Length, '0');
+            var incrementedNumber = newCount.ToString().PadLeft(match.Groups[2].Value.Length, '0');
             return prefix + incrementedNumber;
         }
         return roleCode;
     }
+
 
     [GeneratedRegex(@"^(.*?)(\d+)$")]
     private static partial Regex MyRegex();
