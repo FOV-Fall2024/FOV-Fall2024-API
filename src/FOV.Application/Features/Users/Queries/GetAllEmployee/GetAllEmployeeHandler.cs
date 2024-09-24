@@ -5,17 +5,23 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 
 namespace FOV.Application.Features.Users.Queries.GetAllEmployee;
-public sealed record GetAllEmployeeCommand(string? Role, string? UserName, string? FirstName, string? LastName, string? Email, string? EmployeeCode) : IRequest<List<GetAllEmployeeResponse>>;
 
-public sealed record GetAllEmployeeResponse(string Id, string UserName, string FirstName, string LastName, string Email, string EmployeeCode, DateTime HireDate, string roleName);
+public sealed record GetAllEmployeeCommand(string? Role, Guid? RestaurantId, string? UserName, string? FirstName, string? LastName, string? Email, string? EmployeeCode) : IRequest<List<GetAllEmployeeResponse>>;
+
+public sealed record GetAllEmployeeResponse(string Id, string UserName, string FirstName, string LastName, string Email, string EmployeeCode, DateTime HireDate, string RoleName, Guid RestaurantId);
+
 public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager) : IRequestHandler<GetAllEmployeeCommand, List<GetAllEmployeeResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
-
     private readonly UserManager<User> _userManager = userManager;
+
     public async Task<List<GetAllEmployeeResponse>> Handle(GetAllEmployeeCommand request, CancellationToken cancellationToken)
     {
         var employees = await _unitOfWorks.EmployeeRepository.GetAllAsync(x => x.User);
+        if (request.RestaurantId.HasValue)
+        {
+            employees = employees.Where(x => x.RestaurantId == request.RestaurantId).ToList();
+        }
 
         var filterEntity = employees.AsQueryable().CustomFilterV1(new Employee
         {
@@ -23,10 +29,10 @@ public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> u
             {
                 UserName = request.UserName ?? string.Empty,
                 FirstName = request.FirstName ?? string.Empty,
-                Email = request.Email ?? string.Empty,
                 LastName = request.LastName ?? string.Empty,
+                Email = request.Email ?? string.Empty,
             },
-            EmployeeCode = request.EmployeeCode ?? string.Empty
+            EmployeeCode = request.EmployeeCode ?? string.Empty,
         });
 
         var result = new List<GetAllEmployeeResponse>();
@@ -36,16 +42,20 @@ public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> u
             var roles = await _userManager.GetRolesAsync(employee.User);
             var roleName = roles.FirstOrDefault() ?? string.Empty;
 
-            result.Add(new GetAllEmployeeResponse(
-                employee.User.Id,
-                employee.User.UserName,
-                employee.User.FirstName,
-                employee.User.LastName,
-                employee.User.Email,
-                employee.EmployeeCode,
-                employee.HireDate,
-                roleName
-            ));
+            if (string.IsNullOrEmpty(request.Role) || roles.Contains(request.Role))
+            {
+                result.Add(new GetAllEmployeeResponse(
+                    employee.User.Id,
+                    employee.User.UserName,
+                    employee.User.FirstName,
+                    employee.User.LastName,
+                    employee.User.Email,
+                    employee.EmployeeCode,
+                    employee.HireDate,
+                    roleName,
+                    employee.RestaurantId
+                ));
+            }
         }
 
         return result;
