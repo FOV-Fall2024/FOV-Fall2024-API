@@ -41,6 +41,7 @@ public class GetRestaurantQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetR
 
         var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
         sortField = "RestaurantCode";
+        pageSize = 10000;
         var sortedResults = PaginationHelper<GetRestaurantResponse>.Sorting(sortType, mappedRestaurants, sortField);
         var result = PaginationHelper<GetRestaurantResponse>.Paging(sortedResults, page, pageSize);
 

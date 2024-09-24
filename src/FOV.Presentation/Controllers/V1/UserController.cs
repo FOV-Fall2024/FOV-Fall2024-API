@@ -1,10 +1,12 @@
-﻿using FOV.Application.Features.Authorize.Commands.CreateEmployee;
+﻿using FOV.Application.Common.Exceptions;
+using FOV.Application.Features.Authorize.Commands.CreateEmployee;
 using FOV.Application.Features.Users.Commands.Active;
 using FOV.Application.Features.Users.Commands.Inactive;
 using FOV.Application.Features.Users.Queries.GetAllEmployee;
 using FOV.Application.Features.Users.Queries.GetAllUser;
 using FOV.Presentation.Infrastructure.Core;
 using MediatR;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using StackExchange.Redis;
 
@@ -25,13 +27,14 @@ public class UserController(IMediator mediator, IDatabase database) : DefaultCon
     [HttpPost]
     public async Task<IActionResult> Create(CreateEmployeeCommand request)
     {
-        var response = await _mediator.Send(request);
-
-        if (response.IsSuccess)
+        try
         {
+            var response = await _mediator.Send(request);
             return Ok(new OK_Result<string>(response.Value, null));
+        } catch (AppException ex)
+        {
+            return BadRequest(new Error<FieldError>("Tạo tài khoản thất bại", ErrorStatusCodeConfig.BAD_REQUEST, ex.FieldErrors));
         }
-        return BadRequest(new OK_Result<List<string>>("Tạo tài khoản thất bại", response.Errors.Select(e => e.Message).ToList()));
     }
 
     [HttpGet("users")]

@@ -15,7 +15,7 @@ public class CreateEmployeeValidator : AbstractValidator<CreateEmployeeCommand>
         RuleFor(x => x.Email)
              .NotNull()
              .Matches(@"^[^@\s]+@[^@\s]+\.[^@\s]+$")
-             .WithMessage("Invalid email format.");
+             .WithMessage("Email không hợp lệ.");
         RuleFor(x => x.RestaurantId).NotNull().SetValidator(validations);
 
 

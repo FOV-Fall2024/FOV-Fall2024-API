@@ -1,4 +1,5 @@
-﻿using FOV.Domain.Entities.UserAggregator;
+﻿using FluentResults;
+using FOV.Domain.Entities.UserAggregator;
 using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
@@ -6,31 +7,33 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FOV.Application.Features.Users.Queries.GetAllEmployee;
 
-public sealed record GetAllEmployeeCommand(string? Role, Guid? RestaurantId, string? UserName, string? FirstName, string? LastName, string? Email, string? EmployeeCode) : IRequest<List<GetAllEmployeeResponse>>;
+public sealed record GetAllEmployeeCommand(PagingRequest? PagingRequest, string? Role, Guid? RestaurantId, string? FirstName, string? Email, string? EmployeeCode, bool? IsDelete) : IRequest<PagedResult<GetAllEmployeeResponse>>;
 
-public sealed record GetAllEmployeeResponse(string Id, string UserName, string FirstName, string LastName, string Email, string EmployeeCode, DateTime HireDate, string RoleName, Guid RestaurantId);
+public sealed record GetAllEmployeeResponse(string Id, string UserName, string FirstName, string LastName, string Email, string EmployeeCode, DateTime HireDate, string RoleName, Guid RestaurantId, bool IsDelete);
 
-public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager) : IRequestHandler<GetAllEmployeeCommand, List<GetAllEmployeeResponse>>
+public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager) : IRequestHandler<GetAllEmployeeCommand, PagedResult<GetAllEmployeeResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     private readonly UserManager<User> _userManager = userManager;
 
-    public async Task<List<GetAllEmployeeResponse>> Handle(GetAllEmployeeCommand request, CancellationToken cancellationToken)
+    public async Task<PagedResult<GetAllEmployeeResponse>> Handle(GetAllEmployeeCommand request, CancellationToken cancellationToken)
     {
         var employees = await _unitOfWorks.EmployeeRepository.GetAllAsync(x => x.User);
         if (request.RestaurantId.HasValue)
         {
             employees = employees.Where(x => x.RestaurantId == request.RestaurantId).ToList();
         }
-
+        if (!string.IsNullOrEmpty(request.FirstName))
+        {
+            employees = employees.Where(x => x.User.FirstName.Contains(request.FirstName)).ToList();
+        }
+        // xin loi thang Filter loi nen fix chua chay phat
         var filterEntity = employees.AsQueryable().CustomFilterV1(new Employee
         {
             User = new User
             {
-                UserName = request.UserName ?? string.Empty,
-                FirstName = request.FirstName ?? string.Empty,
-                LastName = request.LastName ?? string.Empty,
-                Email = request.Email ?? string.Empty,
+                FirstName = request.FirstName,
+                Email = request.Email,
             },
             EmployeeCode = request.EmployeeCode ?? string.Empty,
         });
@@ -53,11 +56,18 @@ public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> u
                     employee.EmployeeCode,
                     employee.HireDate,
                     roleName,
-                    employee.RestaurantId
+                    employee.RestaurantId,
+                    employee.IsDeleted
                 ));
             }
         }
 
-        return result;
+        var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
+
+        var sortedResults = PaginationHelper<GetAllEmployeeResponse>.Sorting(sortType, result, sortField);
+        var pagedResult = PaginationHelper<GetAllEmployeeResponse>.Paging(sortedResults, page, pageSize);
+
+        return pagedResult;
     }
 }
+

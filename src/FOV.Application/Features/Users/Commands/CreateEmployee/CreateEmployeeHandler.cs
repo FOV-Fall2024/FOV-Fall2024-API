@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using FluentResults;
+using FOV.Application.Common.Exceptions;
 using FOV.Domain.Entities.UserAggregator;
 using FOV.Domain.Entities.UserAggregator.Enums;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
@@ -19,6 +20,33 @@ public partial class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager
 
     public async Task<Result<string>> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
     {
+        var fieldErrors = new List<FieldError>();
+
+        var existingUser = await _userManager.FindByEmailAsync(request.Email);
+        if (existingUser != null)
+        {
+            fieldErrors.Add(new FieldError
+            {
+                Field = "Email",
+                Message = "Email này đã được đăng kí"
+            });
+        }
+
+        var roleName = UserRole(request.RoleId);
+        if (!await _roleManager.RoleExistsAsync(roleName))
+        {
+            fieldErrors.Add(new FieldError
+            {
+                Field = "RoleId",
+                Message = "Vai trò không tồn tại trong hệ thống"
+            });
+        }
+
+        if (fieldErrors.Any())
+        {
+            throw new AppException("Lỗi khi tạo tài khoản nhân viên", fieldErrors);
+        }
+
         var generate = await GenerateCode(request.RoleId);
 
         User user = new()
@@ -30,25 +58,34 @@ public partial class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager
         };
 
         var result = await _userManager.CreateAsync(user, "12345678!Fpt");
-        if (!result.Succeeded) throw new KeyNotFoundException(result.Errors.First().Description);
-
-        if (!await _roleManager.RoleExistsAsync(generate.RoleName))
+        if (!result.Succeeded)
         {
-            var roleResult = await _roleManager.CreateAsync(new IdentityRole(generate.RoleName));
-            if (!roleResult.Succeeded) throw new KeyNotFoundException(roleResult.Errors.First().Description);
+            var userErrors = result.Errors.Select(e => new FieldError
+            {
+                Field = "UserCreation",
+                Message = e.Description
+            }).ToList();
+
+            throw new AppException("Lỗi khi tạo tài khoản nhân viên", userErrors);
         }
 
-        var roleAssignResult = await _userManager.AddToRoleAsync(user, generate.RoleName);
+        var roleAssignResult = await _userManager.AddToRoleAsync(user, roleName);
         if (!roleAssignResult.Succeeded)
         {
-            return Result.Fail(roleAssignResult.Errors.First().Description);
+            var roleAssignErrors = roleAssignResult.Errors.Select(e => new FieldError
+            {
+                Field = "RoleAssignment",
+                Message = e.Description
+            }).ToList();
+
+            throw new AppException("Lỗi khi gán vai trò", roleAssignErrors);
         }
 
         Employee employee = new(generate.Code, user.Id, request.RestaurantId);
-
         await _unitOfWorks.EmployeeRepository.AddAsync(employee);
         await _unitOfWorks.SaveChangeAsync();
 
+        // Return success message
         string message = request.RoleId switch
         {
             1 => "Tạo tài khoản quản lý thành công",
@@ -58,6 +95,7 @@ public partial class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager
 
         return Result.Ok(message);
     }
+
 
     // 1. Manager 2.Waiter 3.Cook
 
