@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FOV.Application.Features.Users.Queries.GetAllEmployee;
 
-public sealed record GetAllEmployeeCommand(PagingRequest? PagingRequest, string? Role, Guid? RestaurantId, string? FirstName, string? Email, string? EmployeeCode, Status? Status) : IRequest<PagedResult<GetAllEmployeeResponse>>;
+public sealed record GetAllEmployeeCommand(PagingRequest? PagingRequest, string? Role, Guid? RestaurantId, string? FirstName, string? Email, string? EmployeeCode, Status? Status = Status.Unknown) : IRequest<PagedResult<GetAllEmployeeResponse>>;
 
 public sealed record GetAllEmployeeResponse(string Id, string UserName, string FirstName, string LastName, string Email, string EmployeeCode, DateTime HireDate, string RoleName, Guid RestaurantId, Status Status, DateTimeOffset Created);
 
@@ -20,16 +20,19 @@ public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> u
     public async Task<PagedResult<GetAllEmployeeResponse>> Handle(GetAllEmployeeCommand request, CancellationToken cancellationToken)
     {
         var employees = await _unitOfWorks.EmployeeRepository.GetAllAsync(x => x.User);
+        var employeesQuery = employees.AsQueryable();
+
         if (request.RestaurantId.HasValue)
         {
-            employees = employees.Where(x => x.RestaurantId == request.RestaurantId).ToList();
+            employeesQuery = employeesQuery.Where(x => x.RestaurantId == request.RestaurantId);
         }
+
         if (!string.IsNullOrEmpty(request.FirstName))
         {
-            employees = employees.Where(x => x.User.FirstName.Contains(request.FirstName)).ToList();
+            employeesQuery = employeesQuery.Where(x => x.User.FirstName.ToLower().Contains(request.FirstName.ToLower()));
         }
-        // xin loi thang Filter loi nen fix chua chay phat
-        var filterEntity = employees.AsQueryable().CustomFilterV1(new Employee
+
+        var filterEntity = employeesQuery.CustomFilterV1(new Employee
         {
             User = new User
             {
@@ -37,6 +40,7 @@ public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> u
                 Email = request.Email,
             },
             EmployeeCode = request.EmployeeCode ?? string.Empty,
+            Status = request.Status ?? Status.Unknown 
         });
 
         var result = new List<GetAllEmployeeResponse>();
@@ -46,6 +50,7 @@ public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> u
             var roles = await _userManager.GetRolesAsync(employee.User);
             var roleName = roles.FirstOrDefault() ?? string.Empty;
 
+            // Only include if the role matches or no specific role is requested
             if (string.IsNullOrEmpty(request.Role) || roles.Contains(request.Role))
             {
                 result.Add(new GetAllEmployeeResponse(
@@ -72,5 +77,6 @@ public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> u
 
         return pagedResult;
     }
+
 }
 

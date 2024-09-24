@@ -63,7 +63,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("WaiterScheduleId");
 
-                    b.ToTable("Attendances");
+                    b.ToTable("Attendances", (string)null);
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.ComboAggregator.Combo", b =>
@@ -113,7 +113,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("RestaurantId");
 
-                    b.ToTable("Combos");
+                    b.ToTable("Combos", (string)null);
 
                     b.HasData(
                         new
@@ -193,7 +193,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductCombos");
+                    b.ToTable("ProductCombos", (string)null);
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.GroupChatAggregator.GroupChat", b =>
@@ -225,7 +225,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("RestaurantId");
 
-                    b.ToTable("GroupChats");
+                    b.ToTable("GroupChats", (string)null);
 
                     b.HasData(
                         new
@@ -276,7 +276,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("GroupMessages");
+                    b.ToTable("GroupMessages", (string)null);
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.GroupChatAggregator.GroupUser", b =>
@@ -310,7 +310,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("GroupUsers");
+                    b.ToTable("GroupUsers", (string)null);
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.IngredientAggregator.Ingredient", b =>
@@ -353,7 +353,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("RestaurantId");
 
-                    b.ToTable("Ingredients");
+                    b.ToTable("Ingredients", (string)null);
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.IngredientAggregator.IngredientTransaction", b =>
@@ -398,7 +398,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("IngredientTransactions");
+                    b.ToTable("IngredientTransactions", (string)null);
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.IngredientAggregator.IngredientType", b =>
@@ -448,7 +448,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("IngredientTypes");
+                    b.ToTable("IngredientTypes", (string)null);
 
                     b.HasData(
                         new
@@ -516,7 +516,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("IngredientUnitParentId");
 
-                    b.ToTable("IngredientUnit");
+                    b.ToTable("IngredientUnit", (string)null);
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.IngredientGeneralAggregator.IngredientGeneral", b =>
@@ -558,7 +558,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("IngredientTypeId");
 
-                    b.ToTable("IngredientGenerals");
+                    b.ToTable("IngredientGenerals", (string)null);
 
                     b.HasData(
                         new
@@ -629,7 +629,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("RestaurantId");
 
-                    b.ToTable("NewProductRecommends");
+                    b.ToTable("NewProductRecommends", (string)null);
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.NewProductRecommendAggregator.NewProductRecommendLog", b =>
@@ -676,7 +676,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("NewProductRecommendLogs");
+                    b.ToTable("NewProductRecommendLogs", (string)null);
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.OrderAggregator.Order", b =>
@@ -716,7 +716,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("TableId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.OrderAggregator.OrderDetail", b =>
@@ -763,7 +763,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderDetails");
+                    b.ToTable("OrderDetails", (string)null);
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.OrderAggregator.Rating", b =>
@@ -809,7 +809,7 @@ namespace FOV.Infrastructure.Migrations
                     b.HasIndex("OrderId")
                         .IsUnique();
 
-                    b.ToTable("Ratings");
+                    b.ToTable("Ratings", (string)null);
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.PaymentAggregator.Payments", b =>
@@ -853,7 +853,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("Payments");
+                    b.ToTable("Payments", (string)null);
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.ProductAggregator.Category", b =>
@@ -883,7 +883,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
 
                     b.HasData(
                         new
@@ -956,7 +956,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("RestaurantId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
 
                     b.HasData(
                         new
@@ -1035,7 +1035,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductImages");
+                    b.ToTable("ProductImages", (string)null);
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.ProductAggregator.ProductIngredient", b =>
@@ -1071,7 +1071,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductIngredients");
+                    b.ToTable("ProductIngredients", (string)null);
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.ProductGeneralAggregator.ProductGeneral", b =>
@@ -1117,7 +1117,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("ProductGenerals");
+                    b.ToTable("ProductGenerals", (string)null);
 
                     b.HasData(
                         new
@@ -1218,7 +1218,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("ProductGeneralId");
 
-                    b.ToTable("ProductIngredientGenerals");
+                    b.ToTable("ProductIngredientGenerals", (string)null);
 
                     b.HasData(
                         new
@@ -1275,7 +1275,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Restaurants");
+                    b.ToTable("Restaurants", (string)null);
 
                     b.HasData(
                         new
@@ -1336,7 +1336,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Shifts");
+                    b.ToTable("Shifts", (string)null);
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.TableAggregator.Table", b =>
@@ -1379,7 +1379,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("RestaurantId");
 
-                    b.ToTable("Tables");
+                    b.ToTable("Tables", (string)null);
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.UserAggregator.Customer", b =>
@@ -1416,7 +1416,7 @@ namespace FOV.Infrastructure.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Customers");
+                    b.ToTable("Customers", (string)null);
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.UserAggregator.Employee", b =>
@@ -1464,7 +1464,7 @@ namespace FOV.Infrastructure.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Employees");
+                    b.ToTable("Employees", (string)null);
 
                     b.HasData(
                         new
@@ -1620,7 +1620,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("WaiterSalary");
+                    b.ToTable("WaiterSalary", (string)null);
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.WaiterScheduleAggregator.WaiterSchedule", b =>
@@ -1661,7 +1661,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("WaiterSchedules");
+                    b.ToTable("WaiterSchedules", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
