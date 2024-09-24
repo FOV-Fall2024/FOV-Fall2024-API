@@ -27,7 +27,7 @@ public partial class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager
         {
             fieldErrors.Add(new FieldError
             {
-                Field = "Email",
+                Field = "email",
                 Message = "Email này đã được đăng kí"
             });
         }
@@ -37,7 +37,7 @@ public partial class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager
         {
             fieldErrors.Add(new FieldError
             {
-                Field = "RoleId",
+                Field = "roleId",
                 Message = "Vai trò không tồn tại trong hệ thống"
             });
         }
@@ -62,7 +62,7 @@ public partial class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager
         {
             var userErrors = result.Errors.Select(e => new FieldError
             {
-                Field = "UserCreation",
+                Field = "userCreation",
                 Message = e.Description
             }).ToList();
 
