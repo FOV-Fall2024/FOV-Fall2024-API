@@ -56,8 +56,7 @@ public class PaginationHelper<T> where T : class
     }
     public static List<T> Sorting(SortOrder sortType, IEnumerable<T> searchResult, string colName)
     {
-        var properties = typeof(T).GetProperties();
-        var property = properties.FirstOrDefault(x => x.Name.Equals(colName, StringComparison.CurrentCultureIgnoreCase));
+        var property = typeof(T).GetProperties().FirstOrDefault(x => x.Name.Equals(colName, StringComparison.CurrentCultureIgnoreCase));
 
         if (property == null)
         {
@@ -66,15 +65,16 @@ public class PaginationHelper<T> where T : class
 
         if (sortType == SortOrder.Ascending)
         {
-            return searchResult.OrderBy(item => typeof(T).GetProperties().First(x => x.Name.Contains(colName, StringComparison.CurrentCultureIgnoreCase)).GetValue(item)).ToList();
+            return searchResult.OrderBy(item => property.GetValue(item)).ToList();
         }
         else if (sortType == SortOrder.Descending)
         {
-            return searchResult.OrderByDescending(item => typeof(T).GetProperties().First(x => x.Name.Contains(colName, StringComparison.CurrentCultureIgnoreCase)).GetValue(item)).ToList();
+            return searchResult.OrderByDescending(item => property.GetValue(item)).ToList();
         }
         else
         {
             return searchResult.ToList();
         }
     }
+
 }

@@ -8,5 +8,5 @@ namespace FOV.Infrastructure.Constant;
 
 public static class CurrentTime
 {
-    public static readonly DateTime RecentTime = DateTime.UtcNow.AddHours(7);
+    public static readonly DateTimeOffset RecentTime = DateTime.UtcNow.AddHours(7);
 }

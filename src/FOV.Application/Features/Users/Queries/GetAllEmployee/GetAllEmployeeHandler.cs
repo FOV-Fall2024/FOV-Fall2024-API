@@ -1,4 +1,5 @@
 ﻿using FluentResults;
+using FOV.Domain.Entities.TableAggregator.Enums;
 using FOV.Domain.Entities.UserAggregator;
 using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
@@ -7,9 +8,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FOV.Application.Features.Users.Queries.GetAllEmployee;
 
-public sealed record GetAllEmployeeCommand(PagingRequest? PagingRequest, string? Role, Guid? RestaurantId, string? FirstName, string? Email, string? EmployeeCode, bool? IsDelete) : IRequest<PagedResult<GetAllEmployeeResponse>>;
+public sealed record GetAllEmployeeCommand(PagingRequest? PagingRequest, string? Role, Guid? RestaurantId, string? FirstName, string? Email, string? EmployeeCode, Status? Status) : IRequest<PagedResult<GetAllEmployeeResponse>>;
 
-public sealed record GetAllEmployeeResponse(string Id, string UserName, string FirstName, string LastName, string Email, string EmployeeCode, DateTime HireDate, string RoleName, Guid RestaurantId, bool IsDelete);
+public sealed record GetAllEmployeeResponse(string Id, string UserName, string FirstName, string LastName, string Email, string EmployeeCode, DateTime HireDate, string RoleName, Guid RestaurantId, Status Status, DateTimeOffset Created);
 
 public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager) : IRequestHandler<GetAllEmployeeCommand, PagedResult<GetAllEmployeeResponse>>
 {
@@ -57,14 +58,16 @@ public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> u
                     employee.HireDate,
                     roleName,
                     employee.RestaurantId,
-                    employee.IsDeleted
+                    employee.Status,
+                    employee.Created
                 ));
             }
         }
 
         var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
+        sortType = Domain.Common.SortOrder.Descending;
 
-        var sortedResults = PaginationHelper<GetAllEmployeeResponse>.Sorting(sortType, result, sortField);
+        var sortedResults = PaginationHelper<GetAllEmployeeResponse>.Sorting(sortType, result, sortField = "HireDate");
         var pagedResult = PaginationHelper<GetAllEmployeeResponse>.Paging(sortedResults, page, pageSize);
 
         return pagedResult;
