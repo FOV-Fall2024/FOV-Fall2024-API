@@ -1,0 +1,4560 @@
+{
+  "$schema": "http://json.schemastore.org/sarif-1.0.0",
+  "version": "1.0.0",
+  "runs": [
+    {
+      "tool": {
+        "name": "Microsoft (R) Visual C# Compiler",
+        "version": "4.10.0.0",
+        "fileVersion": "4.10.0-3.24365.5 (1f9b00a8)",
+        "semanticVersion": "4.10.0",
+        "language": "en-US"
+      },
+      "results": [
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Non-nullable property 'Field' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Common/Exceptions/FieldError.cs",
+                "region": {
+                  "startLine": 10,
+                  "startColumn": 19,
+                  "endLine": 10,
+                  "endColumn": 24
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Common/Exceptions/FieldError.cs",
+                "region": {
+                  "startLine": 10,
+                  "startColumn": 19,
+                  "endLine": 10,
+                  "endColumn": 24
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Non-nullable property 'Message' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Common/Exceptions/FieldError.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 19,
+                  "endLine": 11,
+                  "endColumn": 26
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Common/Exceptions/FieldError.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 19,
+                  "endLine": 11,
+                  "endColumn": 26
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8603",
+          "level": "warning",
+          "message": "Possible null reference return.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Attendances/Queries/GetDailyAttendances/GetDailyAttendancesHandler.cs",
+                "region": {
+                  "startLine": 24,
+                  "startColumn": 51,
+                  "endLine": 24,
+                  "endColumn": 61
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8603",
+          "level": "warning",
+          "message": "Possible null reference return.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Attendances/Queries/GetDailyAttendances/GetDailyAttendancesHandler.cs",
+                "region": {
+                  "startLine": 24,
+                  "startColumn": 68,
+                  "endLine": 24,
+                  "endColumn": 75
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Attendances/Queries/GetDailyAttendances/GetDailyAttendancesHandler.cs",
+                "region": {
+                  "startLine": 43,
+                  "startColumn": 47,
+                  "endLine": 43,
+                  "endColumn": 57
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Attendances/Queries/GetDailyAttendances/GetDailyAttendancesHandler.cs",
+                "region": {
+                  "startLine": 44,
+                  "startColumn": 41,
+                  "endLine": 44,
+                  "endColumn": 48
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8604",
+          "level": "warning",
+          "message": "Possible null reference argument for parameter 'ShiftName' in 'ShiftDto.ShiftDto(Guid ShiftId, string ShiftName)'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Attendances/Queries/GetDailyAttendances/GetDailyAttendancesHandler.cs",
+                "region": {
+                  "startLine": 44,
+                  "startColumn": 41,
+                  "endLine": 44,
+                  "endColumn": 58
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8629",
+          "level": "warning",
+          "message": "Nullable value type may be null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Combos/Commands/Create/CreateComboHandler.cs",
+                "region": {
+                  "startLine": 24,
+                  "startColumn": 27,
+                  "endLine": 24,
+                  "endColumn": 49
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8603",
+          "level": "warning",
+          "message": "Possible null reference return.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Users/Queries/GetAllEmployee/GetAllEmployeeHandler.cs",
+                "region": {
+                  "startLine": 22,
+                  "startColumn": 80,
+                  "endLine": 22,
+                  "endColumn": 86
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Users/Queries/GetAllEmployee/GetAllEmployeeHandler.cs",
+                "region": {
+                  "startLine": 29,
+                  "startColumn": 46,
+                  "endLine": 29,
+                  "endColumn": 52
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8601",
+          "level": "warning",
+          "message": "Possible null reference assignment.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Users/Queries/GetAllEmployee/GetAllEmployeeHandler.cs",
+                "region": {
+                  "startLine": 36,
+                  "startColumn": 29,
+                  "endLine": 36,
+                  "endColumn": 46
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8604",
+          "level": "warning",
+          "message": "Possible null reference argument for parameter 'user' in 'Task<IList<string>> UserManager<User>.GetRolesAsync(User user)'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Users/Queries/GetAllEmployee/GetAllEmployeeHandler.cs",
+                "region": {
+                  "startLine": 46,
+                  "startColumn": 58,
+                  "endLine": 46,
+                  "endColumn": 71
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8604",
+          "level": "warning",
+          "message": "Possible null reference argument for parameter 'UserName' in 'GetAllEmployeeResponse.GetAllEmployeeResponse(string Id, string UserName, string FirstName, string LastName, string Email, string EmployeeCode, DateTime HireDate, string RoleName, Guid RestaurantId, Status Status, DateTimeOffset Created)'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Users/Queries/GetAllEmployee/GetAllEmployeeHandler.cs",
+                "region": {
+                  "startLine": 53,
+                  "startColumn": 21,
+                  "endLine": 53,
+                  "endColumn": 43
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8604",
+          "level": "warning",
+          "message": "Possible null reference argument for parameter 'Email' in 'GetAllEmployeeResponse.GetAllEmployeeResponse(string Id, string UserName, string FirstName, string LastName, string Email, string EmployeeCode, DateTime HireDate, string RoleName, Guid RestaurantId, Status Status, DateTimeOffset Created)'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Users/Queries/GetAllEmployee/GetAllEmployeeHandler.cs",
+                "region": {
+                  "startLine": 56,
+                  "startColumn": 21,
+                  "endLine": 56,
+                  "endColumn": 40
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Non-nullable property 'Address' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Authorize/Commands/EditProfile/EditProfileHandler.cs",
+                "region": {
+                  "startLine": 12,
+                  "startColumn": 19,
+                  "endLine": 12,
+                  "endColumn": 26
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Authorize/Commands/EditProfile/EditProfileHandler.cs",
+                "region": {
+                  "startLine": 12,
+                  "startColumn": 19,
+                  "endLine": 12,
+                  "endColumn": 26
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Non-nullable property 'LastName' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Authorize/Commands/EditProfile/EditProfileHandler.cs",
+                "region": {
+                  "startLine": 13,
+                  "startColumn": 19,
+                  "endLine": 13,
+                  "endColumn": 27
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Authorize/Commands/EditProfile/EditProfileHandler.cs",
+                "region": {
+                  "startLine": 13,
+                  "startColumn": 19,
+                  "endLine": 13,
+                  "endColumn": 27
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Non-nullable property 'FirstName' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Authorize/Commands/EditProfile/EditProfileHandler.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 19,
+                  "endLine": 15,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Authorize/Commands/EditProfile/EditProfileHandler.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 19,
+                  "endLine": 15,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8603",
+          "level": "warning",
+          "message": "Possible null reference return.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Authorize/Commands/EmployeeLogin/EmployeeLoginHandler.cs",
+                "region": {
+                  "startLine": 26,
+                  "startColumn": 76,
+                  "endLine": 26,
+                  "endColumn": 82
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8603",
+          "level": "warning",
+          "message": "Possible null reference return.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Authorize/Commands/EmployeeLogin/EmployeeLoginHandler.cs",
+                "region": {
+                  "startLine": 30,
+                  "startColumn": 20,
+                  "endLine": 30,
+                  "endColumn": 24
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8603",
+          "level": "warning",
+          "message": "Possible null reference return.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Authorize/Commands/EmployeeLogin/EmployeeLoginHandler.cs",
+                "region": {
+                  "startLine": 48,
+                  "startColumn": 16,
+                  "endLine": 48,
+                  "endColumn": 20
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8604",
+          "level": "warning",
+          "message": "Possible null reference argument for parameter 'Email' in 'UserResponse.UserResponse(string Id, string FirstName, string LastName, string Email, string Role, string AccessToken, string RefreshToken)'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Authorize/Commands/UserLogin/UserLoginHandler.cs",
+                "region": {
+                  "startLine": 31,
+                  "startColumn": 73,
+                  "endLine": 31,
+                  "endColumn": 83
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8604",
+          "level": "warning",
+          "message": "Possible null reference argument for parameter 'Role' in 'UserResponse.UserResponse(string Id, string FirstName, string LastName, string Email, string Role, string AccessToken, string RefreshToken)'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Authorize/Commands/UserLogin/UserLoginHandler.cs",
+                "region": {
+                  "startLine": 31,
+                  "startColumn": 85,
+                  "endLine": 31,
+                  "endColumn": 107
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/NewRecommendProducts/Commands/AdjustRequest/AdjustRequestHandler.cs",
+                "region": {
+                  "startLine": 23,
+                  "startColumn": 99,
+                  "endLine": 23,
+                  "endColumn": 118
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/NewRecommendProducts/Commands/AdjustRequest/AdjustRequestHandler.cs",
+                "region": {
+                  "startLine": 25,
+                  "startColumn": 9,
+                  "endLine": 25,
+                  "endColumn": 23
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8604",
+          "level": "warning",
+          "message": "Possible null reference argument for parameter 'Name' in 'GetUsersResponse.GetUsersResponse(string Id, string Name, string LastName, string FirstName, string Email)'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Users/Mapper/UserMapper.cs",
+                "region": {
+                  "startLine": 14,
+                  "startColumn": 46,
+                  "endLine": 14,
+                  "endColumn": 59
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8604",
+          "level": "warning",
+          "message": "Possible null reference argument for parameter 'Email' in 'GetUsersResponse.GetUsersResponse(string Id, string Name, string LastName, string FirstName, string Email)'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Users/Mapper/UserMapper.cs",
+                "region": {
+                  "startLine": 14,
+                  "startColumn": 92,
+                  "endLine": 14,
+                  "endColumn": 102
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8603",
+          "level": "warning",
+          "message": "Possible null reference return.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/NewRecommendProducts/Queries/GetAll/GetNewProductRecommendQuery.cs",
+                "region": {
+                  "startLine": 22,
+                  "startColumn": 136,
+                  "endLine": 22,
+                  "endColumn": 152
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8603",
+          "level": "warning",
+          "message": "Possible null reference return.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/NewRecommendProducts/Queries/GetAll/GetNewProductRecommendQuery.cs",
+                "region": {
+                  "startLine": 23,
+                  "startColumn": 180,
+                  "endLine": 23,
+                  "endColumn": 196
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/NewRecommendProducts/Queries/GetAll/GetNewProductRecommendQuery.cs",
+                "region": {
+                  "startLine": 24,
+                  "startColumn": 84,
+                  "endLine": 24,
+                  "endColumn": 100
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Schedules/Commands/Delete/UnregisterScheduleHandler.cs",
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 13,
+                  "endLine": 17,
+                  "endColumn": 21
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8603",
+          "level": "warning",
+          "message": "Possible null reference return.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Schedules/Queries/GetEmployeeSchedules/GetEmployeeScheduleQuery.cs",
+                "region": {
+                  "startLine": 21,
+                  "startColumn": 85,
+                  "endLine": 21,
+                  "endColumn": 92
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8603",
+          "level": "warning",
+          "message": "Possible null reference return.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Schedules/Queries/GetEmployeeSchedules/GetEmployeeScheduleQuery.cs",
+                "region": {
+                  "startLine": 21,
+                  "startColumn": 99,
+                  "endLine": 21,
+                  "endColumn": 109
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Schedules/Queries/GetEmployeeSchedules/GetEmployeeScheduleQuery.cs",
+                "region": {
+                  "startLine": 30,
+                  "startColumn": 122,
+                  "endLine": 30,
+                  "endColumn": 132
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Schedules/Queries/GetEmployeeSchedules/GetEmployeeScheduleQuery.cs",
+                "region": {
+                  "startLine": 30,
+                  "startColumn": 172,
+                  "endLine": 30,
+                  "endColumn": 179
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8604",
+          "level": "warning",
+          "message": "Possible null reference argument for parameter 'ShiftName' in 'ShiftDto.ShiftDto(Guid ShiftId, string ShiftName)'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Schedules/Queries/GetEmployeeSchedules/GetEmployeeScheduleQuery.cs",
+                "region": {
+                  "startLine": 30,
+                  "startColumn": 172,
+                  "endLine": 30,
+                  "endColumn": 189
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Restaurants/Queries/Detail/GetDetailRestaurantQuery.cs",
+                "region": {
+                  "startLine": 26,
+                  "startColumn": 23,
+                  "endLine": 26,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8604",
+          "level": "warning",
+          "message": "Possible null reference argument for parameter 'value' in 'void VnPayHandler.AddRequestData(string key, string value)'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Payments/Commands/CreateVNPayPayment/VNPayPaymentHandler.cs",
+                "region": {
+                  "startLine": 71,
+                  "startColumn": 52,
+                  "endLine": 71,
+                  "endColumn": 60
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8604",
+          "level": "warning",
+          "message": "Possible null reference argument for parameter 'value' in 'void VnPayHandler.AddRequestData(string key, string value)'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Payments/Commands/CreateVNPayPayment/VNPayPaymentHandler.cs",
+                "region": {
+                  "startLine": 80,
+                  "startColumn": 54,
+                  "endLine": 80,
+                  "endColumn": 63
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8604",
+          "level": "warning",
+          "message": "Possible null reference argument for parameter 'baseUrl' in 'string VnPayHandler.CreateRequestUrl(string baseUrl, string vnpHashSecret)'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Payments/Commands/CreateVNPayPayment/VNPayPaymentHandler.cs",
+                "region": {
+                  "startLine": 84,
+                  "startColumn": 59,
+                  "endLine": 84,
+                  "endColumn": 62
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8604",
+          "level": "warning",
+          "message": "Possible null reference argument for parameter 'vnpHashSecret' in 'string VnPayHandler.CreateRequestUrl(string baseUrl, string vnpHashSecret)'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Payments/Commands/CreateVNPayPayment/VNPayPaymentHandler.cs",
+                "region": {
+                  "startLine": 84,
+                  "startColumn": 64,
+                  "endLine": 84,
+                  "endColumn": 75
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Non-nullable property 'Message' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Payments/Commands/CreateVNPayPayment/VNPayReturnHandler.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 23,
+                  "endLine": 15,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Payments/Commands/CreateVNPayPayment/VNPayReturnHandler.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 23,
+                  "endLine": 15,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8604",
+          "level": "warning",
+          "message": "Possible null reference argument for parameter 'source' in 'bool Enumerable.Any<ProductIngredientGeneral>(IEnumerable<ProductIngredientGeneral> source, Func<ProductIngredientGeneral, bool> predicate)'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/ProductGenerals/Queries/GetProductGeneralDetail/GetProductGeneralDetailHandler.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 90,
+                  "endLine": 20,
+                  "endColumn": 117
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8603",
+          "level": "warning",
+          "message": "Possible null reference return.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/ProductGenerals/Queries/GetProductGeneralDetail/GetProductGeneralDetailHandler.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 167,
+                  "endLine": 20,
+                  "endColumn": 194
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8604",
+          "level": "warning",
+          "message": "Possible null reference argument for parameter 'TableCode' in 'GetTableResponse.GetTableResponse(Guid Id, int TableNumber, string TableCode, Status TableStatus, Guid RestaurantId)'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Tables/Queries/GetTableQuery.cs",
+                "region": {
+                  "startLine": 35,
+                  "startColumn": 13,
+                  "endLine": 35,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8604",
+          "level": "warning",
+          "message": "Possible null reference argument for parameter 'source' in 'bool Enumerable.Any<ProductIngredientGeneral>(IEnumerable<ProductIngredientGeneral> source, Func<ProductIngredientGeneral, bool> predicate)'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Products/Commons/Add/AddProductHandler.cs",
+                "region": {
+                  "startLine": 33,
+                  "startColumn": 90,
+                  "endLine": 33,
+                  "endColumn": 117
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8603",
+          "level": "warning",
+          "message": "Possible null reference return.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Schedules/Queries/GetDailySchedules/GetDailySchedulesQuery.cs",
+                "region": {
+                  "startLine": 21,
+                  "startColumn": 86,
+                  "endLine": 21,
+                  "endColumn": 96
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8603",
+          "level": "warning",
+          "message": "Possible null reference return.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Schedules/Queries/GetDailySchedules/GetDailySchedulesQuery.cs",
+                "region": {
+                  "startLine": 21,
+                  "startColumn": 103,
+                  "endLine": 21,
+                  "endColumn": 110
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Schedules/Queries/GetDailySchedules/GetDailySchedulesQuery.cs",
+                "region": {
+                  "startLine": 32,
+                  "startColumn": 69,
+                  "endLine": 32,
+                  "endColumn": 86
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Schedules/Queries/GetDailySchedules/GetDailySchedulesQuery.cs",
+                "region": {
+                  "startLine": 37,
+                  "startColumn": 72,
+                  "endLine": 37,
+                  "endColumn": 89
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Schedules/Queries/GetDailySchedules/GetDailySchedulesQuery.cs",
+                "region": {
+                  "startLine": 38,
+                  "startColumn": 77,
+                  "endLine": 38,
+                  "endColumn": 91
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8604",
+          "level": "warning",
+          "message": "Possible null reference argument for parameter 'ShiftName' in 'ShiftDto.ShiftDto(Guid ShiftId, string ShiftName)'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Schedules/Queries/GetDailySchedules/GetDailySchedulesQuery.cs",
+                "region": {
+                  "startLine": 38,
+                  "startColumn": 77,
+                  "endLine": 38,
+                  "endColumn": 101
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8604",
+          "level": "warning",
+          "message": "Possible null reference argument for parameter 'secretKey' in 'bool VNPayCallbackHandler.ValidateSignature(string rspraw, string inputHash, string secretKey)'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Payments/Commands/CreateVNPayPayment/VNPayReturnHandler.cs",
+                "region": {
+                  "startLine": 33,
+                  "startColumn": 102,
+                  "endLine": 33,
+                  "endColumn": 112
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Payments/Commands/CreateVNPayPayment/VNPayReturnHandler.cs",
+                "region": {
+                  "startLine": 66,
+                  "startColumn": 13,
+                  "endLine": 66,
+                  "endColumn": 18
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8604",
+          "level": "warning",
+          "message": "Possible null reference argument for parameter 'source' in 'bool Enumerable.Any<ProductIngredientGeneral>(IEnumerable<ProductIngredientGeneral> source, Func<ProductIngredientGeneral, bool> predicate)'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Restaurants/Commons/Create/CreateRestaurantHandler.cs",
+                "region": {
+                  "startLine": 113,
+                  "startColumn": 101,
+                  "endLine": 113,
+                  "endColumn": 128
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8600",
+          "level": "warning",
+          "message": "Converting null literal or possible null value to non-nullable type.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Orders/Commands/CreateOrder/CreateOrderHandler.cs",
+                "region": {
+                  "startLine": 52,
+                  "startColumn": 53,
+                  "endLine": 52,
+                  "endColumn": 64
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8604",
+          "level": "warning",
+          "message": "Possible null reference argument for parameter 'source' in 'IEnumerable<ProductIngredientGeneral> Enumerable.Where<ProductIngredientGeneral>(IEnumerable<ProductIngredientGeneral> source, Func<ProductIngredientGeneral, bool> predicate)'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/ProductGenerals/Mapper/ProductGeneralMapper.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 84,
+                  "endLine": 11,
+                  "endColumn": 120
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/ProductGenerals/Mapper/ProductGeneralMapper.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 84,
+                  "endLine": 11,
+                  "endColumn": 181
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S125",
+          "level": "warning",
+          "message": "Remove this commented out code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/DependencyInjection.cs",
+                "region": {
+                  "startLine": 23,
+                  "startColumn": 9,
+                  "endLine": 23,
+                  "endColumn": 80
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S125",
+          "level": "warning",
+          "message": "Remove this commented out code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/NewRecommendProducts/Queries/GetAll/GetNewProductRecommendQuery.cs",
+                "region": {
+                  "startLine": 12,
+                  "startColumn": 1,
+                  "endLine": 12,
+                  "endColumn": 111
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S125",
+          "level": "warning",
+          "message": "Remove this commented out code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/ProductGenerals/Commands/Active/ActiveProductGeneralHandler.cs",
+                "region": {
+                  "startLine": 13,
+                  "startColumn": 1,
+                  "endLine": 13,
+                  "endColumn": 4
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2094",
+          "level": "warning",
+          "message": "Remove this empty class, write its code or make it an \"interface\".",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Authorize/Commands/ForgotPassword/ForgotPasswordValidator.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 16,
+                  "endLine": 9,
+                  "endColumn": 39
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1144",
+          "level": "warning",
+          "message": "Remove the unused private field '_unitOfWorks'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Authorize/Commands/ForgotPassword/ForgotPasswordHandler.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 5,
+                  "endLine": 9,
+                  "endColumn": 62
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1144",
+          "level": "warning",
+          "message": "Remove the unused private field '_signInManager'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Authorize/Commands/EmployeeLogin/EmployeeLoginHandler.cs",
+                "region": {
+                  "startLine": 21,
+                  "startColumn": 5,
+                  "endLine": 21,
+                  "endColumn": 73
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S125",
+          "level": "warning",
+          "message": "Remove this commented out code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Restaurants/Commons/Create/CreateRestaurantHandler.cs",
+                "region": {
+                  "startLine": 72,
+                  "startColumn": 5,
+                  "endLine": 72,
+                  "endColumn": 8
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1144",
+          "level": "warning",
+          "message": "Remove the unused private field '_unitOfWorks'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Ingredients/Commands/CheckExpiredIngredient/CheckExpiredIngredientHandler.cs",
+                "region": {
+                  "startLine": 10,
+                  "startColumn": 5,
+                  "endLine": 10,
+                  "endColumn": 62
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1144",
+          "level": "warning",
+          "message": "Remove the unused private field '_claimService'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/IngredientUnits/Commands/CreateNewIngredientUnit/CreateNewIngredientUnitHandler.cs",
+                "region": {
+                  "startLine": 14,
+                  "startColumn": 5,
+                  "endLine": 14,
+                  "endColumn": 65
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1104",
+          "level": "warning",
+          "message": "Make this field 'private' and encapsulate it in a 'public' property.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Orders/Commands/CreateOrder/CreateOrderHandler.cs",
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 31,
+                  "endLine": 19,
+                  "endColumn": 66
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1104",
+          "level": "warning",
+          "message": "Make this field 'private' and encapsulate it in a 'public' property.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Orders/Commands/CreateOrder/CreateOrderHandler.cs",
+                "region": {
+                  "startLine": 29,
+                  "startColumn": 24,
+                  "endLine": 29,
+                  "endColumn": 57
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2094",
+          "level": "warning",
+          "message": "Remove this empty class, write its code or make it an \"interface\".",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/ProductGenerals/Commands/Create/CreateProductGeneralValidator.cs",
+                "region": {
+                  "startLine": 5,
+                  "startColumn": 14,
+                  "endLine": 5,
+                  "endColumn": 43
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2094",
+          "level": "warning",
+          "message": "Remove this empty class, write its code or make it an \"interface\".",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Orders/Commands/Update/UpdateOrderHandler.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 14,
+                  "endLine": 16,
+                  "endColumn": 32
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1104",
+          "level": "warning",
+          "message": "Make this field 'private' and encapsulate it in a 'public' property.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Restaurants/Commons/Update/UpdateRestaurantHandler.cs",
+                "region": {
+                  "startLine": 8,
+                  "startColumn": 17,
+                  "endLine": 8,
+                  "endColumn": 19
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2094",
+          "level": "warning",
+          "message": "Remove this empty class, write its code or make it an \"interface\".",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/ProductGenerals/Commands/Update/UpdateProductIngredientValidator.cs",
+                "region": {
+                  "startLine": 4,
+                  "startColumn": 16,
+                  "endLine": 4,
+                  "endColumn": 48
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2094",
+          "level": "warning",
+          "message": "Remove this empty class, write its code or make it an \"interface\".",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/ProductGenerals/Commands/UpdateIngredientQuantity/UpdateIngredientQuantityValidator.cs",
+                "region": {
+                  "startLine": 8,
+                  "startColumn": 16,
+                  "endLine": 8,
+                  "endColumn": 49
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2933",
+          "level": "warning",
+          "message": "Make '_unitOfWorks' 'readonly'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Restaurants/Queries/Detail/GetDetailRestaurantQuery.cs",
+                "region": {
+                  "startLine": 21,
+                  "startColumn": 26,
+                  "endLine": 21,
+                  "endColumn": 38
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Authorize/Queries/Profile/ViewProfileHandler.cs",
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 89,
+                  "endLine": 17,
+                  "endColumn": 104
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1116",
+          "level": "warning",
+          "message": "Remove this empty statement.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Users/Queries/GetAllUser/GetAllUserHandler.cs",
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 109,
+                  "endLine": 17,
+                  "endColumn": 110
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1860",
+          "level": "note",
+          "message": "Prefer comparing 'Count' to 0 rather than using 'Any()', both for clarity and for performance",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Common/Behaviours/ValidationBehaviour.cs",
+                "region": {
+                  "startLine": 54,
+                  "startColumn": 13,
+                  "endLine": 54,
+                  "endColumn": 27
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "DiagnosticPropertyKey": "Count"
+            }
+          }
+        },
+        {
+          "ruleId": "S1121",
+          "level": "warning",
+          "message": "Extract the assignment of 'RestaurantId' from this expression.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Common/Behaviours/Claim/ClaimService.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 81,
+                  "endLine": 15,
+                  "endColumn": 82
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1121",
+          "level": "warning",
+          "message": "Extract the assignment of 'RestaurantId' from this expression.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Common/Behaviours/Claim/ClaimService.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 102,
+                  "endLine": 15,
+                  "endColumn": 103
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2589",
+          "level": "warning",
+          "message": "Remove this unnecessary check for null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Common/Exceptions/ErrorHandlerMiddleware.cs",
+                "region": {
+                  "startLine": 30,
+                  "startColumn": 67,
+                  "endLine": 30,
+                  "endColumn": 72
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Attendances/Commands/GenerateCheckInQRCode/GenerateCheckinQRCodeHandler.cs",
+                "region": {
+                  "startLine": 35,
+                  "startColumn": 19,
+                  "endLine": 35,
+                  "endColumn": 59
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Attendances/Commands/GenerateCheckInQRCode/GenerateCheckinQRCodeHandler.cs",
+                "region": {
+                  "startLine": 37,
+                  "startColumn": 108,
+                  "endLine": 37,
+                  "endColumn": 154
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1416",
+          "level": "warning",
+          "message": "This call site is reachable on all platforms. 'ImageFormat.Png' is only supported on: 'windows' 6.1 and later.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Attendances/Commands/GenerateCheckInQRCode/GenerateCheckinQRCodeHandler.cs",
+                "region": {
+                  "startLine": 45,
+                  "startColumn": 44,
+                  "endLine": 45,
+                  "endColumn": 59
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1416",
+          "level": "warning",
+          "message": "This call site is reachable on all platforms. 'Image.Save(Stream, ImageFormat)' is only supported on: 'windows' 6.1 and later.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Attendances/Commands/GenerateCheckInQRCode/GenerateCheckinQRCodeHandler.cs",
+                "region": {
+                  "startLine": 45,
+                  "startColumn": 13,
+                  "endLine": 45,
+                  "endColumn": 60
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1481",
+          "level": "warning",
+          "message": "Remove the unused local variable 'waiterSchedule'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Attendances/Commands/GenerateCheckInQRCode/GenerateCheckinQRCodeHandler.cs",
+                "region": {
+                  "startLine": 37,
+                  "startColumn": 13,
+                  "endLine": 37,
+                  "endColumn": 27
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Categories/Commands/Update/UpdateCategoryHandler.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 101,
+                  "endLine": 20,
+                  "endColumn": 116
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Combos/Commands/Inactive/InactvieComboHandler.cs",
+                "region": {
+                  "startLine": 13,
+                  "startColumn": 97,
+                  "endLine": 13,
+                  "endColumn": 112
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1121",
+          "level": "warning",
+          "message": "Extract the assignment of 'sortField' from this expression.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Users/Queries/GetAllEmployee/GetAllEmployeeHandler.cs",
+                "region": {
+                  "startLine": 70,
+                  "startColumn": 106,
+                  "endLine": 70,
+                  "endColumn": 107
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1854",
+          "level": "warning",
+          "message": "Remove this useless assignment to local variable 'sortField'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Users/Queries/GetAllEmployee/GetAllEmployeeHandler.cs",
+                "region": {
+                  "startLine": 70,
+                  "startColumn": 96,
+                  "endLine": 70,
+                  "endColumn": 118
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Attendances/Commands/CheckAttendance/CheckAttendanceHandler.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 110,
+                  "endLine": 16,
+                  "endColumn": 150
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Attendances/Commands/CheckAttendance/CheckAttendanceHandler.cs",
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 104,
+                  "endLine": 17,
+                  "endColumn": 145
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Attendances/Commands/CheckAttendance/CheckAttendanceHandler.cs",
+                "region": {
+                  "startLine": 18,
+                  "startColumn": 122,
+                  "endLine": 18,
+                  "endColumn": 162
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Attendances/Commands/CheckAttendance/CheckAttendanceHandler.cs",
+                "region": {
+                  "startLine": 22,
+                  "startColumn": 19,
+                  "endLine": 22,
+                  "endColumn": 53
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Attendances/Commands/CheckAttendance/CheckAttendanceHandler.cs",
+                "region": {
+                  "startLine": 27,
+                  "startColumn": 19,
+                  "endLine": 27,
+                  "endColumn": 58
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Attendances/Commands/CheckAttendance/CheckAttendanceHandler.cs",
+                "region": {
+                  "startLine": 33,
+                  "startColumn": 19,
+                  "endLine": 33,
+                  "endColumn": 62
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Combos/Commands/Active/ActiveComboHandler.cs",
+                "region": {
+                  "startLine": 14,
+                  "startColumn": 97,
+                  "endLine": 14,
+                  "endColumn": 112
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Categories/Commands/Delete/DeleteCategoryHandler.cs",
+                "region": {
+                  "startLine": 14,
+                  "startColumn": 101,
+                  "endLine": 14,
+                  "endColumn": 116
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1481",
+          "level": "warning",
+          "message": "Remove the unused local variable 'restaurant'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Attendances/Commands/CheckAttendance/CheckAttendanceHandler.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 13,
+                  "endLine": 16,
+                  "endColumn": 23
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1481",
+          "level": "warning",
+          "message": "Remove the unused local variable 'employee'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Attendances/Commands/CheckAttendance/CheckAttendanceHandler.cs",
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 13,
+                  "endLine": 17,
+                  "endColumn": 21
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Combos/Commands/Create/CreateComboHandler.cs",
+                "region": {
+                  "startLine": 23,
+                  "startColumn": 150,
+                  "endLine": 23,
+                  "endColumn": 165
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/IngredientGenerals/Commands/Active/ActiveIngredientGeneralHandler.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 129,
+                  "endLine": 16,
+                  "endColumn": 144
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1860",
+          "level": "note",
+          "message": "Prefer comparing 'Count' to 0 rather than using 'Any()', both for clarity and for performance",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Users/Commands/CreateEmployee/CreateEmployeeHandler.cs",
+                "region": {
+                  "startLine": 45,
+                  "startColumn": 13,
+                  "endLine": 45,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "DiagnosticPropertyKey": "Count"
+            }
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/IngredientGenerals/Commands/Update/UpdateIngredientGeneralHandler.cs",
+                "region": {
+                  "startLine": 25,
+                  "startColumn": 128,
+                  "endLine": 25,
+                  "endColumn": 143
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Authorize/Commands/EditProfile/EditProfileHandler.cs",
+                "region": {
+                  "startLine": 25,
+                  "startColumn": 71,
+                  "endLine": 25,
+                  "endColumn": 86
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Authorize/Commands/EditProfile/EditProfileHandler.cs",
+                "region": {
+                  "startLine": 27,
+                  "startColumn": 121,
+                  "endLine": 27,
+                  "endColumn": 136
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Authorize/Commands/EmployeeLogin/EmployeeLoginHandler.cs",
+                "region": {
+                  "startLine": 40,
+                  "startColumn": 73,
+                  "endLine": 40,
+                  "endColumn": 114
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Authorize/Commands/EmployeeLogin/EmployeeLoginHandler.cs",
+                "region": {
+                  "startLine": 41,
+                  "startColumn": 77,
+                  "endLine": 41,
+                  "endColumn": 120
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Authorize/Commands/EmployeeLogin/EmployeeLoginHandler.cs",
+                "region": {
+                  "startLine": 42,
+                  "startColumn": 81,
+                  "endLine": 42,
+                  "endColumn": 126
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Users/Commands/CreateEmployee/CreateEmployeeHandler.cs",
+                "region": {
+                  "startLine": 125,
+                  "startColumn": 23,
+                  "endLine": 125,
+                  "endColumn": 38
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1481",
+          "level": "warning",
+          "message": "Remove the unused local variable 'createResult'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Authorize/Commands/UserGoogleLogin/UserGoogleLoginHandler.cs",
+                "region": {
+                  "startLine": 38,
+                  "startColumn": 17,
+                  "endLine": 38,
+                  "endColumn": 29
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1481",
+          "level": "warning",
+          "message": "Remove the unused local variable 'roleAssignResult'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Authorize/Commands/UserGoogleLogin/UserGoogleLoginHandler.cs",
+                "region": {
+                  "startLine": 39,
+                  "startColumn": 17,
+                  "endLine": 39,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1481",
+          "level": "warning",
+          "message": "Remove the unused local variable 'loginResult'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Authorize/Commands/UserGoogleLogin/UserGoogleLoginHandler.cs",
+                "region": {
+                  "startLine": 45,
+                  "startColumn": 17,
+                  "endLine": 45,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Ingredients/Commands/AddSingleQuantity/AddSingleQuantityHandler.cs",
+                "region": {
+                  "startLine": 14,
+                  "startColumn": 117,
+                  "endLine": 14,
+                  "endColumn": 132
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Ingredients/Commands/AddMultipleQuantity/AddMultipleQuantityHandler.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 118,
+                  "endLine": 16,
+                  "endColumn": 133
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/IngredientGenerals/Commands/Inactive/InactiveIngredientGeneralHandler.cs",
+                "region": {
+                  "startLine": 13,
+                  "startColumn": 129,
+                  "endLine": 13,
+                  "endColumn": 144
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/IngredientTypes/Commands/Active/ActiveIngredientTypeHandler.cs",
+                "region": {
+                  "startLine": 14,
+                  "startColumn": 118,
+                  "endLine": 14,
+                  "endColumn": 133
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S6608",
+          "level": "warning",
+          "message": "Indexing at 0 should be used instead of the \"Enumerable\" extension method \"First\"",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Authorize/Commands/EmployeeLogin/EmployeeLoginHandler.cs",
+                "region": {
+                  "startLine": 64,
+                  "startColumn": 40,
+                  "endLine": 64,
+                  "endColumn": 45
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/IngredientTypes/Commands/Update/UpdateIngredientTypeHandler.cs",
+                "region": {
+                  "startLine": 23,
+                  "startColumn": 118,
+                  "endLine": 23,
+                  "endColumn": 133
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/IngredientTypes/Commands/Inactive/InactiveIngredientTypeHandler.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 129,
+                  "endLine": 16,
+                  "endColumn": 144
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/IngredientTypes/Commands/CreateChild/CreateChildIngredientTypeHandler.cs",
+                "region": {
+                  "startLine": 21,
+                  "startColumn": 127,
+                  "endLine": 21,
+                  "endColumn": 142
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/IngredientUnits/Commands/Update/UpdateIngredientUnitHandler.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 133,
+                  "endLine": 20,
+                  "endColumn": 148
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S6608",
+          "level": "warning",
+          "message": "Indexing at 0 should be used instead of the \"Enumerable\" extension method \"First\"",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Authorize/Commands/UserLogin/UserLoginHandler.cs",
+                "region": {
+                  "startLine": 45,
+                  "startColumn": 48,
+                  "endLine": 45,
+                  "endColumn": 53
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/NewRecommendProducts/Commands/UpdateRequest/UpdateRequestHandler.cs",
+                "region": {
+                  "startLine": 25,
+                  "startColumn": 150,
+                  "endLine": 25,
+                  "endColumn": 165
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/NewRecommendProducts/Commands/UpdateRequest/UpdateRequestHandler.cs",
+                "region": {
+                  "startLine": 31,
+                  "startColumn": 142,
+                  "endLine": 31,
+                  "endColumn": 157
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/NewRecommendProducts/Commands/DenyResponse/DenyResponseHandler.cs",
+                "region": {
+                  "startLine": 22,
+                  "startColumn": 150,
+                  "endLine": 22,
+                  "endColumn": 165
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1125",
+          "level": "warning",
+          "message": "Remove the unnecessary Boolean literal(s).",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Products/Queries/GetProduct/GetProductHandler.cs",
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 71,
+                  "endLine": 17,
+                  "endColumn": 79
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Schedules/Commands/Delete/UnregisterScheduleHandler.cs",
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 19,
+                  "endLine": 19,
+                  "endColumn": 85
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Products/Commons/Update/UpdateProductHandler.cs",
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 105,
+                  "endLine": 19,
+                  "endColumn": 120
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA2016",
+          "level": "note",
+          "message": "Forward the 'cancellationToken' parameter to the 'FirstOrDefaultAsync' method or pass in 'CancellationToken.None' explicitly to indicate intentionally not propagating the token",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Users/Commands/Inactive/InactiveEmployeeHandler.cs",
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 26,
+                  "endLine": 19,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "ArgumentName": "cancellationToken",
+              "ParameterName": "cancellationToken",
+              "ShouldFix": "1"
+            }
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Products/Commons/Active/ActiveProductHandler.cs",
+                "region": {
+                  "startLine": 13,
+                  "startColumn": 98,
+                  "endLine": 13,
+                  "endColumn": 113
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Products/Commons/Inactive/InactiveProductHandler.cs",
+                "region": {
+                  "startLine": 13,
+                  "startColumn": 98,
+                  "endLine": 13,
+                  "endColumn": 113
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1125",
+          "level": "warning",
+          "message": "Remove the unnecessary Boolean literal(s).",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Products/Queries/GetMenu/GetMenuHandler.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 71,
+                  "endLine": 20,
+                  "endColumn": 79
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1125",
+          "level": "warning",
+          "message": "Remove the unnecessary Boolean literal(s).",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Products/Queries/GetMenu/GetMenuHandler.cs",
+                "region": {
+                  "startLine": 21,
+                  "startColumn": 22,
+                  "endLine": 21,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/NewRecommendProducts/Commands/NeedsUpdateResponse/NeedsUpdateResponseHandler.cs",
+                "region": {
+                  "startLine": 24,
+                  "startColumn": 150,
+                  "endLine": 24,
+                  "endColumn": 165
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/NewRecommendProducts/Commands/ApproveResponse/ApproveResponseHandler.cs",
+                "region": {
+                  "startLine": 24,
+                  "startColumn": 150,
+                  "endLine": 24,
+                  "endColumn": 165
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/NewRecommendProducts/Commands/ApproveResponse/ApproveResponseHandler.cs",
+                "region": {
+                  "startLine": 30,
+                  "startColumn": 142,
+                  "endLine": 30,
+                  "endColumn": 157
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Restaurants/Commons/Active/ActiveRestaurantHandler.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 100,
+                  "endLine": 16,
+                  "endColumn": 139
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Shift/Commands/Update/UpdateShiftHandler.cs",
+                "region": {
+                  "startLine": 18,
+                  "startColumn": 124,
+                  "endLine": 18,
+                  "endColumn": 139
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Orders/Commands/Update/UpdateOrderDetailHandler.cs",
+                "region": {
+                  "startLine": 31,
+                  "startColumn": 110,
+                  "endLine": 31,
+                  "endColumn": 125
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/ProductGenerals/Queries/GetProductGeneralDetail/GetProductGeneralDetailHandler.cs",
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 102,
+                  "endLine": 19,
+                  "endColumn": 117
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Payments/Commands/CreateVNPayPayment/VNPayPaymentHandler.cs",
+                "region": {
+                  "startLine": 39,
+                  "startColumn": 22,
+                  "endLine": 39,
+                  "endColumn": 62
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Payments/Commands/CreateVNPayPayment/VNPayPaymentHandler.cs",
+                "region": {
+                  "startLine": 47,
+                  "startColumn": 19,
+                  "endLine": 47,
+                  "endColumn": 63
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1481",
+          "level": "warning",
+          "message": "Remove the unused local variable 'result'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Users/Commands/CreateUser/CreateUser.cs",
+                "region": {
+                  "startLine": 33,
+                  "startColumn": 17,
+                  "endLine": 33,
+                  "endColumn": 23
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Products/Commons/Add/AddProductHandler.cs",
+                "region": {
+                  "startLine": 22,
+                  "startColumn": 126,
+                  "endLine": 22,
+                  "endColumn": 141
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3267",
+          "level": "warning",
+          "message": "Loops should be simplified using the \"Where\" LINQ method",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Products/Commons/Add/AddProductHandler.cs",
+                "region": {
+                  "startLine": 34,
+                  "startColumn": 30,
+                  "endLine": 34,
+                  "endColumn": 41
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Products/Commons/Add/AddProductHandler.cs",
+                "region": {
+                  "startLine": 37,
+                  "startColumn": 17,
+                  "endLine": 37,
+                  "endColumn": 115
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "0": null
+            }
+          }
+        },
+        {
+          "ruleId": "S3928",
+          "level": "warning",
+          "message": "The parameter name 'ImageDefault and Ingredients are required.' is not declared in the argument list.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/ProductGenerals/Commands/UploadImageDefault/UploadImageDefaultHandler.cs",
+                "region": {
+                  "startLine": 23,
+                  "startColumn": 19,
+                  "endLine": 23,
+                  "endColumn": 90
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Restaurants/Commons/Inactive/InactiveRestaurantHandler.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 100,
+                  "endLine": 16,
+                  "endColumn": 139
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA2208",
+          "level": "note",
+          "message": "Method Handle passes 'ImageDefault and Ingredients are required.' as the paramName argument to a ArgumentNullException constructor. Replace this argument with one of the method's parameter names. Note that the provided parameter name should have the exact casing as declared on the method.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/ProductGenerals/Commands/UploadImageDefault/UploadImageDefaultHandler.cs",
+                "region": {
+                  "startLine": 23,
+                  "startColumn": 19,
+                  "endLine": 23,
+                  "endColumn": 90
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Orders/Commands/RefundOrder/RefundOrderHandler.cs",
+                "region": {
+                  "startLine": 24,
+                  "startColumn": 22,
+                  "endLine": 24,
+                  "endColumn": 66
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Orders/Commands/RefundOrder/RefundOrderHandler.cs",
+                "region": {
+                  "startLine": 27,
+                  "startColumn": 22,
+                  "endLine": 27,
+                  "endColumn": 79
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Orders/Commands/RefundOrder/RefundOrderHandler.cs",
+                "region": {
+                  "startLine": 31,
+                  "startColumn": 19,
+                  "endLine": 31,
+                  "endColumn": 66
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1860",
+          "level": "note",
+          "message": "Prefer comparing 'Count' to 0 rather than using 'Any()', both for clarity and for performance",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Restaurants/Commons/Create/CreateRestaurantHandler.cs",
+                "region": {
+                  "startLine": 57,
+                  "startColumn": 13,
+                  "endLine": 57,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "DiagnosticPropertyKey": "Count"
+            }
+          }
+        },
+        {
+          "ruleId": "CA2016",
+          "level": "note",
+          "message": "Forward the 'cancellationToken' parameter to the 'FirstOrDefaultAsync' method or pass in 'CancellationToken.None' explicitly to indicate intentionally not propagating the token",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Users/Commands/Active/ActiveEmployeeHandler.cs",
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 26,
+                  "endLine": 21,
+                  "endColumn": 32
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "ArgumentName": "cancellationToken",
+              "ParameterName": "cancellationToken",
+              "ShouldFix": "1"
+            }
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Tables/Commands/Inactive/InactiveTableHandler.cs",
+                "region": {
+                  "startLine": 18,
+                  "startColumn": 90,
+                  "endLine": 18,
+                  "endColumn": 105
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Orders/Commands/AddProduct/AddProductsToOrdersHandler.cs",
+                "region": {
+                  "startLine": 25,
+                  "startColumn": 22,
+                  "endLine": 25,
+                  "endColumn": 62
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Tables/Commands/Active/ActiveTableHandler.cs",
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 90,
+                  "endLine": 17,
+                  "endColumn": 105
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1822",
+          "level": "note",
+          "message": "Member 'ValidateSignature' does not access instance data and can be marked as static",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Payments/Commands/CreateVNPayPayment/VNPayReturnHandler.cs",
+                "region": {
+                  "startLine": 78,
+                  "startColumn": 22,
+                  "endLine": 78,
+                  "endColumn": 39
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/ProductGenerals/Commands/Update/UpdateProductIngredientHandler.cs",
+                "region": {
+                  "startLine": 27,
+                  "startColumn": 112,
+                  "endLine": 27,
+                  "endColumn": 127
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3776",
+          "level": "warning",
+          "message": "Refactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Restaurants/Commons/Update/UpdateRestaurantHandler.cs",
+                "region": {
+                  "startLine": 13,
+                  "startColumn": 29,
+                  "endLine": 13,
+                  "endColumn": 35
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Restaurants/Commons/Update/UpdateRestaurantHandler.cs",
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 9,
+                  "endLine": 19,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Restaurants/Commons/Update/UpdateRestaurantHandler.cs",
+                "region": {
+                  "startLine": 23,
+                  "startColumn": 9,
+                  "endLine": 23,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Restaurants/Commons/Update/UpdateRestaurantHandler.cs",
+                "region": {
+                  "startLine": 23,
+                  "startColumn": 59,
+                  "endLine": 23,
+                  "endColumn": 61
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Restaurants/Commons/Update/UpdateRestaurantHandler.cs",
+                "region": {
+                  "startLine": 28,
+                  "startColumn": 13,
+                  "endLine": 28,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Restaurants/Commons/Update/UpdateRestaurantHandler.cs",
+                "region": {
+                  "startLine": 34,
+                  "startColumn": 9,
+                  "endLine": 34,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Restaurants/Commons/Update/UpdateRestaurantHandler.cs",
+                "region": {
+                  "startLine": 34,
+                  "startColumn": 52,
+                  "endLine": 34,
+                  "endColumn": 54
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Restaurants/Commons/Update/UpdateRestaurantHandler.cs",
+                "region": {
+                  "startLine": 39,
+                  "startColumn": 13,
+                  "endLine": 39,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Restaurants/Commons/Update/UpdateRestaurantHandler.cs",
+                "region": {
+                  "startLine": 45,
+                  "startColumn": 9,
+                  "endLine": 45,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Restaurants/Commons/Update/UpdateRestaurantHandler.cs",
+                "region": {
+                  "startLine": 45,
+                  "startColumn": 60,
+                  "endLine": 45,
+                  "endColumn": 62
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Restaurants/Commons/Update/UpdateRestaurantHandler.cs",
+                "region": {
+                  "startLine": 50,
+                  "startColumn": 13,
+                  "endLine": 50,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Restaurants/Commons/Update/UpdateRestaurantHandler.cs",
+                "region": {
+                  "startLine": 56,
+                  "startColumn": 9,
+                  "endLine": 56,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Restaurants/Commons/Update/UpdateRestaurantHandler.cs",
+                "region": {
+                  "startLine": 61,
+                  "startColumn": 9,
+                  "endLine": 61,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Restaurants/Commons/Update/UpdateRestaurantHandler.cs",
+                "region": {
+                  "startLine": 66,
+                  "startColumn": 9,
+                  "endLine": 66,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Restaurants/Commons/Update/UpdateRestaurantHandler.cs",
+                "region": {
+                  "startLine": 71,
+                  "startColumn": 9,
+                  "endLine": 71,
+                  "endColumn": 11
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "0": "+1",
+              "1": "+1",
+              "10": "+1",
+              "11": "+1",
+              "12": "+1",
+              "13": "+1",
+              "2": "+1",
+              "3": "+2 (incl 1 for nesting)",
+              "4": "+1",
+              "5": "+1",
+              "6": "+2 (incl 1 for nesting)",
+              "7": "+1",
+              "8": "+1",
+              "9": "+2 (incl 1 for nesting)"
+            }
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Payments/Commands/FinishPayment/FinishPaymentHandler.cs",
+                "region": {
+                  "startLine": 22,
+                  "startColumn": 22,
+                  "endLine": 22,
+                  "endColumn": 61
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Payments/Commands/FinishPayment/FinishPaymentHandler.cs",
+                "region": {
+                  "startLine": 27,
+                  "startColumn": 19,
+                  "endLine": 27,
+                  "endColumn": 70
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S6605",
+          "level": "warning",
+          "message": "Collection-specific \"Exists\" method should be used instead of the \"Any\" extension.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Orders/Commands/CreateOrder/CreateOrderHandler.cs",
+                "region": {
+                  "startLine": 66,
+                  "startColumn": 25,
+                  "endLine": 66,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Restaurants/Commons/Create/CreateRestaurantHandler.cs",
+                "region": {
+                  "startLine": 112,
+                  "startColumn": 140,
+                  "endLine": 112,
+                  "endColumn": 155
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2971",
+          "level": "warning",
+          "message": "Drop 'Where' and move the condition into the 'FirstOrDefault'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/ProductGenerals/Mapper/ProductGeneralMapper.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 121,
+                  "endLine": 11,
+                  "endColumn": 126
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/ProductGenerals/Commands/Inactive/InactiveProductGeneralHandler.cs",
+                "region": {
+                  "startLine": 13,
+                  "startColumn": 119,
+                  "endLine": 13,
+                  "endColumn": 134
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2259",
+          "level": "warning",
+          "message": "'ingredient.ProductIngredientGenerals.Where(x => x.ProductGeneralId == productId).FirstOrDefault()' is null on at least one execution path.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/ProductGenerals/Mapper/ProductGeneralMapper.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 84,
+                  "endLine": 11,
+                  "endColumn": 181
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Orders/Commands/CreateOrder/CreateOrderHandler.cs",
+                "region": {
+                  "startLine": 60,
+                  "startColumn": 19,
+                  "endLine": 60,
+                  "endColumn": 90
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Orders/Commands/CreateOrder/CreateOrderHandler.cs",
+                "region": {
+                  "startLine": 69,
+                  "startColumn": 19,
+                  "endLine": 69,
+                  "endColumn": 120
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/ProductGenerals/Commands/UpdateIngredientQuantity/UpdateIngredientQuantityHandler.cs",
+                "region": {
+                  "startLine": 25,
+                  "startColumn": 222,
+                  "endLine": 25,
+                  "endColumn": 237
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Tables/Commands/Create/CreateTableHandler.cs",
+                "region": {
+                  "startLine": 54,
+                  "startColumn": 19,
+                  "endLine": 54,
+                  "endColumn": 58
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/ProductGenerals/Commands/RemoveIngredient/RemoveIngredientHandler.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 222,
+                  "endLine": 15,
+                  "endColumn": 237
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1860",
+          "level": "note",
+          "message": "Prefer comparing 'Count' to 0 rather than using 'Any()', both for clarity and for performance",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Restaurants/Commons/Update/UpdateRestaurantHandler.cs",
+                "region": {
+                  "startLine": 56,
+                  "startColumn": 13,
+                  "endLine": 56,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "DiagnosticPropertyKey": "Count"
+            }
+          }
+        },
+        {
+          "ruleId": "CA1416",
+          "level": "warning",
+          "message": "This call site is reachable on all platforms. 'Image.Save(Stream, ImageFormat)' is only supported on: 'windows' 6.1 and later.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Tables/Commands/Create/CreateTableHandler.cs",
+                "region": {
+                  "startLine": 65,
+                  "startColumn": 13,
+                  "endLine": 65,
+                  "endColumn": 60
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1416",
+          "level": "warning",
+          "message": "This call site is reachable on all platforms. 'ImageFormat.Png' is only supported on: 'windows' 6.1 and later.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Tables/Commands/Create/CreateTableHandler.cs",
+                "region": {
+                  "startLine": 65,
+                  "startColumn": 44,
+                  "endLine": 65,
+                  "endColumn": 59
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Orders/Commands/ChangeState/ConfirmOrderToCookHandler.cs",
+                "region": {
+                  "startLine": 22,
+                  "startColumn": 22,
+                  "endLine": 22,
+                  "endColumn": 62
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Orders/Commands/ChangeState/ConfirmOrderToServeHandler.cs",
+                "region": {
+                  "startLine": 18,
+                  "startColumn": 22,
+                  "endLine": 18,
+                  "endColumn": 62
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Restaurants/Commons/Create/CreateRestaurantHandler.cs",
+                "region": {
+                  "startLine": 127,
+                  "startColumn": 162,
+                  "endLine": 127,
+                  "endColumn": 177
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Payments/Commands/Create/CreatePaymentHandler.cs",
+                "region": {
+                  "startLine": 24,
+                  "startColumn": 22,
+                  "endLine": 24,
+                  "endColumn": 66
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Code/FinalCapstionProject_Fall2024/FOV-Fall2024-API/src/FOV.Application/Features/Payments/Commands/Create/CreatePaymentHandler.cs",
+                "region": {
+                  "startLine": 32,
+                  "startColumn": 19,
+                  "endLine": 32,
+                  "endColumn": 63
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        }
+      ],
+      "rules": {
+        "CA1416": {
+          "id": "CA1416",
+          "shortDescription": "Validate platform compatibility",
+          "fullDescription": "Using platform dependent API on a component makes the code no longer work across all platforms.",
+          "defaultLevel": "warning",
+          "helpUri": "https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1416",
+          "properties": {
+            "category": "Interoperability",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Telemetry",
+              "EnabledRuleInAggressiveMode"
+            ]
+          }
+        },
+        "CA1822": {
+          "id": "CA1822",
+          "shortDescription": "Mark members as static",
+          "fullDescription": "Members that do not access instance data or call instance methods can be marked as static. After you mark the methods as static, the compiler will emit nonvirtual call sites to these members. This can give you a measurable performance gain for performance-sensitive code.",
+          "defaultLevel": "note",
+          "helpUri": "https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1822",
+          "properties": {
+            "category": "Performance",
+            "isEnabledByDefault": true,
+            "tags": [
+              "PortedFromFxCop",
+              "Telemetry",
+              "EnabledRuleInAggressiveMode"
+            ]
+          }
+        },
+        "CA1860": {
+          "id": "CA1860",
+          "shortDescription": "Avoid using 'Enumerable.Any()' extension method",
+          "fullDescription": "Prefer using 'IsEmpty', 'Count' or 'Length' properties whichever available, rather than calling 'Enumerable.Any()'. The intent is clearer and it is more performant than using 'Enumerable.Any()' extension method.",
+          "defaultLevel": "note",
+          "helpUri": "https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1860",
+          "properties": {
+            "category": "Performance",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Telemetry",
+              "EnabledRuleInAggressiveMode"
+            ]
+          }
+        },
+        "CA2016": {
+          "id": "CA2016",
+          "shortDescription": "Forward the 'CancellationToken' parameter to methods",
+          "fullDescription": "Forward the 'CancellationToken' parameter to methods to ensure the operation cancellation notifications gets properly propagated, or pass in 'CancellationToken.None' explicitly to indicate intentionally not propagating the token.",
+          "defaultLevel": "note",
+          "helpUri": "https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2016",
+          "properties": {
+            "category": "Reliability",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Telemetry",
+              "EnabledRuleInAggressiveMode"
+            ]
+          }
+        },
+        "CA2208": {
+          "id": "CA2208",
+          "shortDescription": "Instantiate argument exceptions correctly",
+          "fullDescription": "A call is made to the default (parameterless) constructor of an exception type that is or derives from ArgumentException, or an incorrect string argument is passed to a parameterized constructor of an exception type that is or derives from ArgumentException.",
+          "defaultLevel": "note",
+          "helpUri": "https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2208",
+          "properties": {
+            "category": "Usage",
+            "isEnabledByDefault": true,
+            "tags": [
+              "PortedFromFxCop",
+              "Telemetry",
+              "EnabledRuleInAggressiveMode"
+            ]
+          }
+        },
+        "CS8600": {
+          "id": "CS8600",
+          "shortDescription": "Converting null literal or possible null value to non-nullable type.",
+          "defaultLevel": "warning",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS8600)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry"
+            ]
+          }
+        },
+        "CS8601": {
+          "id": "CS8601",
+          "shortDescription": "Possible null reference assignment.",
+          "defaultLevel": "warning",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS8601)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry"
+            ]
+          }
+        },
+        "CS8602": {
+          "id": "CS8602",
+          "shortDescription": "Dereference of a possibly null reference.",
+          "defaultLevel": "warning",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS8602)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry"
+            ]
+          }
+        },
+        "CS8603": {
+          "id": "CS8603",
+          "shortDescription": "Possible null reference return.",
+          "defaultLevel": "warning",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS8603)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry"
+            ]
+          }
+        },
+        "CS8604": {
+          "id": "CS8604",
+          "shortDescription": "Possible null reference argument.",
+          "defaultLevel": "warning",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS8604)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry"
+            ]
+          }
+        },
+        "CS8618": {
+          "id": "CS8618",
+          "shortDescription": "Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.",
+          "defaultLevel": "warning",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS8618)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry"
+            ]
+          }
+        },
+        "CS8629": {
+          "id": "CS8629",
+          "shortDescription": "Nullable value type may be null.",
+          "defaultLevel": "warning",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS8629)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry"
+            ]
+          }
+        },
+        "S1104": {
+          "id": "S1104",
+          "shortDescription": "Fields should not have public accessibility",
+          "fullDescription": "Public fields in public classes do not respect the encapsulation principle and have three main disadvantages:",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-1104",
+          "properties": {
+            "category": "Minor Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S1116": {
+          "id": "S1116",
+          "shortDescription": "Empty statements should be removed",
+          "fullDescription": "Empty statements represented by a semicolon ; are statements that do not perform any operation. They are often the result of a typo or a misunderstanding of the language syntax. It is a good practice to remove empty statements since they don’t add value and lead to confusion and errors.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-1116",
+          "properties": {
+            "category": "Minor Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S112": {
+          "id": "S112",
+          "shortDescription": "General or reserved exceptions should never be thrown",
+          "fullDescription": "This rule raises an issue when a general or reserved exception is thrown.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-112",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S1121": {
+          "id": "S1121",
+          "shortDescription": "Assignments should not be made from within sub-expressions",
+          "fullDescription": "A common code smell that can hinder the clarity of source code is making assignments within sub-expressions. This practice involves assigning a value to a variable inside a larger expression, such as within a loop or a conditional statement.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-1121",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S1125": {
+          "id": "S1125",
+          "shortDescription": "Boolean literals should not be redundant",
+          "fullDescription": "A boolean literal can be represented in two different ways: true or false. They can be combined with logical operators (!, &&, ||, ==, !=) to produce logical expressions that represent truth values. However, comparing a boolean literal to a variable or expression that evaluates to a boolean value is unnecessary and can make the code harder to read and understand. The more complex a boolean expression is, the harder it will be for developers to understand its meaning and expected behavior, and it will favour the introduction of new bugs.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-1125",
+          "properties": {
+            "category": "Minor Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S1144": {
+          "id": "S1144",
+          "shortDescription": "Unused private types or members should be removed",
+          "fullDescription": "This rule raises an issue when a private/internal type or member is never referenced in the code.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-1144",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S125": {
+          "id": "S125",
+          "shortDescription": "Sections of code should not be commented out",
+          "fullDescription": "Commented-out code distracts the focus from the actual executed code. It creates a noise that increases maintenance code. And because it is never executed, it quickly becomes out of date and invalid.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-125",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S1481": {
+          "id": "S1481",
+          "shortDescription": "Unused local variables should be removed",
+          "fullDescription": "An unused local variable is a variable that has been declared but is not used anywhere in the block of code where it is defined. It is dead code, contributing to unnecessary complexity and leading to confusion when reading the code. Therefore, it should be removed from your code to maintain clarity and efficiency.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-1481",
+          "properties": {
+            "category": "Minor Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S1854": {
+          "id": "S1854",
+          "shortDescription": "Unused assignments should be removed",
+          "fullDescription": "Dead stores refer to assignments made to local variables that are subsequently never used or immediately overwritten. Such assignments are unnecessary and don’t contribute to the functionality or clarity of the code. They may even negatively impact performance. Removing them enhances code cleanliness and readability. Even if the unnecessary operations do not do any harm in terms of the program’s correctness, they are - at best - a waste of computing resources.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-1854",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S2094": {
+          "id": "S2094",
+          "shortDescription": "Classes should not be empty",
+          "fullDescription": "There is no good excuse for an empty class. If it’s being used simply as a common extension point, it should be replaced with an interface. If it was stubbed in as a placeholder for future development it should be fleshed-out. In any other case, it should be eliminated.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-2094",
+          "properties": {
+            "category": "Minor Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S2259": {
+          "id": "S2259",
+          "shortDescription": "Null pointers should not be dereferenced",
+          "fullDescription": "Accessing a null value will always throw a NullReferenceException most likely causing an abrupt program termination.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-2259",
+          "properties": {
+            "category": "Major Bug",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S2589": {
+          "id": "S2589",
+          "shortDescription": "Boolean expressions should not be gratuitous",
+          "fullDescription": "Gratuitous boolean expressions are conditions that do not change the evaluation of a program. This issue can indicate logical errors and affect the correctness of an application, as well as its maintainability.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-2589",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S2933": {
+          "id": "S2933",
+          "shortDescription": "Fields that are only assigned in the constructor should be \"readonly\"",
+          "fullDescription": "readonly fields can only be assigned in a class constructor. If a class has a field that’s not marked readonly but is only set in the constructor, it could cause confusion about the field’s intended use. To avoid confusion, such fields should be marked readonly to make their intended use explicit, and to prevent future maintainers from inadvertently changing their use.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-2933",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S2971": {
+          "id": "S2971",
+          "shortDescription": "LINQ expressions should be simplified",
+          "fullDescription": "In the interests of readability, code that can be simplified should be simplified. To that end, there are several ways IEnumerable language integrated queries (LINQ) can be simplified. This not only improves readabilty but can also lead to improved performance.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-2971",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S3267": {
+          "id": "S3267",
+          "shortDescription": "Loops should be simplified with \"LINQ\" expressions",
+          "fullDescription": "When a loop is filtering, selecting or aggregating, those functions can be handled with a clearer, more concise LINQ expression instead.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-3267",
+          "properties": {
+            "category": "Minor Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S3776": {
+          "id": "S3776",
+          "shortDescription": "Cognitive Complexity of methods should not be too high",
+          "fullDescription": "This rule raises an issue when the code cognitive complexity of a function is above a certain threshold.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-3776",
+          "properties": {
+            "category": "Critical Code Smell",
+            "isEnabledByDefault": false,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S3928": {
+          "id": "S3928",
+          "shortDescription": "Parameter names used into ArgumentException constructors should match an existing one ",
+          "fullDescription": "Some constructors of the ArgumentException, ArgumentNullException, ArgumentOutOfRangeException and DuplicateWaitObjectException classes must be fed with a valid parameter name. This rule raises an issue in two cases:",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-3928",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S6605": {
+          "id": "S6605",
+          "shortDescription": "Collection-specific \"Exists\" method should be used instead of the \"Any\" extension",
+          "fullDescription": "Both the List.Exists method and IEnumerable.Any method can be used to find the first element that satisfies a predicate in a collection. However, List.Exists can be faster than IEnumerable.Any for List objects, as well as requires significantly less memory. For small collections, the performance difference may be negligible, but for large collections, it can be noticeable. The same applies to ImmutableList and arrays too.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-6605",
+          "properties": {
+            "category": "Minor Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S6608": {
+          "id": "S6608",
+          "shortDescription": "Prefer indexing instead of \"Enumerable\" methods on types implementing \"IList\"",
+          "fullDescription": "Indexes in C# provide direct access to an element at a specific position within an array or collection. When compared to Enumerable methods, indexing can be more efficient for certain scenarios, such as iterating over a large collection, due to avoiding the overhead of checking the underlying collection type before accessing it.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-6608",
+          "properties": {
+            "category": "Minor Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}
