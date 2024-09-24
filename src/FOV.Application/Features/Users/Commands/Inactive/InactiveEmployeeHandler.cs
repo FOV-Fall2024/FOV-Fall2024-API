@@ -32,9 +32,9 @@ public class InactiveEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User>
 
         _unitOfWorks.EmployeeRepository.Update(user.Employee);
 
-        await _unitOfWorks.SaveChangeAsync();
         await _userManager.SetLockoutEnabledAsync(user, true);
         await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.UtcNow.AddYears(10));
+        await _unitOfWorks.SaveChangeAsync();
 
         return Result.Ok();
     }

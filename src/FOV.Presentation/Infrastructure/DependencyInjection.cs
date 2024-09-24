@@ -66,7 +66,7 @@ public static class DependencyInjection
 
 
         //? Database Configuration
-        services.AddIdentityCore<User>()
+        services.AddIdentityCore<User>(opt => opt.Lockout.AllowedForNewUsers = false)
                   .AddRoles<IdentityRole>()
                   .AddEntityFrameworkStores<FOVContext>()
                   .AddApiEndpoints();
