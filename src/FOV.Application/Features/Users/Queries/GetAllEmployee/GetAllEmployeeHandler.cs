@@ -10,7 +10,7 @@ namespace FOV.Application.Features.Users.Queries.GetAllEmployee;
 
 public sealed record GetAllEmployeeCommand(PagingRequest? PagingRequest, string? Role, Guid? RestaurantId, string? FullName, string? Email, string? EmployeeCode, Status? Status = Status.Unknown) : IRequest<PagedResult<GetAllEmployeeResponse>>;
 
-public sealed record GetAllEmployeeResponse(string Id, string UserName, string FullName, string Email, string EmployeeCode, DateTime HireDate, string RoleName, Guid RestaurantId, Status Status, DateTimeOffset Created);
+public sealed record GetAllEmployeeResponse(string Id, string FullName, string Email, string EmployeeCode, DateTime HireDate, string RoleName, Guid RestaurantId, Status Status, DateTimeOffset Created);
 
 public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager) : IRequestHandler<GetAllEmployeeCommand, PagedResult<GetAllEmployeeResponse>>
 {
@@ -57,7 +57,6 @@ public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> u
             {
                 result.Add(new GetAllEmployeeResponse(
                     employee.User.Id,
-                    employee.User.UserName,
                     employee.User.FirstName + " " + employee.User.LastName,
                     employee.User.Email,
                     employee.EmployeeCode,
