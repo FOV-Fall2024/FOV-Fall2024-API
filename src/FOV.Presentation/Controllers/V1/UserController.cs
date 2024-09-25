@@ -1,4 +1,5 @@
-﻿using FOV.Application.Common.Exceptions;
+﻿using Azure;
+using FOV.Application.Common.Exceptions;
 using FOV.Application.Features.Authorize.Commands.CreateEmployee;
 using FOV.Application.Features.Users.Commands.Active;
 using FOV.Application.Features.Users.Commands.Inactive;
@@ -49,16 +50,51 @@ public class UserController(IMediator mediator, IDatabase database) : DefaultCon
         return Ok(await _mediator.Send(command));
     }
 
-    [HttpPost("{id}/active")]
-    public async Task<IActionResult> Active(string id)
+    [HttpPost("activate/{id}")]
+    public async Task<IActionResult> ActivateEmployee(string id)
     {
-        return Ok(await _mediator.Send(new ActiveEmployeeCommand(id)));
+        try
+        {
+            var result = await _mediator.Send(new ActiveEmployeeCommand(id));
+
+            if (result.IsFailed)
+            {
+                return BadRequest(new { Errors = result.Errors.Select(e => e.Message).ToList() });
+            }
+
+            return Ok(new OK_Result<Guid>("Nhân viên đã được kích hoạt", result.Value));
+        }
+        catch (AppException ex)
+        {
+            return BadRequest(new { Errors = ex.FieldErrors });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { Message = "Có lỗi xảy ra", Details = ex.Message });
+        }
     }
 
-    [HttpPost("{id}/inactive")]
-    public async Task<IActionResult> InActive(string id)
+    [HttpPost("inactivate/{id}")]
+    public async Task<IActionResult> InactivateEmployee(string id)
     {
-        return Ok(await _mediator.Send(new InactvieEmployeeCommand(id)));
+        try
+        {
+            var result = await _mediator.Send(new InactvieEmployeeCommand(id));
+
+            if (result.IsFailed)
+            {
+                return BadRequest(new { Errors = result.Errors.Select(e => e.Message).ToList() });
+            }
+            return Ok(new OK_Result<Guid>("Nhân viên đã được vô hiệu hóa", result.Value));
+        }
+        catch (AppException ex)
+        {
+            return BadRequest(new { Errors = ex.FieldErrors });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { Message = "Có lỗi xảy ra", Details = ex.Message });
+        }
     }
 
     [HttpPost("testRedis")]
