@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using FOV.Application.Features.Categories.Commands.AddNewChildCategory;
-using FOV.Domain.Entities.ProductAggregator;
+using FOV.Domain.Entities.DishAggregator;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 
 namespace FOV.Application.Features.Categories.Commands.Add;

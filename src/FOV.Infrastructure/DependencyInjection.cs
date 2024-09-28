@@ -28,24 +28,24 @@ public static class DependencyInjection
         services.AddScoped<IIngredientTypeRepository, IngredientTypeRepository>();
         services.AddScoped<ITableRepository, TableRepository>();
         services.AddScoped<IRestaurantRepository, RestaurantRepository>();
-        services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<IDishRepository, DishRepository>();
         services.AddScoped<IIngredientRepository, IngredientRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
-        services.AddScoped<IProductComboRepository, ProductComboRepository>();
+        services.AddScoped<IDishComboRepository, DishComboRepository>();
         services.AddScoped<IComboRepository, ComboRepository>();
-        services.AddScoped<IProductIngredientRepository, ProductIngredientRepository>();
+        services.AddScoped<IDishIngredientRepository, DishIngredientRepository>();
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
         services.AddScoped<IShiftRepository, ShiftRepository>();
         services.AddScoped<IWaiterScheduleRepository, WaiterScheduleRepository>();
-        services.AddScoped<IProductGeneralRepository, ProductGeneralRepository>();
-        services.AddScoped<IProductIngredientGeneralRepository, ProductIngredientGeneralRepository>();
+        services.AddScoped<IDishGeneralRepository, DishGeneralRepository>();
+        services.AddScoped<IDishIngredientGeneralRepository, DishIngredientGeneralRepository>();
         services.AddSingleton<StorageHandler>();
         services.AddSingleton<QRCodeGeneratorHandler>();
         services.AddScoped<IUnitOfWorks, UnitOfWorks>();
         //services.AddScoped<ILockingService, LockingService>();
         services.AddScoped<IIngrdientTransactionRepository, IngrdientTransactionRepository>();
-        services.AddScoped<IProductImageRepository, ProductImageRepository>();
+        services.AddScoped<IDishImageRepository, DishImageRepository>();
         services.AddScoped<IRatingRepository, RatingRepository>();
         services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<IEmployeeRepository, EmployeeRepository>();
@@ -55,8 +55,8 @@ public static class DependencyInjection
         services.AddScoped<IGroupChatRepository, GroupChatRepository>();
         services.AddScoped<IAttendanceRepository, AttendanceRepository>();
         services.AddScoped<IIngredientUnitRepository, IngredientUnitRepository>();
-        services.AddScoped<INewProductRecommendLogRepository, NewProductRecommendLogRepository>();
-        services.AddScoped<INewProductRecommendRepository, NewProductRecommendRepository>();
+        services.AddScoped<INewDishRecommendLogRepository, NewDishRecommendLogRepository>();
+        services.AddScoped<INewDishRecommendRepository, NewDishRecommendRepository>();
         return services;
 
     }

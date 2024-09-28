@@ -1,11 +1,11 @@
 ﻿using FOV.Domain.Entities.ComboAggregator;
+using FOV.Domain.Entities.DishAggregator;
+using FOV.Domain.Entities.DishGeneralAggregator;
 using FOV.Domain.Entities.GroupChatAggregator;
 using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Domain.Entities.IngredientGeneralAggregator;
-using FOV.Domain.Entities.NewProductRecommendAggregator;
+using FOV.Domain.Entities.NewDishRecommendAggregator;
 using FOV.Domain.Entities.OrderAggregator;
-using FOV.Domain.Entities.ProductAggregator;
-using FOV.Domain.Entities.ProductGeneralAggregator;
 using FOV.Domain.Entities.RestaurantAggregator;
 using FOV.Domain.Entities.UserAggregator;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ public interface IApplicationDbContext
 {
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 
-    DbSet<ProductImage> ProductImages { get; }
+    DbSet<DishImage> DishImages { get; }
 
     DbSet<Rating> Ratings { get; }
     DbSet<Restaurant> Restaurants { get; }
@@ -27,13 +27,13 @@ public interface IApplicationDbContext
 
     DbSet<IngredientGeneral> IngredientGenerals { get; }
 
-    DbSet<ProductIngredientGeneral> ProductIngredientGenerals { get; }
+    DbSet<DishIngredientGeneral> DishIngredientGenerals { get; }
 
-    DbSet<ProductGeneral> ProductGenerals { get; }
+    DbSet<DishGeneral> DishGenerals { get; }
 
-    DbSet<ProductIngredient> ProductIngredients { get; }
+    DbSet<DishIngredient> DishIngredients { get; }
 
-    DbSet<Product> Products { get; }
+    DbSet<Dish> Dishes { get; }
 
     DbSet<Customer> Customers { get; }
 
@@ -43,7 +43,7 @@ public interface IApplicationDbContext
 
     DbSet<Combo> Combos { get; }
 
-    DbSet<ProductCombo> ProductCombos { get; }
+    DbSet<DishCombo> ProductCombos { get; }
 
     DbSet<GroupChat> GroupChats { get; }
 
@@ -52,8 +52,8 @@ public interface IApplicationDbContext
     DbSet<GroupMessage> GroupMessages { get; }
 
 
-    DbSet<NewProductRecommend> NewProductRecommends { get; }
+    DbSet<NewDishRecommend> NewDishRecommends { get; }
 
-    DbSet<NewProductRecommendLog> NewProductRecommendLogs { get; }
+    DbSet<NewDishRecommendLog> NewDishRecommendLogs { get; }
 
 }

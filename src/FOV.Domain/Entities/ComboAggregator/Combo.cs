@@ -24,7 +24,7 @@ public class Combo : BaseAuditableEntity, IsSoftDeleted
 
     public Guid RestaurantId { get; set; }
 
-    public ICollection<ProductCombo> ProductCombos { get; set; } = [];
+    public ICollection<DishCombo> DishCombos { get; set; } = [];
     public ICollection<OrderDetail> OrderDetails { get; set; } = [];
 
     public Combo()

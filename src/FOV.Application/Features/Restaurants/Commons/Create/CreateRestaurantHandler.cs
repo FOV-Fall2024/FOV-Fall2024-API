@@ -1,10 +1,10 @@
 ﻿using FOV.Application.Common.Exceptions;
+using FOV.Domain.Entities.DishAggregator;
+using FOV.Domain.Entities.DishGeneralAggregator;
 using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Domain.Entities.IngredientAggregator.Enums;
 using FOV.Domain.Entities.IngredientGeneralAggregator;
 using FOV.Domain.Entities.IngredientGeneralAggregator.Enums;
-using FOV.Domain.Entities.ProductAggregator;
-using FOV.Domain.Entities.ProductGeneralAggregator;
 using FOV.Domain.Entities.RestaurantAggregator;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
@@ -109,10 +109,10 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
     {
         foreach (var product in products)
         {
-            ProductGeneral productGeneral = await _unitOfWorks.ProductGeneralRepository.GetByIdAsync(product, x => x.Ingredients) ?? throw new Exception();
-            var ingredientGenerals = await _unitOfWorks.IngredientGeneralRepository.WhereAsync(x => x.ProductIngredientGenerals.Any(pg => pg.ProductGeneralId == productGeneral.Id));
-            Product productAdding = new(productGeneral.ProductName, restaurantId, productGeneral.CategoryId, productGeneral.Id);
-            await _unitOfWorks.ProductRepository.AddAsync(productAdding);
+            DishGeneral productGeneral = await _unitOfWorks.DishGeneralRepository.GetByIdAsync(product, x => x.Ingredients) ?? throw new Exception();
+            var ingredientGenerals = await _unitOfWorks.IngredientGeneralRepository.WhereAsync(x => x.DishIngredientGenerals.Any(pg => pg.DishGeneralId == productGeneral.Id));
+            Dish productAdding = new(productGeneral.DishName, restaurantId, productGeneral.CategoryId, productGeneral.Id);
+            await _unitOfWorks.DishRepository.AddAsync(productAdding);
             await ProductIngredientAdd(ingredientGenerals.Select(x => x.IngredientName).ToList(), restaurantId, productAdding.Id);
         }
     }
@@ -128,7 +128,7 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
                 Ingredient ingredient1 = new(ingredientGeneral.IngredientName, ingredientGeneral.IngredientTypeId, restaurantId);
 
                 await _unitOfWorks.IngredientRepository.AddAsync(ingredient1);
-                await _unitOfWorks.ProductIngredientRepository.AddAsync(new ProductIngredient(productId, ingredient1.Id));
+                await _unitOfWorks.DishIngredientRepository.AddAsync(new DishIngredient(productId, ingredient1.Id));
                 await AddDefaultIngredientUnit(ingredient1.Id, ingredientGeneral.IngredientMeasure);
             }
         }

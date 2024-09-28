@@ -63,7 +63,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("WaiterScheduleId");
 
-                    b.ToTable("Attendances", (string)null);
+                    b.ToTable("Attendances");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.ComboAggregator.Combo", b =>
@@ -113,7 +113,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("RestaurantId");
 
-                    b.ToTable("Combos", (string)null);
+                    b.ToTable("Combos");
 
                     b.HasData(
                         new
@@ -121,7 +121,7 @@ namespace FOV.Infrastructure.Migrations
                             Id = new Guid("941bcca9-52a6-41f7-9403-06cc5fa703ea"),
                             ComboName = "Combo 1",
                             Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ExpiredDate = new DateTime(2024, 10, 24, 7, 39, 35, 560, DateTimeKind.Utc).AddTicks(1800),
+                            ExpiredDate = new DateTime(2024, 10, 28, 6, 20, 58, 15, DateTimeKind.Utc).AddTicks(5975),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             PercentReduce = 10.0m,
@@ -135,7 +135,7 @@ namespace FOV.Infrastructure.Migrations
                             Id = new Guid("3907a193-c2ae-4f40-936b-9a2438595123"),
                             ComboName = "Combo 2",
                             Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ExpiredDate = new DateTime(2024, 11, 24, 7, 39, 35, 560, DateTimeKind.Utc).AddTicks(1813),
+                            ExpiredDate = new DateTime(2024, 11, 28, 6, 20, 58, 15, DateTimeKind.Utc).AddTicks(6030),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             PercentReduce = 5.0m,
@@ -149,7 +149,7 @@ namespace FOV.Infrastructure.Migrations
                             Id = new Guid("921b269a-db6e-4a1d-b285-70df523e010e"),
                             ComboName = "Combo 3",
                             Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ExpiredDate = new DateTime(2024, 11, 24, 7, 39, 35, 560, DateTimeKind.Utc).AddTicks(1816),
+                            ExpiredDate = new DateTime(2024, 11, 28, 6, 20, 58, 15, DateTimeKind.Utc).AddTicks(6036),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             PercentReduce = 5.0m,
@@ -160,7 +160,7 @@ namespace FOV.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("FOV.Domain.Entities.ComboAggregator.ProductCombo", b =>
+            modelBuilder.Entity("FOV.Domain.Entities.ComboAggregator.DishCombo", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -168,6 +168,43 @@ namespace FOV.Infrastructure.Migrations
 
                     b.Property<Guid>("ComboId")
                         .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("DishId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ComboId");
+
+                    b.HasIndex("DishId");
+
+                    b.ToTable("ProductCombos");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.DishAggregator.Category", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTimeOffset>("Created")
                         .HasColumnType("timestamp with time zone");
@@ -184,16 +221,356 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("ProductId")
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c011"),
+                            CategoryName = "Khai Vị",
+                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            IsDeleted = false,
+                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"),
+                            CategoryName = "Món Chính",
+                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            IsDeleted = false,
+                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                        });
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.DishAggregator.Dish", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("CategoryId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("DishDescription")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("DishGeneralId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("DishName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<byte>("DishType")
+                        .HasColumnType("smallint");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<decimal?>("Price")
+                        .HasColumnType("numeric");
+
+                    b.Property<Guid>("RestaurantId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ComboId");
+                    b.HasIndex("CategoryId");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("DishGeneralId");
 
-                    b.ToTable("ProductCombos", (string)null);
+                    b.HasIndex("RestaurantId");
+
+                    b.ToTable("Dishes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540c3"),
+                            CategoryId = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c011"),
+                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            DishDescription = "Description",
+                            DishGeneralId = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c013"),
+                            DishName = "7up",
+                            DishType = (byte)0,
+                            IsDeleted = false,
+                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Price = 0m,
+                            RestaurantId = new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0")
+                        },
+                        new
+                        {
+                            Id = new Guid("e311d82d-452c-4603-a029-762a2a4e5e19"),
+                            CategoryId = new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"),
+                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            DishDescription = "Siêu rẻ",
+                            DishGeneralId = new Guid("2b9941ee-2f72-4417-8a0a-2e14a6d00fbb"),
+                            DishName = "Lẩu chay Thủ Đức",
+                            DishType = (byte)0,
+                            IsDeleted = false,
+                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Price = 0m,
+                            RestaurantId = new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007")
+                        },
+                        new
+                        {
+                            Id = new Guid("9d40c875-bd7f-403a-9734-c7b5dbba5e78"),
+                            CategoryId = new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"),
+                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            DishDescription = "Description",
+                            DishGeneralId = new Guid("a4aade28-ecdf-4caa-b21d-eea8c01b6598"),
+                            DishName = "Cơm Không",
+                            DishType = (byte)0,
+                            IsDeleted = false,
+                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Price = 0m,
+                            RestaurantId = new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007")
+                        });
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.DishAggregator.DishImage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("DishId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsMain")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DishId");
+
+                    b.ToTable("DishImages");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.DishAggregator.DishIngredient", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("DishId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("IngredientId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DishId");
+
+                    b.HasIndex("IngredientId");
+
+                    b.ToTable("DishIngredients");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.DishGeneralAggregator.DishGeneral", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("CategoryId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("DishDescription")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("DishImageDefault")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("DishName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsDraft")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("DishGenerals");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c012"),
+                            CategoryId = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c011"),
+                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            DishDescription = "Coca-Cola ngon ",
+                            DishImageDefault = "",
+                            DishName = "Coca-Cola",
+                            IsDeleted = false,
+                            IsDraft = true,
+                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c013"),
+                            CategoryId = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c011"),
+                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            DishDescription = "7up ngon ",
+                            DishImageDefault = "",
+                            DishName = "7up",
+                            IsDeleted = false,
+                            IsDraft = true,
+                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c022"),
+                            CategoryId = new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"),
+                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            DishDescription = " Caprese Salad ngon ",
+                            DishImageDefault = "",
+                            DishName = " Caprese Salad",
+                            IsDeleted = false,
+                            IsDraft = true,
+                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = new Guid("2b9941ee-2f72-4417-8a0a-2e14a6d00fbb"),
+                            CategoryId = new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"),
+                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            DishDescription = "Lẩu chay ngon",
+                            DishImageDefault = "",
+                            DishName = "Vegan Hotpot",
+                            IsDeleted = false,
+                            IsDraft = true,
+                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = new Guid("a4aade28-ecdf-4caa-b21d-eea8c01b6598"),
+                            CategoryId = new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"),
+                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            DishDescription = "Cơm ngon",
+                            DishImageDefault = "",
+                            DishName = "Cơm trắng",
+                            IsDeleted = false,
+                            IsDraft = true,
+                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                        });
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.DishGeneralAggregator.DishIngredientGeneral", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("DishGeneralId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("IngredientGeneralId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DishGeneralId");
+
+                    b.HasIndex("IngredientGeneralId");
+
+                    b.ToTable("DishIngredientGenerals");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("9ccc8ec6-6b72-4467-aaeb-1e45dc0540b0"),
+                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            DishGeneralId = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c022"),
+                            IngredientGeneralId = new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a8"),
+                            IsDeleted = false,
+                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Quantity = 2m
+                        });
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.GroupChatAggregator.GroupChat", b =>
@@ -225,7 +602,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("RestaurantId");
 
-                    b.ToTable("GroupChats", (string)null);
+                    b.ToTable("GroupChats");
 
                     b.HasData(
                         new
@@ -276,7 +653,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("GroupMessages", (string)null);
+                    b.ToTable("GroupMessages");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.GroupChatAggregator.GroupUser", b =>
@@ -310,7 +687,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("GroupUsers", (string)null);
+                    b.ToTable("GroupUsers");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.IngredientAggregator.Ingredient", b =>
@@ -353,7 +730,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("RestaurantId");
 
-                    b.ToTable("Ingredients", (string)null);
+                    b.ToTable("Ingredients");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.IngredientAggregator.IngredientTransaction", b =>
@@ -398,7 +775,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("IngredientTransactions", (string)null);
+                    b.ToTable("IngredientTransactions");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.IngredientAggregator.IngredientType", b =>
@@ -448,7 +825,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("IngredientTypes", (string)null);
+                    b.ToTable("IngredientTypes");
 
                     b.HasData(
                         new
@@ -516,7 +893,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("IngredientUnitParentId");
 
-                    b.ToTable("IngredientUnit", (string)null);
+                    b.ToTable("IngredientUnit");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.IngredientGeneralAggregator.IngredientGeneral", b =>
@@ -558,7 +935,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("IngredientTypeId");
 
-                    b.ToTable("IngredientGenerals", (string)null);
+                    b.ToTable("IngredientGenerals");
 
                     b.HasData(
                         new
@@ -596,7 +973,7 @@ namespace FOV.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("FOV.Domain.Entities.NewProductRecommendAggregator.NewProductRecommend", b =>
+            modelBuilder.Entity("FOV.Domain.Entities.NewDishRecommendAggregator.NewDishRecommend", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -608,14 +985,14 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
+                    b.Property<Guid>("DishGeneralId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTimeOffset>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
-
-                    b.Property<Guid>("ProductGeneralId")
-                        .HasColumnType("uuid");
 
                     b.Property<Guid>("RestaurantId")
                         .HasColumnType("uuid");
@@ -625,14 +1002,14 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductGeneralId");
+                    b.HasIndex("DishGeneralId");
 
                     b.HasIndex("RestaurantId");
 
-                    b.ToTable("NewProductRecommends", (string)null);
+                    b.ToTable("NewDishRecommends");
                 });
 
-            modelBuilder.Entity("FOV.Domain.Entities.NewProductRecommendAggregator.NewProductRecommendLog", b =>
+            modelBuilder.Entity("FOV.Domain.Entities.NewDishRecommendAggregator.NewDishRecommendLog", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -656,6 +1033,9 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<byte>("LogType")
                         .HasColumnType("smallint");
 
+                    b.Property<Guid?>("NewDishRecommendId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("NewProductRecommendId")
                         .HasColumnType("uuid");
 
@@ -672,11 +1052,11 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NewProductRecommendId");
+                    b.HasIndex("NewDishRecommendId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("NewProductRecommendLogs", (string)null);
+                    b.ToTable("NewDishRecommendLogs");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.OrderAggregator.Order", b =>
@@ -716,7 +1096,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("TableId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.OrderAggregator.OrderDetail", b =>
@@ -763,7 +1143,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderDetails", (string)null);
+                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.OrderAggregator.Rating", b =>
@@ -809,7 +1189,7 @@ namespace FOV.Infrastructure.Migrations
                     b.HasIndex("OrderId")
                         .IsUnique();
 
-                    b.ToTable("Ratings", (string)null);
+                    b.ToTable("Ratings");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.PaymentAggregator.Payments", b =>
@@ -853,384 +1233,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("Payments", (string)null);
-                });
-
-            modelBuilder.Entity("FOV.Domain.Entities.ProductAggregator.Category", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("CategoryName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTimeOffset>("Created")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTimeOffset>("LastModified")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Categories", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c011"),
-                            CategoryName = "Khai Vị",
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            IsDeleted = false,
-                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
-                        },
-                        new
-                        {
-                            Id = new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"),
-                            CategoryName = "Món Chính",
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            IsDeleted = false,
-                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
-                        });
-                });
-
-            modelBuilder.Entity("FOV.Domain.Entities.ProductAggregator.Product", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("CategoryId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTimeOffset>("Created")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTimeOffset>("LastModified")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text");
-
-                    b.Property<decimal?>("Price")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("ProductDescription")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid?>("ProductGeneralId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("ProductName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<byte>("ProductType")
-                        .HasColumnType("smallint");
-
-                    b.Property<Guid>("RestaurantId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("ProductGeneralId");
-
-                    b.HasIndex("RestaurantId");
-
-                    b.ToTable("Products", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540c3"),
-                            CategoryId = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c011"),
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            IsDeleted = false,
-                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            Price = 0m,
-                            ProductDescription = "Description",
-                            ProductGeneralId = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c013"),
-                            ProductName = "7up",
-                            ProductType = (byte)0,
-                            RestaurantId = new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0")
-                        },
-                        new
-                        {
-                            Id = new Guid("e311d82d-452c-4603-a029-762a2a4e5e19"),
-                            CategoryId = new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"),
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            IsDeleted = false,
-                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            Price = 0m,
-                            ProductDescription = "Siêu rẻ",
-                            ProductGeneralId = new Guid("2b9941ee-2f72-4417-8a0a-2e14a6d00fbb"),
-                            ProductName = "Lẩu chay Thủ Đức",
-                            ProductType = (byte)0,
-                            RestaurantId = new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007")
-                        },
-                        new
-                        {
-                            Id = new Guid("9d40c875-bd7f-403a-9734-c7b5dbba5e78"),
-                            CategoryId = new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"),
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            IsDeleted = false,
-                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            Price = 0m,
-                            ProductDescription = "Description",
-                            ProductGeneralId = new Guid("a4aade28-ecdf-4caa-b21d-eea8c01b6598"),
-                            ProductName = "Cơm Không",
-                            ProductType = (byte)0,
-                            RestaurantId = new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007")
-                        });
-                });
-
-            modelBuilder.Entity("FOV.Domain.Entities.ProductAggregator.ProductImage", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTimeOffset>("Created")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsMain")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTimeOffset>("LastModified")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductImages", (string)null);
-                });
-
-            modelBuilder.Entity("FOV.Domain.Entities.ProductAggregator.ProductIngredient", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTimeOffset>("Created")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("IngredientId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTimeOffset>("LastModified")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uuid");
-
-                    b.Property<decimal>("Quantity")
-                        .HasColumnType("numeric");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IngredientId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductIngredients", (string)null);
-                });
-
-            modelBuilder.Entity("FOV.Domain.Entities.ProductGeneralAggregator.ProductGeneral", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("CategoryId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTimeOffset>("Created")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("IsDraft")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTimeOffset>("LastModified")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ProductDescription")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ProductImageDefault")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ProductName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("ProductGenerals", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c012"),
-                            CategoryId = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c011"),
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            IsDeleted = false,
-                            IsDraft = true,
-                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ProductDescription = "Coca-Cola ngon ",
-                            ProductImageDefault = "",
-                            ProductName = "Coca-Cola"
-                        },
-                        new
-                        {
-                            Id = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c013"),
-                            CategoryId = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c011"),
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            IsDeleted = false,
-                            IsDraft = true,
-                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ProductDescription = "7up ngon ",
-                            ProductImageDefault = "",
-                            ProductName = "7up"
-                        },
-                        new
-                        {
-                            Id = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c022"),
-                            CategoryId = new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"),
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            IsDeleted = false,
-                            IsDraft = true,
-                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ProductDescription = " Caprese Salad ngon ",
-                            ProductImageDefault = "",
-                            ProductName = " Caprese Salad"
-                        },
-                        new
-                        {
-                            Id = new Guid("2b9941ee-2f72-4417-8a0a-2e14a6d00fbb"),
-                            CategoryId = new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"),
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            IsDeleted = false,
-                            IsDraft = true,
-                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ProductDescription = "Lẩu chay ngon",
-                            ProductImageDefault = "",
-                            ProductName = "Vegan Hotpot"
-                        },
-                        new
-                        {
-                            Id = new Guid("a4aade28-ecdf-4caa-b21d-eea8c01b6598"),
-                            CategoryId = new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"),
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            IsDeleted = false,
-                            IsDraft = true,
-                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ProductDescription = "Cơm ngon",
-                            ProductImageDefault = "",
-                            ProductName = "Cơm trắng"
-                        });
-                });
-
-            modelBuilder.Entity("FOV.Domain.Entities.ProductGeneralAggregator.ProductIngredientGeneral", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTimeOffset>("Created")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("IngredientGeneralId")
-                        .HasColumnType("uuid");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTimeOffset>("LastModified")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("ProductGeneralId")
-                        .HasColumnType("uuid");
-
-                    b.Property<decimal>("Quantity")
-                        .HasColumnType("numeric");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IngredientGeneralId");
-
-                    b.HasIndex("ProductGeneralId");
-
-                    b.ToTable("ProductIngredientGenerals", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("9ccc8ec6-6b72-4467-aaeb-1e45dc0540b0"),
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            IngredientGeneralId = new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a8"),
-                            IsDeleted = false,
-                            LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ProductGeneralId = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c022"),
-                            Quantity = 2m
-                        });
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.RestaurantAggregator.Restaurant", b =>
@@ -1275,7 +1278,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Restaurants", (string)null);
+                    b.ToTable("Restaurants");
 
                     b.HasData(
                         new
@@ -1336,7 +1339,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Shifts", (string)null);
+                    b.ToTable("Shifts");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.TableAggregator.Table", b =>
@@ -1379,7 +1382,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("RestaurantId");
 
-                    b.ToTable("Tables", (string)null);
+                    b.ToTable("Tables");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.UserAggregator.Customer", b =>
@@ -1416,7 +1419,7 @@ namespace FOV.Infrastructure.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Customers", (string)null);
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.UserAggregator.Employee", b =>
@@ -1464,7 +1467,7 @@ namespace FOV.Infrastructure.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Employees", (string)null);
+                    b.ToTable("Employees");
 
                     b.HasData(
                         new
@@ -1473,7 +1476,7 @@ namespace FOV.Infrastructure.Migrations
                             Created = new DateTimeOffset(new DateTime(2022, 1, 15, 10, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "admin",
                             EmployeeCode = "EMP001",
-                            HireDate = new DateTime(2024, 9, 24, 7, 39, 35, 560, DateTimeKind.Utc).AddTicks(4881),
+                            HireDate = new DateTime(2024, 9, 28, 6, 20, 58, 20, DateTimeKind.Utc).AddTicks(8462),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(2022, 1, 15, 10, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             LastModifiedBy = "admin",
@@ -1487,7 +1490,7 @@ namespace FOV.Infrastructure.Migrations
                             Created = new DateTimeOffset(new DateTime(2022, 5, 10, 9, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "manager",
                             EmployeeCode = "EMP002",
-                            HireDate = new DateTime(2024, 9, 24, 7, 39, 35, 560, DateTimeKind.Utc).AddTicks(5146),
+                            HireDate = new DateTime(2024, 9, 28, 6, 20, 58, 20, DateTimeKind.Utc).AddTicks(8675),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(2022, 5, 10, 9, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             LastModifiedBy = "manager",
@@ -1501,7 +1504,7 @@ namespace FOV.Infrastructure.Migrations
                             Created = new DateTimeOffset(new DateTime(2023, 3, 20, 14, 15, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "admin",
                             EmployeeCode = "EMP003",
-                            HireDate = new DateTime(2024, 9, 24, 7, 39, 35, 560, DateTimeKind.Utc).AddTicks(5158),
+                            HireDate = new DateTime(2024, 9, 28, 6, 20, 58, 20, DateTimeKind.Utc).AddTicks(8689),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(2023, 3, 20, 14, 15, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             LastModifiedBy = "admin",
@@ -1620,7 +1623,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("WaiterSalary", (string)null);
+                    b.ToTable("WaiterSalary");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.WaiterScheduleAggregator.WaiterSchedule", b =>
@@ -1661,7 +1664,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("WaiterSchedules", (string)null);
+                    b.ToTable("WaiterSchedules");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -1830,23 +1833,104 @@ namespace FOV.Infrastructure.Migrations
                     b.Navigation("Restaurant");
                 });
 
-            modelBuilder.Entity("FOV.Domain.Entities.ComboAggregator.ProductCombo", b =>
+            modelBuilder.Entity("FOV.Domain.Entities.ComboAggregator.DishCombo", b =>
                 {
                     b.HasOne("FOV.Domain.Entities.ComboAggregator.Combo", "Combo")
-                        .WithMany("ProductCombos")
+                        .WithMany("DishCombos")
                         .HasForeignKey("ComboId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FOV.Domain.Entities.ProductAggregator.Product", "Product")
-                        .WithMany("ProductCombos")
-                        .HasForeignKey("ProductId")
+                    b.HasOne("FOV.Domain.Entities.DishAggregator.Dish", "Dish")
+                        .WithMany("DishCombos")
+                        .HasForeignKey("DishId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Combo");
 
-                    b.Navigation("Product");
+                    b.Navigation("Dish");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.DishAggregator.Dish", b =>
+                {
+                    b.HasOne("FOV.Domain.Entities.DishAggregator.Category", "Category")
+                        .WithMany("Dishes")
+                        .HasForeignKey("CategoryId");
+
+                    b.HasOne("FOV.Domain.Entities.DishGeneralAggregator.DishGeneral", "DishGeneral")
+                        .WithMany("Dishes")
+                        .HasForeignKey("DishGeneralId");
+
+                    b.HasOne("FOV.Domain.Entities.RestaurantAggregator.Restaurant", "Restaurant")
+                        .WithMany("Dishes")
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("DishGeneral");
+
+                    b.Navigation("Restaurant");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.DishAggregator.DishImage", b =>
+                {
+                    b.HasOne("FOV.Domain.Entities.DishAggregator.Dish", "Dish")
+                        .WithMany("DishImages")
+                        .HasForeignKey("DishId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Dish");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.DishAggregator.DishIngredient", b =>
+                {
+                    b.HasOne("FOV.Domain.Entities.DishAggregator.Dish", "Dish")
+                        .WithMany()
+                        .HasForeignKey("DishId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FOV.Domain.Entities.IngredientAggregator.Ingredient", "Ingredient")
+                        .WithMany()
+                        .HasForeignKey("IngredientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Dish");
+
+                    b.Navigation("Ingredient");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.DishGeneralAggregator.DishGeneral", b =>
+                {
+                    b.HasOne("FOV.Domain.Entities.DishAggregator.Category", "Category")
+                        .WithMany("DishGenerals")
+                        .HasForeignKey("CategoryId");
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.DishGeneralAggregator.DishIngredientGeneral", b =>
+                {
+                    b.HasOne("FOV.Domain.Entities.DishGeneralAggregator.DishGeneral", "DishGeneral")
+                        .WithMany("Ingredients")
+                        .HasForeignKey("DishGeneralId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FOV.Domain.Entities.IngredientGeneralAggregator.IngredientGeneral", "IngredientGeneral")
+                        .WithMany("DishIngredientGenerals")
+                        .HasForeignKey("IngredientGeneralId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DishGeneral");
+
+                    b.Navigation("IngredientGeneral");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.GroupChatAggregator.GroupChat", b =>
@@ -1956,40 +2040,38 @@ namespace FOV.Infrastructure.Migrations
                     b.Navigation("IngredientType");
                 });
 
-            modelBuilder.Entity("FOV.Domain.Entities.NewProductRecommendAggregator.NewProductRecommend", b =>
+            modelBuilder.Entity("FOV.Domain.Entities.NewDishRecommendAggregator.NewDishRecommend", b =>
                 {
-                    b.HasOne("FOV.Domain.Entities.ProductGeneralAggregator.ProductGeneral", "ProductGeneral")
+                    b.HasOne("FOV.Domain.Entities.DishGeneralAggregator.DishGeneral", "DishGeneral")
                         .WithMany()
-                        .HasForeignKey("ProductGeneralId")
+                        .HasForeignKey("DishGeneralId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FOV.Domain.Entities.RestaurantAggregator.Restaurant", "Restaurant")
-                        .WithMany("NewProductRecommends")
+                        .WithMany("NewDishRecommends")
                         .HasForeignKey("RestaurantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ProductGeneral");
+                    b.Navigation("DishGeneral");
 
                     b.Navigation("Restaurant");
                 });
 
-            modelBuilder.Entity("FOV.Domain.Entities.NewProductRecommendAggregator.NewProductRecommendLog", b =>
+            modelBuilder.Entity("FOV.Domain.Entities.NewDishRecommendAggregator.NewDishRecommendLog", b =>
                 {
-                    b.HasOne("FOV.Domain.Entities.NewProductRecommendAggregator.NewProductRecommend", "NewProductRecommend")
+                    b.HasOne("FOV.Domain.Entities.NewDishRecommendAggregator.NewDishRecommend", "NewDishRecommend")
                         .WithMany("Log")
-                        .HasForeignKey("NewProductRecommendId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("NewDishRecommendId");
 
                     b.HasOne("FOV.Domain.Entities.UserAggregator.User", "User")
-                        .WithMany("NewProductRecommendLogs")
+                        .WithMany("NewDishRecommendLogs")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("NewProductRecommend");
+                    b.Navigation("NewDishRecommend");
 
                     b.Navigation("User");
                 });
@@ -2015,15 +2097,15 @@ namespace FOV.Infrastructure.Migrations
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderId");
 
-                    b.HasOne("FOV.Domain.Entities.ProductAggregator.Product", "Product")
+                    b.HasOne("FOV.Domain.Entities.DishAggregator.Dish", "Dish")
                         .WithMany("OrderDetails")
                         .HasForeignKey("ProductId");
 
                     b.Navigation("Combo");
 
-                    b.Navigation("Order");
+                    b.Navigation("Dish");
 
-                    b.Navigation("Product");
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.OrderAggregator.Rating", b =>
@@ -2046,87 +2128,6 @@ namespace FOV.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Order");
-                });
-
-            modelBuilder.Entity("FOV.Domain.Entities.ProductAggregator.Product", b =>
-                {
-                    b.HasOne("FOV.Domain.Entities.ProductAggregator.Category", "Category")
-                        .WithMany("Products")
-                        .HasForeignKey("CategoryId");
-
-                    b.HasOne("FOV.Domain.Entities.ProductGeneralAggregator.ProductGeneral", "ProductGeneral")
-                        .WithMany("Products")
-                        .HasForeignKey("ProductGeneralId");
-
-                    b.HasOne("FOV.Domain.Entities.RestaurantAggregator.Restaurant", "Restaurant")
-                        .WithMany("Products")
-                        .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-
-                    b.Navigation("ProductGeneral");
-
-                    b.Navigation("Restaurant");
-                });
-
-            modelBuilder.Entity("FOV.Domain.Entities.ProductAggregator.ProductImage", b =>
-                {
-                    b.HasOne("FOV.Domain.Entities.ProductAggregator.Product", "Product")
-                        .WithMany("ProductImages")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("FOV.Domain.Entities.ProductAggregator.ProductIngredient", b =>
-                {
-                    b.HasOne("FOV.Domain.Entities.IngredientAggregator.Ingredient", "Ingredient")
-                        .WithMany()
-                        .HasForeignKey("IngredientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FOV.Domain.Entities.ProductAggregator.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Ingredient");
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("FOV.Domain.Entities.ProductGeneralAggregator.ProductGeneral", b =>
-                {
-                    b.HasOne("FOV.Domain.Entities.ProductAggregator.Category", "Category")
-                        .WithMany("ProductGenerals")
-                        .HasForeignKey("CategoryId");
-
-                    b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("FOV.Domain.Entities.ProductGeneralAggregator.ProductIngredientGeneral", b =>
-                {
-                    b.HasOne("FOV.Domain.Entities.IngredientGeneralAggregator.IngredientGeneral", "IngredientGeneral")
-                        .WithMany("ProductIngredientGenerals")
-                        .HasForeignKey("IngredientGeneralId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FOV.Domain.Entities.ProductGeneralAggregator.ProductGeneral", "ProductGeneral")
-                        .WithMany("Ingredients")
-                        .HasForeignKey("ProductGeneralId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("IngredientGeneral");
-
-                    b.Navigation("ProductGeneral");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.TableAggregator.Table", b =>
@@ -2255,9 +2256,32 @@ namespace FOV.Infrastructure.Migrations
 
             modelBuilder.Entity("FOV.Domain.Entities.ComboAggregator.Combo", b =>
                 {
-                    b.Navigation("OrderDetails");
+                    b.Navigation("DishCombos");
 
-                    b.Navigation("ProductCombos");
+                    b.Navigation("OrderDetails");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.DishAggregator.Category", b =>
+                {
+                    b.Navigation("DishGenerals");
+
+                    b.Navigation("Dishes");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.DishAggregator.Dish", b =>
+                {
+                    b.Navigation("DishCombos");
+
+                    b.Navigation("DishImages");
+
+                    b.Navigation("OrderDetails");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.DishGeneralAggregator.DishGeneral", b =>
+                {
+                    b.Navigation("Dishes");
+
+                    b.Navigation("Ingredients");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.GroupChatAggregator.GroupChat", b =>
@@ -2288,10 +2312,10 @@ namespace FOV.Infrastructure.Migrations
 
             modelBuilder.Entity("FOV.Domain.Entities.IngredientGeneralAggregator.IngredientGeneral", b =>
                 {
-                    b.Navigation("ProductIngredientGenerals");
+                    b.Navigation("DishIngredientGenerals");
                 });
 
-            modelBuilder.Entity("FOV.Domain.Entities.NewProductRecommendAggregator.NewProductRecommend", b =>
+            modelBuilder.Entity("FOV.Domain.Entities.NewDishRecommendAggregator.NewDishRecommend", b =>
                 {
                     b.Navigation("Log");
                 });
@@ -2307,32 +2331,11 @@ namespace FOV.Infrastructure.Migrations
                     b.Navigation("Rating");
                 });
 
-            modelBuilder.Entity("FOV.Domain.Entities.ProductAggregator.Category", b =>
-                {
-                    b.Navigation("ProductGenerals");
-
-                    b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("FOV.Domain.Entities.ProductAggregator.Product", b =>
-                {
-                    b.Navigation("OrderDetails");
-
-                    b.Navigation("ProductCombos");
-
-                    b.Navigation("ProductImages");
-                });
-
-            modelBuilder.Entity("FOV.Domain.Entities.ProductGeneralAggregator.ProductGeneral", b =>
-                {
-                    b.Navigation("Ingredients");
-
-                    b.Navigation("Products");
-                });
-
             modelBuilder.Entity("FOV.Domain.Entities.RestaurantAggregator.Restaurant", b =>
                 {
                     b.Navigation("Combos");
+
+                    b.Navigation("Dishes");
 
                     b.Navigation("Employees");
 
@@ -2340,9 +2343,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.Navigation("Ingredients");
 
-                    b.Navigation("NewProductRecommends");
-
-                    b.Navigation("Products");
+                    b.Navigation("NewDishRecommends");
 
                     b.Navigation("Tables");
                 });
@@ -2376,7 +2377,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.Navigation("GroupUsers");
 
-                    b.Navigation("NewProductRecommendLogs");
+                    b.Navigation("NewDishRecommendLogs");
 
                     b.Navigation("WaiterSalaries");
 

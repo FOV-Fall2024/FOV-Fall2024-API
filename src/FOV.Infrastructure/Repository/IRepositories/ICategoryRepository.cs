@@ -1,4 +1,4 @@
-﻿using FOV.Domain.Entities.ProductAggregator;
+﻿using FOV.Domain.Entities.DishAggregator;
 
 namespace FOV.Infrastructure.Repository.IRepositories;
 public interface ICategoryRepository : IGenericRepository<Category>

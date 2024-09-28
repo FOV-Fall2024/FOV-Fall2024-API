@@ -29,10 +29,9 @@
     <Folder Include="Features\GroupMessages\Queries\" />
     <Folder Include="Features\Ingredients\Queries\GetIngredientDetail\" />
     <Folder Include="Features\IngredientUnits\Commands\Remove\" />
-    <Folder Include="Features\NewRecommendProductLog\Commands\" />
-    <Folder Include="Features\NewRecommendProductLog\Queries\" />
-    <Folder Include="Features\NewRecommendProducts\Queries\GetAll\" />
-    <Folder Include="Features\NewRecommendProducts\Queries\GetDetail\" />
+    <Folder Include="Features\NewRecommendDishLog\Commands\" />
+    <Folder Include="Features\NewRecommendDishLog\Queries\" />
+    <Folder Include="Features\NewRecommendDishes\Queries\GetDetail\" />
   </ItemGroup>
 
 </Project>

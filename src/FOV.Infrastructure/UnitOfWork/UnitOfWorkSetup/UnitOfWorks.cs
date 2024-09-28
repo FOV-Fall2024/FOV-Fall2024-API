@@ -11,16 +11,16 @@ public class UnitOfWorks : IUnitOfWorks
     private readonly IIngredientGeneralRepository _ingredientGeneralRepository;
     private readonly ITableRepository _tableRepository;
     private readonly IRestaurantRepository _restaurantRepository;
-    private readonly IProductGeneralRepository _productGeneralRepository;
-    private readonly IProductIngredientGeneralRepository _productIngredientGeneralRepository;
+    private readonly IDishGeneralRepository _productGeneralRepository;
+    private readonly IDishIngredientGeneralRepository _productIngredientGeneralRepository;
     private readonly ICategoryRepository _categoryRepository;
-    private readonly IProductRepository _productRepository;
+    private readonly IDishRepository _productRepository;
     private readonly IIngredientRepository _ingredientRepository;
-    private readonly IProductIngredientRepository _productIngredientRepository;
+    private readonly IDishIngredientRepository _productIngredientRepository;
     private readonly ICustomerRepository _customerRepository;
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IIngrdientTransactionRepository _ingrdientTransactionRepository;
-    private readonly IProductComboRepository _productComboRepository;
+    private readonly IDishComboRepository _productComboRepository;
     private readonly IComboRepository _comboRepository;
     private readonly IOrderRepository _orderRepository;
     private readonly IOrderDetailRepository _orderDetailRepository;
@@ -29,18 +29,18 @@ public class UnitOfWorks : IUnitOfWorks
     private readonly IGroupUserRepository _groupUserRepository;
     private readonly IGroupMessageRepository _groupMessageRepository;
     private readonly IGroupChatRepository _groupChatRepository;
-    private readonly IProductImageRepository _productImageRepository;
+    private readonly IDishImageRepository _productImageRepository;
     private readonly IRatingRepository _ratingRepository;
     private readonly IPaymentRepository _paymentRepository;
     private readonly IAttendanceRepository _attendanceRepository;
     private readonly IIngredientUnitRepository _ingredientUnitRepository;
-    private readonly INewProductRecommendLogRepository _newProductRecommendLogRepository;
-    private readonly INewProductRecommendRepository _newProductRecommendRepository;
+    private readonly INewDishRecommendLogRepository _newProductRecommendLogRepository;
+    private readonly INewDishRecommendRepository _newProductRecommendRepository;
 
-    public UnitOfWorks(FOVContext context, IIngredientTypeRepository ingredientTypeRepository, IIngredientGeneralRepository ingredientGeneralRepository, IProductGeneralRepository productGeneralRepository, IProductIngredientGeneralRepository productIngredientGeneralRepository, ITableRepository tableRepository, IRestaurantRepository restaurantRepository, ICategoryRepository categoryRepository, IProductRepository productRepository, IIngredientRepository ingredientRepository, IProductIngredientRepository productIngredientRepository, ICustomerRepository customerRepository, IEmployeeRepository employeeRepository, IIngrdientTransactionRepository ingrdientTransactionRepository, IProductComboRepository productComboRepository, IComboRepository comboRepository, IOrderRepository orderRepository, IOrderDetailRepository orderDetailRepository, IShiftRepository shiftRepository, IWaiterScheduleRepository waiterScheduleRepository,
+    public UnitOfWorks(FOVContext context, IIngredientTypeRepository ingredientTypeRepository, IIngredientGeneralRepository ingredientGeneralRepository, IDishGeneralRepository productGeneralRepository, IDishIngredientGeneralRepository productIngredientGeneralRepository, ITableRepository tableRepository, IRestaurantRepository restaurantRepository, ICategoryRepository categoryRepository, IDishRepository productRepository, IIngredientRepository ingredientRepository, IDishIngredientRepository productIngredientRepository, ICustomerRepository customerRepository, IEmployeeRepository employeeRepository, IIngrdientTransactionRepository ingrdientTransactionRepository, IDishComboRepository productComboRepository, IComboRepository comboRepository, IOrderRepository orderRepository, IOrderDetailRepository orderDetailRepository, IShiftRepository shiftRepository, IWaiterScheduleRepository waiterScheduleRepository,
         IGroupChatRepository groupChatRepository, IGroupMessageRepository groupMessageRepository, IGroupUserRepository groupUserRepository,
-        IProductImageRepository productImageRepository,
-        IRatingRepository ratingRepository, IPaymentRepository paymentRepository, IAttendanceRepository attendanceRepository, IIngredientUnitRepository ingredientUnitRepository, INewProductRecommendRepository newProductRecommendRepository, INewProductRecommendLogRepository newProductRecommendLogRepository)
+        IDishImageRepository productImageRepository,
+        IRatingRepository ratingRepository, IPaymentRepository paymentRepository, IAttendanceRepository attendanceRepository, IIngredientUnitRepository ingredientUnitRepository, INewDishRecommendRepository newProductRecommendRepository, INewDishRecommendLogRepository newProductRecommendLogRepository)
     {
         _context = context;
         _ingredientTypeRepository = ingredientTypeRepository;
@@ -79,17 +79,17 @@ public class UnitOfWorks : IUnitOfWorks
     public ITableRepository TableRepository => _tableRepository;
     public IRestaurantRepository RestaurantRepository => _restaurantRepository;
 
-    public IProductGeneralRepository ProductGeneralRepository => _productGeneralRepository;
+    public IDishGeneralRepository DishGeneralRepository => _productGeneralRepository;
 
-    public IProductIngredientGeneralRepository ProductIngredientGeneralRepository => _productIngredientGeneralRepository;
+    public IDishIngredientGeneralRepository DishIngredientGeneralRepository => _productIngredientGeneralRepository;
 
     public ICategoryRepository CategoryRepository => _categoryRepository;
 
-    public IProductRepository ProductRepository => _productRepository;
+    public IDishRepository DishRepository => _productRepository;
 
     public IIngredientRepository IngredientRepository => _ingredientRepository;
 
-    public IProductIngredientRepository ProductIngredientRepository => _productIngredientRepository;
+    public IDishIngredientRepository DishIngredientRepository => _productIngredientRepository;
 
     public IEmployeeRepository EmployeeRepository => _employeeRepository;
 
@@ -97,7 +97,7 @@ public class UnitOfWorks : IUnitOfWorks
 
     public IIngrdientTransactionRepository IngredientTransactionRepository => _ingrdientTransactionRepository;
 
-    public IProductComboRepository ProductComboRepository => _productComboRepository;
+    public IDishComboRepository DishComboRepository => _productComboRepository;
 
     public IComboRepository ComboRepository => _comboRepository;
 
@@ -113,7 +113,7 @@ public class UnitOfWorks : IUnitOfWorks
 
     public IGroupUserRepository GroupUserRepository => _groupUserRepository;
 
-    public IProductImageRepository ProductImageRepository => _productImageRepository;
+    public IDishImageRepository DishImageRepository => _productImageRepository;
 
     public IPaymentRepository PaymentRepository => _paymentRepository;
 
@@ -121,9 +121,9 @@ public class UnitOfWorks : IUnitOfWorks
 
     public IIngredientUnitRepository IngredientUnitRepository => _ingredientUnitRepository;
 
-    public INewProductRecommendLogRepository NewProductRecommendLogRepository => _newProductRecommendLogRepository;
+    public INewDishRecommendLogRepository NewDishRecommendLogRepository => _newProductRecommendLogRepository;
 
-    public INewProductRecommendRepository NewProductRecommendRepository => _newProductRecommendRepository;
+    public INewDishRecommendRepository NewDishRecommendRepository => _newProductRecommendRepository;
 
     public async Task<int> SaveChangeAsync()
     {
