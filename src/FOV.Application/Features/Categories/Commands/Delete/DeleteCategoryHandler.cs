@@ -1,5 +1,5 @@
 ﻿using FluentResults;
-using FOV.Domain.Entities.ProductAggregator;
+using FOV.Domain.Entities.DishAggregator;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 

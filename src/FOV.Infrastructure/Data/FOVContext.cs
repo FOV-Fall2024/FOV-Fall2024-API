@@ -1,15 +1,14 @@
 ﻿using System.Reflection;
-using System.Reflection.Emit;
 using FOV.Domain.Entities.AttendanceAggregator;
 using FOV.Domain.Entities.ComboAggregator;
+using FOV.Domain.Entities.DishAggregator;
+using FOV.Domain.Entities.DishGeneralAggregator;
 using FOV.Domain.Entities.GroupChatAggregator;
 using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Domain.Entities.IngredientGeneralAggregator;
-using FOV.Domain.Entities.NewProductRecommendAggregator;
+using FOV.Domain.Entities.NewDishRecommendAggregator;
 using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.PaymentAggregator;
-using FOV.Domain.Entities.ProductAggregator;
-using FOV.Domain.Entities.ProductGeneralAggregator;
 using FOV.Domain.Entities.RestaurantAggregator;
 using FOV.Domain.Entities.ShiftAggregator;
 using FOV.Domain.Entities.TableAggregator;
@@ -18,7 +17,6 @@ using FOV.Domain.Entities.WaiterScheduleAggregator;
 using FOV.Infrastructure.Data.Configurations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using static Elastic.Clients.Elasticsearch.JoinField;
 
 namespace FOV.Infrastructure.Data;
 
@@ -35,19 +33,19 @@ public class FOVContext : IdentityDbContext<User>, IApplicationDbContext
 
     public DbSet<IngredientGeneral> IngredientGenerals => Set<IngredientGeneral>();
 
-    public DbSet<ProductIngredientGeneral> ProductIngredientGenerals => Set<ProductIngredientGeneral>();
+    public DbSet<DishIngredientGeneral> DishIngredientGenerals => Set<DishIngredientGeneral>();
 
-    public DbSet<ProductGeneral> ProductGenerals => Set<ProductGeneral>();
+    public DbSet<DishGeneral> DishGenerals => Set<DishGeneral>();
 
     public DbSet<Category> Categories => Set<Category>();
 
-    public DbSet<ProductIngredient> ProductIngredients => Set<ProductIngredient>();
+    public DbSet<DishIngredient> DishIngredients => Set<DishIngredient>();
 
-    public DbSet<Product> Products => Set<Product>();
+    public DbSet<Dish> Dishes => Set<Dish>();
     public DbSet<Attendance> Attendances => Set<Attendance>();
     public DbSet<Order> Orders => Set<Order>();
     public DbSet<OrderDetail> OrderDetails => Set<OrderDetail>();
-    public DbSet<ProductCombo> ProductCombos => Set<ProductCombo>();
+    public DbSet<DishCombo> ProductCombos => Set<DishCombo>();
     public DbSet<Table> Tables => Set<Table>();
 
     public DbSet<Customer> Customers => Set<Customer>();
@@ -68,13 +66,14 @@ public class FOVContext : IdentityDbContext<User>, IApplicationDbContext
 
     public DbSet<Restaurant> Restaurants => Set<Restaurant>();
 
-    public DbSet<ProductImage> ProductImages => Set<ProductImage>();
+    public DbSet<DishImage> DishImages => Set<DishImage>();
     public DbSet<Payments> Payments => Set<Payments>();
     public DbSet<Rating> Ratings => Set<Rating>();
 
-    public DbSet<NewProductRecommend> NewProductRecommends => Set<NewProductRecommend>();
+    public DbSet<NewDishRecommend> NewDishRecommends => Set<NewDishRecommend>();
 
-    public DbSet<NewProductRecommendLog> NewProductRecommendLogs => Set<NewProductRecommendLog>();
+    public DbSet<NewDishRecommendLog> NewDishRecommendLogs => Set<NewDishRecommendLog>();
+
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

@@ -1,9 +1,9 @@
 ﻿using FOV.Domain.Common;
 using FOV.Domain.Entities.ComboAggregator;
+using FOV.Domain.Entities.DishAggregator;
 using FOV.Domain.Entities.GroupChatAggregator;
 using FOV.Domain.Entities.IngredientAggregator;
-using FOV.Domain.Entities.NewProductRecommendAggregator;
-using FOV.Domain.Entities.ProductAggregator;
+using FOV.Domain.Entities.NewDishRecommendAggregator;
 using FOV.Domain.Entities.TableAggregator;
 using FOV.Domain.Entities.TableAggregator.Enums;
 using FOV.Domain.Entities.UserAggregator;
@@ -24,11 +24,11 @@ public class Restaurant : BaseAuditableEntity, IsSoftDeleted
     public virtual ICollection<Employee> Employees { get; set; } = [];
     public virtual ICollection<Ingredient> Ingredients { get; set; } = [];
 
-    public virtual ICollection<Product> Products { get; set; } = [];
+    public virtual ICollection<Dish> Dishes { get; set; } = [];
     public virtual ICollection<Table> Tables { get; set; } = [];
     public virtual ICollection<Combo> Combos { get; set; } = [];
 
-    public virtual ICollection<NewProductRecommend> NewProductRecommends { get; set; } = [];
+    public virtual ICollection<NewDishRecommend> NewDishRecommends { get; set; } = [];
 
     public virtual ICollection<GroupChat> GroupChats { get; set; } = [];
     public bool IsDeleted { get; set; }

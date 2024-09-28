@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using FOV.Domain.Common;
 using FOV.Domain.Entities.ComboAggregator;
+using FOV.Domain.Entities.DishAggregator;
 using FOV.Domain.Entities.OrderAggregator.Enums;
-using FOV.Domain.Entities.ProductAggregator;
 
 namespace FOV.Domain.Entities.OrderAggregator;
 public class OrderDetail : BaseAuditableEntity
@@ -18,7 +18,7 @@ public class OrderDetail : BaseAuditableEntity
     public int Quantity { get; set; }
     public decimal Price { get; set; }
     public Combo? Combo { get; set; }
-    public Product? Product { get; set; }
+    public Dish? Dish { get; set; }
     public Order? Order { get; set; }
     public OrderDetail()
     {

@@ -1,7 +1,7 @@
 ﻿using FOV.Domain.Common;
+using FOV.Domain.Entities.DishGeneralAggregator;
 using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Domain.Entities.IngredientGeneralAggregator.Enums;
-using FOV.Domain.Entities.ProductGeneralAggregator;
 
 namespace FOV.Domain.Entities.IngredientGeneralAggregator;
 
@@ -15,7 +15,7 @@ public class IngredientGeneral : BaseAuditableEntity, IsSoftDeleted
 
     public IngredientMeasure IngredientMeasure { get; set; }
 
-    public virtual ICollection<ProductIngredientGeneral>? ProductIngredientGenerals { get; set; }
+    public virtual ICollection<DishIngredientGeneral>? DishIngredientGenerals { get; set; }
 
     public IngredientGeneral()
     {

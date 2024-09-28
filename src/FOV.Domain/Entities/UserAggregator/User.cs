@@ -1,6 +1,6 @@
 ﻿using FOV.Domain.Entities.AttendanceAggregator;
 using FOV.Domain.Entities.GroupChatAggregator;
-using FOV.Domain.Entities.NewProductRecommendAggregator;
+using FOV.Domain.Entities.NewDishRecommendAggregator;
 using FOV.Domain.Entities.WaiterSalaryAggregator;
 using FOV.Domain.Entities.WaiterScheduleAggregator;
 using Microsoft.AspNetCore.Identity;
@@ -41,5 +41,5 @@ public class User : IdentityUser
     public ICollection<WaiterSchedule> WaiterSchedules { get; set; } = [];
     public virtual ICollection<GroupMessage> GroupMessages { get; set; } = [];
 
-    public virtual ICollection<NewProductRecommendLog> NewProductRecommendLogs { get; set; } = [];
+    public virtual ICollection<NewDishRecommendLog> NewDishRecommendLogs { get; set; } = [];
 }

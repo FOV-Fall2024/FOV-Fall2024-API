@@ -1,6 +1,6 @@
 ﻿using FOV.Application.Common.Behaviours.Claim;
 using FOV.Domain.Entities.ComboAggregator;
-using FOV.Domain.Entities.ProductAggregator;
+using FOV.Domain.Entities.DishAggregator;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
@@ -20,7 +20,7 @@ public class CreateComboHandler(IUnitOfWorks unitOfWorks, IClaimService claimSer
         decimal totalPrice = 0;
         foreach (var item in request.ProductInCombos)
         {
-            Product product = await _unitOfWorks.ProductRepository.FirstOrDefaultAsync(x => x.RestaurantId == restaurantId && x.Id == item) ?? throw new Exception();
+            Dish product = await _unitOfWorks.ProductRepository.FirstOrDefaultAsync(x => x.RestaurantId == restaurantId && x.Id == item) ?? throw new Exception();
             totalPrice += (decimal)product.Price;
             await _unitOfWorks.ProductComboRepository.AddAsync(new(item, combo.Id));
         }

@@ -1,5 +1,4 @@
-﻿using Azure;
-using FOV.Application.Common.Exceptions;
+﻿using FOV.Application.Common.Exceptions;
 using FOV.Application.Features.Authorize.Commands.CreateEmployee;
 using FOV.Application.Features.Users.Commands.Active;
 using FOV.Application.Features.Users.Commands.Inactive;
@@ -7,7 +6,6 @@ using FOV.Application.Features.Users.Queries.GetAllEmployee;
 using FOV.Application.Features.Users.Queries.GetAllUser;
 using FOV.Presentation.Infrastructure.Core;
 using MediatR;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using StackExchange.Redis;
 

@@ -6,17 +6,17 @@ namespace FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 public interface IUnitOfWorks
 {
 
-    public IProductImageRepository ProductImageRepository { get; }
+    public IDishImageRepository DishImageRepository { get; }
     public IIngredientTypeRepository IngredientTypeRepository { get; }
 
     public IIngredientGeneralRepository IngredientGeneralRepository { get; }
     public ITableRepository TableRepository { get; }
     public IRestaurantRepository RestaurantRepository { get; }
-    public IProductGeneralRepository ProductGeneralRepository { get; }
-    public IProductIngredientGeneralRepository ProductIngredientGeneralRepository { get; }
+    public IDishGeneralRepository DishGeneralRepository { get; }
+    public IDishIngredientGeneralRepository DishIngredientGeneralRepository { get; }
 
-    public IProductIngredientRepository ProductIngredientRepository { get; }
-    public IProductRepository ProductRepository { get; }
+    public IDishIngredientRepository DishIngredientRepository { get; }
+    public IDishRepository DishRepository { get; }
 
     public IEmployeeRepository EmployeeRepository { get; }
 
@@ -31,7 +31,7 @@ public interface IUnitOfWorks
 
     public IIngrdientTransactionRepository IngredientTransactionRepository { get; }
 
-    public IProductComboRepository ProductComboRepository { get; }
+    public IDishComboRepository DishComboRepository { get; }
 
     public IGroupChatRepository GroupChatRepository { get; }
 
@@ -46,9 +46,9 @@ public interface IUnitOfWorks
     public IIngredientUnitRepository IngredientUnitRepository { get; }
 
 
-    public INewProductRecommendLogRepository NewProductRecommendLogRepository { get; }
+    public INewDishRecommendLogRepository NewDishRecommendLogRepository { get; }
 
-    public INewProductRecommendRepository NewProductRecommendRepository { get; }
+    public INewDishRecommendRepository NewDishRecommendRepository { get; }
 
     public Task<int> SaveChangeAsync();
 }

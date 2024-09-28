@@ -18,11 +18,11 @@
 		<Folder Include="Entities\OrderAggregator\ValueObjects\" />
 		<Folder Include="Entities\OrderAggregator\ValueObjects\" />
 		<Folder Include="Entities\OrderAggregator\Primitives\" />
-		<Folder Include="Entities\ProductAggregator\ValueObjects\" />
-		<Folder Include="Entities\ProductAggregator\Primitives\" />
-		<Folder Include="Entities\ProductGeneralAggregator\Enums\" />
-		<Folder Include="Entities\ProductGeneralAggregator\ValueObjet\" />
-		<Folder Include="Entities\ProductGeneralAggregator\Primitives\" />
+		<Folder Include="Entities\DishAggregator\ValueObjects\" />
+		<Folder Include="Entities\DishAggregator\Primitives\" />
+		<Folder Include="Entities\DishGeneralAggregator\Enums\" />
+		<Folder Include="Entities\DishGeneralAggregator\ValueObjet\" />
+		<Folder Include="Entities\DishGeneralAggregator\Primitives\" />
 		<Folder Include="Entities\RestaurantAggregator\Enums\" />
 		<Folder Include="Entities\RestaurantAggregator\ValueObject\" />
 		<Folder Include="Entities\RestaurantAggregator\Primitives\" />
