@@ -20,9 +20,9 @@ public class CreateComboHandler(IUnitOfWorks unitOfWorks, IClaimService claimSer
         decimal totalPrice = 0;
         foreach (var item in request.ProductInCombos)
         {
-            Dish product = await _unitOfWorks.ProductRepository.FirstOrDefaultAsync(x => x.RestaurantId == restaurantId && x.Id == item) ?? throw new Exception();
+            Dish product = await _unitOfWorks.DishRepository.FirstOrDefaultAsync(x => x.RestaurantId == restaurantId && x.Id == item) ?? throw new Exception();
             totalPrice += (decimal)product.Price;
-            await _unitOfWorks.ProductComboRepository.AddAsync(new(item, combo.Id));
+            await _unitOfWorks.DishComboRepository.AddAsync(new(item, combo.Id));
         }
 
         combo.PercentReduce = totalPrice;

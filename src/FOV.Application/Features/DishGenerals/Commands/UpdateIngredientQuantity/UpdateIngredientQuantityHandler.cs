@@ -22,10 +22,10 @@ internal class UpdateIngredientQuantityHandler(IUnitOfWorks unitOfWorks) : IRequ
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     public async Task<Result> Handle(UpdateIngredientQuantityCommand request, CancellationToken cancellationToken)
     {
-        DishIngredientGeneral general = await _unitOfWorks.ProductIngredientGeneralRepository.FirstOrDefaultAsync(x => x.IngredientGeneralId == request.IngredientId && x.DishGeneralId == request.ProductId) ?? throw new Exception();
+        DishIngredientGeneral general = await _unitOfWorks.DishIngredientGeneralRepository.FirstOrDefaultAsync(x => x.IngredientGeneralId == request.IngredientId && x.DishGeneralId == request.ProductId) ?? throw new Exception();
 
         general.Update(request.ProductId, request.IngredientId, request.Quantity);
-        _unitOfWorks.ProductIngredientGeneralRepository.Update(general);
+        _unitOfWorks.DishIngredientGeneralRepository.Update(general);
         await _unitOfWorks.SaveChangeAsync();
         return Result.Ok();
 

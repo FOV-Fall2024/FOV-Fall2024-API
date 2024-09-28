@@ -10,9 +10,9 @@ internal class ActiveProductHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     public async Task<Result> Handle(ActiveProductCommand request, CancellationToken cancellationToken)
     {
-        Dish product = await _unitOfWorks.ProductRepository.GetByIdAsync(request.Id) ?? throw new Exception();
+        Dish product = await _unitOfWorks.DishRepository.GetByIdAsync(request.Id) ?? throw new Exception();
         product.UpdateState(false);
-        _unitOfWorks.ProductRepository.Update(product);
+        _unitOfWorks.DishRepository.Update(product);
         await _unitOfWorks.SaveChangeAsync();
         return Result.Ok();
 

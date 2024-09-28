@@ -34,15 +34,15 @@ public class NewRequestHandler(IUnitOfWorks unitOfWorks, IClaimService claimServ
     {
         //? Create New Product
         DishGeneral productGeneral = new(request.ProductName, request.ProductDescription, request.CategoryId, request.ProductImage, true);
-        await _unitOfWorks.ProductGeneralRepository.AddAsync(productGeneral);
+        await _unitOfWorks.DishGeneralRepository.AddAsync(productGeneral);
 
         await AddIngredient(request.Ingredients, productGeneral.Id);
 
         NewDishRecommend newRecommend = new(_claimService.RestaurantId, productGeneral.Id, NewProductRecommendStatus.Pending);
-        await _unitOfWorks.NewProductRecommendRepository.AddAsync(newRecommend);
+        await _unitOfWorks.NewDishRecommendRepository.AddAsync(newRecommend);
 
         NewDishRecommendLog recommendLog = new(request.Note, newRecommend.Id, LogType.Request, _claimService.UserId);
-        await _unitOfWorks.NewProductRecommendLogRepository.AddAsync(recommendLog);
+        await _unitOfWorks.NewDishRecommendLogRepository.AddAsync(recommendLog);
 
         await _unitOfWorks.SaveChangeAsync();
         return newRecommend.Id;
@@ -55,7 +55,7 @@ public class NewRequestHandler(IUnitOfWorks unitOfWorks, IClaimService claimServ
             .Select(command => new DishIngredientGeneral(productId, command.IngredientId, command.Quantity))
             .ToList();
 
-        await _unitOfWorks.ProductIngredientGeneralRepository.AddRangeAsync(productIngredientGenerals);
+        await _unitOfWorks.DishIngredientGeneralRepository.AddRangeAsync(productIngredientGenerals);
     }
 
 

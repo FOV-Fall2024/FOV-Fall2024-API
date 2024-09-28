@@ -18,12 +18,12 @@ internal class AdjustRequestHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     public async Task<Result> Handle(AdjustRequestCommand request, CancellationToken cancellationToken)
     {
-        NewDishRecommend? newProductRecommend = await _unitOfWorks.NewProductRecommendRepository.GetByIdAsync(request.RecommendProductId);
+        NewDishRecommend? newProductRecommend = await _unitOfWorks.NewDishRecommendRepository.GetByIdAsync(request.RecommendProductId);
 
-        DishGeneral? productGeneral = await _unitOfWorks.ProductGeneralRepository.GetByIdAsync(newProductRecommend.DishGeneralId);
+        DishGeneral? productGeneral = await _unitOfWorks.DishGeneralRepository.GetByIdAsync(newProductRecommend.DishGeneralId);
 
         productGeneral.Update(request.Name, request.Description, request.Image);
-        _unitOfWorks.ProductGeneralRepository.Update(productGeneral);
+        _unitOfWorks.DishGeneralRepository.Update(productGeneral);
         await _unitOfWorks.SaveChangeAsync();
         return Result.Ok();
     }

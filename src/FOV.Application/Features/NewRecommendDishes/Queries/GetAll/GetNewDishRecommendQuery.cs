@@ -19,8 +19,8 @@ public sealed class GetNewDishRecommendQuery(IUnitOfWorks unitOfWorks, IClaimSer
     {
         List<NewDishRecommend> response = new List<NewDishRecommend>();
 
-        if (_claimService.UserRole == Role.Administrator) response = await _unitOfWorks.NewProductRecommendRepository.GetAllAsync(x => x.DishGeneral);
-        if (_claimService.UserRole == Role.Manager) response = await _unitOfWorks.NewProductRecommendRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId, x => x.DishGeneral);
+        if (_claimService.UserRole == Role.Administrator) response = await _unitOfWorks.NewDishRecommendRepository.GetAllAsync(x => x.DishGeneral);
+        if (_claimService.UserRole == Role.Manager) response = await _unitOfWorks.NewDishRecommendRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId, x => x.DishGeneral);
         var result = response.Select(x => new GetNewProductRecommendResponse(x.Id, x.DishGeneral.DishName, x.Status.ToString()));
 
         var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);

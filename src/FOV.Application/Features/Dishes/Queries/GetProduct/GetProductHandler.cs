@@ -10,7 +10,7 @@ internal class GetProductHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<Get
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     public async Task<List<GetProductResponse>> Handle(GetProductCommand request, CancellationToken cancellationToken)
     {
-        var products = await _unitOfWorks.ProductRepository.GetAllAsync();
+        var products = await _unitOfWorks.DishRepository.GetAllAsync();
         var filteredProducts = products.Where(x =>
         (string.IsNullOrEmpty(request.ProductName) || x.DishName.Contains(request.ProductName, StringComparison.OrdinalIgnoreCase)) &&
          (string.IsNullOrEmpty(request.ProductDescription) || x.DishDescription.Contains(request.ProductDescription, StringComparison.OrdinalIgnoreCase)) &&

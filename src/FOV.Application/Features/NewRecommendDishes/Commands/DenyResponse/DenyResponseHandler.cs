@@ -19,12 +19,12 @@ internal class DenyResponseHandler(IUnitOfWorks unitOfWorks, IClaimService claim
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     public async Task<Result> Handle(DenyResponseCommand request, CancellationToken cancellationToken)
     {
-        NewDishRecommend productRecommend = await _unitOfWorks.NewProductRecommendRepository.GetByIdAsync(request.NewProductRecommendId) ?? throw new Exception();
+        NewDishRecommend productRecommend = await _unitOfWorks.NewDishRecommendRepository.GetByIdAsync(request.NewProductRecommendId) ?? throw new Exception();
         productRecommend.UpdateState(NewProductRecommendStatus.Denied);
 
         NewDishRecommendLog recommendLog = new(request.Note, productRecommend.Id, LogType.Response, _claimService.UserId);
-        await _unitOfWorks.NewProductRecommendLogRepository.AddAsync(recommendLog);
-        _unitOfWorks.NewProductRecommendRepository.Update(productRecommend);
+        await _unitOfWorks.NewDishRecommendLogRepository.AddAsync(recommendLog);
+        _unitOfWorks.NewDishRecommendRepository.Update(productRecommend);
 
         await _unitOfWorks.SaveChangeAsync();
         return Result.Ok();

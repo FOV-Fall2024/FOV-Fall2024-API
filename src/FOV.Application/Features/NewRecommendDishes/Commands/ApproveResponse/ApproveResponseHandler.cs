@@ -21,15 +21,15 @@ public class ApproveResponseHandler(IUnitOfWorks unitOfWorks, IClaimService clai
 
     public async Task<Result> Handle(ApproveResponseCommand request, CancellationToken cancellationToken)
     {
-        NewDishRecommend productRecommend = await _unitOfWorks.NewProductRecommendRepository.GetByIdAsync(request.NewProductRecommendId) ?? throw new Exception();
+        NewDishRecommend productRecommend = await _unitOfWorks.NewDishRecommendRepository.GetByIdAsync(request.NewProductRecommendId) ?? throw new Exception();
         productRecommend.UpdateState(NewProductRecommendStatus.Approved);
 
         NewDishRecommendLog recommendLog = new(request.Note, productRecommend.Id, LogType.Response, _claimService.UserId);
-        await _unitOfWorks.NewProductRecommendLogRepository.AddAsync(recommendLog);
-        _unitOfWorks.NewProductRecommendRepository.Update(productRecommend);
-        DishGeneral productGeneral = await _unitOfWorks.ProductGeneralRepository.GetByIdAsync(productRecommend.DishGeneralId) ?? throw new Exception();
+        await _unitOfWorks.NewDishRecommendLogRepository.AddAsync(recommendLog);
+        _unitOfWorks.NewDishRecommendRepository.Update(productRecommend);
+        DishGeneral productGeneral = await _unitOfWorks.DishGeneralRepository.GetByIdAsync(productRecommend.DishGeneralId) ?? throw new Exception();
         productGeneral.SetDraftState(false);
-        _unitOfWorks.ProductGeneralRepository.Update(productGeneral);
+        _unitOfWorks.DishGeneralRepository.Update(productGeneral);
 
         await _unitOfWorks.SaveChangeAsync();
         return Result.Ok();

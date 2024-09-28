@@ -22,13 +22,13 @@ internal class UpdateRequestHandler(IUnitOfWorks unitOfWorks, IClaimService clai
     private readonly IClaimService _claimService = claimService;
     public async Task<Result> Handle(UpdateRequestCommand request, CancellationToken cancellationToken)
     {
-        NewDishRecommend productRecommend = await _unitOfWorks.NewProductRecommendRepository.GetByIdAsync(request.NewRecommendProductId) ?? throw new Exception();
+        NewDishRecommend productRecommend = await _unitOfWorks.NewDishRecommendRepository.GetByIdAsync(request.NewRecommendProductId) ?? throw new Exception();
         productRecommend.UpdateState(NewProductRecommendStatus.Pending);
 
         NewDishRecommendLog recommendLog = new(request.Note, productRecommend.Id, LogType.Request, _claimService.UserId);
-        await _unitOfWorks.NewProductRecommendLogRepository.AddAsync(recommendLog);
+        await _unitOfWorks.NewDishRecommendLogRepository.AddAsync(recommendLog);
 
-        DishGeneral productGeneral = await _unitOfWorks.ProductGeneralRepository.GetByIdAsync(productRecommend.DishGeneralId) ?? throw new Exception();
+        DishGeneral productGeneral = await _unitOfWorks.DishGeneralRepository.GetByIdAsync(productRecommend.DishGeneralId) ?? throw new Exception();
         productGeneral.Update(request.Name, request.Description, request.Image, request.CategoryId);
         await _unitOfWorks.SaveChangeAsync();
         return Result.Ok();

@@ -28,7 +28,7 @@ public sealed class ProductValidator : AbstractValidator<Guid>
 
     private async Task<bool> CheckDuplicateProductId(Guid productId, CancellationToken cancellationToken)
     {
-        Dish? product = await _unitOfWorks.ProductRepository.FirstOrDefaultAsync(x => x.RestaurantId == _claimService.RestaurantId && x.DishGeneralId == productId);
+        Dish? product = await _unitOfWorks.DishRepository.FirstOrDefaultAsync(x => x.RestaurantId == _claimService.RestaurantId && x.DishGeneralId == productId);
         return product == null;
     }
 }

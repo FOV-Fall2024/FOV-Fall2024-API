@@ -19,10 +19,10 @@ internal class AddProductHandler(IUnitOfWorks unitOfWorks, IClaimService claimSe
     private readonly IClaimService _claimService = claimService;
     public async Task<Result> Handle(AddProductCommand request, CancellationToken cancellationToken)
     {
-        DishGeneral productGeneral = await _unitOfWorks.ProductGeneralRepository.GetByIdAsync(request.ProductId) ?? throw new Exception();
+        DishGeneral productGeneral = await _unitOfWorks.DishGeneralRepository.GetByIdAsync(request.ProductId) ?? throw new Exception();
         Dish product = new(productGeneral.DishName, _claimService.RestaurantId, productGeneral.CategoryId
             , productGeneral.Id);
-        await _unitOfWorks.ProductRepository.AddAsync(product);
+        await _unitOfWorks.DishRepository.AddAsync(product);
         await AddIngredient(request.ProductId);
         await _unitOfWorks.SaveChangeAsync();
         return Result.Ok();

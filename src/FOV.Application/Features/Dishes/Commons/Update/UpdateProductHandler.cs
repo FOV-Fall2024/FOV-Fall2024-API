@@ -16,7 +16,7 @@ internal class UpdateProductHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<
 
     public async Task<Result> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
-        Dish product = await _unitOfWorks.ProductRepository.GetByIdAsync(request.ProductId) ?? throw new Exception();
+        Dish product = await _unitOfWorks.DishRepository.GetByIdAsync(request.ProductId) ?? throw new Exception();
         product.Update(request.ProductName, request.ProductDescription);
         await _unitOfWorks.SaveChangeAsync();
         return Result.Ok();

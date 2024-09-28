@@ -26,7 +26,7 @@ public class CreateDishGeneralHandler(IUnitOfWorks unitOfWorks) : IRequestHandle
 
 
         DishGeneral productGeneral = new(request.ProductName, request.Description, request.CategoryId, request.ImageDefault, false);
-        await _unitOfWorks.ProductGeneralRepository.AddAsync(productGeneral);
+        await _unitOfWorks.DishGeneralRepository.AddAsync(productGeneral);
 
         await AddIngredient(request.Ingredients, productGeneral.Id);
         await _unitOfWorks.SaveChangeAsync();
@@ -39,6 +39,6 @@ public class CreateDishGeneralHandler(IUnitOfWorks unitOfWorks) : IRequestHandle
             .Select(command => new DishIngredientGeneral(productId, command.Ingredient, command.Quantity))
             .ToList();
 
-        await _unitOfWorks.ProductIngredientGeneralRepository.AddRangeAsync(productIngredientGenerals);
+        await _unitOfWorks.DishIngredientGeneralRepository.AddRangeAsync(productIngredientGenerals);
     }
 }

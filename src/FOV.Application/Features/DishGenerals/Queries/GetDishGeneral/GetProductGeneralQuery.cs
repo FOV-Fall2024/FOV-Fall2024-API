@@ -21,7 +21,7 @@ namespace FOV.Application.Features.DishGenerals.Queries.GetProductGeneral
         public async Task<PagedResult<GetProductGeneralResponse>> Handle(GetProductGeneralCommand request, CancellationToken cancellationToken)
         {
             // Fetch all products from the repository
-            var allProducts = await _unitOfWorks.ProductGeneralRepository.GetAllAsync();
+            var allProducts = await _unitOfWorks.DishGeneralRepository.GetAllAsync();
 
             // Filter products based on the request parameters
             var filteredProducts = allProducts.AsQueryable().CustomFilterV1(new DishGeneral

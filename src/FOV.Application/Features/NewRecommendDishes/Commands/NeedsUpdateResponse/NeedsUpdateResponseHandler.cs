@@ -21,12 +21,12 @@ internal class NeedsUpdateResponseHandler(IUnitOfWorks unitOfWorks, IClaimServic
     private readonly IClaimService _claimService = claimService;
     public async Task<Result> Handle(NeedsUpdateResponseCommand request, CancellationToken cancellationToken)
     {
-        NewDishRecommend productRecommend = await _unitOfWorks.NewProductRecommendRepository.GetByIdAsync(request.NewRecommendProductId) ?? throw new Exception();
+        NewDishRecommend productRecommend = await _unitOfWorks.NewDishRecommendRepository.GetByIdAsync(request.NewRecommendProductId) ?? throw new Exception();
         productRecommend.UpdateState(NewProductRecommendStatus.NeedsUpdate);
 
         NewDishRecommendLog recommendLog = new(request.Note, productRecommend.Id, LogType.Response, _claimService.UserId);
-        await _unitOfWorks.NewProductRecommendLogRepository.AddAsync(recommendLog);
-        _unitOfWorks.NewProductRecommendRepository.Update(productRecommend);
+        await _unitOfWorks.NewDishRecommendLogRepository.AddAsync(recommendLog);
+        _unitOfWorks.NewDishRecommendRepository.Update(productRecommend);
 
         await _unitOfWorks.SaveChangeAsync();
         return Result.Ok();
