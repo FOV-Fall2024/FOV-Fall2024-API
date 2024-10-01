@@ -1,9 +1,12 @@
 ﻿using FOV.Application.Features.Ingredients.Commands.AddMultipleQuantity;
+using FOV.Application.Features.Ingredients.Commands.TakeImportFile;
 using FOV.Application.Features.Ingredients.Queries.GetIngredients;
 using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Presentation.Infrastructure.Core;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using OfficeOpenXml;
+using OfficeOpenXml.DataValidation;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace FOV.Presentation.Controllers.V1
@@ -71,5 +74,18 @@ namespace FOV.Presentation.Controllers.V1
             var result = await _mediator.Send(command);
             return Ok(new OK_Result<PagedResult<GetIngredientsResponse>>("Thành công", result));
         }
+
+        [HttpGet("import-file")]
+        public async Task<IActionResult> TakeImportFile()
+        {
+            var result = await _mediator.Send(new TakeImportFileCommand());
+            var stream = result.ExcelFile;
+            var excelName = result.ExcelName;
+
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+
+        }
+
+
     }
 }
