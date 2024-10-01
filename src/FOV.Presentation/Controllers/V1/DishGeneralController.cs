@@ -36,6 +36,11 @@ public class DishGeneralController : DefaultController
     public async Task<IActionResult> Add(CreateProductGeneralCommand command)
     {
         var response = await _sender.Send(command);
+        if (response == Guid.Empty)
+        {
+            return BadRequest("Failed to create product general.");
+        }
+
         return CreatedAtAction(nameof(Add), new { id = response }, new CREATED_Result("Tạo product general thành công"));
     }
 

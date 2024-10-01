@@ -121,7 +121,7 @@ namespace FOV.Infrastructure.Migrations
                             Id = new Guid("941bcca9-52a6-41f7-9403-06cc5fa703ea"),
                             ComboName = "Combo 1",
                             Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ExpiredDate = new DateTime(2024, 10, 28, 6, 20, 58, 15, DateTimeKind.Utc).AddTicks(5975),
+                            ExpiredDate = new DateTime(2024, 11, 1, 3, 1, 46, 323, DateTimeKind.Utc).AddTicks(428),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             PercentReduce = 10.0m,
@@ -135,7 +135,7 @@ namespace FOV.Infrastructure.Migrations
                             Id = new Guid("3907a193-c2ae-4f40-936b-9a2438595123"),
                             ComboName = "Combo 2",
                             Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ExpiredDate = new DateTime(2024, 11, 28, 6, 20, 58, 15, DateTimeKind.Utc).AddTicks(6030),
+                            ExpiredDate = new DateTime(2024, 12, 1, 3, 1, 46, 323, DateTimeKind.Utc).AddTicks(440),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             PercentReduce = 5.0m,
@@ -149,7 +149,7 @@ namespace FOV.Infrastructure.Migrations
                             Id = new Guid("921b269a-db6e-4a1d-b285-70df523e010e"),
                             ComboName = "Combo 3",
                             Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ExpiredDate = new DateTime(2024, 11, 28, 6, 20, 58, 15, DateTimeKind.Utc).AddTicks(6036),
+                            ExpiredDate = new DateTime(2024, 12, 1, 3, 1, 46, 323, DateTimeKind.Utc).AddTicks(443),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             PercentReduce = 5.0m,
@@ -1468,50 +1468,6 @@ namespace FOV.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Employees");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("be4e8a98-7c95-4ef1-a407-6b8093b0e13a"),
-                            Created = new DateTimeOffset(new DateTime(2022, 1, 15, 10, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            CreatedBy = "admin",
-                            EmployeeCode = "EMP001",
-                            HireDate = new DateTime(2024, 9, 28, 6, 20, 58, 20, DateTimeKind.Utc).AddTicks(8462),
-                            IsDeleted = false,
-                            LastModified = new DateTimeOffset(new DateTime(2022, 1, 15, 10, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            LastModifiedBy = "admin",
-                            RestaurantId = new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"),
-                            Status = (byte)1,
-                            UserId = "6fb87153-242c-4024-a3af-f787b3919760"
-                        },
-                        new
-                        {
-                            Id = new Guid("a07496ad-bda3-4ac5-9279-81cae66ba253"),
-                            Created = new DateTimeOffset(new DateTime(2022, 5, 10, 9, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            CreatedBy = "manager",
-                            EmployeeCode = "EMP002",
-                            HireDate = new DateTime(2024, 9, 28, 6, 20, 58, 20, DateTimeKind.Utc).AddTicks(8675),
-                            IsDeleted = false,
-                            LastModified = new DateTimeOffset(new DateTime(2022, 5, 10, 9, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            LastModifiedBy = "manager",
-                            RestaurantId = new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"),
-                            Status = (byte)1,
-                            UserId = "f5404c4e-88b5-428e-8b07-b44af0d35979"
-                        },
-                        new
-                        {
-                            Id = new Guid("ce84ef13-3ce9-40c3-a14c-4a93dce72eb9"),
-                            Created = new DateTimeOffset(new DateTime(2023, 3, 20, 14, 15, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            CreatedBy = "admin",
-                            EmployeeCode = "EMP003",
-                            HireDate = new DateTime(2024, 9, 28, 6, 20, 58, 20, DateTimeKind.Utc).AddTicks(8689),
-                            IsDeleted = false,
-                            LastModified = new DateTimeOffset(new DateTime(2023, 3, 20, 14, 15, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            LastModifiedBy = "admin",
-                            RestaurantId = new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"),
-                            Status = (byte)1,
-                            UserId = "5680415f-f3b6-4288-899f-c01a357f150f"
-                        });
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.UserAggregator.User", b =>
@@ -1889,7 +1845,7 @@ namespace FOV.Infrastructure.Migrations
             modelBuilder.Entity("FOV.Domain.Entities.DishAggregator.DishIngredient", b =>
                 {
                     b.HasOne("FOV.Domain.Entities.DishAggregator.Dish", "Dish")
-                        .WithMany()
+                        .WithMany("DishIngredients")
                         .HasForeignKey("DishId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -2273,6 +2229,8 @@ namespace FOV.Infrastructure.Migrations
                     b.Navigation("DishCombos");
 
                     b.Navigation("DishImages");
+
+                    b.Navigation("DishIngredients");
 
                     b.Navigation("OrderDetails");
                 });

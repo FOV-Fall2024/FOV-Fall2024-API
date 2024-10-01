@@ -6,16 +6,16 @@ using Microsoft.AspNetCore.Http;
 
 namespace FOV.Application.Features.DishGenerals.Commands.Create;
 
-public sealed record CreateProductGeneralCommand : IRequest<Guid>
-{
-    public required string ProductName { get; set; }
-    public required string Description { get; set; }
-    public required Guid CategoryId { get; set; }
-    public required List<AddIngredientCommand> Ingredients { get; set; }
-    public required string ImageDefault { get; set; }
-}
+public sealed record CreateProductGeneralCommand(string ProductName, string Description, Guid CategoryId, List<AddIngredientCommand> Ingredients, string ImageDefault) : IRequest<Guid>;
+//{
+//    public required string ProductName { get; set; }
+//    public required string Description { get; set; }
+//    public required Guid CategoryId { get; set; }
+//    public required List<AddIngredientCommand> Ingredients { get; set; } = new List<AddIngredientCommand>();
+//    public required string ImageDefault { get; set; }
+//}
 
-public sealed record AddIngredientCommand(Guid Ingredient, decimal Quantity);
+public sealed record AddIngredientCommand(Guid IngredientId, decimal Quantity);
 
 public class CreateDishGeneralHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<CreateProductGeneralCommand, Guid>
 {
@@ -36,7 +36,7 @@ public class CreateDishGeneralHandler(IUnitOfWorks unitOfWorks) : IRequestHandle
     private async ValueTask AddIngredient(List<AddIngredientCommand> commands, Guid productId)
     {
         var productIngredientGenerals = commands
-            .Select(command => new DishIngredientGeneral(productId, command.Ingredient, command.Quantity))
+            .Select(command => new DishIngredientGeneral(productId, command.IngredientId, command.Quantity))
             .ToList();
 
         await _unitOfWorks.DishIngredientGeneralRepository.AddRangeAsync(productIngredientGenerals);

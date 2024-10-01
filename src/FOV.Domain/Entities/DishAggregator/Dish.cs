@@ -17,6 +17,7 @@ public class Dish : BaseAuditableEntity, IsSoftDeleted
     public virtual ICollection<DishCombo> DishCombos { get; set; } = [];
     public ICollection<OrderDetail> OrderDetails { get; set; } = [];
     public virtual ICollection<DishImage> DishImages { get; set; } = [];
+    public virtual ICollection<DishIngredient> DishIngredients { get; set; } = [];
     public Category? Category { get; set; }
     public Guid? CategoryId { get; set; }
 

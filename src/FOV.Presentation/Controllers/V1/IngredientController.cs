@@ -1,4 +1,6 @@
-﻿using FOV.Application.Features.Ingredients.Commands.AddMultipleQuantity;
+﻿using FOV.Application.Common.Exceptions;
+using FOV.Application.Features.Ingredients.Commands.AddMultipleQuantity;
+using FOV.Application.Features.Ingredients.Commands.AddSingleQuantity;
 using FOV.Application.Features.Ingredients.Queries.GetIngredients;
 using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Presentation.Infrastructure.Core;
@@ -30,12 +32,20 @@ namespace FOV.Presentation.Controllers.V1
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AddMultiple(AddMultipleQuantityCommand command)
         {
-            var result = await _mediator.Send(command);
-            if (result.IsSuccess)
+            try
             {
-                return Ok(new OK_Result<string>("Thêm nguyên liệu thành công", result.Successes.First().Message));
+                List<Guid> transactionIds = await _mediator.Send(command);
+
+                return Ok(new OK_Result<List<Guid>>("Thêm nguyên liệu thành công", transactionIds));
             }
-            return BadRequest(result.Errors.Select(e => e.Message));
+            catch (AppException ex)
+            {
+                return BadRequest(new Error<FieldError>("Thêm nguyên liệu thất bại", ErrorStatusCodeConfig.BAD_REQUEST, ex.FieldErrors));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Error = "An unexpected error occurred: " + ex.Message });
+            }
         }
 
         /// <summary>
@@ -47,15 +57,23 @@ namespace FOV.Presentation.Controllers.V1
         [SwaggerOperation(Summary = "Add a single quantity of an ingredient.")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> AddSingle(AddMultipleQuantityCommand command)
+        public async Task<IActionResult> AddSingle(AddSingleQuantityCommand command)
         {
-            var result = await _mediator.Send(command);
-            if (result.IsSuccess)
+            try
             {
-                return Ok(new OK_Result<string>("Thêm nguyên liệu thành công", result.Successes.First().Message));
+                Guid ingredientId = await _mediator.Send(command);
+                return Ok(new OK_Result<Guid>("Thêm nguyên liệu thành công", ingredientId));
             }
-            return BadRequest(result.Errors.Select(e => e.Message));
+            catch (AppException ex)
+            {
+                return BadRequest(new Error<FieldError>("Thêm nguyên liệu thất bại", ErrorStatusCodeConfig.BAD_REQUEST, ex.FieldErrors));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Error = "An unexpected error occurred: " + ex.Message });
+            }
         }
+
 
         /// <summary>
         /// Retrieves a list of ingredients.

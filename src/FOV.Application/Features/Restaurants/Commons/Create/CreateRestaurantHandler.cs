@@ -138,19 +138,31 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
 
     private async Task AddDefaultIngredientUnit(Guid ingredientId, IngredientMeasure minMeasure)
     {
-        //Default IngredientUnit
         IngredientUnit ingredientUnit = new(MeasureTransfer.ToSmallUnit(minMeasure), ingredientId);
+
+        if (ingredientUnit.IngredientUnitParentId == Guid.Empty)
+        {
+            ingredientUnit.IngredientUnitParentId = null;
+        }
+
         await _unitOfWorks.IngredientUnitRepository.AddAsync(ingredientUnit);
+        await _unitOfWorks.SaveChangeAsync();
 
         if (minMeasure == IngredientMeasure.g || minMeasure == IngredientMeasure.ml)
         {
             IngredientUnit ingredientUnit2 = new(MeasureTransfer.ToLargeUnit(minMeasure), ingredientId, ingredientUnit.Id, 1000);
+
+            if (ingredientUnit2.IngredientUnitParentId == Guid.Empty)
+            {
+                ingredientUnit2.IngredientUnitParentId = null;
+            }
+
             await _unitOfWorks.IngredientUnitRepository.AddAsync(ingredientUnit2);
         }
 
         await _unitOfWorks.SaveChangeAsync();
-
     }
+
 
 }
 

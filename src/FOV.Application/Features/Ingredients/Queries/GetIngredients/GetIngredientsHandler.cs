@@ -6,7 +6,7 @@ namespace FOV.Application.Features.Ingredients.Queries.GetIngredients
 {
     public sealed record GetIngredientsCommand(string? IngredientName, PagingRequest? PagingRequest) : IRequest<PagedResult<GetIngredientsResponse>>;
 
-    public sealed record GetIngredientsResponse(Guid IngredientId, string IngredientName, decimal Amount);
+    public sealed record GetIngredientsResponse(Guid Id, Guid RestaurantId, string IngredientName, decimal Amount);
 
     public class GetIngredientsHandler : IRequestHandler<GetIngredientsCommand, PagedResult<GetIngredientsResponse>>
     {
@@ -30,8 +30,9 @@ namespace FOV.Application.Features.Ingredients.Queries.GetIngredients
             // Select and map to response DTO
             var mappedIngredients = filteredIngredients.Select(x => new GetIngredientsResponse(
                 x.Id,
+                x.RestaurantId ?? Guid.Empty,
                 x.IngredientName ?? string.Empty,
-                x.ExpriedQuantity)).ToList();
+                x.IngredientAmount)).ToList();
 
             // Get pagination and sorting values
             var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
