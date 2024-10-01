@@ -53,7 +53,7 @@ public class CreateTableHandler(IUnitOfWorks unitOfWorks, StorageHandler storage
         {
             throw new Exception("Nhà hàng không tồn tại");
         }
-        string restaurantCode = restaurant.RestataurantCode;
+        string restaurantCode = restaurant.RestaurantCode;
 
         string qRUrl = $"https://localhost:5001/api/v1/restaurant/{restaurantCode}/table/{TableCode}"; //Change Url Later
         string fileName = $"{restaurantCode}_{TableCode}.png";

@@ -32,7 +32,7 @@ namespace FOV.Application.Features.Ingredients.Queries.GetIngredients
                 x.Id,
                 x.RestaurantId ?? Guid.Empty,
                 x.IngredientName ?? string.Empty,
-                x.IngredientAmount)).ToList();
+                x.ExpiredQuantity)).ToList();
 
             // Get pagination and sorting values
             var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);

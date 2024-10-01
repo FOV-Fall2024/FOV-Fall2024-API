@@ -1,5 +1,4 @@
-﻿using System.Linq.Dynamic.Core;
-using FOV.Application.Features.IngredientUnits.Commands.CreateNewIngredientUnit;
+﻿using FOV.Application.Features.IngredientUnits.Commands.CreateNewIngredientUnit;
 using FOV.Application.Features.IngredientUnits.Commands.Update;
 using FOV.Application.Features.IngredientUnits.Queries.GetIngredientUnit;
 using FOV.Presentation.Infrastructure.Core;
@@ -44,7 +43,11 @@ public class IngredientUnitController : DefaultController
     public async Task<IActionResult> Add(CreateNewIngredientUnitCommand command)
     {
         var response = await _sender.Send(command);
-        return CreatedAtAction(nameof(Get), new { id = response }, new CREATED_Result("Tạo nguyên liệu thành công", response));
+
+        return CreatedAtAction(
+            nameof(Add),
+            new { message = "Tạo nguyên liệu thành công" }
+        );
     }
 
     /// <summary>

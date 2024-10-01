@@ -62,29 +62,13 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
 
         Restaurant restaurant = new(request.RestaurantName, request.Address, request.RestaurantPhone, await GeneratedCode());
         await _unitOfWorks.RestaurantRepository.AddAsync(restaurant);
-        await AddNewProdut(request.Products, restaurant.Id);
+        await AddNewProduct(request.Products, restaurant.Id);
         await _unitOfWorks.SaveChangeAsync();
 
         return restaurant.Id;
     }
 
-    //private async Task<string> GeneratedCode()
-    //{
-    //    Restaurant? restaurant = (await _unitOfWorks.RestaurantRepository
-    //        .GetAllAsync())
-    //        .OrderByDescending(r => r.Created)
-    //        .FirstOrDefault();
-
-    //    if (restaurant is null)
-    //    {
-    //        return "RE_001";
-    //    }
-    //    string currentIdentifier = restaurant.RestataurantCode; // Assuming restaurant has a property 'Identifier' like 'RE_001'
-    //    int currentNumber = int.Parse(currentIdentifier.Substring(3));
-    //    int newNumber = currentNumber + 1;
-    //    return $"RE_{newNumber:D3}";
-
-    //}
+  
     private async Task<string> GeneratedCode()
     {
         static string GenerateNewCode(int number)
@@ -99,13 +83,13 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
         {
             newCode = GenerateNewCode(codeNumber);
             codeNumber++;
-        } while (await _unitOfWorks.RestaurantRepository.AnyAsync(r => r.RestataurantCode == newCode));
+        } while (await _unitOfWorks.RestaurantRepository.AnyAsync(r => r.RestaurantCode == newCode));
 
         return newCode;
     }
 
 
-    private async Task AddNewProdut(ICollection<Guid> products, Guid restaurantId)
+    private async Task AddNewProduct(ICollection<Guid> products, Guid restaurantId)
     {
         foreach (var product in products)
         {
@@ -135,7 +119,7 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
 
 
     }
-
+        
     private async Task AddDefaultIngredientUnit(Guid ingredientId, IngredientMeasure minMeasure)
     {
         IngredientUnit ingredientUnit = new(MeasureTransfer.ToSmallUnit(minMeasure), ingredientId);

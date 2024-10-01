@@ -20,7 +20,7 @@ public class GetRestaurantQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetR
             RestaurantName = string.IsNullOrEmpty(request.RestaurantName) ? string.Empty : request.RestaurantName,
             Address = string.IsNullOrEmpty(request.Address) ? string.Empty : request.Address,
             RestaurantPhone = string.IsNullOrEmpty(request.RestaurantPhone) ? string.Empty : request.RestaurantPhone,
-            RestataurantCode = string.IsNullOrEmpty(request.RestaurantCode) ? string.Empty : request.RestaurantCode,
+            RestaurantCode = string.IsNullOrEmpty(request.RestaurantCode) ? string.Empty : request.RestaurantCode,
         };
         if (request.RestaurantStatus != null)
         {
@@ -34,7 +34,7 @@ public class GetRestaurantQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetR
             restaurant.RestaurantName ?? string.Empty,
             restaurant.Address ?? string.Empty,
             restaurant.RestaurantPhone ?? string.Empty,
-            restaurant.RestataurantCode ?? string.Empty,
+            restaurant.RestaurantCode ?? string.Empty,
             restaurant.Status,
             restaurant.Created
         )).ToList();

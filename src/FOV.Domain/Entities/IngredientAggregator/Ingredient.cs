@@ -10,7 +10,7 @@ public class Ingredient : BaseAuditableEntity
 
     public decimal IngredientAmount { get; set; }
 
-    public decimal ExpriedQuantity { get; set; }
+    public decimal ExpiredQuantity { get; set; }
 
     public IngredientType? IngredientType { get; set; }
 
@@ -40,9 +40,9 @@ public class Ingredient : BaseAuditableEntity
 
     public void UpdateExpriedQuantity(decimal quantity)
     {
-        ExpriedQuantity += quantity;
+        ExpiredQuantity += quantity;
         IngredientAmount -= quantity;
-        if (ExpriedQuantity < 0) ExpriedQuantity = 0;
+        if (ExpiredQuantity < 0) ExpiredQuantity = 0;
     }
 }
 

@@ -4,35 +4,24 @@ namespace FOV.Domain.Entities.IngredientAggregator;
 public class IngredientUnit : BaseAuditableEntity
 {
     public Guid IngredientId { get; set; }
-
     public Ingredient? Ingredient { get; set; }
-
     public string UnitName { get; set; } = string.Empty;
-
     public decimal ConversionFactor { get; set; }
-
-    public Guid? IngredientUnitParentId { get; set; } = Guid.Empty;
-
+    public Guid? IngredientUnitParentId { get; set; }
     public IngredientUnit? IngredientUnitParent { get; set; }
+    public virtual ICollection<IngredientUnit> ChildUnits { get; set; } = new List<IngredientUnit>();
 
-    public virtual ICollection<IngredientUnit> ChildUnits { get; set; } = [];
+    public IngredientUnit() { }
 
-    public IngredientUnit()
-    {
-
-    }
-
-    // Default Unit 
+    // Default Unit
     public IngredientUnit(string measure, Guid ingredientId)
     {
         UnitName = measure;
         ConversionFactor = 1;
         IngredientId = ingredientId;
-
     }
 
     // Child Unit
-
     public IngredientUnit(string measure, Guid ingredientId, Guid ingredientUnitParentId, decimal conversionFactor)
     {
         UnitName = measure;

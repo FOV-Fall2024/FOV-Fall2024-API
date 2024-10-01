@@ -8,7 +8,7 @@ namespace FOV.Application.Features.IngredientUnits.Commands.Update;
 
 public sealed record UpdateIngredientUnitCommand(string UnitName, decimal ConversionFactor) : IRequest<Result>
 {
-    [JsonInclude]
+    [JsonIgnore]
     public Guid IngredientUnitId { get; set; }
 }
 
