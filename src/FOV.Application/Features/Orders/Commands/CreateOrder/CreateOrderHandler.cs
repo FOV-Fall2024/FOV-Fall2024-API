@@ -21,7 +21,7 @@ public record OrderDetailDto(Guid? ComboId, Guid? ProductId, int Quantity, decim
 public record CreateOrderWithTableIdCommand(
     OrderType OrderType,
     DateTime OrderTime,
-    decimal TotalPrice,
+    //decimal TotalPrice,
     List<OrderDetailDto> OrderDetails
 ) : IRequest<Guid>
 {
@@ -60,16 +60,19 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             throw new Exception("Failed to acquire lock for the table. Try again later.");
         }
 
-        var orders = await _unitOfWorks.OrderRepository.GetAllAsync();
-        var tableOrders = orders.Where(o => o.TableId == request.TableId).ToList();
+        var tableOrders = (await _unitOfWorks.OrderRepository.GetAllAsync())
+            .Where(o => o.TableId == request.TableId && o.OrderStatus != OrderStatus.Finish)
+            .ToList();
 
-        if (tableOrders.Any(o => o.OrderStatus != OrderStatus.Finish))
+        if (tableOrders.Any())
         {
             await lockService.ReleaseLockAsync();
             throw new Exception("Cannot place an order at this time. There is an active order at this table.");
         }
 
-        var order = new Domain.Entities.OrderAggregator.Order(request.OrderType, request.OrderTime, request.TotalPrice)
+        decimal totalPrice = 0;
+
+        var order = new Domain.Entities.OrderAggregator.Order(request.OrderType, request.OrderTime, 0)
         {
             TableId = request.TableId,
             OrderStatus = request.OrderStatus,
@@ -80,7 +83,6 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
         {
             if (detail.ComboId.HasValue)
             {
-                // Process Combo
                 var combo = await _unitOfWorks.ComboRepository.GetByIdAsync(detail.ComboId.Value);
                 if (combo == null)
                 {
@@ -88,27 +90,35 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
                     throw new Exception($"Combo with ID {detail.ComboId.Value} not found.");
                 }
 
+                var comboOrderDetail = new OrderDetail(combo.Id, null, null, detail.Quantity, detail.Price)
+                {
+                    Status = OrderDetailsStatus.Prepare
+                };
+                order.OrderDetails.Add(comboOrderDetail);
+
+                totalPrice += detail.Price * detail.Quantity;
+
                 foreach (var dishCombo in combo.DishCombos)
                 {
-                    await ProcessDish(dishCombo.DishId, detail.Quantity, detail.Price, lockService, order);
+                    await ProcessDish(dishCombo.DishId, detail.Quantity, lockService, order);
                 }
             }
             else if (detail.ProductId.HasValue)
             {
-                // Process Dish
-                await ProcessDish(detail.ProductId.Value, detail.Quantity, detail.Price, lockService, order);
+                await ProcessDish(detail.ProductId.Value, detail.Quantity, lockService, order);
+                totalPrice += detail.Price * detail.Quantity;
             }
         }
 
+        order.TotalPrice = totalPrice;
+
         await _unitOfWorks.OrderRepository.AddAsync(order);
         await _unitOfWorks.SaveChangeAsync();
-
         await lockService.ReleaseLockAsync();
 
         return order.Id;
     }
-
-    private async Task ProcessDish(Guid productId, int quantity, decimal price, LockingHandler lockService, Domain.Entities.OrderAggregator.Order order)
+    private async Task ProcessDish(Guid productId, int quantity, LockingHandler lockService, Domain.Entities.OrderAggregator.Order order)
     {
         var dish = await _unitOfWorks.DishRepository.GetByIdAsync(productId);
         if (dish == null)
@@ -148,7 +158,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             await _database.LockReleaseAsync(ingredientLockKey, order.TableId.ToString());
         }
 
-        var orderDetail = new OrderDetail(null, productId, null, quantity, price)
+        var orderDetail = new OrderDetail(null, productId, null, quantity, dish.Price ?? 0)
         {
             Status = OrderDetailsStatus.Prepare
         };

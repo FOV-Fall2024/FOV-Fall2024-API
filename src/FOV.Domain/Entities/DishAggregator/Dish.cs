@@ -36,9 +36,10 @@ public class Dish : BaseAuditableEntity, IsSoftDeleted
 
     }
 
-    public Dish(string name, Guid restaurantId, Guid? categoryId, Guid dishGeneralId)
+    public Dish(string name, decimal Price, Guid restaurantId, Guid? categoryId, Guid dishGeneralId)
     {
         DishName = name;
+        Price = Price;
         CategoryId = categoryId;
         RestaurantId = restaurantId;
         DishGeneralId = dishGeneralId;
