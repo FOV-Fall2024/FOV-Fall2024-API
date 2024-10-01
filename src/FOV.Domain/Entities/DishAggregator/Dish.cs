@@ -21,7 +21,7 @@ public class Dish : BaseAuditableEntity, IsSoftDeleted
     public Category? Category { get; set; }
     public Guid? CategoryId { get; set; }
 
-    public decimal? Price { get; set; } = 0;
+    public decimal? Price { get; set; }
     public Restaurant? Restaurant { get; set; }
 
     public Guid RestaurantId { get; set; }

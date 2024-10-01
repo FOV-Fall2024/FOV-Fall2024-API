@@ -13,7 +13,7 @@ using StackExchange.Redis;
 
 namespace FOV.Application.Features.Orders.Commands.CreateOrder;
 
-public record OrderDetailDto(Guid ComboId, Guid ProductId, int Quantity, decimal Price)
+public record OrderDetailDto(Guid? ComboId, Guid? ProductId, int Quantity, decimal Price)
 {
     [JsonIgnore]
     public OrderDetailsStatus Status = OrderDetailsStatus.Prepare;
@@ -78,56 +78,26 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
 
         foreach (var detail in request.OrderDetails)
         {
-            var dish = await _unitOfWorks.DishRepository.GetByIdAsync(detail.ProductId);
-            if (dish == null)
+            if (detail.ComboId.HasValue)
             {
-                await lockService.ReleaseLockAsync();
-                throw new Exception($"Dish with ID {detail.ProductId} not found.");
+                // Process Combo
+                var combo = await _unitOfWorks.ComboRepository.GetByIdAsync(detail.ComboId.Value);
+                if (combo == null)
+                {
+                    await lockService.ReleaseLockAsync();
+                    throw new Exception($"Combo with ID {detail.ComboId.Value} not found.");
+                }
+
+                foreach (var dishCombo in combo.DishCombos)
+                {
+                    await ProcessDish(dishCombo.DishId, detail.Quantity, detail.Price, lockService, order);
+                }
             }
-
-            foreach (var dishIngredient in dish.DishIngredients)
+            else if (detail.ProductId.HasValue)
             {
-                string ingredientLockKey = $"lock:ingredient:{dishIngredient.IngredientId}";
-
-                if (!await _database.LockTakeAsync(ingredientLockKey, request.TableId.ToString(), TimeSpan.FromSeconds(10)))
-                {
-                    await lockService.ReleaseLockAsync();
-                    throw new Exception($"Failed to acquire lock for ingredient ID: {dishIngredient.IngredientId}");
-                }
-
-                var ingredient = await _unitOfWorks.IngredientRepository.GetByIdAsync(dishIngredient.IngredientId);
-                if (ingredient == null)
-                {
-                    await lockService.ReleaseLockAsync();
-                    throw new Exception($"Ingredient with ID {dishIngredient.IngredientId} not found.");
-                }
-
-                var requiredAmount = dishIngredient.Quantity * detail.Quantity;
-
-                if (ingredient.IngredientAmount < requiredAmount)
-                {
-                    await lockService.ReleaseLockAsync();
-                    throw new Exception($"Insufficient stock for ingredient {ingredient.IngredientName}. Required: {requiredAmount}, Available: {ingredient.IngredientAmount}");
-                }
-
-                ingredient.IngredientAmount -= requiredAmount;
-
-                _unitOfWorks.IngredientRepository.Update(ingredient);
-
-                await _database.LockReleaseAsync(ingredientLockKey, request.TableId.ToString());
+                // Process Dish
+                await ProcessDish(detail.ProductId.Value, detail.Quantity, detail.Price, lockService, order);
             }
-
-            var orderDetail = new OrderDetail(
-                detail.ComboId,
-                detail.ProductId,
-                null,
-                detail.Quantity,
-                detail.Price
-            )
-            {
-                Status = detail.Status
-            };
-            order.OrderDetails.Add(orderDetail);
         }
 
         await _unitOfWorks.OrderRepository.AddAsync(order);
@@ -136,5 +106,52 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
         await lockService.ReleaseLockAsync();
 
         return order.Id;
+    }
+
+    private async Task ProcessDish(Guid productId, int quantity, decimal price, LockingHandler lockService, Domain.Entities.OrderAggregator.Order order)
+    {
+        var dish = await _unitOfWorks.DishRepository.GetByIdAsync(productId);
+        if (dish == null)
+        {
+            await lockService.ReleaseLockAsync();
+            throw new Exception($"Dish with ID {productId} not found.");
+        }
+
+        foreach (var dishIngredient in dish.DishIngredients)
+        {
+            string ingredientLockKey = $"lock:ingredient:{dishIngredient.IngredientId}";
+
+            if (!await _database.LockTakeAsync(ingredientLockKey, order.TableId.ToString(), TimeSpan.FromSeconds(10)))
+            {
+                await lockService.ReleaseLockAsync();
+                throw new Exception($"Failed to acquire lock for ingredient ID: {dishIngredient.IngredientId}");
+            }
+
+            var ingredient = await _unitOfWorks.IngredientRepository.GetByIdAsync(dishIngredient.IngredientId);
+            if (ingredient == null)
+            {
+                await lockService.ReleaseLockAsync();
+                throw new Exception($"Ingredient with ID {dishIngredient.IngredientId} not found.");
+            }
+
+            var requiredAmount = dishIngredient.Quantity * quantity;
+
+            if (ingredient.IngredientAmount < requiredAmount)
+            {
+                await lockService.ReleaseLockAsync();
+                throw new Exception($"Insufficient stock for ingredient {ingredient.IngredientName}. Required: {requiredAmount}, Available: {ingredient.IngredientAmount}");
+            }
+
+            ingredient.IngredientAmount -= requiredAmount;
+            _unitOfWorks.IngredientRepository.Update(ingredient);
+
+            await _database.LockReleaseAsync(ingredientLockKey, order.TableId.ToString());
+        }
+
+        var orderDetail = new OrderDetail(null, productId, null, quantity, price)
+        {
+            Status = OrderDetailsStatus.Prepare
+        };
+        order.OrderDetails.Add(orderDetail);
     }
 }

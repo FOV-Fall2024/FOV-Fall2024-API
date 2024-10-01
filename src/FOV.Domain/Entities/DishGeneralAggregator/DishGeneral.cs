@@ -10,7 +10,7 @@ public class DishGeneral : BaseAuditableEntity, IsSoftDeleted
     public string DishName { get; set; } = string.Empty;
 
     public string DishDescription { get; set; } = string.Empty;
-
+    public decimal Price { get; set; }
     public string DishImageDefault { get; set; } = string.Empty;
     public virtual ICollection<Dish> Dishes { get; set; } = [];
     public Category Category { get; set; }
@@ -25,11 +25,12 @@ public class DishGeneral : BaseAuditableEntity, IsSoftDeleted
 
     }
 
-    public DishGeneral(string name, string description, Guid categoryId, string image, bool isDraft)
+    public DishGeneral(string name, decimal price, string description, Guid categoryId, string image, bool isDraft)
     {
         IsDraft = isDraft;
         DishImageDefault = image;
         DishName = name;
+        Price = price;
         DishDescription = description;
         CategoryId = categoryId;
         IsDeleted = false;

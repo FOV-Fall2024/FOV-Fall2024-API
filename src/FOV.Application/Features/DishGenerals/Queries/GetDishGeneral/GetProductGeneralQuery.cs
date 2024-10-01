@@ -5,9 +5,9 @@ using MediatR;
 
 namespace FOV.Application.Features.DishGenerals.Queries.GetProductGeneral
 {
-    public sealed record GetProductGeneralCommand(string? Name, string? ProductDescription, Guid? CategoryId, PagingRequest PagingRequest) : IRequest<PagedResult<GetProductGeneralResponse>>;
+    public sealed record GetProductGeneralCommand(string? Name, string? ProductDescription, Guid? CategoryId, PagingRequest? PagingRequest) : IRequest<PagedResult<GetProductGeneralResponse>>;
 
-    public record GetProductGeneralResponse(Guid Id, string Name, string ProductDescription, bool IsDeleted, string ProductImage, Guid CategoryId, DateTimeOffset CreatedDate, DateTimeOffset UpdateTime);
+    public record GetProductGeneralResponse(Guid Id, string Name, decimal Price, string ProductDescription, bool IsDeleted, string ProductImage, Guid CategoryId, DateTimeOffset CreatedDate, DateTimeOffset UpdateTime);
 
     public class GetProductGeneralQuery : IRequestHandler<GetProductGeneralCommand, PagedResult<GetProductGeneralResponse>>
     {
@@ -35,6 +35,7 @@ namespace FOV.Application.Features.DishGenerals.Queries.GetProductGeneral
             var mappedProducts = filteredProducts.Select(x => new GetProductGeneralResponse(
                 x.Id,
                 x.DishName ?? string.Empty,
+                x.Price,
                 x.DishDescription ?? string.Empty,
                 x.IsDeleted,
                 x.DishImageDefault,

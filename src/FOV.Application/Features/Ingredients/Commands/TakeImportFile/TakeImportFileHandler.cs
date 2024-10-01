@@ -35,7 +35,7 @@ public class TakeImportFileHandler(IUnitOfWorks unitOfWorks,IClaimService claimS
         //    worksheet.Cells[row, 1].Value = "Fixed Data";  // This will be read-only
         //}
         int rowIngredient = 2;
-        var ingredients = await _unitOfWorks.IngredientRepository.WhereAsync(x => x.RestaurantId == Guid.Parse("098193f4-d97e-4fe6-8ee0-ca79fe11080d"),x => x.IngredientUnits);
+        var ingredients = await _unitOfWorks.IngredientRepository.WhereAsync(x => x.RestaurantId == Guid.Parse("29cbd5dd-4e4b-49c9-9f41-281e406ec69a"),x => x.IngredientUnits);
         foreach (var item in ingredients)
         {
             worksheet.Cells[rowIngredient, 1].Value = item.IngredientName;

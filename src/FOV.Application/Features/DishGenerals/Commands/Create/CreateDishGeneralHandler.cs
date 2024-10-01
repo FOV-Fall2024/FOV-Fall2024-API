@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace FOV.Application.Features.DishGenerals.Commands.Create;
 
-public sealed record CreateProductGeneralCommand(string ProductName, string Description, Guid CategoryId, List<AddIngredientCommand> Ingredients, string ImageDefault) : IRequest<Guid>;
+public sealed record CreateProductGeneralCommand(string ProductName, decimal Price, string Description, Guid CategoryId, List<AddIngredientCommand> Ingredients, string ImageDefault) : IRequest<Guid>;
 //{
 //    public required string ProductName { get; set; }
 //    public required string Description { get; set; }
@@ -25,7 +25,7 @@ public class CreateDishGeneralHandler(IUnitOfWorks unitOfWorks) : IRequestHandle
     {
 
 
-        DishGeneral productGeneral = new(request.ProductName, request.Description, request.CategoryId, request.ImageDefault, false);
+        DishGeneral productGeneral = new(request.ProductName, request.Price ,request.Description, request.CategoryId, request.ImageDefault, false);
         await _unitOfWorks.DishGeneralRepository.AddAsync(productGeneral);
 
         await AddIngredient(request.Ingredients, productGeneral.Id);

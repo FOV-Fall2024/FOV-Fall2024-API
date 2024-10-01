@@ -10,7 +10,7 @@ namespace FOV.Application.Features.NewRecommendDishes.Commands.NewRequest;
 public sealed record NewRequestCommand : IRequest<Guid>
 {
     public required string ProductName { get; set; }
-
+    public required decimal Price { get; set; }
     public required string ProductDescription { get; set; }
 
     public required Guid CategoryId { get; set; }
@@ -33,7 +33,7 @@ public class NewRequestHandler(IUnitOfWorks unitOfWorks, IClaimService claimServ
     public async Task<Guid> Handle(NewRequestCommand request, CancellationToken cancellationToken)
     {
         //? Create New Product
-        DishGeneral productGeneral = new(request.ProductName, request.ProductDescription, request.CategoryId, request.ProductImage, true);
+        DishGeneral productGeneral = new(request.ProductName, request.Price, request.ProductDescription, request.CategoryId, request.ProductImage, true);
         await _unitOfWorks.DishGeneralRepository.AddAsync(productGeneral);
 
         await AddIngredient(request.Ingredients, productGeneral.Id);
