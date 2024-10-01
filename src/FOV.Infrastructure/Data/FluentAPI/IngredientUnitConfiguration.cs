@@ -8,7 +8,15 @@ public class IngredientUnitConfiguration : IEntityTypeConfiguration<IngredientUn
     public void Configure(EntityTypeBuilder<IngredientUnit> builder)
     {
         builder.HasKey(x => x.Id);
-        builder.HasOne(x => x.Ingredient).WithMany(x => x.IngredientUnits).HasForeignKey(x => x.IngredientId);
-        builder.HasOne(x => x.IngredientUnitParent).WithMany(x => x.ChildUnits).HasForeignKey(x => x.IngredientUnitParentId);
+
+        builder.HasOne(x => x.Ingredient)
+            .WithMany(x => x.IngredientUnits)
+            .HasForeignKey(x => x.IngredientId)
+            .OnDelete(DeleteBehavior.Cascade); // Adjust as needed
+
+        builder.HasOne(x => x.IngredientUnitParent)
+            .WithMany(x => x.ChildUnits)
+            .HasForeignKey(x => x.IngredientUnitParentId)
+            .OnDelete(DeleteBehavior.Restrict); // Prevents circular cascade delete issues
     }
 }

@@ -18,7 +18,9 @@ public class Restaurant : BaseAuditableEntity, IsSoftDeleted
     public Status Status { get; set; }
     public string RestaurantPhone { get; set; }
 
-    public string RestataurantCode { get; set; }
+    public string RestaurantCode { get; set; }
+
+    public DateTimeOffset ReleaseDate { get; set; } = DateTimeOffset.UtcNow.AddDays(7);
 
 
     public virtual ICollection<Employee> Employees { get; set; } = [];
@@ -43,7 +45,7 @@ public class Restaurant : BaseAuditableEntity, IsSoftDeleted
         RestaurantName = name;
         Address = address;
         RestaurantPhone = phone;
-        RestataurantCode = code;
+        RestaurantCode = code;
         Created = DateTimeOffset.UtcNow.AddHours(7);
         Status = Status.Active;
     }

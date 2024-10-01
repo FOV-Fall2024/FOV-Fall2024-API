@@ -8,13 +8,21 @@ using Microsoft.Extensions.Logging;
 
 namespace FOV.Application.Common.Behaviours;
 
-public sealed class ValidationBehavior<TRequest, TResponse>(
-    IServiceProvider serviceProvider,
-    ILogger<ValidationBehavior<TRequest, TResponse>> logger)
-    : IPipelineBehavior<TRequest, TResponse>
+public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
     where TResponse : notnull
 {
+    private readonly IServiceProvider _serviceProvider;
+    private readonly ILogger<ValidationBehavior<TRequest, TResponse>> _logger;
+
+    public ValidationBehavior(
+        IServiceProvider serviceProvider,
+        ILogger<ValidationBehavior<TRequest, TResponse>> logger)
+    {
+        _serviceProvider = serviceProvider;
+        _logger = logger;
+    }
+
     public async Task<TResponse> Handle(
         TRequest request,
         RequestHandlerDelegate<TResponse> next,
@@ -22,22 +30,26 @@ public sealed class ValidationBehavior<TRequest, TResponse>(
     {
         const string behavior = nameof(ValidationBehavior<TRequest, TResponse>);
 
-        logger.LogInformation(
-            "[{Behavior}] handle request={RequestData} and response={ResponseData}",
+        _logger.LogInformation(
+            "[{Behavior}] handle request={RequestType} and response={ResponseType}",
             behavior, typeof(TRequest).FullName, typeof(TResponse).FullName);
 
-        logger.LogDebug(
-            "[{Behavior}] handle request={Request} with content={RequestData}",
+        _logger.LogDebug(
+            "[{Behavior}] handle request={RequestType} with content={RequestData}",
             behavior, typeof(TRequest).FullName, JsonSerializer.Serialize(request));
 
-        var validators = serviceProvider
-                             .GetService<IEnumerable<IValidator<TRequest>>>()?.ToList()
-                         ?? throw new InvalidOperationException();
+        var validators = _serviceProvider
+            .GetService<IEnumerable<IValidator<TRequest>>>()
+            ?.ToList() ?? new List<IValidator<TRequest>>();
 
-        if (validators.Count != 0)
-            await Task.WhenAll(
-                validators.Select(v => v.HandleValidationAsync(request))
-            );
+        foreach (var validator in validators)
+        {
+            var validationResult = await validator.ValidateAsync(request, cancellationToken);
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
+        }
 
         var response = await next();
 

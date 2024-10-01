@@ -104,7 +104,8 @@ namespace FOV.Infrastructure.Migrations
                     Address = table.Column<string>(type: "text", nullable: false),
                     Status = table.Column<byte>(type: "smallint", nullable: false),
                     RestaurantPhone = table.Column<string>(type: "text", nullable: false),
-                    RestataurantCode = table.Column<string>(type: "text", nullable: false),
+                    RestaurantCode = table.Column<string>(type: "text", nullable: false),
+                    ReleaseDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
@@ -433,7 +434,7 @@ namespace FOV.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     IngredientName = table.Column<string>(type: "text", nullable: false),
                     IngredientAmount = table.Column<decimal>(type: "numeric", nullable: false),
-                    ExpriedQuantity = table.Column<decimal>(type: "numeric", nullable: false),
+                    ExpiredQuantity = table.Column<decimal>(type: "numeric", nullable: false),
                     IngredientTypeId = table.Column<Guid>(type: "uuid", nullable: true),
                     RestaurantId = table.Column<Guid>(type: "uuid", nullable: true),
                     Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
@@ -1012,6 +1013,16 @@ namespace FOV.Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { "5680415f-f3b6-4288-899f-c01a357f150f", 0, "C3D4E5F6G7H8", "alicej@example.com", true, "Alice", "Johnson", true, null, "ALICEJ@EXAMPLE.COM", "ALICEJ", "AQAAAAEAACcQAAAAEJ8s5t7kDv3X8bJ9fTS6nMk1h8jsnklRQNkqpL0z7oK45kM1WfqvQ9F9F8yPdMcbw==", "1122334455", true, "C3D4E5F6G7", false, "alicej" },
+                    { "6fb87153-242c-4024-a3af-f787b3919760", 0, "A1B2C3D4E5F6", "nguyenanh@gmail.com", true, "Nguyen", "Anh", true, null, "NGUYENANH@GMAIL.COM", "NGUYENANH", "AQAAAAEAACcQAAAAEP9r4v1tjDThjF1X2Rj3QvB1MzQaXJkblzP1LkL0fMPOZ5WsmXAf3P9N2WkPdMbxpg==", "1234567890", true, "A1B2C3D4E5", false, "NguyenAnh" },
+                    { "f5404c4e-88b5-428e-8b07-b44af0d35979", 0, "B2C3D4E5F6G7", "huynhanh@gmail.com", true, "Huynh", "Anh", true, null, "HUYNHANH@GMAIL.COM", "HUYNHANH", "AQAAAAEAACcQAAAAEHyv3s9XjAzOiDvB9vFS5Mkj8g7vnklQJkwpjCZr4mK34eM1JwqvP9M8F7wPdNBcy==", "0987654321", true, "B2C3D4E5F6", false, "HuynhAnh" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "Id", "CategoryName", "Created", "CreatedBy", "IsDeleted", "LastModified", "LastModifiedBy" },
                 values: new object[,]
@@ -1031,11 +1042,11 @@ namespace FOV.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Restaurants",
-                columns: new[] { "Id", "Address", "Created", "CreatedBy", "IsDeleted", "LastModified", "LastModifiedBy", "RestataurantCode", "RestaurantName", "RestaurantPhone", "Status" },
+                columns: new[] { "Id", "Address", "Created", "CreatedBy", "IsDeleted", "LastModified", "LastModifiedBy", "ReleaseDate", "RestaurantCode", "RestaurantName", "RestaurantPhone", "Status" },
                 values: new object[,]
                 {
-                    { new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0"), "Go Vap", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, "RE_001", "Default Restaurant", "0902388123", (byte)1 },
-                    { new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"), "Thu Duc", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, "RE_002", "Vege Thu Duc", "0867960120", (byte)1 }
+                    { new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0"), "Go Vap", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, new DateTimeOffset(new DateTime(2024, 10, 8, 4, 19, 29, 872, DateTimeKind.Unspecified).AddTicks(7140), new TimeSpan(0, 0, 0, 0, 0)), "RE_001", "Default Restaurant", "0902388123", (byte)1 },
+                    { new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"), "Thu Duc", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, new DateTimeOffset(new DateTime(2024, 10, 8, 4, 19, 29, 872, DateTimeKind.Unspecified).AddTicks(7185), new TimeSpan(0, 0, 0, 0, 0)), "RE_002", "Vege Thu Duc", "0867960120", (byte)1 }
                 });
 
             migrationBuilder.InsertData(
@@ -1043,9 +1054,9 @@ namespace FOV.Infrastructure.Migrations
                 columns: new[] { "Id", "ComboName", "Created", "CreatedBy", "ExpiredDate", "IsDeleted", "LastModified", "LastModifiedBy", "PercentReduce", "Price", "Quantity", "RestaurantId", "Status" },
                 values: new object[,]
                 {
-                    { new Guid("3907a193-c2ae-4f40-936b-9a2438595123"), "Combo 2", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, new DateTime(2024, 11, 28, 6, 20, 58, 15, DateTimeKind.Utc).AddTicks(6030), false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, 5.0m, 30.00m, 10, new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"), (byte)0 },
-                    { new Guid("921b269a-db6e-4a1d-b285-70df523e010e"), "Combo 3", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, new DateTime(2024, 11, 28, 6, 20, 58, 15, DateTimeKind.Utc).AddTicks(6036), false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, 5.0m, 30.00m, 10, new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"), (byte)0 },
-                    { new Guid("941bcca9-52a6-41f7-9403-06cc5fa703ea"), "Combo 1", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, new DateTime(2024, 10, 28, 6, 20, 58, 15, DateTimeKind.Utc).AddTicks(5975), false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, 10.0m, 50.00m, 20, new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0"), (byte)0 }
+                    { new Guid("3907a193-c2ae-4f40-936b-9a2438595123"), "Combo 2", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, new DateTime(2024, 12, 1, 4, 19, 29, 866, DateTimeKind.Utc).AddTicks(2396), false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, 5.0m, 30.00m, 10, new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"), (byte)0 },
+                    { new Guid("921b269a-db6e-4a1d-b285-70df523e010e"), "Combo 3", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, new DateTime(2024, 12, 1, 4, 19, 29, 866, DateTimeKind.Utc).AddTicks(2400), false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, 5.0m, 30.00m, 10, new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"), (byte)0 },
+                    { new Guid("941bcca9-52a6-41f7-9403-06cc5fa703ea"), "Combo 1", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, new DateTime(2024, 11, 1, 4, 19, 29, 866, DateTimeKind.Utc).AddTicks(2382), false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, 10.0m, 50.00m, 20, new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0"), (byte)0 }
                 });
 
             migrationBuilder.InsertData(
@@ -1065,9 +1076,9 @@ namespace FOV.Infrastructure.Migrations
                 columns: new[] { "Id", "Created", "CreatedBy", "EmployeeCode", "HireDate", "IsDeleted", "LastModified", "LastModifiedBy", "RestaurantId", "Status", "UserId" },
                 values: new object[,]
                 {
-                    { new Guid("a07496ad-bda3-4ac5-9279-81cae66ba253"), new DateTimeOffset(new DateTime(2022, 5, 10, 9, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "manager", "EMP002", new DateTime(2024, 9, 28, 6, 20, 58, 20, DateTimeKind.Utc).AddTicks(8675), false, new DateTimeOffset(new DateTime(2022, 5, 10, 9, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "manager", new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"), (byte)1, "f5404c4e-88b5-428e-8b07-b44af0d35979" },
-                    { new Guid("be4e8a98-7c95-4ef1-a407-6b8093b0e13a"), new DateTimeOffset(new DateTime(2022, 1, 15, 10, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "admin", "EMP001", new DateTime(2024, 9, 28, 6, 20, 58, 20, DateTimeKind.Utc).AddTicks(8462), false, new DateTimeOffset(new DateTime(2022, 1, 15, 10, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "admin", new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"), (byte)1, "6fb87153-242c-4024-a3af-f787b3919760" },
-                    { new Guid("ce84ef13-3ce9-40c3-a14c-4a93dce72eb9"), new DateTimeOffset(new DateTime(2023, 3, 20, 14, 15, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "admin", "EMP003", new DateTime(2024, 9, 28, 6, 20, 58, 20, DateTimeKind.Utc).AddTicks(8689), false, new DateTimeOffset(new DateTime(2023, 3, 20, 14, 15, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "admin", new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"), (byte)1, "5680415f-f3b6-4288-899f-c01a357f150f" }
+                    { new Guid("a07496ad-bda3-4ac5-9279-81cae66ba253"), new DateTimeOffset(new DateTime(2022, 5, 10, 9, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "manager", "EMP002", new DateTime(2024, 10, 1, 4, 19, 29, 868, DateTimeKind.Utc).AddTicks(3733), false, new DateTimeOffset(new DateTime(2022, 5, 10, 9, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "manager", new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"), (byte)1, "f5404c4e-88b5-428e-8b07-b44af0d35979" },
+                    { new Guid("be4e8a98-7c95-4ef1-a407-6b8093b0e13a"), new DateTimeOffset(new DateTime(2022, 1, 15, 10, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "admin", "EMP001", new DateTime(2024, 10, 1, 4, 19, 29, 868, DateTimeKind.Utc).AddTicks(3634), false, new DateTimeOffset(new DateTime(2022, 1, 15, 10, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "admin", new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"), (byte)1, "6fb87153-242c-4024-a3af-f787b3919760" },
+                    { new Guid("ce84ef13-3ce9-40c3-a14c-4a93dce72eb9"), new DateTimeOffset(new DateTime(2023, 3, 20, 14, 15, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "admin", "EMP003", new DateTime(2024, 10, 1, 4, 19, 29, 868, DateTimeKind.Utc).AddTicks(3745), false, new DateTimeOffset(new DateTime(2023, 3, 20, 14, 15, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "admin", new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"), (byte)1, "5680415f-f3b6-4288-899f-c01a357f150f" }
                 });
 
             migrationBuilder.InsertData(
@@ -1082,7 +1093,7 @@ namespace FOV.Infrastructure.Migrations
                 {
                     { new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a0"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, "Typically lasts 1-2 years when stored in an airtight container..", (byte)0, "Pasta", new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a7"), false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null },
                     { new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a8"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, "Can last 6 months to a year or more if kept in a cool, dry place.", (byte)0, "Rice", new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a7"), false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null },
-                    { new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540b0"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, "Typically lasts 1-2 years when stored in an airtight container..", (byte)0, "Spinach", new Guid("b8f66bab-13c9-4390-8582-545ddc7d2ec8"), false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null }
+                    { new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540b0"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, "Typically lasts 1-2 years when stored in an airtight container..", (byte)255, "Spinach", new Guid("b8f66bab-13c9-4390-8582-545ddc7d2ec8"), false, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null }
                 });
 
             migrationBuilder.InsertData(

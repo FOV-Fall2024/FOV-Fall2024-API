@@ -31,7 +31,7 @@ namespace FOV.Application.Features.Ingredients.Queries.GetIngredients
             var mappedIngredients = filteredIngredients.Select(x => new GetIngredientsResponse(
                 x.Id,
                 x.IngredientName ?? string.Empty,
-                x.ExpriedQuantity)).ToList();
+                x.ExpiredQuantity)).ToList();
 
             // Get pagination and sorting values
             var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
