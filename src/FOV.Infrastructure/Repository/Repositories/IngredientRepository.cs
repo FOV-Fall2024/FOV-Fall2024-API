@@ -13,6 +13,24 @@ public class IngredientRepository : GenericRepository<Ingredient>, IIngredientRe
         _context = context;
     }
 
+    public decimal GetTotalConversionFactor(Guid unitId)
+    {
+        IngredientUnit unit = _context.IngredientUnits.FirstOrDefault(u => u.Id == unitId) ?? throw new Exception();
+        if (unit == null)
+        {
+            throw new ArgumentException("Unit not found");
+        }
+
+        // Base case: If there is no parent, return the unit's conversion factor
+        if (unit.IngredientUnitParentId == null)
+        {
+            return unit.ConversionFactor;
+        }
+
+        // Recursive case: Multiply the conversion factor by the parent's total conversion factor
+        var parentConversionFactor = GetTotalConversionFactor(unit.IngredientUnitParentId.Value);
+        return unit.ConversionFactor * parentConversionFactor;
+    }
 
     public async Task HandleExpried()
     {

@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System.Text;
+using FluentValidation;
 using FOV.Application.Common.Exceptions;
 using FOV.Domain.Entities.UserAggregator;
 using FOV.Infrastructure.Configuration;
@@ -75,29 +76,28 @@ public static class DependencyInjection
 
         services.AddAuthentication(options =>
         {
-            // Set the default schemes
-            options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         })
-    .AddCookie("Cookies")
-    .AddGoogle(options =>
-    {
-        options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-        options.CallbackPath = "/signin-google";
-    })
-    .AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = false,
-        ValidateAudience = false,
-        ValidateIssuerSigningKey = true,
-        RequireExpirationTime = true,
-        IssuerSigningKey = new SymmetricSecurityKey(
-                System.Text.Encoding.UTF8.GetBytes(
-                    builder.Configuration["JWT:SecretKey"])
-            )
-    });
+     .AddCookie("Cookies")  // Use this scheme explicitly where needed
+     .AddGoogle(options =>
+     {
+         options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+         options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+         options.CallbackPath = "/signin-google";
+     })
+     .AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters
+     {
+         ValidateIssuer = true,
+         ValidateAudience = true,
+         ValidateLifetime = true,
+         ValidateIssuerSigningKey = true,
+         ValidIssuer = builder.Configuration["JWTSecretKey:ValidIssuer"],
+         ValidAudience = builder.Configuration["JWTSecretKey:ValidAudience"],
+         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTSecretKey:SecretKey"])),
+         ClockSkew = TimeSpan.FromSeconds(1)
+     });
+
 
 
 
@@ -113,29 +113,31 @@ public static class DependencyInjection
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "FOV API", Version = "v1" });
             c.EnableAnnotations();
-            //c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-            //{
-            //    In = ParameterLocation.Header,
-            //    Description = "Please enter token",
-            //    Name = "Authorization",
-            //    Type = SecuritySchemeType.Http,
-            //    BearerFormat = "JWT",
-            //    Scheme = "bearer",
-            //});
-            //opt.OperationFilter<AuthorizeOperationFilter>();
-            c.AddSecurityRequirement(new OpenApiSecurityRequirement{
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                In = ParameterLocation.Header,
+                Description = "Please enter a valid JWT token",
+                Name = "Authorization",
+                Type = SecuritySchemeType.Http,
+                BearerFormat = "JWT",
+                Scheme = "bearer",
+            });
+            c.OperationFilter<AuthorizeOperationFilter>();
+
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
         {
             new OpenApiSecurityScheme
             {
                 Reference = new OpenApiReference
                 {
-                    Type=ReferenceType.SecurityScheme,
-                    Id="Bearer"
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
                 }
             },
             Array.Empty<string>()
         }
-                });
+    });
         });
         services.AddDataProtection();
 

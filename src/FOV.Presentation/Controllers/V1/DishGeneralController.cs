@@ -5,9 +5,11 @@ using FOV.Application.Features.DishGenerals.Commands.Update;
 using FOV.Application.Features.DishGenerals.Commands.UpdateIngredientQuantity;
 using FOV.Application.Features.DishGenerals.Queries.GetProductGeneral;
 using FOV.Application.Features.DishGenerals.Queries.GetProductGeneralDetail;
+using FOV.Domain.Entities.UserAggregator.Enums;
 using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Presentation.Infrastructure.Core;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -29,6 +31,7 @@ public class DishGeneralController : DefaultController
     /// </summary>
     /// <param name="command">The command containing product details.</param>
     /// <returns>The ID of the newly created product general.</returns>
+    [Authorize(Role.Administrator)]
     [HttpPost]
     [SwaggerOperation(Summary = "Creates a new product general.")]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -130,6 +133,7 @@ public class DishGeneralController : DefaultController
     /// </summary>
     /// <param name="command">The command containing query parameters for retrieval.</param>
     /// <returns>A list of product generals.</returns>
+    [Authorize(Roles = Role.Administrator)]
     [HttpGet]
     [SwaggerOperation(Summary = "Retrieves all product generals.")]
     [ProducesResponseType(StatusCodes.Status200OK)]

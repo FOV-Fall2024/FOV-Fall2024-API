@@ -11,6 +11,7 @@ using FOV.Presentation.Infrastructure.Core;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -32,6 +33,7 @@ public class AuthController : DefaultController
     /// </summary>
     /// <param name="command">The command containing profile edit details.</param>
     /// <returns>A success message.</returns>
+    [Authorize]
     [HttpPost("edit-profile")]
     [SwaggerOperation(Summary = "Edit user profile.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -114,6 +116,7 @@ public class AuthController : DefaultController
     /// Retrieves the user's profile.
     /// </summary>
     /// <returns>The user's profile information.</returns>
+    [Authorize]
     [HttpGet("me")]
     [SwaggerOperation(Summary = "View user profile.")]
     [ProducesResponseType(StatusCodes.Status200OK)]

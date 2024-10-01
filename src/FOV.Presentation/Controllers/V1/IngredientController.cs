@@ -1,6 +1,7 @@
 ﻿using FOV.Application.Common.Exceptions;
 using FOV.Application.Features.Ingredients.Commands.AddMultipleQuantity;
 using FOV.Application.Features.Ingredients.Commands.AddSingleQuantity;
+using FOV.Application.Features.Ingredients.Commands.HandleImportFile;
 using FOV.Application.Features.Ingredients.Commands.TakeImportFile;
 using FOV.Application.Features.Ingredients.Queries.GetIngredients;
 using FOV.Infrastructure.Helpers.GetHelper;
@@ -100,6 +101,19 @@ namespace FOV.Presentation.Controllers.V1
 
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
 
+        }
+
+        [HttpPost("import-file")]
+        public async Task<IActionResult> ImportFile([FromForm] IFormFile file, [FromServices] IMediator mediator)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("No file uploaded.");
+            }
+
+            var result = await mediator.Send(new ProcessImportFileCommand(file));
+
+            return result.IsSuccess ? Ok("File processed successfully.") : BadRequest(result.Errors);
         }
 
 

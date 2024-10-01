@@ -45,7 +45,7 @@ public class FOVContext : IdentityDbContext<User>, IApplicationDbContext
     public DbSet<Attendance> Attendances => Set<Attendance>();
     public DbSet<Order> Orders => Set<Order>();
     public DbSet<OrderDetail> OrderDetails => Set<OrderDetail>();
-    public DbSet<DishCombo> ProductCombos => Set<DishCombo>();
+    public DbSet<DishCombo> DishCombos => Set<DishCombo>();
     public DbSet<Table> Tables => Set<Table>();
 
     public DbSet<Customer> Customers => Set<Customer>();
@@ -74,6 +74,7 @@ public class FOVContext : IdentityDbContext<User>, IApplicationDbContext
 
     public DbSet<NewDishRecommendLog> NewDishRecommendLogs => Set<NewDishRecommendLog>();
 
+    public DbSet<IngredientUnit> IngredientUnits => Set<IngredientUnit>();  
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

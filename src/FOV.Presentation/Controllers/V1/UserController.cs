@@ -4,10 +4,13 @@ using FOV.Application.Features.Users.Commands.Active;
 using FOV.Application.Features.Users.Commands.Inactive;
 using FOV.Application.Features.Users.Queries.GetAllEmployee;
 using FOV.Application.Features.Users.Queries.GetAllUser;
+using FOV.Domain.Entities.UserAggregator.Enums;
 using FOV.Presentation.Infrastructure.Core;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StackExchange.Redis;
+using Role = FOV.Domain.Entities.UserAggregator.Enums.Role;
 
 namespace FOV.Presentation.Controllers.V1;
 
@@ -30,7 +33,8 @@ public class UserController(IMediator mediator, IDatabase database) : DefaultCon
         {
             var response = await _mediator.Send(request);
             return Ok(new OK_Result<string>(response.Value, null));
-        } catch (AppException ex)
+        }
+        catch (AppException ex)
         {
             return BadRequest(new Error<FieldError>("Tạo tài khoản thất bại", ErrorStatusCodeConfig.BAD_REQUEST, ex.FieldErrors));
         }
@@ -95,6 +99,7 @@ public class UserController(IMediator mediator, IDatabase database) : DefaultCon
         }
     }
 
+    
     [HttpPost("testRedis")]
     public async Task<IActionResult> Test()
     {

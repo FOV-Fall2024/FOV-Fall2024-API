@@ -2,8 +2,10 @@
 using FOV.Application.Features.Categories.Commands.Delete;
 using FOV.Application.Features.Categories.Commands.Update;
 using FOV.Application.Features.Categories.Queries.GetParentCategories;
+using FOV.Domain.Entities.UserAggregator.Enums;
 using FOV.Presentation.Infrastructure.Core;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -24,6 +26,7 @@ public class CategoryController : DefaultController
     /// Retrieves all parent categories.
     /// </summary>
     /// <returns>A list of parent categories.</returns>
+  
     [HttpGet]
     [SwaggerOperation(Summary = "Retrieves all parent categories.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -39,6 +42,7 @@ public class CategoryController : DefaultController
     /// </summary>
     /// <param name="command">The command containing details of the new category.</param>
     /// <returns>The ID of the newly created child category.</returns>
+    [Authorize(Roles = Role.Administrator)]
     [HttpPost]
     [SwaggerOperation(Summary = "Adds a new child category.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -55,6 +59,7 @@ public class CategoryController : DefaultController
     /// <param name="id">The ID of the category to update.</param>
     /// <param name="name">The new name for the category.</param>
     /// <returns>The ID of the updated category.</returns>
+    [Authorize(Roles = Role.Administrator)]
     [HttpPut("{id:guid}")]
     [SwaggerOperation(Summary = "Updates the name and description of a category.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -71,6 +76,7 @@ public class CategoryController : DefaultController
     /// </summary>
     /// <param name="id">The ID of the category to delete.</param>
     /// <returns>A success message.</returns>
+    [Authorize(Roles = Role.Administrator)]
     [HttpDelete("{id:guid}")]
     [SwaggerOperation(Summary = "Deletes a child category.")]
     [ProducesResponseType(StatusCodes.Status200OK)]

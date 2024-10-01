@@ -25,6 +25,8 @@ public interface IApplicationDbContext
     DbSet<Category> Categories { get; }
     DbSet<IngredientType> IngredientTypes { get; }
 
+    DbSet<IngredientUnit> IngredientUnits { get; }
+
     DbSet<IngredientGeneral> IngredientGenerals { get; }
 
     DbSet<DishIngredientGeneral> DishIngredientGenerals { get; }
@@ -43,7 +45,7 @@ public interface IApplicationDbContext
 
     DbSet<Combo> Combos { get; }
 
-    DbSet<DishCombo> ProductCombos { get; }
+    DbSet<DishCombo> DishCombos { get; }
 
     DbSet<GroupChat> GroupChats { get; }
 

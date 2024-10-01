@@ -27,7 +27,7 @@ public class UserLoginHandler(UserManager<User> userManager, IConfiguration conf
         var roles = await _userManager.GetRolesAsync(user);
 
 
-        string token = GenerateJWT(user, roles, _configuration["JWT:SecretKey"] ?? throw new AppException(), _configuration["JWT:ValidIssuer"] ?? throw new AppException(), _configuration["JWT:ValidAudience"] ?? throw new AppException());
+        string token = GenerateJWT(user, roles, _configuration["JWTSecretKey:SecretKey"] ?? throw new AppException(), _configuration["JWTSecretKey:ValidIssuer"] ?? throw new AppException(), _configuration["JWTSecretKey:ValidAudience"] ?? throw new AppException());
         return new UserResponse(user.Id, user.FirstName, user.LastName, user.Email, roles.FirstOrDefault(), token, "not");
     }
 

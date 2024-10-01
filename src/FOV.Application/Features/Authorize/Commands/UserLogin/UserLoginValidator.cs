@@ -7,10 +7,10 @@ public class UserLoginValidator : AbstractValidator<UserLoginCommand>
 {
     public UserLoginValidator()
     {
-        RuleFor(x => x.Email)
-            .NotNull()
-            .Matches(@"^[^@\s]+@[^@\s]+\.[^@\s]+$")
-            .WithMessage("Invalid email format.");
+        //RuleFor(x => x.Email)
+        //    .NotNull()
+        //    .Matches(@"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+        //    .WithMessage("Invalid email format.");
         RuleFor(x => x.Password).NotNull();
 
 
