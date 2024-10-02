@@ -12,7 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 namespace FOV.Application.Features.Authorize.Commands.EmployeeLogin;
 
 public sealed record EmployeeLoginCommand(string Code, string Password) : IRequest<EmployeeLoginResponse>;
-public record EmployeeLoginResponse(string AccessToken, string RefreshToken);
+public sealed record EmployeeLoginResponse(string Id, string FullName, string Email, string Role, string AccessToken, string RefreshToken);
 public class EmployeeLoginHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration configuration) : IRequestHandler<EmployeeLoginCommand, EmployeeLoginResponse>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
@@ -42,7 +42,7 @@ public class EmployeeLoginHandler(IUnitOfWorks unitOfWorks, UserManager<User> us
             string validAudience = _configuration["JWTSecretKey:ValidAudience"] ?? throw new Exception("ValidAudience not configured");
 
             string token = GenerateJWT(user, roles, secretKey, validIssuer, validAudience, employee.RestaurantId);
-            return new EmployeeLoginResponse(token, "not");
+            return new EmployeeLoginResponse(user.Id,user.FirstName +" "+user.LastName,user.Email,roles.FirstOrDefault(),token, "not");
         }
 
         return null;

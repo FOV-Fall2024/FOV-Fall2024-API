@@ -1,0 +1,2 @@
+1.kiểu đừng để Combo thì để Id đừng để ComboId
+2.

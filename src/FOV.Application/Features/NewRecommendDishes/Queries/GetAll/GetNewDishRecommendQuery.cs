@@ -1,4 +1,5 @@
 ﻿using FOV.Application.Common.Behaviours.Claim;
+using FOV.Application.Features.NewRecommendDishes.Responses;
 using FOV.Domain.Entities.NewDishRecommendAggregator;
 using FOV.Domain.Entities.UserAggregator.Enums;
 using FOV.Infrastructure.Helpers.GetHelper;
@@ -10,7 +11,7 @@ namespace FOV.Application.Features.NewRecommendDishes.Queries.GetAll;
 
 public sealed record GetNewProductRecommendCommand(PagingRequest? PagingRequest) : IRequest<PagedResult<GetNewProductRecommendResponse>>;
 //public sealed record NewProductRecommmend(Guid Id, Guid ProductGeneralId, Guid RestaurantId, string Status);
-public sealed record GetNewProductRecommendResponse(Guid Id, string ProductName, string Status);
+
 public sealed class GetNewDishRecommendQuery(IUnitOfWorks unitOfWorks, IClaimService claimService) : IRequestHandler<GetNewProductRecommendCommand, PagedResult<GetNewProductRecommendResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;

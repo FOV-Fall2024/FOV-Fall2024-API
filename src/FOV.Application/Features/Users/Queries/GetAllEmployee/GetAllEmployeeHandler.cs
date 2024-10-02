@@ -1,4 +1,4 @@
-﻿using FluentResults;
+﻿using FOV.Application.Features.Users.Responses;
 using FOV.Domain.Entities.TableAggregator.Enums;
 using FOV.Domain.Entities.UserAggregator;
 using FOV.Infrastructure.Helpers.GetHelper;
@@ -10,7 +10,7 @@ namespace FOV.Application.Features.Users.Queries.GetAllEmployee;
 
 public sealed record GetAllEmployeeCommand(PagingRequest? PagingRequest, string? Role, Guid? RestaurantId, string? FullName, string? Email, string? EmployeeCode, Status? Status = Status.Unknown) : IRequest<PagedResult<GetAllEmployeeResponse>>;
 
-public sealed record GetAllEmployeeResponse(string Id, string FullName, string Email, string EmployeeCode, DateTime HireDate, string RoleName, Guid RestaurantId, Status Status, DateTimeOffset Created);
+
 
 public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager) : IRequestHandler<GetAllEmployeeCommand, PagedResult<GetAllEmployeeResponse>>
 {

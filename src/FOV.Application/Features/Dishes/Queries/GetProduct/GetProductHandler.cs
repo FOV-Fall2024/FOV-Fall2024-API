@@ -1,10 +1,11 @@
-﻿using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
+﻿using FOV.Application.Features.Dishes.Responses;
+using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Dishes.Queries.GetProduct;
 public sealed record GetProductCommand(string? ProductName, string? ProductDescription, string? RestaurantId) : IRequest<List<GetProductResponse>>;
 
-public sealed record GetProductResponse(Guid ProductId, string ProductName, string ProductDescription);
+
 internal class GetProductHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<GetProductCommand, List<GetProductResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
