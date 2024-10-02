@@ -64,10 +64,11 @@ await app.InitializeDatabaseAsync();
 //app.UseHttpsRedirection();
 // Map the default Identity API endpoints except for registration
 app.MapIdentityApi<User>();
-app.UseMiddleware<UnauthorizedMiddleware>();
+//app.UseMiddleware<UnauthorizedMiddleware>();
 
 app.MapPrometheusScrapingEndpoint();
 app.UseCookiePolicy();
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseCors("AllowAllOrigins");
 app.MapControllers();

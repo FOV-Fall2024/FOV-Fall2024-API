@@ -86,16 +86,36 @@ public static class DependencyInjection
          options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
          options.CallbackPath = "/signin-google";
      })
-     .AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters
-     {
-         ValidateIssuer = true,
-         ValidateAudience = true,
-         ValidateLifetime = true,
-         ValidateIssuerSigningKey = true,
-         ValidIssuer = builder.Configuration["JWTSecretKey:ValidIssuer"],
-         ValidAudience = builder.Configuration["JWTSecretKey:ValidAudience"],
-         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTSecretKey:SecretKey"])),
-         ClockSkew = TimeSpan.FromSeconds(1)
+     .AddJwtBearer(options => {
+         options.TokenValidationParameters = new TokenValidationParameters
+         {
+             ValidateIssuer = true,
+             ValidateAudience = true,
+             ValidateLifetime = true,
+             ValidateIssuerSigningKey = true,
+             ValidIssuer = builder.Configuration["JWTSecretKey:ValidIssuer"],
+             ValidAudience = builder.Configuration["JWTSecretKey:ValidAudience"],
+             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTSecretKey:SecretKey"])),
+             ClockSkew = TimeSpan.FromSeconds(1)
+
+         };
+         options.Events = new JwtBearerEvents
+         {
+             OnChallenge = context =>
+             {
+                 // Skip the default challenge behavior
+                 context.HandleResponse();
+
+                 // Return a custom response message for 401 Unauthorized
+                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                 context.Response.ContentType = "application/json";
+                 var result = Newtonsoft.Json.JsonConvert.SerializeObject(new
+                 {
+                     message = "You need to log in to access this resource."
+                 });
+                 return context.Response.WriteAsync(result);
+             }
+         };
      });
 
 
