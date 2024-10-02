@@ -69,6 +69,7 @@ public class DishGeneralController : DefaultController
     /// <param name="ingredientId">The ID of the ingredient.</param>
     /// <param name="command">The command containing the new quantity.</param>
     /// <returns>A success message.</returns>
+    [Authorize(Roles = Role.Administrator)]
     [HttpPatch("{productId}/ingredient/{ingredientId}")]
     [SwaggerOperation(Summary = "Updates the ingredient quantity for a specific product.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -87,6 +88,7 @@ public class DishGeneralController : DefaultController
     /// <param name="productId">The ID of the product to update.</param>
     /// <param name="command">The command containing updated product details.</param>
     /// <returns>The ID of the updated product general.</returns>
+    [Authorize(Roles = Role.Administrator)]
     [HttpPut("{productId}")]
     [SwaggerOperation(Summary = "Updates an existing product general.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -103,6 +105,7 @@ public class DishGeneralController : DefaultController
     /// </summary>
     /// <param name="id">The ID of the product to activate.</param>
     /// <returns>A success message.</returns>
+    [Authorize(Roles = Role.Administrator)]
     [HttpPost("{id:guid}/active")]
     [SwaggerOperation(Summary = "Activates a product general.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -118,6 +121,7 @@ public class DishGeneralController : DefaultController
     /// </summary>
     /// <param name="id">The ID of the product to deactivate.</param>
     /// <returns>A success message.</returns>
+    [Authorize(Roles = Role.Administrator)]
     [HttpPost("{id:guid}/inactive")]
     [SwaggerOperation(Summary = "Deactivates a product general.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -133,7 +137,7 @@ public class DishGeneralController : DefaultController
     /// </summary>
     /// <param name="command">The command containing query parameters for retrieval.</param>
     /// <returns>A list of product generals.</returns>
-    [Authorize(Roles = Role.Administrator)]
+    [Authorize(Roles = Role.Administrator + "," + Role.Manager)]
     [HttpGet]
     [SwaggerOperation(Summary = "Retrieves all product generals.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -149,6 +153,7 @@ public class DishGeneralController : DefaultController
     /// </summary>
     /// <param name="id">The ID of the product general to retrieve.</param>
     /// <returns>The details of the specified product general.</returns>
+    [Authorize(Roles = Role.Administrator + "," + Role.Manager)]
     [HttpGet("{id:guid}")]
     [SwaggerOperation(Summary = "Retrieves detailed information about a specific product general.")]
     [ProducesResponseType(StatusCodes.Status200OK)]

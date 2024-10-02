@@ -18,6 +18,7 @@ public class HandleImportFileHandler(IUnitOfWorks unitOfWorks, IClaimService cla
     public async Task<Result> Handle(ProcessImportFileCommand request, CancellationToken cancellationToken)
     {
         var file = request.File;
+        ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
         using var stream = new MemoryStream();
         await file.CopyToAsync(stream, cancellationToken);
         using var package = new ExcelPackage(stream);
@@ -31,7 +32,8 @@ public class HandleImportFileHandler(IUnitOfWorks unitOfWorks, IClaimService cla
             var quantity = worksheet.Cells[row, 2].Text;  // Column B
             var measurement = worksheet.Cells[row, 3].Text;  // Column C
 
-            Ingredient ingredient = await _unitOfWorks.IngredientRepository.FirstOrDefaultAsync(x => x.IngredientName == ingredientName) ?? throw new Exception();
+            Ingredient? ingredient = await _unitOfWorks.IngredientRepository.FirstOrDefaultAsync(x => x.IngredientName == ingredientName && x.RestaurantId == _claimService.RestaurantId);
+            if (ingredient is null) break;
             IngredientUnit? unit = await _unitOfWorks.IngredientUnitRepository.FirstOrDefaultAsync(x => x.IngredientId == ingredient.Id && x.UnitName == measurement);
 
             decimal quantityCalculate = decimal.Parse(quantity) * _unitOfWorks.IngredientRepository.GetTotalConversionFactor(unit.Id);

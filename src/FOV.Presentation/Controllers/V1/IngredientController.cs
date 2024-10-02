@@ -104,14 +104,14 @@ namespace FOV.Presentation.Controllers.V1
         }
 
         [HttpPost("import-file")]
-        public async Task<IActionResult> ImportFile([FromForm] IFormFile file, [FromServices] IMediator mediator)
+        public async Task<IActionResult> ImportFile([FromForm] ProcessImportFileCommand file)
         {
-            if (file == null || file.Length == 0)
+            if (file == null)
             {
                 return BadRequest("No file uploaded.");
             }
 
-            var result = await mediator.Send(new ProcessImportFileCommand(file));
+            var result = await _mediator.Send(file);
 
             return result.IsSuccess ? Ok("File processed successfully.") : BadRequest(result.Errors);
         }

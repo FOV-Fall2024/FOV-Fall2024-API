@@ -37,11 +37,11 @@ public class EmployeeLoginHandler(IUnitOfWorks unitOfWorks, UserManager<User> us
         if (signIn)
         {
             // Using ?? operator for safe access to configuration values
-            string secretKey = _configuration["JWT:SecretKey"] ?? throw new Exception("SecretKey not configured");
-            string validIssuer = _configuration["JWT:ValidIssuer"] ?? throw new Exception("ValidIssuer not configured");
-            string validAudience = _configuration["JWT:ValidAudience"] ?? throw new Exception("ValidAudience not configured");
+            string secretKey = _configuration["JWTSecretKey:SecretKey"] ?? throw new Exception("SecretKey not configured");
+            string validIssuer = _configuration["JWTSecretKey:ValidIssuer"] ?? throw new Exception("ValidIssuer not configured");
+            string validAudience = _configuration["JWTSecretKey:ValidAudience"] ?? throw new Exception("ValidAudience not configured");
 
-            string token = GenerateJWT(user, roles, secretKey, validIssuer, validAudience, Guid.NewGuid());
+            string token = GenerateJWT(user, roles, secretKey, validIssuer, validAudience, employee.RestaurantId);
             return new EmployeeLoginResponse(token, "not");
         }
 

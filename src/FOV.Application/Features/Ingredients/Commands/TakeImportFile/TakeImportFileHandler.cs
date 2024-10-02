@@ -16,10 +16,6 @@ public class TakeImportFileHandler(IUnitOfWorks unitOfWorks,IClaimService claimS
     {
         ExcelPackage.LicenseContext = LicenseContext.Commercial;
 
-        // Define the measurement options for the dropdown
-        var measurementOptions = new[] { "kg", "g", "liters", "ml" };
-
-        // Create a memory stream to hold the Excel file
         using var package = new ExcelPackage();
         // Add a worksheet
         var worksheet = package.Workbook.Worksheets.Add("DataSheet");
@@ -29,13 +25,8 @@ public class TakeImportFileHandler(IUnitOfWorks unitOfWorks,IClaimService claimS
         worksheet.Cells[1, 2].Value = "Quantity";   // Column B
         worksheet.Cells[1, 3].Value = "Measurement";   // Column C
 
-        // Populate the read-only column (A)
-        //for (int row = 2; row <= _unitOfWorks.IngredientRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId); row++)
-        //{
-        //    worksheet.Cells[row, 1].Value = "Fixed Data";  // This will be read-only
-        //}
         int rowIngredient = 2;
-        var ingredients = await _unitOfWorks.IngredientRepository.WhereAsync(x => x.RestaurantId == Guid.Parse("29cbd5dd-4e4b-49c9-9f41-281e406ec69a"),x => x.IngredientUnits);
+        var ingredients = await _unitOfWorks.IngredientRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId,x => x.IngredientUnits);
         foreach (var item in ingredients)
         {
             worksheet.Cells[rowIngredient, 1].Value = item.IngredientName;
@@ -57,7 +48,8 @@ public class TakeImportFileHandler(IUnitOfWorks unitOfWorks,IClaimService claimS
         worksheet.Cells["C2:C10"].Style.Locked = false;  // Unlock column C
 
         // Apply number validation for the second column (B)
-        var numberValidation = worksheet.DataValidations.AddDecimalValidation("B2:B10");
+        int count = _unitOfWorks.IngredientRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId).Result.Count;
+        var numberValidation = worksheet.DataValidations.AddDecimalValidation($"B2:B{count+=1}");
         numberValidation.ShowErrorMessage = true;
         numberValidation.ErrorTitle = "Invalid Input";
         numberValidation.Error = "Only numbers between 0 and 100 are allowed.";

@@ -4,8 +4,10 @@ using FOV.Application.Features.Dishes.Commons.Inactive;
 using FOV.Application.Features.Dishes.Commons.Update;
 using FOV.Application.Features.Dishes.Queries.GetMenu;
 using FOV.Application.Features.Dishes.Queries.GetProduct;
+using FOV.Domain.Entities.UserAggregator.Enums;
 using FOV.Presentation.Infrastructure.Core;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -27,6 +29,7 @@ public class DishController : DefaultController
     /// </summary>
     /// <param name="command">The command containing product details.</param>
     /// <returns>The result of the add operation.</returns>
+    [Authorize(Roles = Role.Manager)]
     [HttpPost("addProduct")]
     [SwaggerOperation(Summary = "Adds a new product.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -42,6 +45,7 @@ public class DishController : DefaultController
     /// </summary>
     /// <param name="command">The command containing product activation details.</param>
     /// <returns>The result of the activation operation.</returns>
+    [Authorize(Roles = Role.Manager)]
     [HttpPost("active")]
     [SwaggerOperation(Summary = "Activates a product.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -57,6 +61,7 @@ public class DishController : DefaultController
     /// </summary>
     /// <param name="command">The command containing product deactivation details.</param>
     /// <returns>The result of the deactivation operation.</returns>
+    [Authorize(Roles = Role.Manager)]
     [HttpPost("inactive")]
     [SwaggerOperation(Summary = "Deactivates a product.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -87,6 +92,7 @@ public class DishController : DefaultController
     /// </summary>
     /// <param name="command">The command containing product query parameters.</param>
     /// <returns>The details of the requested product.</returns>
+    [Authorize]
     [HttpGet]
     [SwaggerOperation(Summary = "Retrieves a specific product.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -103,6 +109,7 @@ public class DishController : DefaultController
     /// <param name="id">The ID of the product to update.</param>
     /// <param name="command">The command containing updated product details.</param>
     /// <returns>The result of the update operation.</returns>
+    [Authorize(Roles = Role.Manager)]
     [HttpPut("{id}")]
     [SwaggerOperation(Summary = "Updates an existing product.")]
     [ProducesResponseType(StatusCodes.Status200OK)]

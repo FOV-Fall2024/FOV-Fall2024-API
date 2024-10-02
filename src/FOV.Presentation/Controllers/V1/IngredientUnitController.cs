@@ -1,8 +1,10 @@
 ﻿using FOV.Application.Features.IngredientUnits.Commands.CreateNewIngredientUnit;
 using FOV.Application.Features.IngredientUnits.Commands.Update;
 using FOV.Application.Features.IngredientUnits.Queries.GetIngredientUnit;
+using FOV.Domain.Entities.UserAggregator.Enums;
 using FOV.Presentation.Infrastructure.Core;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -36,6 +38,7 @@ public class IngredientUnitController : DefaultController
     /// </summary>
     /// <param name="command">The command containing ingredient unit details.</param>
     /// <returns>The ID of the newly created ingredient unit.</returns>
+    [Authorize(Roles = Role.Administrator)]
     [HttpPost]
     [SwaggerOperation(Summary = "Adds a new ingredient unit.")]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -56,6 +59,7 @@ public class IngredientUnitController : DefaultController
     /// <param name="id">The ID of the ingredient unit to update.</param>
     /// <param name="command">The command with updated ingredient unit details.</param>
     /// <returns>No content.</returns>
+    [Authorize(Roles = Role.Administrator)]
     [HttpPut("{id:guid}")]
     [SwaggerOperation(Summary = "Updates an existing ingredient unit.")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

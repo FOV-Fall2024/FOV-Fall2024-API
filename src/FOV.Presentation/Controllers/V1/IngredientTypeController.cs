@@ -5,8 +5,10 @@ using FOV.Application.Features.IngredientTypes.Commands.Inactive;
 using FOV.Application.Features.IngredientTypes.Commands.Update;
 using FOV.Application.Features.IngredientTypes.Queries.GetChildCategories;
 using FOV.Application.Features.IngredientTypes.Queries.GetParentCategories;
+using FOV.Domain.Entities.UserAggregator.Enums;
 using FOV.Presentation.Infrastructure.Core;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -57,6 +59,7 @@ public class IngredientTypeController : DefaultController
     /// </summary>
     /// <param name="request">The command containing ingredient type details.</param>
     /// <returns>The ID of the newly created parent ingredient type.</returns>
+    [Authorize(Roles = Role.Administrator)]
     [HttpPost("parent")]
     [SwaggerOperation(Summary = "Creates a new parent ingredient type.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -72,6 +75,7 @@ public class IngredientTypeController : DefaultController
     /// </summary>
     /// <param name="command">The command containing child ingredient type details.</param>
     /// <returns>The ID of the newly created child ingredient type.</returns>
+    [Authorize(Roles = Role.Administrator)]
     [HttpPost("child")]
     [SwaggerOperation(Summary = "Creates a new child ingredient type.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -88,6 +92,7 @@ public class IngredientTypeController : DefaultController
     /// <param name="id">The ID of the ingredient type to update.</param>
     /// <param name="command">The command containing updated ingredient type details.</param>
     /// <returns>The ID of the updated ingredient type.</returns>
+    [Authorize(Roles = Role.Administrator)]
     [HttpPut("{id:guid}")]
     [SwaggerOperation(Summary = "Updates an existing ingredient type.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -104,6 +109,7 @@ public class IngredientTypeController : DefaultController
     /// </summary>
     /// <param name="id">The ID of the ingredient type to activate.</param>
     /// <returns>A success message.</returns>
+    [Authorize(Roles = Role.Administrator)]
     [HttpPost("{id:guid}/active")]
     [SwaggerOperation(Summary = "Activates an ingredient type.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -119,6 +125,7 @@ public class IngredientTypeController : DefaultController
     /// </summary>
     /// <param name="id">The ID of the ingredient type to deactivate.</param>
     /// <returns>A success message.</returns>
+    [Authorize(Roles = Role.Administrator)]
     [HttpPost("{id:guid}/inactive")]
     [SwaggerOperation(Summary = "Deactivates an ingredient type.")]
     [ProducesResponseType(StatusCodes.Status200OK)]

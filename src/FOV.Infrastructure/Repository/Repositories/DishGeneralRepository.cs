@@ -39,7 +39,7 @@ public class DishGeneralRepository : GenericRepository<DishGeneral>, IDishGenera
             .Select(combo => new
             {
                 combo.Id,
-                Products = context.ProductCombos
+                Products = context.DishCombos
                     .Where(cp => cp.ComboId == combo.Id)
                     .Select(cp => new
                     {

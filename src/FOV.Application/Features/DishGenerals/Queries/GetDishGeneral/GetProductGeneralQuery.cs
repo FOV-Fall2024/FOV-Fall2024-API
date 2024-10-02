@@ -1,4 +1,6 @@
-﻿using FOV.Domain.Entities.DishGeneralAggregator;
+﻿using FOV.Application.Common.Behaviours.Claim;
+using FOV.Domain.Entities.DishGeneralAggregator;
+using FOV.Domain.Entities.UserAggregator.Enums;
 using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
@@ -9,19 +11,18 @@ namespace FOV.Application.Features.DishGenerals.Queries.GetProductGeneral
 
     public record GetProductGeneralResponse(Guid Id, string Name, decimal Price, string ProductDescription, bool IsDeleted, string ProductImage, Guid CategoryId, DateTimeOffset CreatedDate, DateTimeOffset UpdateTime);
 
-    public class GetProductGeneralQuery : IRequestHandler<GetProductGeneralCommand, PagedResult<GetProductGeneralResponse>>
+    public class GetProductGeneralQuery(IUnitOfWorks unitOfWorks, IClaimService claimService) : IRequestHandler<GetProductGeneralCommand, PagedResult<GetProductGeneralResponse>>
     {
-        private readonly IUnitOfWorks _unitOfWorks;
+        private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
+        private readonly IClaimService _claimService = claimService;
 
-        public GetProductGeneralQuery(IUnitOfWorks unitOfWorks)
-        {
-            _unitOfWorks = unitOfWorks;
-        }
+
 
         public async Task<PagedResult<GetProductGeneralResponse>> Handle(GetProductGeneralCommand request, CancellationToken cancellationToken)
         {
-            // Fetch all products from the repository
             var allProducts = await _unitOfWorks.DishGeneralRepository.GetAllAsync();
+
+            if (_claimService.UserRole == Role.Manager) allProducts = allProducts.Where(x => !x.IsDeleted).ToList();
 
             // Filter products based on the request parameters
             var filteredProducts = allProducts.AsQueryable().CustomFilterV1(new DishGeneral

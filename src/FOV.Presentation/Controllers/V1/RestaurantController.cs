@@ -5,8 +5,10 @@ using FOV.Application.Features.Restaurants.Commons.Inactive;
 using FOV.Application.Features.Restaurants.Commons.Update;
 using FOV.Application.Features.Restaurants.Queries.Detail;
 using FOV.Application.Features.Restaurants.Queries.Get;
+using FOV.Domain.Entities.UserAggregator.Enums;
 using FOV.Presentation.Infrastructure.Core;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FOV.Presentation.Controllers.V1;
@@ -17,6 +19,7 @@ public class RestaurantController(IMediator mediator) : DefaultController
     private readonly IMediator _mediator = mediator;
 
     // [ ] Add New Restaurant
+    [Authorize(Roles = Role.Administrator)]
     [HttpPost]
     public async Task<IActionResult> AddRestaurant(CreateRestaurantCommand command)
     {
@@ -38,6 +41,7 @@ public class RestaurantController(IMediator mediator) : DefaultController
         return Ok(response);
     }
 
+    [Authorize(Roles = Role.Administrator)]
     [HttpPost("{id:guid}/active")]
     public async Task<IActionResult> ActiveRestaurant(Guid id)
     {
@@ -52,6 +56,7 @@ public class RestaurantController(IMediator mediator) : DefaultController
         }
     }
 
+    [Authorize(Roles = Role.Administrator)]
     [HttpPost("{id:guid}/inactive")]
     public async Task<IActionResult> InactiveRestaurant(Guid id)
     {
@@ -65,6 +70,8 @@ public class RestaurantController(IMediator mediator) : DefaultController
             return BadRequest(new Error<string>("Không hoạt động thất bại", ErrorStatusCodeConfig.BAD_REQUEST, new List<string> { ex.Message }));
         }
     }
+
+    [Authorize(Roles = Role.Administrator)]
     [HttpPatch("{id:guid}/update")]
     public async Task<IActionResult> UpdateRestaurant(Guid id, UpdateRestaurantCommand command)
     {
@@ -79,6 +86,8 @@ public class RestaurantController(IMediator mediator) : DefaultController
             return BadRequest(new Error<FieldError>("Cập nhật nhà hàng thất bại", ErrorStatusCodeConfig.BAD_REQUEST, ex.FieldErrors));
         }
     }
+
+    [Authorize(Roles = Role.Administrator)]
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetRestaurant(Guid id)
     {

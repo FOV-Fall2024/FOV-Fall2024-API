@@ -3,9 +3,11 @@ using FOV.Application.Features.IngredientGenerals.Commands.Create;
 using FOV.Application.Features.IngredientGenerals.Commands.Inactive;
 using FOV.Application.Features.IngredientGenerals.Commands.Update;
 using FOV.Application.Features.IngredientGenerals.Queries.GetAllIngredientGeneral;
+using FOV.Domain.Entities.UserAggregator.Enums;
 using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Presentation.Infrastructure.Core;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -27,6 +29,7 @@ public class IngredientGeneralController : DefaultController
     /// </summary>
     /// <param name="command">The command containing ingredient details.</param>
     /// <returns>The ID of the newly created ingredient general.</returns>
+    [Authorize(Roles = Role.Administrator)]
     [HttpPost]
     [SwaggerOperation(Summary = "Creates a new ingredient general.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -43,6 +46,7 @@ public class IngredientGeneralController : DefaultController
     /// <param name="id">The ID of the ingredient general to update.</param>
     /// <param name="command">The command containing updated ingredient details.</param>
     /// <returns>The ID of the updated ingredient general.</returns>
+    [Authorize(Roles = Role.Administrator)]
     [HttpPut("{id:guid}")]
     [SwaggerOperation(Summary = "Updates an existing ingredient general.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -59,6 +63,7 @@ public class IngredientGeneralController : DefaultController
     /// </summary>
     /// <param name="id">The ID of the ingredient general to activate.</param>
     /// <returns>A success message.</returns>
+    [Authorize(Roles = Role.Administrator)]
     [HttpPost("{id:guid}/active")]
     [SwaggerOperation(Summary = "Activates an ingredient general.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -74,6 +79,7 @@ public class IngredientGeneralController : DefaultController
     /// </summary>
     /// <param name="id">The ID of the ingredient general to deactivate.</param>
     /// <returns>A success message.</returns>
+    [Authorize(Roles = Role.Administrator)]
     [HttpPost("{id:guid}/inactive")]
     [SwaggerOperation(Summary = "Deactivates an ingredient general.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
