@@ -5,7 +5,7 @@ using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Combos.Commands.Create;
-public sealed record CreateComboCommand(List<Guid> ProductInCombos, string ComboName, string Status, int Quantity, decimal Price, DateTime ExpiredDate) : IRequest<Guid>;
+public sealed record CreateComboCommand(List<Guid> ProductInCombos, string ComboName, bool isActive, int Quantity, decimal Price, DateTime ExpiredDate) : IRequest<Guid>;
 public sealed record ProductInCombo(Guid ProductId);
 public class CreateComboHandler(IUnitOfWorks unitOfWorks, IClaimService claimService) : IRequestHandler<CreateComboCommand, Guid>
 {
@@ -15,7 +15,7 @@ public class CreateComboHandler(IUnitOfWorks unitOfWorks, IClaimService claimSer
     public async Task<Guid> Handle(CreateComboCommand request, CancellationToken cancellationToken)
     {
         Guid restaurantId = _claimService.RestaurantId;
-        Combo combo = new(request.ComboName, request.Quantity, request.Price, request.ExpiredDate, _claimService.RestaurantId);
+        Combo combo = new(request.ComboName, request.Quantity, request.Price, request.ExpiredDate, _claimService.RestaurantId,request.isActive);
         await _unitOfWorks.ComboRepository.AddAsync(combo);
         decimal totalPrice = 0;
         foreach (var item in request.ProductInCombos)
@@ -25,7 +25,7 @@ public class CreateComboHandler(IUnitOfWorks unitOfWorks, IClaimService claimSer
             await _unitOfWorks.DishComboRepository.AddAsync(new(item, combo.Id));
         }
 
-        combo.PercentReduce = totalPrice;
+        combo.PercentReduce = totalPrice/request.Price;
         await _unitOfWorks.SaveChangeAsync();
         return combo.Id;
     }

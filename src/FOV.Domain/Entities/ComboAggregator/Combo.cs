@@ -31,12 +31,13 @@ public class Combo : BaseAuditableEntity, IsSoftDeleted
     {
 
     }
-    public Combo(string comboName, int quantity, decimal price, DateTime expiredDate, Guid restaurantId)
+    public Combo(string comboName, int quantity, decimal price, DateTime expiredDate, Guid restaurantId,bool isDeleted)
     {
         ComboName = comboName;
         Status = Status.InStock;
         Quantity = quantity;
         Price = price;
+        IsDeleted = isDeleted;
         ExpiredDate = expiredDate;
         RestaurantId = restaurantId;
     }

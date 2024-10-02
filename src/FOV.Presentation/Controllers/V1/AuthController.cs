@@ -94,7 +94,10 @@ public class AuthController : DefaultController
     public async Task<IActionResult> Login(EmployeeLoginCommand request)
     {
         var response = await _sender.Send(request);
-        return Ok(new OK_Result<EmployeeLoginResponse>("Đăng nhập thành công", response));
+
+        return response is null
+            ? BadRequest(new Error<string>("Kiểm tra thông tin đăng nhập", ErrorStatusCodeConfig.BAD_REQUEST))
+            : Ok(new OK_Result<EmployeeLoginResponse>("Đăng nhập thành công", response));
     }
 
     /// <summary>
