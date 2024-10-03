@@ -3,7 +3,7 @@ using FOV.Application.Features.Authorize.Commands.CreateEmployee;
 using FOV.Domain.Entities.RestaurantAggregator;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 
-namespace FOV.Application.Features.Users.Commands.CreateEmployee;
+namespace FOV.Application.Features.Employees.Commands.CreateEmployee;
 public class CreateEmployeeValidator : AbstractValidator<CreateEmployeeCommand>
 {
     public CreateEmployeeValidator(RestaurantValidator validations)

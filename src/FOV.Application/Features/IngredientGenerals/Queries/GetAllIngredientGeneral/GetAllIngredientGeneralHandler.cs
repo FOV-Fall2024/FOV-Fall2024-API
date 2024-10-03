@@ -10,14 +10,9 @@ namespace FOV.Application.Features.IngredientGenerals.Queries.GetAllIngredientGe
 
  
 
-    public class GetAllIngredientGeneralHandler : IRequestHandler<GetAllIngredientCommand, PagedResult<GetAllIngredientResponse>>
+    public class GetAllIngredientGeneralHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<GetAllIngredientCommand, PagedResult<GetAllIngredientResponse>>
     {
-        private readonly IUnitOfWorks _unitOfWorks;
-
-        public GetAllIngredientGeneralHandler(IUnitOfWorks unitOfWorks)
-        {
-            _unitOfWorks = unitOfWorks;
-        }
+        private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
 
         public async Task<PagedResult<GetAllIngredientResponse>> Handle(GetAllIngredientCommand request, CancellationToken cancellationToken)
         {

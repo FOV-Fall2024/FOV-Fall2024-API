@@ -6,6 +6,7 @@ using FOV.Application.Features.Dishes.Queries.GetMenu;
 using FOV.Application.Features.Dishes.Queries.GetProduct;
 using FOV.Application.Features.Dishes.Responses;
 using FOV.Domain.Entities.UserAggregator.Enums;
+using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Presentation.Infrastructure.Core;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -85,7 +86,7 @@ public class DishController : DefaultController
     public async Task<IActionResult> GetMenu([FromQuery] GetMenuCommand command)
     {
         var response = await _mediator.Send(command);
-        return Ok(new OK_Result<List<GetMenuResponse>>("Lấy menu thành công", response));
+        return Ok(new OK_Result<PagedResult<GetMenuResponse>>("Lấy menu thành công", response));
     }
 
     /// <summary>

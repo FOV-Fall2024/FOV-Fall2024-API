@@ -6,7 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace FOV.Application.Features.Users.Commands.Active;
+namespace FOV.Application.Features.Employees.Commands.Active;
 
 public sealed record ActiveEmployeeCommand(string Id) : IRequest<Result<Guid>>;
 
