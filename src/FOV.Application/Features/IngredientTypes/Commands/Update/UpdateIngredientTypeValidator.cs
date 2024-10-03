@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using FOV.Application.Features.IngredientTypes.Commands.CreateChild;
+using FOV.Application.Features.IngredientTypes.Commands.Create;
 using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 

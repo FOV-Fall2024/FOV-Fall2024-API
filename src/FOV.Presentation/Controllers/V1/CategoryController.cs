@@ -1,10 +1,9 @@
-﻿using FOV.Infrastructure.Helpers.GetHelper;
-using FOV.Application.Features.Categories.Commands.AddNewChildCategory;
-using FOV.Application.Features.Categories.Commands.Delete;
+﻿using FOV.Application.Features.Categories.Commands.AddNewChildCategory;
 using FOV.Application.Features.Categories.Commands.Update;
 using FOV.Application.Features.Categories.Queries.GetParentCategories;
 using FOV.Application.Features.Categories.Reponses;
 using FOV.Domain.Entities.UserAggregator.Enums;
+using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Presentation.Infrastructure.Core;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -73,19 +72,5 @@ public class CategoryController : DefaultController
         return Ok(new OK_Result<string>("Cập nhật danh mục thành công", ""));
     }
 
-    /// <summary>
-    /// Deletes a child category.
-    /// </summary>
-    /// <param name="id">The ID of the category to delete.</param>
-    /// <returns>A success message.</returns>
-    [Authorize(Roles = Role.Administrator)]
-    [HttpDelete("{id:guid}")]
-    [SwaggerOperation(Summary = "Deletes a child category.")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Delete(Guid id)
-    {
-        var response = await _mediator.Send(new DeleteCategoryCommand(id));
-        return Ok(new OK_Result<string>("Xóa danh mục con thành công", ""));
-    }
+   
 }

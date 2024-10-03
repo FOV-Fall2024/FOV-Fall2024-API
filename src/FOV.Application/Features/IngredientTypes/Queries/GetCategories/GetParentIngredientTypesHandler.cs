@@ -13,7 +13,7 @@ public class GetParentIngredientTypesHandler(IUnitOfWorks unitOfWorks) : IReques
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     public async Task<List<GetParentCategoriesResponse>> Handle(GetParentCategoriesCommand request, CancellationToken cancellationToken)
     {
-        var data = await _unitOfWorks.IngredientTypeRepository.WhereAsync(x => x.ParentId == null);
+        var data = await _unitOfWorks.IngredientTypeRepository.GetAllAsync();
         return data.Select(x => new GetParentCategoriesResponse(x.Id, x.IngredientName, x.IngredientDescription)).ToList();
     }
 }

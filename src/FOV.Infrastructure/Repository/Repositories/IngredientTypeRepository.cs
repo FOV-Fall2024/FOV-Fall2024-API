@@ -13,10 +13,5 @@ public class IngredientTypeRepository : GenericRepository<IngredientType>, IIngr
         _context = context;
     }
 
-    public async Task UpdateParentIngredientType(Guid parentId, int right)
-    {
-        var category = await _context.IngredientTypes.FirstOrDefaultAsync(x => x.Id == parentId);
-        _context.IngredientTypes.Where(x => x.IngredientMain == category.IngredientMain && x.Right >= right).ExecuteUpdate(x => x.SetProperty(b => b.Right, b => b.Right + 2));
-        _context.IngredientTypes.Where(x => x.IngredientMain == category.IngredientMain && x.Left > right).ExecuteUpdate(x => x.SetProperty(b => b.Left, b => b.Right + 2));
-    }
+
 }

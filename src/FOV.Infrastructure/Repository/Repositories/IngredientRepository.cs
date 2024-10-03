@@ -32,27 +32,26 @@ public class IngredientRepository : GenericRepository<Ingredient>, IIngredientRe
         return unit.ConversionFactor * parentConversionFactor;
     }
 
-    public async Task HandleExpried()
-    {
-        var ingredienttypes = _context.IngredientTypes.ToList();
-        foreach (var ingredientType in ingredienttypes)
-        {
-            foreach (var ingredient in ingredientType.Ingredients)
-            {
-                foreach (var transaction in ingredient.IngredientTransactions.Where(x => x.IsDeleted == false))
-                {
-                    if (transaction.TransactionDate.AddDays(ingredientType.ExpiredTime) >= DateTime.UtcNow)
-                    {
-                        //? Add Transacation that remove out of 
-                        Ingredient updateIngredient = await _context.Ingredients.SingleOrDefaultAsync(x => x.Id == ingredient.Id) ?? throw new Exception();
-                        //? Add Transfer to exprireQuantity
-                        updateIngredient.UpdateExpriedQuantity(transaction.Quantity);
-                        _context.Ingredients.Update(updateIngredient);
+    //public async Task HandleExpried()
+    //{
+    //    var ingredienttypes = _context.IngredientTypes.ToList();
+    //    foreach (var ingredientType in ingredienttypes)
+    //    {
+    //        foreach (var ingredient in ingredientType.Ingredients)
+    //        {
+    //            foreach (var transaction in ingredient.IngredientTransactions.Where(x => x.IsDeleted == false))
+    //            {
+    //                if (transaction.TransactionDate.AddDays(ingredientType.ExpiredTime) >= DateTime.UtcNow)
+    //                {
+    //                    //? Add Transacation that remove out of 
+    //                    Ingredient updateIngredient = await _context.Ingredients.SingleOrDefaultAsync(x => x.Id == ingredient.Id) ?? throw new Exception();
+    //                    //? Add Transfer to exprireQuantity
+    //                    updateIngredient.UpdateExpriedQuantity(transaction.Quantity);
+    //                    _context.Ingredients.Update(updateIngredient);
 
-                    }
-                }
+    //                }
+    //            }
 
-            }
-        }
-    }
+    //        }
+    //    }}
 }

@@ -27,6 +27,7 @@ namespace FOV.Presentation.Controllers.V1
         /// <summary>
         /// Retrieves all combos.
         /// </summary>
+        [Authorize(Roles = Domain.Entities.UserAggregator.Enums.Role.Manager)]
         [HttpGet]
         [SwaggerOperation(Summary = "Retrieves all combos.")]
         [ProducesResponseType(StatusCodes.Status200OK)]

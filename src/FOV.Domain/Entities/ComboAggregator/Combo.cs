@@ -15,6 +15,7 @@ public class Combo : BaseAuditableEntity, IsSoftDeleted
     public int Quantity { get; set; }
 
     public decimal Price { get; set; }
+    public string Thumbnail { get; set; }
 
     public decimal PercentReduce { get; set; }
 
@@ -31,8 +32,9 @@ public class Combo : BaseAuditableEntity, IsSoftDeleted
     {
 
     }
-    public Combo(string comboName, int quantity, decimal price, DateTime expiredDate, Guid restaurantId,bool isDeleted)
+    public Combo(string comboName, int quantity, decimal price, DateTime expiredDate, Guid restaurantId,bool isDeleted,string thumbnail)
     {
+        Thumbnail = thumbnail;
         ComboName = comboName;
         Status = Status.InStock;
         Quantity = quantity;
