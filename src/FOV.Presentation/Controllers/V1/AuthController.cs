@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using FluentResults;
+using FOV.Application.Common.Exceptions;
 using FOV.Application.Features.Authorize.Commands.ChangePassword;
 using FOV.Application.Features.Authorize.Commands.EditProfile;
 using FOV.Application.Features.Authorize.Commands.EmployeeLogin;
@@ -76,11 +77,17 @@ public class AuthController : DefaultController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Login(EmployeeLoginCommand request)
     {
-        var response = await _sender.Send(request);
-
-        return response is null
-            ? BadRequest(new Error<string>("Kiểm tra thông tin đăng nhập", ErrorStatusCodeConfig.BAD_REQUEST))
-            : Ok(new OK_Result<EmployeeLoginResponse>("Đăng nhập thành công", response));
+        try
+        {
+            var response = await _sender.Send(request);
+            return response is null
+                ? BadRequest(new Error<string>("Kiểm tra thông tin đăng nhập", ErrorStatusCodeConfig.BAD_REQUEST))
+                : Ok(new OK_Result<EmployeeLoginResponse>("Đăng nhập thành công", response));
+            }
+        catch (AppException ex)
+        {
+            return BadRequest(new Error<FieldError>("Đăng nhập thất bại", ErrorStatusCodeConfig.BAD_REQUEST, ex.FieldErrors));
+        }
     }
 
     /// <summary>

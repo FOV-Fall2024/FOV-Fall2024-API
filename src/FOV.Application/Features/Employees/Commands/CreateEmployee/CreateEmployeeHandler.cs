@@ -6,10 +6,11 @@ using FOV.Domain.Entities.UserAggregator.Enums;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace FOV.Application.Features.Authorize.Commands.CreateEmployee;
 
-public sealed record CreateEmployeeCommand(string LastName, string FirstName, string Address, string Email, int RoleId, Guid RestaurantId) : IRequest<Result<string>>;
+public sealed record CreateEmployeeCommand(string LastName, string FirstName, string PhoneNumber, int RoleId, Guid RestaurantId) : IRequest<Result<string>>;
 public sealed record GenerateRole(string RoleName, string Code);
 
 public partial class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager, RoleManager<IdentityRole> roleManager) : IRequestHandler<CreateEmployeeCommand, Result<string>>
@@ -22,13 +23,13 @@ public partial class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager
     {
         var fieldErrors = new List<FieldError>();
 
-        var existingUser = await _userManager.FindByEmailAsync(request.Email);
+        var existingUser = await _userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber);
         if (existingUser != null)
         {
             fieldErrors.Add(new FieldError
             {
-                Field = "email",
-                Message = "Email này đã được đăng kí"
+                Field = "phoneNumber",
+                Message = "Số điện thoại này đã được đăng kí"
             });
         }
 
@@ -53,8 +54,8 @@ public partial class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager
         {
             FirstName = request.FirstName,
             LastName = request.LastName,
-            Email = request.Email,
-            UserName = request.Email,
+            PhoneNumber = request.PhoneNumber,
+            UserName = request.PhoneNumber,
         };
 
         var result = await _userManager.CreateAsync(user, "12345678!Fpt");

@@ -20,9 +20,22 @@ public class UserLoginHandler(UserManager<User> userManager, IConfiguration conf
 
     public async Task<UserResponse> Handle(UserLoginCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userManager.FindByEmailAsync(request.Email) ?? throw new AppException("Sai Email");
+        var fieldErrors = new List<FieldError>();
+        var user = await _userManager.FindByEmailAsync(request.Email);
+        if (user == null)
+        {
+            fieldErrors.Add(new FieldError { Field = "email", Message = "Sai Email" });
+        }
 
-        if (!_userManager.CheckPasswordAsync(user, request.Password).Result) throw new KeyNotFoundException("Sai mật khẩu");
+        if (user != null && !await _userManager.CheckPasswordAsync(user, request.Password))
+        {
+            fieldErrors.Add(new FieldError { Field = "password", Message = "Sai mật khẩu" });
+        }
+
+        if (fieldErrors.Any())
+        {
+            throw new AppException("Lỗi đăng nhập", fieldErrors);
+        }
 
         var roles = await _userManager.GetRolesAsync(user);
 

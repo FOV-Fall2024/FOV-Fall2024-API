@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using FOV.Application.Common.Exceptions;
 using FOV.Application.Features.Authorize.Commands.UserLogin;
 using FOV.Domain.Entities.UserAggregator;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
@@ -12,7 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 namespace FOV.Application.Features.Authorize.Commands.EmployeeLogin;
 
 public sealed record EmployeeLoginCommand(string Code, string Password) : IRequest<EmployeeLoginResponse>;
-public sealed record EmployeeLoginResponse(string Id, string FullName, string Email, string Role, string AccessToken, string RefreshToken);
+public sealed record EmployeeLoginResponse(string Id, Guid RestaurantId, string FullName, string PhoneNumber, string Role, string AccessToken, string RefreshToken);
 public class EmployeeLoginHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration configuration) : IRequestHandler<EmployeeLoginCommand, EmployeeLoginResponse>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
@@ -21,18 +22,27 @@ public class EmployeeLoginHandler(IUnitOfWorks unitOfWorks, UserManager<User> us
     private readonly SignInManager<User> _signInManager = signInManager;
     public async Task<EmployeeLoginResponse> Handle(EmployeeLoginCommand request, CancellationToken cancellationToken)
     {
-        // Fetch employee and related user in a single query
+        var fieldErrors = new List<FieldError>();
+
         var employee = await _unitOfWorks.EmployeeRepository
             .FirstOrDefaultAsync(x => x.EmployeeCode == request.Code, x => x.User);
 
         if (employee == null || employee.User == null)
         {
-            return null;
+            fieldErrors.Add(new FieldError { Field = "code", Message = "Mã nhân viên không đúng" });
+            throw new AppException("Đăng nhập thất bại", fieldErrors);
         }
 
         var user = employee.User;
         var roles = await _userManager.GetRolesAsync(user);
+
         var signIn = await _userManager.CheckPasswordAsync(user, request.Password);
+
+        if (!signIn)
+        {
+            fieldErrors.Add(new FieldError { Field = "password", Message = "Mật khẩu không chính xác" });
+            throw new AppException("Đăng nhập thất bại", fieldErrors);
+        }
 
         if (signIn)
         {
@@ -42,7 +52,7 @@ public class EmployeeLoginHandler(IUnitOfWorks unitOfWorks, UserManager<User> us
             string validAudience = _configuration["JWTSecretKey:ValidAudience"] ?? throw new Exception("ValidAudience not configured");
 
             string token = GenerateJWT(user, roles, secretKey, validIssuer, validAudience, employee.RestaurantId ?? Guid.Empty);
-            return new EmployeeLoginResponse(user.Id,user.FirstName +" "+user.LastName,user.Email,roles.FirstOrDefault(),token, "not");
+            return new EmployeeLoginResponse(user.Id, user.Employee.RestaurantId ?? Guid.Empty, user.FirstName +" "+user.LastName,user.PhoneNumber,roles.FirstOrDefault(),token, "not");
         }
 
         return null;

@@ -1,19 +1,30 @@
 ﻿using FOV.Application.Features.Categories.Reponses;
+using FOV.Domain.Entities.DishAggregator;
+using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Categories.Queries.GetParentCategories;
 
-public sealed record GetCategoriesCommand : IRequest<List<GetParentCategoriesResponse>>;
-
-
-
-public class GetParentCategoriesQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetCategoriesCommand, List<GetParentCategoriesResponse>>
+public sealed record GetCategoriesCommand(PagingRequest? PagingRequest, Guid? Id, string? CategoryName) : IRequest<PagedResult<GetParentCategoriesResponse>>;
+public class GetParentCategoriesQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetCategoriesCommand, PagedResult<GetParentCategoriesResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
-    public async Task<List<GetParentCategoriesResponse>> Handle(GetCategoriesCommand request, CancellationToken cancellationToken)
+    public async Task<PagedResult<Reponses.GetParentCategoriesResponse>> Handle(GetCategoriesCommand request, CancellationToken cancellationToken)
     {
         var responses = await _unitOfWorks.CategoryRepository.GetAllAsync();
-        return responses.Select(x => new GetParentCategoriesResponse(x.Id, x.CategoryName)).ToList();
+        var filterEntity = new Category
+        {
+            Id = request.Id ?? Guid.Empty,
+            CategoryName = request.CategoryName ?? string.Empty
+        };
+        var filterCategory = responses.AsQueryable().CustomFilterV1(filterEntity);
+        var mappedCategory = filterCategory.Select(x => new GetParentCategoriesResponse(x.Id, x.CategoryName)).ToList();
+
+        var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
+
+        var sortedResult = PaginationHelper<GetParentCategoriesResponse>.Sorting(sortType, mappedCategory, sortField);
+        var result = PaginationHelper<GetParentCategoriesResponse>.Paging(sortedResult, page, pageSize);
+        return result;
     }
 }

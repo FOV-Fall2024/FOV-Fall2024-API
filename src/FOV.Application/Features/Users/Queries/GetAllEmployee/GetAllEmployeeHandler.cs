@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FOV.Application.Features.Users.Queries.GetAllEmployee;
 
-public sealed record GetAllEmployeeCommand(PagingRequest? PagingRequest, string? Role, Guid? RestaurantId, string? FullName, string? Email, string? EmployeeCode, Status? Status = Status.Unknown) : IRequest<PagedResult<GetAllEmployeeResponse>>;
+public sealed record GetAllEmployeeCommand(PagingRequest? PagingRequest, string? Role, Guid? RestaurantId, string? FullName, string? PhoneNumber, string? EmployeeCode, Status? Status = Status.Unknown) : IRequest<PagedResult<GetAllEmployeeResponse>>;
 
 
 
@@ -40,7 +40,7 @@ public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> u
         {
             User = new User
             {
-                Email = request.Email,
+                PhoneNumber = request.PhoneNumber,
             },
             EmployeeCode = request.EmployeeCode ?? string.Empty,
             Status = request.Status ?? Status.Unknown 
@@ -64,7 +64,7 @@ public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> u
                 result.Add(new GetAllEmployeeResponse(
                     employee.User.Id,
                     employee.User.FirstName + " " + employee.User.LastName,
-                    employee.User.Email,
+                    employee.User.PhoneNumber,
                     employee.EmployeeCode,
                     employee.HireDate,
                     roleName,

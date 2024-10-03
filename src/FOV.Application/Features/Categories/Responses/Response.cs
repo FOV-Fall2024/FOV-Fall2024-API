@@ -7,4 +7,4 @@ using System.Threading.Tasks;
 namespace FOV.Application.Features.Categories.Reponses;
 
 
-public   sealed record GetParentCategoriesResponse(Guid Id, string Name);
+public sealed record GetParentCategoriesResponse(Guid Id, string CategoryName);

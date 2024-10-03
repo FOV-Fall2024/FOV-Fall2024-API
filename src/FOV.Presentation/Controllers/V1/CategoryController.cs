@@ -1,4 +1,5 @@
-﻿using FOV.Application.Features.Categories.Commands.AddNewChildCategory;
+﻿using FOV.Infrastructure.Helpers.GetHelper;
+using FOV.Application.Features.Categories.Commands.AddNewChildCategory;
 using FOV.Application.Features.Categories.Commands.Delete;
 using FOV.Application.Features.Categories.Commands.Update;
 using FOV.Application.Features.Categories.Queries.GetParentCategories;
@@ -32,10 +33,10 @@ public class CategoryController : DefaultController
     [SwaggerOperation(Summary = "Retrieves all parent categories.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetCategory()
+    public async Task<IActionResult> GetCategory([FromQuery] GetCategoriesCommand command)
     {
-        var response = await _mediator.Send(new GetCategoriesCommand());
-        return Ok(new OK_Result<List<GetParentCategoriesResponse>>("Lấy danh mục thành công", response));
+        var response = await _mediator.Send(command);
+        return Ok(new OK_Result<PagedResult<GetParentCategoriesResponse>>("Lấy danh mục thành công", response));
     }
 
     /// <summary>

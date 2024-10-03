@@ -87,7 +87,7 @@ public class ApplicationDbContextInitializer
         var administrator = await _userManager.FindByEmailAsync("administrator@localhost");
         if (administrator == null)
         {
-            administrator = new User { UserName = "administrator@localhost", Email = "administrator@localhost", FirstName = "Admin"};
+            administrator = new User { UserName = "administrator@localhost", Email = "administrator@localhost", FirstName = "Admin", LastName = "Admin", PhoneNumber = "0867960120"};
             await _userManager.CreateAsync(administrator, "Administrator1!");
 
             if (!string.IsNullOrWhiteSpace(administratorsRole.Name))
