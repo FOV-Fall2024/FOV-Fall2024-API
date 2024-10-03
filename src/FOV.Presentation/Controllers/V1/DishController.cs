@@ -102,7 +102,7 @@ public class DishController : DefaultController
     public async Task<IActionResult> Get([FromQuery] GetProductCommand command)
     {
         var response = await _mediator.Send(command);
-        return Ok(new OK_Result<List<GetProductResponse>>("Lấy món ăn thành công", response));
+        return Ok(new OK_Result<PagedResult<GetProductResponse>>("Lấy món ăn thành công", response));
     }
 
     /// <summary>
