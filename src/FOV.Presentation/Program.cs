@@ -2,18 +2,19 @@
 using FOV.Domain.Entities.UserAggregator;
 using FOV.Infrastructure;
 using FOV.Presentation.Infrastructure;
+using FOV.Presentation.Infrastructure.Middleware;
 using OpenTelemetry.Metrics;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
 var builder = WebApplication.CreateBuilder(args);
 var conn = builder.Configuration.GetConnectionString("PostgresConnection");
 // Add services to the container
+builder.Services.AddInfrastructureDI();
+builder.Services.AddApplicationDI();
 builder.Services.AddControllers();
 builder.Services.AddPresentationDI(conn ?? throw new ArgumentNullException(nameof(conn), "Connection string cannot be null."), builder);
 
 
-builder.Services.AddApplicationDI();
-builder.Services.AddInfrastructureDI();
 
 builder.Services.AddOpenTelemetry().WithMetrics(x =>
 {
@@ -62,7 +63,7 @@ await app.InitializeDatabaseAsync();
 //app.UseHttpsRedirection();
 // Map the default Identity API endpoints except for registration
 app.MapIdentityApi<User>();
-//app.UseMiddleware<UnauthorizedMiddleware>();
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapPrometheusScrapingEndpoint();
 app.UseCookiePolicy();

@@ -5,11 +5,11 @@ using MediatR;
 
 namespace FOV.Application.Features.Combos.Commands.Active;
 
-public sealed record ActvieComboCommand(Guid ComboId) : IRequest<Result>;
-public class ActiveComboHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<ActvieComboCommand, Result>
+public sealed record ActiveComboCommand(Guid ComboId) : IRequest<Result>;
+public class ActiveComboHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<ActiveComboCommand, Result>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
-    public async Task<Result> Handle(ActvieComboCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(ActiveComboCommand request, CancellationToken cancellationToken)
     {
         Combo combo = await _unitOfWorks.ComboRepository.GetByIdAsync(request.ComboId) ?? throw new Exception();
         combo.UpdateState(false);

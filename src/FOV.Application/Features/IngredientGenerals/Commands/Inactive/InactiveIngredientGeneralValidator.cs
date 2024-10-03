@@ -1,9 +1,8 @@
 ﻿using FluentValidation;
 using FOV.Application.Features.IngredientGenerals.Commands.Active;
-using FOV.Application.Features.IngredientTypes.Commands.Inactive;
 
 namespace FOV.Application.Features.IngredientGenerals.Commands.Inactive;
-internal class InactiveIngredientGeneralValidator : AbstractValidator<InactiveIngredientTypeCommand>
+public class InactiveIngredientGeneralValidator : AbstractValidator<InactiveIngredientGeneralCommand>
 {
     public InactiveIngredientGeneralValidator(IngredientGeneralIdValidator checkId)
     {

@@ -42,22 +42,27 @@ public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
             .GetService<IEnumerable<IValidator<TRequest>>>()
             ?.ToList() ?? new List<IValidator<TRequest>>();
 
+        var allFieldErrors = new List<FieldError>();
+
         foreach (var validator in validators)
         {
             var validationResult = await validator.ValidateAsync(request, cancellationToken);
             if (!validationResult.IsValid)
             {
-                var fieldErrors = new List<FieldError>();
                 foreach (var item in validationResult.Errors)
                 {
-                    fieldErrors.Add(new FieldError
+                    allFieldErrors.Add(new FieldError
                     {
-                        Field = item.PropertyName,
+                        Field = char.ToLowerInvariant(item.PropertyName[0]) + item.PropertyName.Substring(1),
                         Message = item.ErrorMessage
                     });
                 }
-                throw new AppException("Error",fieldErrors);
             }
+        }
+
+        if (allFieldErrors.Any())
+        {
+            throw new AppException("Validation errors occurred", allFieldErrors);
         }
 
         var response = await next();

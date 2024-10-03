@@ -8,8 +8,8 @@ public class AddNewCategoryValidator : AbstractValidator<AddNewCategoryCommand>
 {
     public AddNewCategoryValidator(CheckDuplicateName name)
     {
-        RuleFor(x => x.Name).NotEmpty();
-        RuleFor(x => x.Name).SetValidator(name);
+        RuleFor(x => x.CategoryName).NotEmpty();
+        RuleFor(x => x.CategoryName).SetValidator(name);
     }
 }
 

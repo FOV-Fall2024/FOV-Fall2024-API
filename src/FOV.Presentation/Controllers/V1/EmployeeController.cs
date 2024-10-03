@@ -2,7 +2,7 @@
 using FOV.Application.Features.Authorize.Commands.CreateEmployee;
 using FOV.Application.Features.Employees.Commands.Active;
 using FOV.Application.Features.Employees.Commands.Inactive;
-using FOV.Application.Features.Users.Queries.GetAllEmployee;
+using FOV.Application.Features.Employees.Queries.GetAllEmployee;
 using FOV.Presentation.Infrastructure.Core;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

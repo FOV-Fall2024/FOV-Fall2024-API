@@ -7,7 +7,7 @@ using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-namespace FOV.Application.Features.Users.Queries.GetAllEmployee;
+namespace FOV.Application.Features.Employees.Queries.GetAllEmployee;
 
 public sealed record GetAllEmployeeCommand(PagingRequest? PagingRequest, string? Role, Guid? RestaurantId, string? FullName, string? PhoneNumber, string? EmployeeCode, Status? Status = Status.Unknown) : IRequest<PagedResult<GetAllEmployeeResponse>>;
 
@@ -43,7 +43,7 @@ public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> u
                 PhoneNumber = request.PhoneNumber,
             },
             EmployeeCode = request.EmployeeCode ?? string.Empty,
-            Status = request.Status ?? Status.Unknown 
+            Status = request.Status ?? Status.Unknown
         });
 
         var result = new List<GetAllEmployeeResponse>();

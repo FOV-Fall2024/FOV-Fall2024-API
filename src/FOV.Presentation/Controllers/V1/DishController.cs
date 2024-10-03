@@ -111,15 +111,15 @@ public class DishController : DefaultController
     /// <param name="id">The ID of the product to update.</param>
     /// <param name="command">The command containing updated product details.</param>
     /// <returns>The result of the update operation.</returns>
-    [Authorize(Roles = Role.Manager)]
-    [HttpPut("{id}")]
-    [SwaggerOperation(Summary = "Updates an existing product.")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Update(Guid id, UpdateProductCommand command)
-    {
-        command.ProductId = id;
-        var response = await _mediator.Send(command);
-        return Ok(new UPDATED_Result("Cập nhật món ăn thành công", response));
-    }
+    //[Authorize(Roles = Role.Manager)]
+    //[HttpPut("{id}")]
+    //[SwaggerOperation(Summary = "Updates an existing product.")]
+    //[ProducesResponseType(StatusCodes.Status200OK)]
+    //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+    //public async Task<IActionResult> Update(Guid id, UpdateProductCommand command)
+    //{
+    //    command.ProductId = id;
+    //    var response = await _mediator.Send(command);
+    //    return Ok(new UPDATED_Result("Cập nhật món ăn thành công", response));
+    //}
 }

@@ -62,7 +62,7 @@ namespace FOV.Presentation.Controllers.V1
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ActiveCombo(Guid id)
         {
-            var response = await _mediator.Send(new ActvieComboCommand(id));
+            var response = await _mediator.Send(new ActiveComboCommand(id));
             return Ok(new OK_Result<string>("Mở trạng thái hoạt động của combo thành công", ""));
         }
 
