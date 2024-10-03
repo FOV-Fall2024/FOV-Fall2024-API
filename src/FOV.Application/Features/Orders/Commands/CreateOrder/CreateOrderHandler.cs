@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.OrderAggregator.Enums;
+using FOV.Domain.Entities.TableAggregator.Enums;
 using FOV.Infrastructure.Caching.CachingService;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
@@ -58,6 +59,23 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
         {
             throw new Exception("Failed to acquire lock for the table. Try again later.");
         }
+
+        var table = await _unitOfWorks.TableRepository.GetByIdAsync(request.TableId);
+        if (table == null)
+        {
+            await lockService.ReleaseLockAsync();
+            throw new Exception($"Table with ID {request.TableId} not found.");
+        }
+
+        if (table.TableStatus == TableStatus.NotAvailable)
+        {
+            await lockService.ReleaseLockAsync();
+            throw new Exception("Cannot place an order at this time. The table is currently not available.");
+        }
+
+        table.TableStatus = TableStatus.NotAvailable;
+        _unitOfWorks.TableRepository.Update(table);
+        await _unitOfWorks.SaveChangeAsync();
 
         var tableOrders = (await _unitOfWorks.OrderRepository.GetAllAsync())
             .Where(o => o.TableId == request.TableId && o.OrderStatus != OrderStatus.Finish)

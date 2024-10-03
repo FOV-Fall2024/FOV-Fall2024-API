@@ -10,10 +10,10 @@ using MediatR;
 
 namespace FOV.Application.Features.Tables.Commands.Create;
 
-public record CreateTableCommand(Status TableStatus) : IRequest<Guid>
+public record CreateTableCommand(Guid RestaurantId) : IRequest<Guid>
 {
     [JsonIgnore]
-    public Guid RestaurantId { get; set; }
+    public TableStatus Status { get; set; } = TableStatus.Available;
 }
 public class CreateTableHandler(IUnitOfWorks unitOfWorks, StorageHandler storageHandler, QRCodeGeneratorHandler qrCodeGeneratorHandler) : IRequestHandler<CreateTableCommand, Guid>
 {
@@ -23,15 +23,16 @@ public class CreateTableHandler(IUnitOfWorks unitOfWorks, StorageHandler storage
 
     public async Task<Guid> Handle(CreateTableCommand request, CancellationToken cancellationToken)
     {
-        Table table = new(request.TableStatus);
+        Table table = new(request.Status);
         int nextTableNumber = await GetNextTableNumberAsync(request.RestaurantId);
 
-        string tableCode = $"Tab_{nextTableNumber.ToString("D3")}";
+        //string tableCode = $"{nextTableNumber.ToString("D3")}";
 
-        // Generate TableCode based on the next TableNumber
         table.RestaurantId = request.RestaurantId;
-        table.TableCode = tableCode;
-        table.TableQRCode = await GenerateAndUploadQRCodeAsync(request.RestaurantId, tableCode);
+        //table.TableCode = tableCode;
+        table.TableNumber = nextTableNumber;
+        table.TableStatus = TableStatus.Available;
+        //table.TableQRCode = await GenerateAndUploadQRCodeAsync(request.RestaurantId, tableCode);
 
         await _unitOfWorks.TableRepository.AddAsync(table);
         await _unitOfWorks.SaveChangeAsync();

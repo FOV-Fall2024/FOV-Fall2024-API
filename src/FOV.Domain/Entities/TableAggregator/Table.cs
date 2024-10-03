@@ -8,7 +8,7 @@ public class Table : BaseAuditableEntity, IsSoftDeleted
 {
     public int TableNumber { get; set; }
     public string? TableCode { get; set; }
-    public Status TableStatus { get; set; }
+    public TableStatus TableStatus { get; set; }
     public string? TableQRCode { get; set; }
     public bool IsDeleted { get; set; }
     public Restaurant? Restaurant { get; set; }
@@ -20,11 +20,11 @@ public class Table : BaseAuditableEntity, IsSoftDeleted
 
     }
 
-    public Table(Status tableStatus)
+    public Table(TableStatus tableStatus)
     {
         this.TableStatus = tableStatus;
     }
-    public void Update(int tableNumber, string tableCode, Status tableStatus, string TableQRCode)
+    public void Update(int tableNumber, string tableCode, TableStatus tableStatus, string TableQRCode)
     {
         this.TableNumber = tableNumber;
         this.TableCode = tableCode;

@@ -14,9 +14,9 @@ public class TableController(ISender sender) : DefaultController
     private readonly ISender _sender = sender;
 
     [HttpPost("{restaurantId:guid}")]
-    public async Task<IActionResult> Add(Guid restaurantId, [FromBody] CreateTableCommand request)
+    public async Task<IActionResult> Add(Guid restaurantId)
     {
-        request.RestaurantId = restaurantId;
+        var request = new CreateTableCommand(restaurantId);
         var response = await _sender.Send(request);
         return Ok(response);
     }

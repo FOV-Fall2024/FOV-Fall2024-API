@@ -33,7 +33,7 @@ public static class CustomFilter
             }
             else if (property.PropertyType == typeof(Guid) || property.PropertyType == typeof(Guid?))
             {
-                if (property.CustomAttributes.Any(a => a.AttributeType == typeof(GuidAttribute)) && value is Guid guidValue && guidValue != Guid.Empty)
+                if (value is Guid guidValue && guidValue != Guid.Empty)
                 {
                     source = source.Where($"{propertyName} == @0", guidValue);
                 }
