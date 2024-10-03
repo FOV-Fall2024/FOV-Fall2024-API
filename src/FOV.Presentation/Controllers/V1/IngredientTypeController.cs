@@ -5,6 +5,7 @@ using FOV.Application.Features.IngredientTypes.Commands.Inactive;
 using FOV.Application.Features.IngredientTypes.Commands.Update;
 using FOV.Application.Features.IngredientTypes.Queries.GetChildCategories;
 using FOV.Application.Features.IngredientTypes.Queries.GetParentCategories;
+using FOV.Application.Features.IngredientTypes.Responses;
 using FOV.Domain.Entities.UserAggregator.Enums;
 using FOV.Presentation.Infrastructure.Core;
 using MediatR;

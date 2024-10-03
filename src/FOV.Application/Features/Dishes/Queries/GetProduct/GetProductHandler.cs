@@ -5,7 +5,6 @@ using MediatR;
 namespace FOV.Application.Features.Dishes.Queries.GetProduct;
 public sealed record GetProductCommand(string? ProductName, string? ProductDescription, string? RestaurantId) : IRequest<List<GetProductResponse>>;
 
-
 internal class GetProductHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<GetProductCommand, List<GetProductResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;

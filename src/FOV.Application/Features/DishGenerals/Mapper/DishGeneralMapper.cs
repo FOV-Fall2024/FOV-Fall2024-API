@@ -1,4 +1,5 @@
 ﻿using FOV.Application.Features.DishGenerals.Queries.GetProductGeneralDetail;
+using FOV.Application.Features.DishGenerals.Responses;
 using FOV.Domain.Entities.DishGeneralAggregator;
 using FOV.Domain.Entities.IngredientGeneralAggregator;
 

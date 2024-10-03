@@ -1,13 +1,11 @@
-﻿using FOV.Infrastructure.Helpers.GetHelper;
+﻿using FOV.Application.Features.Ingredients.Responses;
+using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Ingredients.Queries.GetIngredients;
 
 public sealed record GetIngredientsCommand(string? IngredientName, PagingRequest? PagingRequest) : IRequest<PagedResult<GetIngredientsResponse>>;
-
-
-
 public class GetIngredientsHandler : IRequestHandler<GetIngredientsCommand, PagedResult<GetIngredientsResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks;

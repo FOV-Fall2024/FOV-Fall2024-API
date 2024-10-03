@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FOV.Application.Features.Dishes.Responses;
 
-public sealed record GetProductResponse(Guid Id, string ProductName, string ProductDescription);
+public sealed record GetProductResponse(Guid Id, Guid RestaurantName, string ProductName, string ProductDescription);
 
 public sealed record GetMenuResponse(Guid Id, string ProductName, string ProductDescription);
 

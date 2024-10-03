@@ -1,5 +1,6 @@
 ﻿
 using FOV.Application.Features.IngredientGenerals.Queries.GetAllIngredientGeneral;
+using FOV.Application.Features.IngredientGenerals.Responses;
 using FOV.Domain.Entities.IngredientGeneralAggregator;
 
 namespace FOV.Application.Features.IngredientGenerals.Mapper;

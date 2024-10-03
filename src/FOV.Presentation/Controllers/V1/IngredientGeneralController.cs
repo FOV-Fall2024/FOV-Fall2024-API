@@ -3,6 +3,7 @@ using FOV.Application.Features.IngredientGenerals.Commands.Create;
 using FOV.Application.Features.IngredientGenerals.Commands.Inactive;
 using FOV.Application.Features.IngredientGenerals.Commands.Update;
 using FOV.Application.Features.IngredientGenerals.Queries.GetAllIngredientGeneral;
+using FOV.Application.Features.IngredientGenerals.Responses;
 using FOV.Domain.Entities.UserAggregator.Enums;
 using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Presentation.Infrastructure.Core;
