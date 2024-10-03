@@ -4,12 +4,11 @@ using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace FOV.Application.Features.Users.Queries.GetAllUser
 {
-    public sealed record GetUsersCommand(string? UserName, string? LastName, string? FirstName, string? Email, PagingRequest? PagingRequest) : IRequest<PagedResult<GetUsersResponse>>;
-
-
+    public sealed record GetUsersCommand(string? UserName, string? PhoneNumber, PagingRequest? PagingRequest) : IRequest<PagedResult<GetUsersResponse>>;
     public class GetAllUserHandler(UserManager<User> userManager, IUnitOfWorks unitOfWorks) : IRequestHandler<GetUsersCommand, PagedResult<GetUsersResponse>>
     {
         private readonly UserManager<User> _userManager = userManager;
@@ -17,30 +16,20 @@ namespace FOV.Application.Features.Users.Queries.GetAllUser
 
         public async Task<PagedResult<GetUsersResponse>> Handle(GetUsersCommand request, CancellationToken cancellationToken)
         {
-            // Fetch all users in the specified role
             var users = await _userManager.GetUsersInRoleAsync(Domain.Entities.UserAggregator.Enums.Role.User);
+            var filteredUsers = users.Where(x =>
+                                            (string.IsNullOrEmpty(request.UserName) || x.UserName.Contains(request.UserName, StringComparison.OrdinalIgnoreCase)) &&
+                                            //(string.IsNullOrEmpty(request.FirstName) || x.FirstName.Contains(request.FirstName, StringComparison.OrdinalIgnoreCase)) &&
+                                            //(string.IsNullOrEmpty(request.LastName) || x.LastName.Contains(request.LastName, StringComparison.OrdinalIgnoreCase)) &&
+                                            (string.IsNullOrEmpty(request.PhoneNumber) || x.Email.Contains(request.PhoneNumber, StringComparison.OrdinalIgnoreCase)));
 
-            // Filter users based on the request parameters
-            var filteredUsers = users.AsQueryable().CustomFilterV1(new User
-            {
-                UserName = request.UserName ?? string.Empty,
-                FirstName = request.FirstName ?? string.Empty,
-                LastName = request.LastName ?? string.Empty,
-                Email = request.Email ?? string.Empty,
-            });
-
-            // Map to response DTO
             var mappedUsers = filteredUsers.Select(x => new GetUsersResponse(
                 x.Id,
                 $"{x.FirstName} {x.LastName}",
-                x.LastName ?? string.Empty,
-                x.FirstName ?? string.Empty,
-                x.Email ?? string.Empty)).ToList();
+                x.PhoneNumber ?? string.Empty)).ToList();
 
-            // Get pagination and sorting values
             var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
 
-            // Sort and paginate the results
             var sortedResults = PaginationHelper<GetUsersResponse>.Sorting(sortType, mappedUsers, sortField);
             var result = PaginationHelper<GetUsersResponse>.Paging(sortedResults, page, pageSize);
 

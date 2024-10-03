@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Text.Json.Serialization;
+using System.Threading;
 using System.Threading.Tasks;
 using FOV.Application.Features.Users.Responses;
 using FOV.Domain.Entities.UserAggregator;
@@ -15,8 +16,10 @@ public sealed record CreateUserCommand : IRequest<RegisterUserResponse>
     public required string PhoneNumber { get; set; }
     public required string FirstName { get; set; }
     public required string LastName { get; set; }
-    public required string Email { get; set; }
-    public required string Address { get; set; }
+    [JsonIgnore]
+    public string? Email { get; set; }
+    [JsonIgnore]
+    public string? Address { get; set; }
 }
 
 public class CreateUserCommandHandler(UserManager<User> userManager,IUnitOfWorks unitOfWorks) : IRequestHandler<CreateUserCommand, RegisterUserResponse>
@@ -32,10 +35,10 @@ public class CreateUserCommandHandler(UserManager<User> userManager,IUnitOfWorks
         var user = CreateUser(request);
         var creationResult = await _userManager.CreateAsync(user, "12345678!Fpt");
 
-        if (!creationResult.Succeeded) return new RegisterUserResponse("User creation failed.", null, null, null, null);
+        if (!creationResult.Succeeded) return new RegisterUserResponse("User creation failed.", null, null, null);
         
 
-        var customer = new Customer(request.Address, user.Id);
+        var customer = new Customer(request.PhoneNumber+"address", user.Id);
         await _userManager.AddToRolesAsync(user, [Role.User] );
         await _unitOfWorks.CustomerRepository.AddAsync(customer);
         await _unitOfWorks.SaveChangeAsync();
@@ -53,8 +56,8 @@ public class CreateUserCommandHandler(UserManager<User> userManager,IUnitOfWorks
         LastName = request.LastName,
         PhoneNumber = request.PhoneNumber,
         UserName = $"{request.FirstName}{request.LastName}",
-        Email = request.Email,
+        Email = request.PhoneNumber + "@gmail.com",
     };
 
-    private RegisterUserResponse CreateResponse(User user,string msg) => new RegisterUserResponse(user.Id, msg, $"{user.FirstName} {user.LastName}", user.Email, user.PhoneNumber);
+    private RegisterUserResponse CreateResponse(User user,string msg) => new RegisterUserResponse(user.Id, msg, $"{user.FirstName} {user.LastName}", user.PhoneNumber);
 }

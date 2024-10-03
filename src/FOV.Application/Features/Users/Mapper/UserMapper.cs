@@ -6,6 +6,6 @@ public static class UserMapper
 {
     public static GetUsersResponse MapAllDTO(this User user)
     {
-        return new GetUsersResponse(user.Id, user.UserName, user.LastName, user.FirstName, user.Email);
+        return new GetUsersResponse(user.Id, user.UserName, user.Email);
     }
 }

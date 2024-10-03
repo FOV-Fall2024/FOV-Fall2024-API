@@ -67,13 +67,13 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             throw new Exception($"Table with ID {request.TableId} not found.");
         }
 
-        if (table.TableStatus == TableStatus.NotAvailable)
+        if (table.TableStatus == TableStatus.Working)
         {
             await lockService.ReleaseLockAsync();
             throw new Exception("Cannot place an order at this time. The table is currently not available.");
         }
 
-        table.TableStatus = TableStatus.NotAvailable;
+        table.TableStatus = TableStatus.Working;
         _unitOfWorks.TableRepository.Update(table);
         await _unitOfWorks.SaveChangeAsync();
 
