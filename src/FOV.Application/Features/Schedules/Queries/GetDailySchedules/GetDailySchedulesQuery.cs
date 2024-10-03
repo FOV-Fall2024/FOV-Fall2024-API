@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FOV.Application.Features.Schedules.Queries.GetEmployeeSchedules;
+using FOV.Application.Features.Schedules.Responses;
 using FOV.Domain.Entities.WaiterScheduleAggregator;
 using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
@@ -11,7 +12,7 @@ using MediatR;
 
 namespace FOV.Application.Features.Schedules.Queries.GetDailySchedules;
 public sealed record GetDailyScheduleCommand(PagingRequest? PagingRequest, Guid? ShiftId, Guid? RestaurantId) : IRequest<PagedResult<GetDailyScheduleResponse>>;
-public sealed record GetDailyScheduleResponse(Guid Id, EmployeeDto Employee, ShiftDto Shift);
+
 public class GetDailySchedulesQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetDailyScheduleCommand, PagedResult<GetDailyScheduleResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;

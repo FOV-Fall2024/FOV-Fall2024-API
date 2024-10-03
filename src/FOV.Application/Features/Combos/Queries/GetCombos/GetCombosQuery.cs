@@ -1,11 +1,11 @@
-﻿using FluentResults;
+﻿using FOV.Application.Features.Combos.Reponses;
 using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Combos.Queries.GetCombos;
 public sealed record GetCombosCommand(PagingRequest? PagingRequest, Guid? RestaurantId) : IRequest<PagedResult<GetCombosResponse>>;
-public sealed record GetCombosResponse(Guid Id, Guid RestaurantId, string ComboName, int Quantity, decimal Price, DateTimeOffset ExpiredDate);
+
 public class GetCombosQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetCombosCommand, PagedResult<GetCombosResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;

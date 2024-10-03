@@ -95,6 +95,7 @@ public class IngredientGeneralController : DefaultController
     /// </summary>
     /// <param name="command">The command containing query parameters for retrieval.</param>
     /// <returns>A list of ingredient generals.</returns>
+    [Authorize(Roles = Role.Administrator)]
     [HttpGet]
     [SwaggerOperation(Summary = "Retrieves all ingredient generals.")]
     [ProducesResponseType(StatusCodes.Status200OK)]

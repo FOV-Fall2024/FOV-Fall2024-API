@@ -1,4 +1,5 @@
 ﻿using FOV.Application.Common.Behaviours.Claim;
+using FOV.Application.Features.DishGenerals.Responses;
 using FOV.Domain.Entities.DishGeneralAggregator;
 using FOV.Domain.Entities.UserAggregator.Enums;
 using FOV.Infrastructure.Helpers.GetHelper;
@@ -9,7 +10,7 @@ namespace FOV.Application.Features.DishGenerals.Queries.GetProductGeneral
 {
     public sealed record GetProductGeneralCommand(string? Name, string? ProductDescription, Guid? CategoryId, PagingRequest? PagingRequest) : IRequest<PagedResult<GetProductGeneralResponse>>;
 
-    public record GetProductGeneralResponse(Guid Id, string Name, decimal Price, string ProductDescription, bool IsDeleted, string ProductImage, Guid CategoryId, DateTimeOffset CreatedDate, DateTimeOffset UpdateTime);
+
 
     public class GetProductGeneralQuery(IUnitOfWorks unitOfWorks, IClaimService claimService) : IRequestHandler<GetProductGeneralCommand, PagedResult<GetProductGeneralResponse>>
     {

@@ -1,11 +1,12 @@
-﻿using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
+﻿using FOV.Application.Features.IngredientTypes.Responses;
+using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.IngredientTypes.Queries.GetChildCategories;
 
 public sealed record GetChildCategoriesCommand(Guid ParentId) : IRequest<List<GetChildrenIngredientType>>;
 
-public record GetChildrenIngredientType(Guid CategoryId, int Left, int Right, string IngredientTypeName, string ingredientTypeDescription);
+
 
 public class GetChildIngredientTypesHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<GetChildCategoriesCommand, List<GetChildrenIngredientType>>
 {

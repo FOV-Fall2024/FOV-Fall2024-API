@@ -1,13 +1,13 @@
-﻿using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
+﻿using FOV.Application.Features.Dishes.Responses;
+using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Dishes.Queries.GetMenu;
 
 public sealed record GetMenuCommand(string? ProductName, string? ProductDescription, string? RestaurantId) : IRequest<List<GetMenuResponse>>;
-public sealed record ProductCheckingCommand(Guid ProductId, int Quantity);
-public sealed record ProductCommand(Guid ProductId, string ProductName, string ProductDescription);
-public sealed record ComboCommand(Guid ComboId, string ComboName, string ComboDescription);
-public sealed record GetMenuResponse(Guid ProductId, string ProductName, string ProductDescription);
+//public sealed record ProductCheckingCommand(Guid ProductId, int Quantity);
+//public sealed record ProductCommand(Guid ProductId, string ProductName, string ProductDescription);
+//public sealed record ComboCommand(Guid ComboId, string ComboName, string ComboDescription);
 public class GetMenuHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<GetMenuCommand, List<GetMenuResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;

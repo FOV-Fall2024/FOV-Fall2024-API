@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FOV.Application.Features.Payments.Responses;
 using FOV.Domain.Entities.PaymentAggregator.Enums;
 using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
@@ -10,7 +6,7 @@ using MediatR;
 
 namespace FOV.Application.Features.Payments.Queries;
 public record GetPaymentsRequest(Guid? PaymentId, PaymentStatus? PaymentStatus, PaymentMethods? PaymentMethods) : IRequest<List<PaymentResponse>>;
-public record PaymentResponse(Guid PaymentId, decimal Amount, PaymentStatus PaymentStatus, PaymentMethods PaymentMethods);
+
 public class GetPaymentsQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetPaymentsRequest, List<PaymentResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;

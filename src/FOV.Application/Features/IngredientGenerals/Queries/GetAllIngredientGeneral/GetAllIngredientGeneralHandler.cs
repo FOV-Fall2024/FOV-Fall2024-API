@@ -1,4 +1,5 @@
-﻿using FOV.Domain.Entities.IngredientGeneralAggregator; // Adjust as necessary
+﻿using FOV.Application.Features.IngredientGenerals.Responses;
+using FOV.Domain.Entities.IngredientGeneralAggregator; // Adjust as necessary
 using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
@@ -7,7 +8,7 @@ namespace FOV.Application.Features.IngredientGenerals.Queries.GetAllIngredientGe
 {
     public sealed record GetAllIngredientCommand(string? IngredientName, Guid? IngredientTypeId, PagingRequest? PagingRequest) : IRequest<PagedResult<GetAllIngredientResponse>>;
 
-    public record GetAllIngredientResponse(Guid Id, string IngredientName, Guid IngredientTypeId, string IngredientDescription);
+ 
 
     public class GetAllIngredientGeneralHandler : IRequestHandler<GetAllIngredientCommand, PagedResult<GetAllIngredientResponse>>
     {
