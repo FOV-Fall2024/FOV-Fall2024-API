@@ -42,5 +42,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+	
+  <ItemGroup>
+    <Folder Include="Infrastructure\Middleware\" />
+  </ItemGroup>
 
 </Project>

@@ -15,7 +15,7 @@ public class Combo : BaseAuditableEntity, IsSoftDeleted
     public int Quantity { get; set; }
 
     public decimal Price { get; set; }
-    public string Thumbnail { get; set; }
+    public string? Thumbnail { get; set; }
 
     public decimal PercentReduce { get; set; }
 
