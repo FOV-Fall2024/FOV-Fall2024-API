@@ -69,7 +69,7 @@ public class VNPayPaymentHandler : IRequestHandler<VNPayPaymentCommand, VNPayPay
         vnPayHandler.AddRequestData("vnp_Version", "2.1.0");
         vnPayHandler.AddRequestData("vnp_Command", "pay");
         vnPayHandler.AddRequestData("vnp_TmnCode", tmn_code);
-        vnPayHandler.AddRequestData("vnp_Amount", (totalAmount * 100).ToString());
+        vnPayHandler.AddRequestData("vnp_Amount", ((long)(totalAmount * 100)).ToString());
         vnPayHandler.AddRequestData("vnp_BankCode", "");
         vnPayHandler.AddRequestData("vnp_CreateDate", formatDate);
         vnPayHandler.AddRequestData("vnp_CurrCode", "VND");

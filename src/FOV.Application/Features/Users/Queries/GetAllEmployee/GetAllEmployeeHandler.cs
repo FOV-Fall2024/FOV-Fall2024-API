@@ -1,6 +1,7 @@
 ﻿using FluentResults;
 using FOV.Domain.Entities.TableAggregator.Enums;
 using FOV.Domain.Entities.UserAggregator;
+using FOV.Domain.Entities.UserAggregator.Enums;
 using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
@@ -52,6 +53,11 @@ public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> u
             var roles = await _userManager.GetRolesAsync(employee.User);
             var roleName = roles.FirstOrDefault() ?? string.Empty;
 
+            if (roleName == Role.Administrator)
+            {
+                continue;
+            }
+
             // Only include if the role matches or no specific role is requested
             if (string.IsNullOrEmpty(request.Role) || roles.Contains(request.Role))
             {
@@ -62,7 +68,7 @@ public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> u
                     employee.EmployeeCode,
                     employee.HireDate,
                     roleName,
-                    employee.RestaurantId,
+                    employee.RestaurantId ?? Guid.Empty,
                     employee.Status,
                     employee.Created
                 ));

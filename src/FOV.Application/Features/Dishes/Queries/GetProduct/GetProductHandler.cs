@@ -4,7 +4,7 @@ using MediatR;
 namespace FOV.Application.Features.Dishes.Queries.GetProduct;
 public sealed record GetProductCommand(string? ProductName, string? ProductDescription, string? RestaurantId) : IRequest<List<GetProductResponse>>;
 
-public sealed record GetProductResponse(Guid ProductId, string ProductName, string ProductDescription);
+public sealed record GetProductResponse(Guid ProductId, Guid RestaurantId, string ProductName, string ProductDescription);
 internal class GetProductHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<GetProductCommand, List<GetProductResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
@@ -17,6 +17,7 @@ internal class GetProductHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<Get
          (Guid.TryParse(request.RestaurantId, out var restaurantGuid) == false || x.RestaurantId == restaurantGuid)
         ).Select(x => new GetProductResponse(
             x.Id,
+            x.RestaurantId,
             x.DishName,
             x.DishDescription)).ToList();
 

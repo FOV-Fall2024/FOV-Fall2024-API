@@ -18,7 +18,7 @@ public class Employee : BaseAuditableEntity, IsSoftDeleted
     public ICollection<Attendance> Attendances { get; set; } = new List<Attendance>(); // Use List<Attendance>
     public ICollection<WaiterSchedule> WaiterSchedules { get; set; } = new List<WaiterSchedule>(); // Use List<WaiterSchedule>
     public Restaurant? Restaurant { get; set; }
-    public Guid RestaurantId { get; set; }
+    public Guid? RestaurantId { get; set; }
 
     public Employee() { }
 

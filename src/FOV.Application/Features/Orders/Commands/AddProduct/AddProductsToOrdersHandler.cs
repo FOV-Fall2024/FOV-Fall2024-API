@@ -6,15 +6,21 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using FOV.Application.Features.Orders.Commands.CreateOrder;
 using FOV.Domain.Entities.OrderAggregator;
+using FOV.Domain.Entities.OrderAggregator.Enums;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 using StackExchange.Redis;
 
 namespace FOV.Application.Features.Orders.Commands.AddProduct;
-public record AddProductsToOrdersCommand(List<OrderDetailDto> NewOrderDetails) : IRequest<Guid>
+public record AddProductsToOrdersCommand(List<GetOrderDetailDto> NewOrderDetails) : IRequest<Guid>
 {
     [JsonIgnore]
     public Guid OrderId { get; set; }
+}
+public record GetOrderDetailDto(Guid? ComboId, Guid? ProductId, int Quantity, decimal Price)
+{
+    [JsonIgnore]
+    public OrderDetailsStatus Status = OrderDetailsStatus.Prepare;
 }
 public class AddProductsToOrdersHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<AddProductsToOrdersCommand, Guid>
 {

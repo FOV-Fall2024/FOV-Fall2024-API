@@ -66,28 +66,11 @@ public class AuthController : DefaultController
     }
 
     /// <summary>
-    /// Registers a new user.
-    /// </summary>
-    /// <param name="command">The command containing user registration details.</param>
-    /// <returns>A success or error message.</returns>
-    [HttpPost("register")]
-    [SwaggerOperation(Summary = "Register a new user.")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Register(UserRegisterCommand command)
-    {
-        var response = await _sender.Send(command);
-        return response.IsSuccess ?
-            Ok(new OK_Result<string>("Đăng ký thành công", response.Successes.First().Message)) :
-            BadRequest(new Error<IReason>("", ErrorStatusCodeConfig.BAD_REQUEST, response.Reasons));
-    }
-
-    /// <summary>
     /// Logs in an employee.
     /// </summary>
     /// <param name="request">The command containing employee login details.</param>
     /// <returns>A success message with login response.</returns>
-    [HttpPost("login/employee")]
+    [HttpPost("login")]
     [SwaggerOperation(Summary = "Employee login.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -95,21 +78,6 @@ public class AuthController : DefaultController
     {
         var response = await _sender.Send(request);
         return Ok(new OK_Result<EmployeeLoginResponse>("Đăng nhập thành công", response));
-    }
-
-    /// <summary>
-    /// Logs in a customer.
-    /// </summary>
-    /// <param name="command">The command containing customer login details.</param>
-    /// <returns>A success message with login response.</returns>
-    [HttpPost("login/customer")]
-    [SwaggerOperation(Summary = "Customer login.")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CustomerLogin(UserLoginCommand command)
-    {
-        var response = await _sender.Send(command);
-        return Ok(new OK_Result<UserResponse>("Đăng nhập thành công", response));
     }
 
     /// <summary>

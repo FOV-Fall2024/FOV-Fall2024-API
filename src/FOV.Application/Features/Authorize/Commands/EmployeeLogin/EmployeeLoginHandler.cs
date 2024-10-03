@@ -41,7 +41,7 @@ public class EmployeeLoginHandler(IUnitOfWorks unitOfWorks, UserManager<User> us
             string validIssuer = _configuration["JWTSecretKey:ValidIssuer"] ?? throw new Exception("ValidIssuer not configured");
             string validAudience = _configuration["JWTSecretKey:ValidAudience"] ?? throw new Exception("ValidAudience not configured");
 
-            string token = GenerateJWT(user, roles, secretKey, validIssuer, validAudience, employee.RestaurantId);
+            string token = GenerateJWT(user, roles, secretKey, validIssuer, validAudience, employee.RestaurantId ?? Guid.Empty);
             return new EmployeeLoginResponse(token, "not");
         }
 

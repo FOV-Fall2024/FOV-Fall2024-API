@@ -121,7 +121,7 @@ namespace FOV.Infrastructure.Migrations
                             Id = new Guid("941bcca9-52a6-41f7-9403-06cc5fa703ea"),
                             ComboName = "Combo 1",
                             Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ExpiredDate = new DateTime(2024, 11, 2, 1, 43, 50, 390, DateTimeKind.Utc).AddTicks(7047),
+                            ExpiredDate = new DateTime(2024, 11, 3, 4, 51, 52, 884, DateTimeKind.Utc).AddTicks(5460),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             PercentReduce = 10.0m,
@@ -135,7 +135,7 @@ namespace FOV.Infrastructure.Migrations
                             Id = new Guid("3907a193-c2ae-4f40-936b-9a2438595123"),
                             ComboName = "Combo 2",
                             Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ExpiredDate = new DateTime(2024, 12, 2, 1, 43, 50, 390, DateTimeKind.Utc).AddTicks(7065),
+                            ExpiredDate = new DateTime(2024, 12, 3, 4, 51, 52, 884, DateTimeKind.Utc).AddTicks(5471),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             PercentReduce = 5.0m,
@@ -149,7 +149,7 @@ namespace FOV.Infrastructure.Migrations
                             Id = new Guid("921b269a-db6e-4a1d-b285-70df523e010e"),
                             ComboName = "Combo 3",
                             Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ExpiredDate = new DateTime(2024, 12, 2, 1, 43, 50, 390, DateTimeKind.Utc).AddTicks(7069),
+                            ExpiredDate = new DateTime(2024, 12, 3, 4, 51, 52, 884, DateTimeKind.Utc).AddTicks(5473),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             PercentReduce = 5.0m,
@@ -310,6 +310,7 @@ namespace FOV.Infrastructure.Migrations
                             DishType = (byte)0,
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Price = 10000m,
                             RestaurantId = new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0")
                         },
                         new
@@ -323,6 +324,7 @@ namespace FOV.Infrastructure.Migrations
                             DishType = (byte)0,
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Price = 60000m,
                             RestaurantId = new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007")
                         },
                         new
@@ -336,6 +338,7 @@ namespace FOV.Infrastructure.Migrations
                             DishType = (byte)0,
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Price = 20000m,
                             RestaurantId = new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007")
                         });
                 });
@@ -1296,7 +1299,7 @@ namespace FOV.Infrastructure.Migrations
                             Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ReleaseDate = new DateTimeOffset(new DateTime(2024, 10, 9, 1, 43, 50, 405, DateTimeKind.Unspecified).AddTicks(4335), new TimeSpan(0, 0, 0, 0, 0)),
+                            ReleaseDate = new DateTimeOffset(new DateTime(2024, 10, 10, 4, 51, 52, 888, DateTimeKind.Unspecified).AddTicks(7295), new TimeSpan(0, 0, 0, 0, 0)),
                             RestaurantCode = "RE_001",
                             RestaurantName = "Default Restaurant",
                             RestaurantPhone = "0902388123",
@@ -1309,7 +1312,7 @@ namespace FOV.Infrastructure.Migrations
                             Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ReleaseDate = new DateTimeOffset(new DateTime(2024, 10, 9, 1, 43, 50, 405, DateTimeKind.Unspecified).AddTicks(4376), new TimeSpan(0, 0, 0, 0, 0)),
+                            ReleaseDate = new DateTimeOffset(new DateTime(2024, 10, 10, 4, 51, 52, 888, DateTimeKind.Unspecified).AddTicks(7326), new TimeSpan(0, 0, 0, 0, 0)),
                             RestaurantCode = "RE_002",
                             RestaurantName = "Vege Thu Duc",
                             RestaurantPhone = "0867960120",
@@ -1460,7 +1463,7 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("RestaurantId")
+                    b.Property<Guid?>("RestaurantId")
                         .HasColumnType("uuid");
 
                     b.Property<byte>("Status")
@@ -2182,9 +2185,7 @@ namespace FOV.Infrastructure.Migrations
                 {
                     b.HasOne("FOV.Domain.Entities.RestaurantAggregator.Restaurant", "Restaurant")
                         .WithMany("Employees")
-                        .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RestaurantId");
 
                     b.HasOne("FOV.Domain.Entities.UserAggregator.User", "User")
                         .WithOne("Employee")
