@@ -47,7 +47,16 @@ public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
             var validationResult = await validator.ValidateAsync(request, cancellationToken);
             if (!validationResult.IsValid)
             {
-                throw new ValidationException(validationResult.Errors);
+                var fieldErrors = new List<FieldError>();
+                foreach (var item in validationResult.Errors)
+                {
+                    fieldErrors.Add(new FieldError
+                    {
+                        Field = item.PropertyName,
+                        Message = item.ErrorMessage
+                    });
+                }
+                throw new AppException("Error",fieldErrors);
             }
         }
 

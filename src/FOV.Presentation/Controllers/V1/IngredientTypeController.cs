@@ -5,6 +5,7 @@ using FOV.Application.Features.IngredientTypes.Commands.Update;
 using FOV.Application.Features.IngredientTypes.Queries.GetParentCategories;
 using FOV.Application.Features.IngredientTypes.Responses;
 using FOV.Domain.Entities.UserAggregator.Enums;
+using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Presentation.Infrastructure.Core;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -32,10 +33,10 @@ public class IngredientTypeController : DefaultController
     [SwaggerOperation(Summary = "Retrieves a list of parent ingredient types.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Get()
+    public async Task<IActionResult> Get([FromQuery]GetCategoriesCommand command)
     {
-        List<GetParentCategoriesResponse> response = await _sender.Send(new GetParentCategoriesCommand());
-        return Ok(new OK_Result<List<GetParentCategoriesResponse>>("Get Parent IngredientType Successfully", response));
+        PagedResult<GetParentCategoriesResponse> response = await _sender.Send(command);
+        return Ok(new OK_Result<PagedResult<GetParentCategoriesResponse>>("Get Parent IngredientType Successfully", response));
     }
 
 

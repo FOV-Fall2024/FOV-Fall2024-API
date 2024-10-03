@@ -1,9 +1,7 @@
-﻿using FluentValidation.AspNetCore;
-using FOV.Application;
+﻿using FOV.Application;
 using FOV.Domain.Entities.UserAggregator;
 using FOV.Infrastructure;
 using FOV.Presentation.Infrastructure;
-using FOV.Presentation.Infrastructure.Middleware;
 using OpenTelemetry.Metrics;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
