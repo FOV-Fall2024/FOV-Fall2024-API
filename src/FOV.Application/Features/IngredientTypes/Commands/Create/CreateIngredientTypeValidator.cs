@@ -30,7 +30,7 @@ public sealed class CheckIngredientParentIdValidator : AbstractValidator<Guid>
     private async Task<bool> CheckParentId(Guid parentId, CancellationToken token)
     {
         IngredientType? ingredientType = await _unitOfWorks.IngredientTypeRepository.GetByIdAsync(parentId);
-        return ingredientType == null;
+        return ingredientType != null;
     }
 
 
