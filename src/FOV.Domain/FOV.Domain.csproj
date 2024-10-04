@@ -20,7 +20,6 @@
 		<Folder Include="Entities\OrderAggregator\Primitives\" />
 		<Folder Include="Entities\DishAggregator\ValueObjects\" />
 		<Folder Include="Entities\DishAggregator\Primitives\" />
-		<Folder Include="Entities\DishGeneralAggregator\Enums\" />
 		<Folder Include="Entities\DishGeneralAggregator\ValueObjet\" />
 		<Folder Include="Entities\DishGeneralAggregator\Primitives\" />
 		<Folder Include="Entities\RestaurantAggregator\Enums\" />

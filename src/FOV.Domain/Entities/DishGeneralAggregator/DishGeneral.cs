@@ -1,14 +1,13 @@
 ﻿using FOV.Domain.Common;
 using FOV.Domain.Entities.DishAggregator;
+using FOV.Domain.Entities.DishGeneralAggregator.Enums;
 
 
 namespace FOV.Domain.Entities.DishGeneralAggregator;
 
 public class DishGeneral : BaseAuditableEntity, IsSoftDeleted
 {
-
     public string DishName { get; set; } = string.Empty;
-
     public string DishDescription { get; set; } = string.Empty;
     public decimal Price { get; set; }
     public string DishImageDefault { get; set; } = string.Empty;
@@ -16,6 +15,8 @@ public class DishGeneral : BaseAuditableEntity, IsSoftDeleted
     public Category Category { get; set; }
     public Guid? CategoryId { get; set; }
     public bool IsDeleted { get; set; }
+    public bool IsRefund { get; set; }
+    public NonPreparedType NonPreparedType { get; set; }
     public bool IsDraft { get; set; } = true;
     public virtual ICollection<DishIngredientGeneral> Ingredients { get; set; } = [];
 
