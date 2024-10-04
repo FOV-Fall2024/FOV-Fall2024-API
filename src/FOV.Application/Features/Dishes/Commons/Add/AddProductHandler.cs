@@ -3,6 +3,7 @@ using FOV.Application.Common.Behaviours.Claim;
 using FOV.Domain.Entities.DishAggregator;
 using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Domain.Entities.IngredientAggregator.Enums;
+using FOV.Domain.Entities.IngredientGeneralAggregator;
 using FOV.Domain.Entities.IngredientGeneralAggregator.Enums;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
@@ -29,16 +30,16 @@ internal class AddProductHandler : IRequestHandler<AddProductCommand, Result>
         var product = new Dish(productGeneral.DishName, productGeneral.Price, _claimService.RestaurantId, productGeneral.CategoryId, productGeneral.Id);
         await _unitOfWorks.DishRepository.AddAsync(product);
 
-        await AddIngredientsToProduct(product.Id);
+        await AddIngredientsToProduct(product.Id,request.ProductId);
         await _unitOfWorks.SaveChangeAsync();
 
         return Result.Ok();
     }
 
-    private async Task AddIngredientsToProduct(Guid productId)
+    private async Task AddIngredientsToProduct(Guid productId,Guid dishGeneralId)
     {
         var ingredients = await _unitOfWorks.IngredientGeneralRepository
-            .WhereAsync(x => x.DishIngredientGenerals.Any(pig => pig.DishGeneralId == productId));
+            .WhereAsync(x => x.DishIngredientGenerals.Any(pig => pig.DishGeneralId == dishGeneralId),x => x.DishIngredientGenerals);
 
         var ingredientNames = ingredients.Select(i => i.IngredientName).ToList();
         var existingIngredients = await _unitOfWorks.IngredientRepository
@@ -47,25 +48,24 @@ internal class AddProductHandler : IRequestHandler<AddProductCommand, Result>
         foreach (var item in ingredients)
         {
             var existingIngredient = existingIngredients.FirstOrDefault(e => e.IngredientName == item.IngredientName);
-
+            IngredientGeneral? ingredientGeneral = await _unitOfWorks.IngredientGeneralRepository.FirstOrDefaultAsync(x => x.IngredientName == item.IngredientName, x => x.DishIngredientGenerals);
             if (existingIngredient is null)
             {
                 var newIngredient = new Ingredient(item.IngredientName, item.IngredientTypeId, _claimService.RestaurantId);
                 await _unitOfWorks.IngredientRepository.AddAsync(newIngredient);
-                await AddDishIngredientAndUnits(productId, newIngredient.Id, item.IngredientMeasure);
+                await AddDishIngredientAndUnits(productId, newIngredient.Id, item.IngredientMeasure,item.DishIngredientGenerals.FirstOrDefault().Quantity);
             }
             else
             {
-                await _unitOfWorks.DishIngredientRepository.AddAsync(new DishIngredient(productId, existingIngredient.Id));
+                await _unitOfWorks.DishIngredientRepository.AddAsync(new DishIngredient(productId, existingIngredient.Id, ingredientGeneral.DishIngredientGenerals.FirstOrDefault(x => x.DishGeneralId == dishGeneralId && x.IngredientGeneralId == ingredientGeneral.Id).Quantity));
             }
-
             await _unitOfWorks.SaveChangeAsync();
         }
     }
 
-    private async Task AddDishIngredientAndUnits(Guid productId, Guid ingredientId, IngredientMeasure measure)
+    private async Task AddDishIngredientAndUnits(Guid productId, Guid ingredientId, IngredientMeasure measure,decimal quantity)
     {
-        await _unitOfWorks.DishIngredientRepository.AddAsync(new DishIngredient(productId, ingredientId));
+        await _unitOfWorks.DishIngredientRepository.AddAsync(new DishIngredient(productId, ingredientId,quantity));
         await AddDefaultIngredientUnit(ingredientId, measure);
     }
 

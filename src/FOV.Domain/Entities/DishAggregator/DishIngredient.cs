@@ -18,9 +18,10 @@ public class DishIngredient : BaseAuditableEntity
 
     }
 
-    public DishIngredient(Guid dishId, Guid ingredientId)
+    public DishIngredient(Guid dishId, Guid ingredientId,decimal quantity)
     {
         IngredientId = ingredientId;
         DishId = dishId;
+        Quantity = quantity;    
     }
 }

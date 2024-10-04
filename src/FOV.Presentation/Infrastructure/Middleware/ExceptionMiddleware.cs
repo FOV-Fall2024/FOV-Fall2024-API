@@ -33,6 +33,7 @@ public class ExceptionMiddleware
         var result = JsonConvert.SerializeObject(new
         {
             message = exception.Message,
+            statusCode =exception.StatusCode,
             errors = exception.FieldErrors // Include the detailed errors here
         });
 
