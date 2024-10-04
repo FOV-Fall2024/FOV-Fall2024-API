@@ -6,36 +6,35 @@ using MediatR;
 
 namespace FOV.Application.Features.IngredientTypes.Queries.GetParentCategories;
 
-public sealed record GetCategoriesCommand(PagingRequest? PagingRequest, string? CategoryName) : IRequest<PagedResult<GetParentCategoriesResponse>>;
+public sealed record GetIngredientTypeCommand(PagingRequest? PagingRequest, Guid? Id, string? IngredientTypeName) : IRequest<PagedResult<GetChildrenIngredientType>>;
+//public sealed record GetIngredientTypeCommand(PagingRequest? PagingRequest, string? IngredientTypeName) : IRequest<PagedResult<GetChildrenIngredientType>>;
 
-
-public class GetParentIngredientTypesHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<GetCategoriesCommand, PagedResult<GetParentCategoriesResponse>>
+public class GetParentIngredientTypesHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<GetIngredientTypeCommand, PagedResult<GetChildrenIngredientType>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
-    public async Task<PagedResult<GetParentCategoriesResponse>> Handle(GetCategoriesCommand request, CancellationToken cancellationToken)
+    public async Task<PagedResult<GetChildrenIngredientType>> Handle(GetIngredientTypeCommand request, CancellationToken cancellationToken)
     {
-        var responses = await _unitOfWorks.CategoryRepository.GetAllAsync();
+        var responses = await _unitOfWorks.IngredientTypeRepository.GetAllAsync();
 
-        var filterEntity = new Category
+        var filterEntity = new Domain.Entities.IngredientAggregator.IngredientType
         {
-            CategoryName = request.CategoryName ?? string.Empty,
-            
+            IngredientName = request.IngredientTypeName ?? string.Empty,
         };
 
         // Apply custom filtering
         var filterCategory = responses.AsQueryable().CustomFilterV1(filterEntity);
 
         // Map to response DTO
-        var mappedCategory = filterCategory.Select(x => new GetParentCategoriesResponse(x.Id, x.CategoryName)).ToList();
+        var mappedCategory = filterCategory.Select(x => new GetChildrenIngredientType(x.Id, x.IngredientName)).ToList();
 
         // Get pagination and sorting values
         var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
 
         // Sort the results
-        var sortedResult = PaginationHelper<GetParentCategoriesResponse>.Sorting(sortType, mappedCategory, sortField);
+        var sortedResult = PaginationHelper<GetChildrenIngredientType>.Sorting(sortType, mappedCategory, sortField);
 
         // Paginate the sorted results
-        var result = PaginationHelper<GetParentCategoriesResponse>.Paging(sortedResult, page, pageSize);
+        var result = PaginationHelper<GetChildrenIngredientType>.Paging(sortedResult, page, pageSize);
 
         return result;
     }

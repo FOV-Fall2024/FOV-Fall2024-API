@@ -33,9 +33,9 @@ public class IngredientTypeController : DefaultController
     [SwaggerOperation(Summary = "Retrieves a list of parent ingredient types.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Get([FromQuery]GetCategoriesCommand command)
+    public async Task<IActionResult> Get([FromQuery] GetIngredientTypeCommand command)
     {
-        PagedResult<GetParentCategoriesResponse> response = await _sender.Send(command);
+        PagedResult<GetChildrenIngredientType> response = await _sender.Send(command);
         return Ok(response);
     }
 
