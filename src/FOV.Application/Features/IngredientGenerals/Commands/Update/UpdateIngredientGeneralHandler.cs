@@ -10,9 +10,9 @@ public record UpdateIngredientGeneralCommand : IRequest<Guid>
     [JsonIgnore]
     public Guid Id { get; set; }
 
-    public string Name { get; set; } = string.Empty;
+    public string IngredientGeneralName { get; set; } = string.Empty;
 
-    public string Description { get; set; } = string.Empty;
+    public string IngredientGeneralDescription { get; set; } = string.Empty;
 
     public Guid IngredientTypeId { get; set; }
 }
@@ -23,7 +23,7 @@ internal class UpdateIngredientGeneralHandler(IUnitOfWorks unitOfWorks) : IReque
     public async Task<Guid> Handle(UpdateIngredientGeneralCommand request, CancellationToken cancellationToken)
     {
         IngredientGeneral ingredientGeneral = await _unitOfWorks.IngredientGeneralRepository.GetByIdAsync(request.Id) ?? throw new Exception();
-        ingredientGeneral.Update(request.Name, request.Description, request.IngredientTypeId);
+        ingredientGeneral.Update(request.IngredientGeneralName, request.IngredientGeneralDescription, request.IngredientTypeId);
         _unitOfWorks.IngredientGeneralRepository.Update(ingredientGeneral);
         await _unitOfWorks.SaveChangeAsync();
         return ingredientGeneral.Id;

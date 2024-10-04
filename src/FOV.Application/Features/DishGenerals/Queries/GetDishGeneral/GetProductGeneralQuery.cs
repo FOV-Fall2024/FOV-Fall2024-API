@@ -8,7 +8,7 @@ using MediatR;
 
 namespace FOV.Application.Features.DishGenerals.Queries.GetProductGeneral
 {
-    public sealed record GetProductGeneralCommand(string? Name, string? ProductDescription, Guid? CategoryId, PagingRequest? PagingRequest) : IRequest<PagedResult<GetProductGeneralResponse>>;
+    public sealed record GetProductGeneralCommand(string? DishGeneralName, string? DishGeneralDescription, Guid? CategoryId, PagingRequest? PagingRequest) : IRequest<PagedResult<GetProductGeneralResponse>>;
 
 
 
@@ -29,8 +29,8 @@ namespace FOV.Application.Features.DishGenerals.Queries.GetProductGeneral
             var filteredProducts = allProducts.AsQueryable().CustomFilterV1(new DishGeneral
             {
                 CategoryId = request.CategoryId ?? Guid.Empty,
-                DishName = request.Name ?? string.Empty,
-                DishDescription = request.ProductDescription ?? string.Empty,
+                DishName = request.DishGeneralName ?? string.Empty,
+                DishDescription = request.DishGeneralDescription ?? string.Empty,
             });
 
             // Select and map to response DTO

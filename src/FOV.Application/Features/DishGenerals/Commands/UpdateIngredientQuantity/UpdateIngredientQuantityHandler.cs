@@ -10,10 +10,10 @@ namespace FOV.Application.Features.DishGenerals.Commands.UpdateIngredientQuantit
 public sealed record UpdateIngredientQuantityCommand : IRequest<Result>
 {
     [JsonIgnore]
-    public Guid ProductId { get; set; }
+    public Guid DishGeneralId { get; set; }
 
     [JsonIgnore]
-    public Guid IngredientId { get; set; }
+    public Guid IngredientGeneralId { get; set; }
 
     public decimal Quantity { get; set; }
 }
@@ -22,9 +22,9 @@ internal class UpdateIngredientQuantityHandler(IUnitOfWorks unitOfWorks) : IRequ
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     public async Task<Result> Handle(UpdateIngredientQuantityCommand request, CancellationToken cancellationToken)
     {
-        DishIngredientGeneral general = await _unitOfWorks.DishIngredientGeneralRepository.FirstOrDefaultAsync(x => x.IngredientGeneralId == request.IngredientId && x.DishGeneralId == request.ProductId) ?? throw new Exception();
+        DishIngredientGeneral general = await _unitOfWorks.DishIngredientGeneralRepository.FirstOrDefaultAsync(x => x.IngredientGeneralId == request.IngredientGeneralId && x.DishGeneralId == request.DishGeneralId) ?? throw new Exception();
 
-        general.Update(request.ProductId, request.IngredientId, request.Quantity);
+        general.Update(request.DishGeneralId, request.IngredientGeneralId, request.Quantity);
         _unitOfWorks.DishIngredientGeneralRepository.Update(general);
         await _unitOfWorks.SaveChangeAsync();
         return Result.Ok();
