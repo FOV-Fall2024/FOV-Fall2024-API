@@ -77,8 +77,8 @@ public class DishGeneralController : DefaultController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateQuantity(Guid productId, Guid ingredientId, [FromBody] UpdateIngredientQuantityCommand command)
     {
-        command.ProductId = productId;
-        command.IngredientId = ingredientId;
+        command.DishGeneralId = productId;
+        command.IngredientGeneralId = ingredientId;
         var response = await _sender.Send(command);
         return Ok(new UPDATED_Result("Cập nhật số lượng nguyên liệu thành công"));
     }

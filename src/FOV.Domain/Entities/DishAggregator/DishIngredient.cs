@@ -13,6 +13,8 @@ public class DishIngredient : BaseAuditableEntity
 
     public Guid IngredientId { get; set; }
 
+    //public DishIngredientStatus {get
+
     public DishIngredient()
     {
 

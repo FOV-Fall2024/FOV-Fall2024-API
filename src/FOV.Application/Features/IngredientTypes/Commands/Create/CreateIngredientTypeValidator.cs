@@ -5,7 +5,7 @@ using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 
 namespace FOV.Application.Features.IngredientTypes.Commands.Create;
-internal class CreateIngredientTypeValidator : AbstractValidator<CreateChildIngredientTypeCommand>
+public class CreateIngredientTypeValidator : AbstractValidator<CreateChildIngredientTypeCommand>
 {
     public CreateIngredientTypeValidator(IngredientTypeValidator validator, CheckIngredientParentIdValidator validationRules)
     {
@@ -30,7 +30,7 @@ public sealed class CheckIngredientParentIdValidator : AbstractValidator<Guid>
     private async Task<bool> CheckParentId(Guid parentId, CancellationToken token)
     {
         IngredientType? ingredientType = await _unitOfWorks.IngredientTypeRepository.GetByIdAsync(parentId);
-        return ingredientType != null;
+        return ingredientType == null;
     }
 
 

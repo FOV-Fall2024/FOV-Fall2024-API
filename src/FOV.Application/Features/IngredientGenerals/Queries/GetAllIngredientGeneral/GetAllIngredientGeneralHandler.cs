@@ -23,7 +23,7 @@ namespace FOV.Application.Features.IngredientGenerals.Queries.GetAllIngredientGe
             var filteredIngredients = allIngredients.AsQueryable()
                 .CustomFilterV1(new IngredientGeneral
                 {
-                    IngredientName = request.IngredientName ?? string.Empty,
+                    IngredientName = request.IngredientGeneralName ?? string.Empty,
                     IngredientTypeId = request.IngredientTypeId ?? Guid.Empty,
                 });
 

@@ -10,7 +10,7 @@ public class UpdateIngredientGeneralValidator : AbstractValidator<UpdateIngredie
     public UpdateIngredientGeneralValidator(IngredientGeneralIdValidator validator, IngredientNameValidator name)
     {
         RuleFor(x => x.Id).NotEmpty().SetValidator(validator);
-        RuleFor(x => x.Name).NotEmpty().SetValidator(name);
+        RuleFor(x => x.IngredientGeneralName).NotEmpty().SetValidator(name);
     }
 }
 

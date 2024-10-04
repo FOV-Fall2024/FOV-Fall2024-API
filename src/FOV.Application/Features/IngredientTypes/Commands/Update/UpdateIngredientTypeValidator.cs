@@ -23,7 +23,7 @@ public sealed class IngredientTypeValidator : AbstractValidator<string>
 
         RuleFor(name => name)
             .MustAsync(CheckDuplicateName)
-            .WithMessage("Name is unique :>");
+            .WithMessage("Tên đã tồn tại trong hệ thống");
 
     }
 

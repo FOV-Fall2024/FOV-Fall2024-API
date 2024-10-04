@@ -8,15 +8,15 @@ public class CreateProductGeneralValidator : AbstractValidator<CreateProductGene
 {
     public CreateProductGeneralValidator(CheckDishGeneralName nameCheck, CheckCategoryIdValidator categoryIdCheck)
     {
-        RuleFor(command => command.ProductName)
+        RuleFor(command => command.DishGeneralName)
             .NotEmpty().WithMessage("Tên sản phẩm là bắt buộc.")
             .MaximumLength(100).WithMessage("Tên sản phẩm không được vượt quá 100 ký tự.")
             .SetValidator(nameCheck);
 
-        RuleFor(command => command.Price)
+        RuleFor(command => command.DishGeneralPrice)
             .GreaterThan(0).WithMessage("Giá phải lớn hơn 0.");
 
-        RuleFor(command => command.Description)
+        RuleFor(command => command.DishGeneralDescription)
             .NotEmpty().WithMessage("Mô tả là bắt buộc.")
             .MaximumLength(500).WithMessage("Mô tả không được vượt quá 500 ký tự.");
 
@@ -27,7 +27,7 @@ public class CreateProductGeneralValidator : AbstractValidator<CreateProductGene
         RuleFor(command => command.Ingredients)
             .NotEmpty().WithMessage("Cần ít nhất một thành phần.");
 
-        RuleFor(command => command.ImageDefault)
+        RuleFor(command => command.DishGeneralImage)
             .NotEmpty().WithMessage("Hình ảnh mặc định là bắt buộc.")
             .Must(BeAValidUrl).WithMessage("Hình ảnh mặc định phải là URL hợp lệ.");
     }
