@@ -34,7 +34,7 @@ public class IngredientGeneralConfiguration : IEntityTypeConfiguration<Ingredien
              IngredientName = "Spinach",
              IngredientDescription = "Typically lasts 1-2 years when stored in an airtight container..",
              IngredientTypeId = Guid.Parse("b8f66bab-13c9-4390-8582-545ddc7d2ec8"),
-             IngredientMeasure = ~IngredientMeasure.g,
+             IngredientMeasure = IngredientMeasure.g,
              Status = Domain.Entities.TableAggregator.Enums.Status.Active
          }
         );
