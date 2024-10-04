@@ -20,6 +20,7 @@
   <ItemGroup>
     <PackageReference Include="Elastic.Clients.Elasticsearch" Version="8.15.5" />
     <PackageReference Include="EPPlus" Version="7.3.2" />
+    <PackageReference Include="FirebaseAdmin" Version="3.0.1" />
     <PackageReference Include="FluentResults" Version="3.16.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="8.0.8" />
     <PackageReference Include="OpenTelemetry.Exporter.Prometheus.AspNetCore" Version="1.9.0-beta.2" />

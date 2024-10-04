@@ -19,11 +19,11 @@ public class DishIngredientGeneral : BaseAuditableEntity, IsSoftDeleted
 
     }
 
-    public DishIngredientGeneral(Guid dishGeneralId, Guid ingredientGeneralId, decimal Qunantity)
+    public DishIngredientGeneral(Guid dishGeneralId, Guid ingredientGeneralId, decimal quantity)
     {
         this.DishGeneralId = dishGeneralId;
         this.IngredientGeneralId = ingredientGeneralId;
-        this.Quantity = Quantity;
+        this.Quantity = quantity;
     }
 
     public void Update(Guid dishGeneralId, Guid ingredientGeneralId, decimal quantity)
