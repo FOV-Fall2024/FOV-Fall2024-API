@@ -24,13 +24,13 @@ public sealed class CheckIngredientParentIdValidator : AbstractValidator<Guid>
         _unitOfWorks = unitOfWorks;
         RuleFor(parentId => parentId)
             .MustAsync(CheckParentId)
-            .WithMessage("Not found  Ingredient");
+            .WithMessage("Không tìm thấy Id");
     }
 
     private async Task<bool> CheckParentId(Guid parentId, CancellationToken token)
     {
         IngredientType? ingredientType = await _unitOfWorks.IngredientTypeRepository.GetByIdAsync(parentId);
-        return ingredientType == null;
+        return ingredientType != null;
     }
 
 
