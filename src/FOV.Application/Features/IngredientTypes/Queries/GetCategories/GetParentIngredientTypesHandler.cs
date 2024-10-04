@@ -25,7 +25,7 @@ public class GetParentIngredientTypesHandler(IUnitOfWorks unitOfWorks) : IReques
         var filterCategory = responses.AsQueryable().CustomFilterV1(filterEntity);
 
         // Map to response DTO
-        var mappedCategory = filterCategory.Select(x => new GetChildrenIngredientType(x.Id, x.IngredientName)).ToList();
+        var mappedCategory = filterCategory.Select(x => new GetChildrenIngredientType(x.Id, x.IngredientName,x.IngredientDescription)).ToList();
 
         // Get pagination and sorting values
         var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);

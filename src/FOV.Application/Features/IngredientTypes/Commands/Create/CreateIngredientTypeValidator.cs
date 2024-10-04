@@ -9,7 +9,7 @@ internal class CreateIngredientTypeValidator : AbstractValidator<CreateChildIngr
 {
     public CreateIngredientTypeValidator(IngredientTypeValidator validator, CheckIngredientParentIdValidator validationRules)
     {
-        RuleFor(x => x.Name).NotEmpty().SetValidator(validator);
+        RuleFor(x => x.IngredientTypeName).NotEmpty().SetValidator(validator);
 
     }
 }

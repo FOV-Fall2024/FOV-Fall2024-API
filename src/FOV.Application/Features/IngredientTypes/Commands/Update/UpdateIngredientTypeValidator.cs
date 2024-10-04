@@ -8,7 +8,7 @@ public class UpdateIngredientTypeValidator : AbstractValidator<UpdateIngredientT
 {
     public UpdateIngredientTypeValidator(IngredientTypeValidator validator, CheckIngredientParentIdValidator validations)
     {
-        RuleFor(x => x.Name).NotEmpty().SetValidator(validator);
+        RuleFor(x => x.IngredientTypeName).NotEmpty().SetValidator(validator);
         RuleFor(x => x.Id).NotEmpty().SetValidator(validations);
     }
 }

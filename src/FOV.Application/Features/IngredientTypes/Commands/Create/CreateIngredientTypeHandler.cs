@@ -6,9 +6,9 @@ namespace FOV.Application.Features.IngredientTypes.Commands.Create;
 
 public sealed record CreateChildIngredientTypeCommand : IRequest<Guid>
 {
-    public string Name { get; set; } = string.Empty;
+    public string IngredientTypeName { get; set; } = string.Empty;
 
-    public string Description { get; set; } = string.Empty;
+    public string IngredientTypeDescription { get; set; } = string.Empty;
 }
 
 public class CreateIngredientTypeHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<CreateChildIngredientTypeCommand, Guid>
@@ -16,7 +16,7 @@ public class CreateIngredientTypeHandler(IUnitOfWorks unitOfWorks) : IRequestHan
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     public async Task<Guid> Handle(CreateChildIngredientTypeCommand request, CancellationToken cancellationToken)
     {
-        IngredientType ingredientType = new(request.Name, request.Description);
+        IngredientType ingredientType = new(request.IngredientTypeName, request.IngredientTypeDescription);
         await _unitOfWorks.IngredientTypeRepository.AddAsync(ingredientType);
         await _unitOfWorks.SaveChangeAsync();
         return ingredientType.Id;
