@@ -29,13 +29,13 @@ public class CategoryController : DefaultController
     /// <returns>A list of parent categories.</returns>
   
     [HttpGet]
-    [SwaggerOperation(Summary = "Retrieves all parent categories.")]
+    [SwaggerOperation(Summary = "Retrieves all categories.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetCategory([FromQuery] GetCategoriesCommand command)
     {
         var response = await _mediator.Send(command);
-        return Ok(new OK_Result<PagedResult<GetParentCategoriesResponse>>("Lấy danh mục thành công", response));
+        return Ok(response);
     }
 
     /// <summary>

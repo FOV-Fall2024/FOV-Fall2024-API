@@ -50,7 +50,7 @@ public sealed class CheckDishGeneralName : AbstractValidator<string>
     private async Task<bool> CheckName(string name, CancellationToken token)
     {
         DishGeneral? dishGeneral = await _unitOfWorks.DishGeneralRepository.FirstOrDefaultAsync(x => x.DishName == name);
-        return dishGeneral != null;
+        return dishGeneral == null;
     }
 }
 

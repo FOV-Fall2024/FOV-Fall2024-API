@@ -17,17 +17,16 @@ public class IngredientGeneralConfiguration : IEntityTypeConfiguration<Ingredien
             IngredientName = "Rice",
             IngredientDescription = "Can last 6 months to a year or more if kept in a cool, dry place.",
             IngredientTypeId = Guid.Parse("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a7"),
-            IngredientMeasure = IngredientMeasure.g
-
-
-
+            IngredientMeasure = IngredientMeasure.g,
+            Status = Domain.Entities.TableAggregator.Enums.Status.Active
         }, new IngredientGeneral
         {
             Id = Guid.Parse("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a0"),
             IngredientName = "Pasta",
             IngredientDescription = "Typically lasts 1-2 years when stored in an airtight container..",
             IngredientTypeId = Guid.Parse("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a7"),
-            IngredientMeasure = IngredientMeasure.g
+            IngredientMeasure = IngredientMeasure.g,
+            Status = Domain.Entities.TableAggregator.Enums.Status.Active
         },
          new IngredientGeneral
          {
@@ -35,9 +34,9 @@ public class IngredientGeneralConfiguration : IEntityTypeConfiguration<Ingredien
              IngredientName = "Spinach",
              IngredientDescription = "Typically lasts 1-2 years when stored in an airtight container..",
              IngredientTypeId = Guid.Parse("b8f66bab-13c9-4390-8582-545ddc7d2ec8"),
-             IngredientMeasure = ~IngredientMeasure.g
+             IngredientMeasure = ~IngredientMeasure.g,
+             Status = Domain.Entities.TableAggregator.Enums.Status.Active
          }
-
         );
     }
 }

@@ -104,6 +104,6 @@ public class IngredientGeneralController : DefaultController
     public async Task<IActionResult> Get([FromQuery] GetAllIngredientCommand command)
     {
         var response = await _sender.Send(command);
-        return Ok(new OK_Result<PagedResult<GetAllIngredientResponse>>("Lấy thông tin nguyên liệu gốc thành công", response));
+        return Ok(response);
     }
 }

@@ -35,7 +35,7 @@ namespace FOV.Presentation.Controllers.V1
         public async Task<IActionResult> GetCombo([FromQuery] GetCombosCommand query)
         {
             var response = await _mediator.Send(query);
-            return Ok(new OK_Result<PagedResult<GetCombosResponse>>("Lấy thông tin combo thành công", response));
+            return Ok(response);
         }
 
         /// <summary>

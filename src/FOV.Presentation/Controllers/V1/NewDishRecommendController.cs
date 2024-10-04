@@ -79,7 +79,7 @@ public class NewDishRecommendController : DefaultController
         {
             var command = new GetNewProductRecommendCommand(pagingRequest);
             var response = await _sender.Send(command);
-            return Ok(new OK_Result<PagedResult<GetNewProductRecommendResponse>>("Lấy danh sách sản phẩm gợi ý thành công", response));
+            return Ok(response);
         }
         catch (AppException ex)
         {

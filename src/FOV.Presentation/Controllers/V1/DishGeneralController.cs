@@ -32,7 +32,7 @@ public class DishGeneralController : DefaultController
     /// </summary>
     /// <param name="command">The command containing product details.</param>
     /// <returns>The ID of the newly created product general.</returns>
-    [Authorize(Role.Administrator)]
+    //[Authorize(Role.Administrator)]
     [HttpPost]
     [SwaggerOperation(Summary = "Creates a new product general.")]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -146,7 +146,7 @@ public class DishGeneralController : DefaultController
     public async Task<IActionResult> Get([FromQuery] GetProductGeneralCommand command)
     {
         var response = await _sender.Send(command);
-        return Ok(new OK_Result<PagedResult<GetProductGeneralResponse>>("Lấy product generals thành công", response));
+        return Ok(response);
     }
 
     /// <summary>

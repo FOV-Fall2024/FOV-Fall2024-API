@@ -2,17 +2,18 @@
 using FOV.Domain.Entities.DishGeneralAggregator;
 using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Domain.Entities.IngredientGeneralAggregator.Enums;
+using FOV.Domain.Entities.TableAggregator.Enums;
 
 namespace FOV.Domain.Entities.IngredientGeneralAggregator;
 
-public class IngredientGeneral : BaseAuditableEntity, IsSoftDeleted
+public class IngredientGeneral : BaseAuditableEntity
 {
     public string IngredientName { get; set; } = string.Empty;
     public string IngredientDescription { get; set; } = string.Empty;
     public IngredientType? IngredientType { get; set; }
     public Guid IngredientTypeId { get; set; }
     public bool IsDeleted { get; set; } = false;
-
+    public Status Status { get; set; } = Status.Active;
     public IngredientMeasure IngredientMeasure { get; set; }
 
     public virtual ICollection<DishIngredientGeneral>? DishIngredientGenerals { get; set; }
@@ -38,5 +39,9 @@ public class IngredientGeneral : BaseAuditableEntity, IsSoftDeleted
         IngredientTypeId = ingredientType;
     }
 
-    public void UpdateState(bool isDelete) => IsDeleted = isDelete;
+    public void UpdateState(bool state)
+    {
+        Status = state ? Status.Active : Status.Inactive;
+        LastModified = DateTimeOffset.UtcNow.AddHours(7);
+    }
 }

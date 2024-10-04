@@ -8,6 +8,6 @@ public static class IngredientGeneralMapper
 {
     public static GetAllIngredientResponse MapperGetAllDTO(this IngredientGeneral ingredientGeneral)
     {
-        return new GetAllIngredientResponse(ingredientGeneral.Id, ingredientGeneral.IngredientName, ingredientGeneral.IngredientTypeId, ingredientGeneral.IngredientDescription);
+        return new GetAllIngredientResponse(ingredientGeneral.Id, ingredientGeneral.IngredientName, ingredientGeneral.IngredientType.IngredientName, ingredientGeneral.IngredientDescription, ingredientGeneral.Status);
     }
 }

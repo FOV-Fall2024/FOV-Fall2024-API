@@ -36,7 +36,7 @@ public class IngredientTypeController : DefaultController
     public async Task<IActionResult> Get([FromQuery]GetCategoriesCommand command)
     {
         PagedResult<GetParentCategoriesResponse> response = await _sender.Send(command);
-        return Ok(new OK_Result<PagedResult<GetParentCategoriesResponse>>("Get Parent IngredientType Successfully", response));
+        return Ok(response);
     }
 
 

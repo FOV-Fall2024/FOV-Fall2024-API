@@ -86,7 +86,7 @@ public class DishController : DefaultController
     public async Task<IActionResult> GetMenu([FromQuery] GetMenuCommand command)
     {
         var response = await _mediator.Send(command);
-        return Ok(new OK_Result<PagedResult<GetMenuResponse>>("Lấy menu thành công", response));
+        return Ok(response);
     }
 
     /// <summary>
