@@ -11,6 +11,7 @@
 		<Folder Include="Constant\" />
 		<Folder Include="Entities\ComboAggregator\ValueObjects\" />
 		<Folder Include="Entities\ComboAggregator\Primitives\" />
+		<Folder Include="Entities\DishGeneralAggregator\Enums\" />
 		<Folder Include="Entities\IngredientAggregator\ValueObject\" />
 		<Folder Include="Entities\IngredientAggregator\Primitives\" />
 		<Folder Include="Entities\IngredientGeneralAggregator\ValueObject\" />
