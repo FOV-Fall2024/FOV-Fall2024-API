@@ -1,5 +1,3 @@
-version: '3.8'  # Specify the version of Docker Compose
-
 services:
   fov.presentation:
     container_name: fov_api
@@ -16,13 +14,20 @@ services:
       - "8080:8080"
       - "8081:8081"
     environment:
-      - TZ=Etc/UTC  # Set timezone
+      - TZ=Etc/UTC
       - CONNECTIONSTRINGS__PostgresConnection=Host=fov_database;Port=5432;Database=RestaurantManagementDatabase;Username=admin;Password=admin;
       - CONNECTIONSTRINGS__RedisConnection=redis:6379
     volumes:
       - data-protection-keys:/home/app/.aspnet/DataProtection-Keys
     networks:
       - fov_network
+    restart: on-failure 
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
 
   database:
     image: postgres:15
@@ -38,6 +43,12 @@ services:
       - "5433:5432"
     networks:
       - fov_network
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 512M
 
   redis:
     image: redis:7.0.12
@@ -46,6 +57,12 @@ services:
       - "6380:6379"
     networks:
       - fov_network
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 128M
 
   prometheus:
     image: prom/prometheus:latest
@@ -56,6 +73,12 @@ services:
       - "9090:9090"
     networks:
       - fov_network
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 128M
 
   grafana:
     image: grafana/grafana:latest
@@ -67,6 +90,12 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 128M
 
   elasticsearch:
     container_name: els
@@ -80,6 +109,12 @@ services:
       - xpack.security.enabled=false
     networks:
       - fov_network
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 1G
 
   kibana:
     container_name: kibana
@@ -92,6 +127,12 @@ services:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
     networks:
       - fov_network
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
 
   sonarqube:
     image: sonarqube:community
@@ -110,6 +151,12 @@ services:
       - sonarqube_logs:/opt/sonarqube/logs
     networks:
       - fov_network
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 512M
 
   sonarqube_db:
     image: postgres:15
@@ -122,6 +169,12 @@ services:
       - sonarqube_db_data:/var/lib/postgresql/data
     networks:
       - fov_network
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
 
 networks:
   fov_network:

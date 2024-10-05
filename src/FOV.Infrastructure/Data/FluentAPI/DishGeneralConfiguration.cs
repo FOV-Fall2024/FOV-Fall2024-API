@@ -12,6 +12,7 @@ public class DishGeneralConfiguration : IEntityTypeConfiguration<DishGeneral>
         builder.HasMany(x => x.Dishes).WithOne(x => x.DishGeneral).HasForeignKey(x => x.DishGeneralId);
         builder.HasMany(x => x.Ingredients).WithOne(x => x.DishGeneral).HasForeignKey(x => x.DishGeneralId);
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
         builder.HasData(
             new DishGeneral()
             {
@@ -20,6 +21,11 @@ public class DishGeneralConfiguration : IEntityTypeConfiguration<DishGeneral>
                 DishName = "Coca-Cola",
                 DishDescription = "Coca-Cola ngon ",
                 IsDeleted = false,
+                Created = DateTimeOffset.Parse("2022-01-01"),
+                IsRefund = true,
+                PercentagePriceDifference = 20,
+                Price = 30
+
             },
              new DishGeneral()
              {
@@ -28,6 +34,10 @@ public class DishGeneralConfiguration : IEntityTypeConfiguration<DishGeneral>
                  DishName = "7up",
                  DishDescription = "7up ngon ",
                  IsDeleted = false,
+                 Created = DateTimeOffset.Parse("2022-01-01"),
+                 IsRefund = true,
+                 PercentagePriceDifference = 20,
+                 Price = 30
              },
              new DishGeneral()
              {
@@ -35,7 +45,11 @@ public class DishGeneralConfiguration : IEntityTypeConfiguration<DishGeneral>
                  CategoryId = Guid.Parse("3140b8af-2124-44fa-8f43-907cddc26c3d"),
                  DishName = " Caprese Salad",
                  DishDescription = " Caprese Salad ngon ",
+                 Price = 20,
                  IsDeleted = false,
+                 Created = DateTimeOffset.Parse("2022-01-01"),
+                 IsRefund = false,
+                 PercentagePriceDifference = 20
              },
              new DishGeneral()
              {
@@ -44,6 +58,12 @@ public class DishGeneralConfiguration : IEntityTypeConfiguration<DishGeneral>
                  DishName = "Vegan Hotpot",
                  DishDescription = "Lẩu chay ngon",
                  IsDeleted = false,
+                 Created = DateTimeOffset.Parse("2022-01-01"),
+                 IsRefund = false,
+                 PercentagePriceDifference = 20,
+                 Price = 30
+
+
              },
              new DishGeneral()
              {
@@ -52,6 +72,10 @@ public class DishGeneralConfiguration : IEntityTypeConfiguration<DishGeneral>
                  DishName = "Cơm trắng",
                  DishDescription = "Cơm ngon",
                  IsDeleted = false,
+                 Created = DateTimeOffset.Parse("2022-01-01"),
+                 IsRefund = false,
+                 PercentagePriceDifference = 20,
+                 Price = 31
              }
     );
     }

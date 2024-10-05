@@ -13,6 +13,7 @@ public class ShiftConfiguration : IEntityTypeConfiguration<Shift>
     public void Configure(EntityTypeBuilder<Shift> builder)
     {
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
         builder.HasMany(x => x.WaiterSchedules).WithOne(x => x.Shift).HasForeignKey(x => x.ShiftId);
     }
 }

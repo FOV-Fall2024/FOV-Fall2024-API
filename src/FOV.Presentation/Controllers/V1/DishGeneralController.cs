@@ -1,6 +1,8 @@
 ﻿using FOV.Application.Features.DishGenerals.Commands.Active;
+using FOV.Application.Features.DishGenerals.Commands.AddIngredient;
 using FOV.Application.Features.DishGenerals.Commands.Create;
 using FOV.Application.Features.DishGenerals.Commands.Inactive;
+using FOV.Application.Features.DishGenerals.Commands.RemoveIngredient;
 using FOV.Application.Features.DishGenerals.Commands.Update;
 using FOV.Application.Features.DishGenerals.Commands.UpdateIngredientQuantity;
 using FOV.Application.Features.DishGenerals.Queries.GetProductGeneral;
@@ -164,4 +166,22 @@ public class DishGeneralController : DefaultController
         var response = await _sender.Send(new GetProductGeneralDetailCommand(id));
         return Ok(new OK_Result<GetProductGeneralDetailResponse>("Lấy chi tiết product general thành công", response));
     }
+
+
+    [HttpDelete("{id:guid}/ingredients/{ingredientId:guid}")]
+    public async Task<IActionResult> RemoveIngredient(Guid id, Guid ingredientId)
+    {
+        var response = await _sender.Send(new RemoveIngredientCommand(id, ingredientId));
+        return Ok(response);
+    }
+
+    [HttpPost("{id:guid}/ingredients/{ingredientId:guid}")]
+    public async Task<IActionResult> AddIngredient(Guid id, Guid ingredientId,Application.Features.DishGenerals.Commands.AddIngredient.AddIngredientInProductCommand command)
+    {
+        command.Id = id;
+        command.IngredientId = ingredientId;
+        var response = await _sender.Send(command);
+        return Ok(response);
+    }
+
 }

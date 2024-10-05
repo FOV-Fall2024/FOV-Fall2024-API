@@ -13,6 +13,7 @@ public class WaiterSalaryConfiguration : IEntityTypeConfiguration<WaiterSalary>
     public void Configure(EntityTypeBuilder<WaiterSalary> builder)
     {
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
         builder.HasOne(x => x.User).WithMany(x => x.WaiterSalaries).HasForeignKey(x => x.UserId);
     }
 }

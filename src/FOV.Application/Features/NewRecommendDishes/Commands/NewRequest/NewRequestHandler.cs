@@ -15,9 +15,11 @@ public sealed record NewRequestCommand : IRequest<Guid>
 
     public required Guid CategoryId { get; set; }
 
+    public required bool IsRefundDish { get; set; }
+
     public required string ProductImage { get; set; }
     public string Note { get; set; } = string.Empty;
-
+    public decimal PercentPriceDifference { get; set; }
 
     public List<IngredientInRequestCommand> Ingredients { get; set; } = [];
 
@@ -33,7 +35,7 @@ public class NewRequestHandler(IUnitOfWorks unitOfWorks, IClaimService claimServ
     public async Task<Guid> Handle(NewRequestCommand request, CancellationToken cancellationToken)
     {
         //? Create New Product
-        DishGeneral productGeneral = new(request.ProductName, request.Price, request.ProductDescription, request.CategoryId, request.ProductImage, true);
+        DishGeneral productGeneral = new(request.ProductName, request.Price, request.ProductDescription, request.CategoryId, request.ProductImage, true, request.IsRefundDish,request.PercentPriceDifference);
         await _unitOfWorks.DishGeneralRepository.AddAsync(productGeneral);
 
         await AddIngredient(request.Ingredients, productGeneral.Id);

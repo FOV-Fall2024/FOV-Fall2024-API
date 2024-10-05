@@ -8,5 +8,6 @@ public class DishImageConfiguration : IEntityTypeConfiguration<DishImage>
     public void Configure(EntityTypeBuilder<DishImage> builder)
     {
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
     }
 }

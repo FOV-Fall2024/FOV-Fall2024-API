@@ -10,6 +10,7 @@ public class ComboConfiguration : IEntityTypeConfiguration<Combo>
     public void Configure(EntityTypeBuilder<Combo> builder)
     {
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
         builder.HasMany(x => x.DishCombos).WithOne(x => x.Combo).HasForeignKey(x => x.ComboId);
         builder.HasMany(x => x.OrderDetails).WithOne(x => x.Combo).HasForeignKey(x => x.ComboId);
         builder.HasData(
@@ -24,7 +25,8 @@ public class ComboConfiguration : IEntityTypeConfiguration<Combo>
                 ExpiredDate = DateTime.UtcNow.AddMonths(1),
                 RestaurantId = Guid.Parse("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0"),
                 IsDeleted = false,
-                Thumbnail = "img1"
+                Thumbnail = "img1",
+                Created = DateTimeOffset.Parse("2022-01-01")
             },
             new Combo
             {
@@ -37,7 +39,8 @@ public class ComboConfiguration : IEntityTypeConfiguration<Combo>
                 ExpiredDate = DateTime.UtcNow.AddMonths(2),
                 RestaurantId = Guid.Parse("d42cf3c6-cbe4-4431-ac91-9eae870fa007"),
                 IsDeleted = false,
-                Thumbnail = "img2"
+                Thumbnail = "img2",
+                Created = DateTimeOffset.Parse("2022-01-01")
             },
             new Combo
             {
@@ -50,7 +53,9 @@ public class ComboConfiguration : IEntityTypeConfiguration<Combo>
                 ExpiredDate = DateTime.UtcNow.AddMonths(2),
                 RestaurantId = Guid.Parse("d42cf3c6-cbe4-4431-ac91-9eae870fa007"),
                 IsDeleted = false,
-                Thumbnail = "img3"
+                Thumbnail = "img3",
+                Created = DateTimeOffset.Parse("2022-01-01")
+
             }
         );
     }

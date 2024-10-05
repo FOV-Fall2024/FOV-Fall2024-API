@@ -1,12 +1,10 @@
 ﻿using FOV.Domain.Entities.DishGeneralAggregator;
-using FOV.Infrastructure.Helpers.FirebaseHandler;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 
 namespace FOV.Application.Features.DishGenerals.Commands.Create;
 
-public sealed record CreateProductGeneralCommand(string DishGeneralName, decimal DishGeneralPrice, string DishGeneralDescription, Guid CategoryId, List<AddIngredientCommand> Ingredients, string DishGeneralImage) : IRequest<Guid>;
+public sealed record CreateProductGeneralCommand(string DishGeneralName, decimal DishGeneralPrice, string DishGeneralDescription, Guid CategoryId, bool IsPreparedDish, List<AddIngredientCommand> Ingredients, string DishGeneralImage,decimal PercentPriceDifference) : IRequest<Guid>;
 
 
 public sealed record AddIngredientCommand(Guid IngredientId, decimal Quantity);
@@ -19,7 +17,7 @@ public class CreateDishGeneralHandler(IUnitOfWorks unitOfWorks) : IRequestHandle
     {
 
 
-        DishGeneral productGeneral = new(request.DishGeneralName, request.DishGeneralPrice ,request.DishGeneralDescription, request.CategoryId, request.DishGeneralImage, false);
+        DishGeneral productGeneral = new(request.DishGeneralName, request.DishGeneralPrice, request.DishGeneralDescription, request.CategoryId, request.DishGeneralImage, false, request.IsPreparedDish,request.PercentPriceDifference);
         await _unitOfWorks.DishGeneralRepository.AddAsync(productGeneral);
 
         await AddIngredient(request.Ingredients, productGeneral.Id);

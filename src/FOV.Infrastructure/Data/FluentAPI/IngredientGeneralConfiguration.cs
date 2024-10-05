@@ -10,6 +10,7 @@ public class IngredientGeneralConfiguration : IEntityTypeConfiguration<Ingredien
     public void Configure(EntityTypeBuilder<IngredientGeneral> builder)
     {
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
         builder.HasMany(x => x.DishIngredientGenerals).WithOne(x => x.IngredientGeneral).HasForeignKey(x => x.IngredientGeneralId);
         builder.HasData(new IngredientGeneral
         {
@@ -18,7 +19,8 @@ public class IngredientGeneralConfiguration : IEntityTypeConfiguration<Ingredien
             IngredientDescription = "Can last 6 months to a year or more if kept in a cool, dry place.",
             IngredientTypeId = Guid.Parse("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a7"),
             IngredientMeasure = IngredientMeasure.g,
-            Status = Domain.Entities.TableAggregator.Enums.Status.Active
+            Status = Domain.Entities.TableAggregator.Enums.Status.Active,
+            Created = DateTimeOffset.Parse("2022-01-01")
         }, new IngredientGeneral
         {
             Id = Guid.Parse("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a0"),
@@ -26,7 +28,8 @@ public class IngredientGeneralConfiguration : IEntityTypeConfiguration<Ingredien
             IngredientDescription = "Typically lasts 1-2 years when stored in an airtight container..",
             IngredientTypeId = Guid.Parse("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a7"),
             IngredientMeasure = IngredientMeasure.g,
-            Status = Domain.Entities.TableAggregator.Enums.Status.Active
+            Status = Domain.Entities.TableAggregator.Enums.Status.Active,
+            Created = DateTimeOffset.Parse("2022-01-01")
         },
          new IngredientGeneral
          {
@@ -35,7 +38,8 @@ public class IngredientGeneralConfiguration : IEntityTypeConfiguration<Ingredien
              IngredientDescription = "Typically lasts 1-2 years when stored in an airtight container..",
              IngredientTypeId = Guid.Parse("b8f66bab-13c9-4390-8582-545ddc7d2ec8"),
              IngredientMeasure = IngredientMeasure.g,
-             Status = Domain.Entities.TableAggregator.Enums.Status.Active
+             Status = Domain.Entities.TableAggregator.Enums.Status.Active,
+             Created = DateTimeOffset.Parse("2022-01-01")
          }
         );
     }
