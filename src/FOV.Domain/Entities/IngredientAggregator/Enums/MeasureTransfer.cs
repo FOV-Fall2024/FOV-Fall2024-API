@@ -14,7 +14,6 @@ namespace FOV.Domain.Entities.IngredientAggregator.Enums
         {
             IngredientMeasure.g => "g (gram)",
             IngredientMeasure.ml => "mL (milliliter)",
-            IngredientMeasure.can => "can",
             _ => "Unknown small unit"
         };
 

@@ -10,9 +10,9 @@ public class CreateIngredientGeneralValidator : AbstractValidator<CreateIngredie
     public CreateIngredientGeneralValidator(IngredientGeneralNameValidator name,IngredientValidator ingredientTypeId)
     {
         RuleFor(x => x.IngredientGeneralName).NotEmpty().NotNull().SetValidator(name);
-        RuleFor(x => x.IngredientGeneralDescription).NotEmpty().NotNull();
-        RuleFor(x => x.IngredientType).NotEmpty().NotNull().SetValidator(ingredientTypeId);
-        RuleFor(x => x.IngredientMeasureType).NotEmpty().NotNull().InclusiveBetween(1, 4).WithMessage("Nằm trong khoảng 1-4");
+        RuleFor(x => x.IngredientGeneralDescription).NotNull();
+        RuleFor(x => x.IngredientType).NotNull().SetValidator(ingredientTypeId);
+        RuleFor(x => x.IngredientMeasureType).NotNull().InclusiveBetween(1, 4).WithMessage("Nằm trong khoảng 1-4");
     }
 }
 
@@ -25,7 +25,7 @@ public sealed class IngredientValidator : AbstractValidator<Guid>
         _unitOfWorks = unitOfWorks;
         RuleFor(IngredientType => IngredientType)
            .MustAsync(CheckIsExist)
-           .WithMessage("Not found this Id");
+           .WithMessage("Không tìm thấy loại nguyên liệu");
     }
 
     private async Task<bool> CheckIsExist(Guid Id, CancellationToken token)
@@ -48,7 +48,7 @@ public sealed class IngredientGeneralNameValidator : AbstractValidator<string>
 
         RuleFor(Name => Name)
             .MustAsync(CheckDuplicateName)
-            .WithMessage("Name is unique :>");
+            .WithMessage("Tên không được trùng lập");
 
     }
 
