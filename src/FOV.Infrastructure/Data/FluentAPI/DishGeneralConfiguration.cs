@@ -20,6 +20,7 @@ public class DishGeneralConfiguration : IEntityTypeConfiguration<DishGeneral>
                 DishName = "Coca-Cola",
                 DishDescription = "Coca-Cola ngon ",
                 IsDeleted = false,
+                Created = DateTimeOffset.Parse("2022-01-01")
             },
              new DishGeneral()
              {
@@ -28,6 +29,7 @@ public class DishGeneralConfiguration : IEntityTypeConfiguration<DishGeneral>
                  DishName = "7up",
                  DishDescription = "7up ngon ",
                  IsDeleted = false,
+                 Created = DateTimeOffset.Parse("2022-01-01")
              },
              new DishGeneral()
              {
@@ -36,6 +38,7 @@ public class DishGeneralConfiguration : IEntityTypeConfiguration<DishGeneral>
                  DishName = " Caprese Salad",
                  DishDescription = " Caprese Salad ngon ",
                  IsDeleted = false,
+                 Created = DateTimeOffset.Parse("2022-01-01")
              },
              new DishGeneral()
              {
@@ -44,6 +47,7 @@ public class DishGeneralConfiguration : IEntityTypeConfiguration<DishGeneral>
                  DishName = "Vegan Hotpot",
                  DishDescription = "Lẩu chay ngon",
                  IsDeleted = false,
+                 Created = DateTimeOffset.Parse("2022-01-01")
              },
              new DishGeneral()
              {
@@ -52,6 +56,7 @@ public class DishGeneralConfiguration : IEntityTypeConfiguration<DishGeneral>
                  DishName = "Cơm trắng",
                  DishDescription = "Cơm ngon",
                  IsDeleted = false,
+                 Created = DateTimeOffset.Parse("2022-01-01")
              }
     );
     }

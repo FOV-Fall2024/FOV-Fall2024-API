@@ -1,4 +1,5 @@
 ﻿using FOV.Domain.Common;
+using FOV.Domain.Entities.DishAggregator.Enums;
 using FOV.Domain.Entities.IngredientAggregator;
 
 namespace FOV.Domain.Entities.DishAggregator;
@@ -13,17 +14,19 @@ public class DishIngredient : BaseAuditableEntity
 
     public Guid IngredientId { get; set; }
 
-    //public DishIngredientStatus {get
+    public DishIngredientStatus DishIngredientStatus { get; set; }
 
     public DishIngredient()
     {
 
     }
 
-    public DishIngredient(Guid dishId, Guid ingredientId,decimal quantity)
+    public DishIngredient(Guid dishId, Guid ingredientId, decimal quantity)
     {
         IngredientId = ingredientId;
         DishId = dishId;
-        Quantity = quantity;    
+        Quantity = quantity;
+        DishIngredientStatus = DishIngredientStatus.Normal;
+
     }
 }

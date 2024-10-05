@@ -57,6 +57,9 @@ public static class DependencyInjection
         services.AddScoped<IIngredientUnitRepository, IngredientUnitRepository>();
         services.AddScoped<INewDishRecommendLogRepository, NewDishRecommendLogRepository>();
         services.AddScoped<INewDishRecommendRepository, NewDishRecommendRepository>();
+        services.AddScoped<IRefundDishInventoryRepository, RefundDishInventoryRepository>();
+        services.AddScoped<IRefundDishInventoryTransactionRepository, RefundDishInventoryTransactionRepository>();
+        services.AddScoped<IRefundDishUnitRepository, RefundDishUnitRepository>();
         return services;
 
     }

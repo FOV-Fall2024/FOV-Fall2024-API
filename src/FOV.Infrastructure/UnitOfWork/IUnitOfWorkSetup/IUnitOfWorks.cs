@@ -50,5 +50,11 @@ public interface IUnitOfWorks
 
     public INewDishRecommendRepository NewDishRecommendRepository { get; }
 
+    public IRefundDishInventoryRepository RefundDishInventoryRepository { get; }
+
+    public IRefundDishUnitRepository RefundDishUnitRepository { get; }
+
+    public IRefundDishInventoryTransactionRepository RefundDishInventoryTransactionRepository { get; }
+
     public Task<int> SaveChangeAsync();
 }
