@@ -32,7 +32,7 @@ public class UpdateIngredientQuantityHandler : IRequestHandler<UpdateIngredientQ
                 .GetByIdAsync(request.IngredientGeneralId)
                 ?? throw new InvalidOperationException("Ingredient not found");
 
-            general.Update(request.DishGeneralId, request.IngredientGeneralId, request.Quantity);
+            general.UpdateQuantity(request.Quantity);
             _unitOfWorks.DishIngredientGeneralRepository.Update(general);
 
             await UpdateDishesWithIngredient(general.Id, ingredientGeneral.IngredientName);

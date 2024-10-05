@@ -24,6 +24,9 @@ public class DishGeneralConfiguration : IEntityTypeConfiguration<DishGeneral>
                 IsDeleted = false,
                 Created = DefaultDatetime.MinValue,
                 LastModified = DefaultDatetime.MinValue,
+                PercentagePriceDifference = 20,
+                Price = 30
+
             },
              new DishGeneral()
              {
@@ -34,6 +37,8 @@ public class DishGeneralConfiguration : IEntityTypeConfiguration<DishGeneral>
                  IsDeleted = false,
                  Created = DefaultDatetime.MinValue,
                  LastModified = DefaultDatetime.MinValue,
+                 PercentagePriceDifference = 20,
+                 Price = 30
              },
              new DishGeneral()
              {
@@ -41,10 +46,12 @@ public class DishGeneralConfiguration : IEntityTypeConfiguration<DishGeneral>
                  CategoryId = Guid.Parse("3140b8af-2124-44fa-8f43-907cddc26c3d"),
                  DishName = " Caprese Salad",
                  DishDescription = " Caprese Salad ngon ",
-                 Price = 20,
                  IsDeleted = false,
                  Created = DefaultDatetime.MinValue,
                  LastModified = DefaultDatetime.MinValue,
+                 PercentagePriceDifference = 20,
+                 Price = 30
+
              },
              new DishGeneral()
              {
@@ -55,6 +62,9 @@ public class DishGeneralConfiguration : IEntityTypeConfiguration<DishGeneral>
                  IsDeleted = false,
                  Created = DefaultDatetime.MinValue,
                  LastModified = DefaultDatetime.MinValue,
+                 PercentagePriceDifference = 20,
+                 Price = 30
+
              },
              new DishGeneral()
              {
@@ -65,6 +75,8 @@ public class DishGeneralConfiguration : IEntityTypeConfiguration<DishGeneral>
                  IsDeleted = false,
                  Created = DefaultDatetime.MinValue,
                  LastModified = DefaultDatetime.MinValue,
+                 PercentagePriceDifference = 20,
+                 Price = 30
              }
     );
     }

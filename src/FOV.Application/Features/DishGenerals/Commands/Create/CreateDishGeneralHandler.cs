@@ -20,7 +20,7 @@ public class CreateDishGeneralHandler(IUnitOfWorks unitOfWorks) : IRequestHandle
         DishGeneral productGeneral = new(request.DishGeneralName, request.DishGeneralPrice, request.DishGeneralDescription, request.CategoryId, request.DishGeneralImage, false, request.IsPreparedDish,request.PercentPriceDifference);
         await _unitOfWorks.DishGeneralRepository.AddAsync(productGeneral);
 
-        await AddIngredient(request.Ingredients, productGeneral.Id);
+        if (request.IsPreparedDish) await AddIngredient(request.Ingredients, productGeneral.Id);
         await _unitOfWorks.SaveChangeAsync();
         return productGeneral.Id;
     }

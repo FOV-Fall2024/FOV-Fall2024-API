@@ -13,7 +13,8 @@ public class RemoveIngredientHandler(IUnitOfWorks unitOfWorks) : IRequestHandler
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     public async Task<Result> Handle(RemoveIngredientCommand request, CancellationToken cancellationToken)
     {
-        DishIngredientGeneral general = await _unitOfWorks.DishIngredientGeneralRepository.FirstOrDefaultAsync(x => x.IngredientGeneralId == request.IngredientId && x.DishGeneralId == request.productId) ?? throw new Exception();
+        DishIngredientGeneral general = await _unitOfWorks.DishIngredientGeneralRepository.FirstOrDefaultAsync(x => x.IngredientGeneralId == request.IngredientId && x.DishGeneralId == request.productId,x => x.IngredientGeneral) ?? throw new Exception();
+        await UpdateDishesWithIngredient(request.productId, general.IngredientGeneral.IngredientName);
         _unitOfWorks.DishIngredientGeneralRepository.Remove(general);
         await UpdateDishesWithIngredient(request.productId, general.IngredientGeneral.IngredientName);
         await _unitOfWorks.SaveChangeAsync();

@@ -24,8 +24,8 @@ public class CreateProductGeneralValidator : AbstractValidator<CreateProductGene
             .NotEmpty().WithMessage("ID danh mục là bắt buộc.")
             .SetValidator(categoryIdCheck);
 
-        RuleFor(command => command.Ingredients)
-            .NotEmpty().WithMessage("Cần ít nhất một thành phần.");
+        //RuleFor(command => command.Ingredients)
+        //    .NotEmpty().WithMessage("Cần ít nhất một thành phần.");
 
         RuleFor(command => command.DishGeneralImage)
             .NotEmpty().WithMessage("Hình ảnh mặc định là bắt buộc.")

@@ -28,7 +28,7 @@ public class AddIngredientHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<Ad
 
         var dishIngredientGeneral = new DishIngredientGeneral(request.Id, request.IngredientId, request.Quantity);
         await _unitOfWorks.DishIngredientGeneralRepository.AddAsync(dishIngredientGeneral);
-        await UpdateDishesWithIngredient(dishIngredientGeneral.Id, ingredientGeneral.IngredientName, request.Quantity);
+        await UpdateDishesWithIngredient(request.Id, ingredientGeneral.IngredientName, request.Quantity);
         await _unitOfWorks.SaveChangeAsync();
 
         return request.Id;
