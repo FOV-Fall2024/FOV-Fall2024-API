@@ -45,7 +45,6 @@ public class Dish : BaseAuditableEntity, IsSoftDeleted
         CategoryId = categoryId;
         RestaurantId = restaurantId;
         DishGeneralId = dishGeneralId;
-
     }
 
     public void UpdateState(bool isDelete) => IsDeleted = isDelete;
