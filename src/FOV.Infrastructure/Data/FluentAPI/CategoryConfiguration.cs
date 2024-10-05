@@ -15,12 +15,15 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
         new Category("Khai Vị")
         {
             Id = Guid.Parse("6535596e-a86a-4fcc-97e7-7e6182a5c011"),  //? 
-            IsDeleted = false
+            IsDeleted = false,
+            Created = DateTimeOffset.Parse("2022-01-01")
+
         },
         new Category("Món Chính")
         {
             Id = Guid.Parse("3140b8af-2124-44fa-8f43-907cddc26c3d"),  // Assign a unique ID
-            IsDeleted = false
+            IsDeleted = false,
+            Created = DateTimeOffset.Parse("2022-01-01")
         }
     );
 

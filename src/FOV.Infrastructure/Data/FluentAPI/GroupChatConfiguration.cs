@@ -15,6 +15,7 @@ internal class GroupChatConfiguration : IEntityTypeConfiguration<GroupChat>
             Id = Guid.Parse("9ffc9ec6-6b72-4467-aaeb-1e45dc0110b0"),
             GroupName = "DefaultGroupChat",
             RestaurantId = Guid.Parse("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0"),
+            Created = DateTimeOffset.Parse("2022-01-01")
         });
     }
 }

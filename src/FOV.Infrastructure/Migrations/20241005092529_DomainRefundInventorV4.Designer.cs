@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FOV.Infrastructure.Migrations
 {
     [DbContext(typeof(FOVContext))]
-    [Migration("20241004153102_DomainRefundInventory")]
-    partial class DomainRefundInventory
+    [Migration("20241005092529_DomainRefundInventorV4")]
+    partial class DomainRefundInventorV4
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -126,8 +126,8 @@ namespace FOV.Infrastructure.Migrations
                         {
                             Id = new Guid("941bcca9-52a6-41f7-9403-06cc5fa703ea"),
                             ComboName = "Combo 1",
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ExpiredDate = new DateTime(2024, 11, 4, 15, 31, 1, 192, DateTimeKind.Utc).AddTicks(371),
+                            Created = new DateTimeOffset(new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 7, 0, 0, 0)),
+                            ExpiredDate = new DateTime(2024, 11, 5, 9, 25, 28, 578, DateTimeKind.Utc).AddTicks(4644),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             PercentReduce = 10.0m,
@@ -141,8 +141,8 @@ namespace FOV.Infrastructure.Migrations
                         {
                             Id = new Guid("3907a193-c2ae-4f40-936b-9a2438595123"),
                             ComboName = "Combo 2",
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ExpiredDate = new DateTime(2024, 12, 4, 15, 31, 1, 192, DateTimeKind.Utc).AddTicks(388),
+                            Created = new DateTimeOffset(new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 7, 0, 0, 0)),
+                            ExpiredDate = new DateTime(2024, 12, 5, 9, 25, 28, 578, DateTimeKind.Utc).AddTicks(4695),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             PercentReduce = 5.0m,
@@ -156,8 +156,8 @@ namespace FOV.Infrastructure.Migrations
                         {
                             Id = new Guid("921b269a-db6e-4a1d-b285-70df523e010e"),
                             ComboName = "Combo 3",
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ExpiredDate = new DateTime(2024, 12, 4, 15, 31, 1, 192, DateTimeKind.Utc).AddTicks(393),
+                            Created = new DateTimeOffset(new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 7, 0, 0, 0)),
+                            ExpiredDate = new DateTime(2024, 12, 5, 9, 25, 28, 578, DateTimeKind.Utc).AddTicks(4703),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             PercentReduce = 5.0m,
@@ -239,7 +239,7 @@ namespace FOV.Infrastructure.Migrations
                         {
                             Id = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c011"),
                             CategoryName = "Khai Vị",
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 7, 0, 0, 0)),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
                         },
@@ -247,7 +247,7 @@ namespace FOV.Infrastructure.Migrations
                         {
                             Id = new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"),
                             CategoryName = "Món Chính",
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 7, 0, 0, 0)),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
                         });
@@ -312,7 +312,7 @@ namespace FOV.Infrastructure.Migrations
                         {
                             Id = new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540c3"),
                             CategoryId = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c011"),
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 7, 0, 0, 0)),
                             DishDescription = "Description",
                             DishGeneralId = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c013"),
                             DishName = "7up",
@@ -326,7 +326,7 @@ namespace FOV.Infrastructure.Migrations
                         {
                             Id = new Guid("e311d82d-452c-4603-a029-762a2a4e5e19"),
                             CategoryId = new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"),
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 7, 0, 0, 0)),
                             DishDescription = "Siêu rẻ",
                             DishGeneralId = new Guid("2b9941ee-2f72-4417-8a0a-2e14a6d00fbb"),
                             DishName = "Lẩu chay Thủ Đức",
@@ -340,7 +340,7 @@ namespace FOV.Infrastructure.Migrations
                         {
                             Id = new Guid("9d40c875-bd7f-403a-9734-c7b5dbba5e78"),
                             CategoryId = new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"),
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 7, 0, 0, 0)),
                             DishDescription = "Description",
                             DishGeneralId = new Guid("a4aade28-ecdf-4caa-b21d-eea8c01b6598"),
                             DishName = "Cơm Không",
@@ -582,9 +582,6 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
 
-                    b.Property<byte>("NonPreparedType")
-                        .HasColumnType("smallint");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
@@ -599,7 +596,7 @@ namespace FOV.Infrastructure.Migrations
                         {
                             Id = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c012"),
                             CategoryId = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c011"),
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 7, 0, 0, 0)),
                             DishDescription = "Coca-Cola ngon ",
                             DishImageDefault = "",
                             DishName = "Coca-Cola",
@@ -607,14 +604,13 @@ namespace FOV.Infrastructure.Migrations
                             IsDraft = true,
                             IsRefund = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            NonPreparedType = (byte)0,
                             Price = 0m
                         },
                         new
                         {
                             Id = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c013"),
                             CategoryId = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c011"),
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 7, 0, 0, 0)),
                             DishDescription = "7up ngon ",
                             DishImageDefault = "",
                             DishName = "7up",
@@ -622,14 +618,13 @@ namespace FOV.Infrastructure.Migrations
                             IsDraft = true,
                             IsRefund = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            NonPreparedType = (byte)0,
                             Price = 0m
                         },
                         new
                         {
                             Id = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c022"),
                             CategoryId = new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"),
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 7, 0, 0, 0)),
                             DishDescription = " Caprese Salad ngon ",
                             DishImageDefault = "",
                             DishName = " Caprese Salad",
@@ -637,14 +632,13 @@ namespace FOV.Infrastructure.Migrations
                             IsDraft = true,
                             IsRefund = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            NonPreparedType = (byte)0,
                             Price = 0m
                         },
                         new
                         {
                             Id = new Guid("2b9941ee-2f72-4417-8a0a-2e14a6d00fbb"),
                             CategoryId = new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"),
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 7, 0, 0, 0)),
                             DishDescription = "Lẩu chay ngon",
                             DishImageDefault = "",
                             DishName = "Vegan Hotpot",
@@ -652,14 +646,13 @@ namespace FOV.Infrastructure.Migrations
                             IsDraft = true,
                             IsRefund = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            NonPreparedType = (byte)0,
                             Price = 0m
                         },
                         new
                         {
                             Id = new Guid("a4aade28-ecdf-4caa-b21d-eea8c01b6598"),
                             CategoryId = new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"),
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 7, 0, 0, 0)),
                             DishDescription = "Cơm ngon",
                             DishImageDefault = "",
                             DishName = "Cơm trắng",
@@ -667,7 +660,6 @@ namespace FOV.Infrastructure.Migrations
                             IsDraft = true,
                             IsRefund = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            NonPreparedType = (byte)0,
                             Price = 0m
                         });
                 });
@@ -714,7 +706,7 @@ namespace FOV.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("9ccc8ec6-6b72-4467-aaeb-1e45dc0540b0"),
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 7, 0, 0, 0)),
                             DishGeneralId = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c022"),
                             IngredientGeneralId = new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a8"),
                             IsDeleted = false,
@@ -758,7 +750,7 @@ namespace FOV.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0110b0"),
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 7, 0, 0, 0)),
                             GroupName = "DefaultGroupChat",
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             RestaurantId = new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0")
@@ -965,7 +957,7 @@ namespace FOV.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a7"),
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 7, 0, 0, 0)),
                             IngredientDescription = "",
                             IngredientName = "Rau",
                             IsDeleted = false,
@@ -974,7 +966,7 @@ namespace FOV.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("b8f66bab-13c9-4390-8582-545ddc7d2ec8"),
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 7, 0, 0, 0)),
                             IngredientDescription = "",
                             IngredientName = "Short Storage Ingredients",
                             IsDeleted = false,
@@ -1070,7 +1062,7 @@ namespace FOV.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a8"),
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 7, 0, 0, 0)),
                             IngredientDescription = "Can last 6 months to a year or more if kept in a cool, dry place.",
                             IngredientMeasure = (byte)0,
                             IngredientName = "Rice",
@@ -1082,7 +1074,7 @@ namespace FOV.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a0"),
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 7, 0, 0, 0)),
                             IngredientDescription = "Typically lasts 1-2 years when stored in an airtight container..",
                             IngredientMeasure = (byte)0,
                             IngredientName = "Pasta",
@@ -1094,7 +1086,7 @@ namespace FOV.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540b0"),
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 7, 0, 0, 0)),
                             IngredientDescription = "Typically lasts 1-2 years when stored in an airtight container..",
                             IngredientMeasure = (byte)0,
                             IngredientName = "Spinach",
@@ -1420,10 +1412,10 @@ namespace FOV.Infrastructure.Migrations
                         {
                             Id = new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0"),
                             Address = "Go Vap",
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2024, 10, 5, 16, 25, 28, 587, DateTimeKind.Unspecified).AddTicks(8215), new TimeSpan(0, 7, 0, 0, 0)),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ReleaseDate = new DateTimeOffset(new DateTime(2024, 10, 11, 15, 31, 1, 204, DateTimeKind.Unspecified).AddTicks(7333), new TimeSpan(0, 0, 0, 0, 0)),
+                            ReleaseDate = new DateTimeOffset(new DateTime(2024, 10, 12, 9, 25, 28, 587, DateTimeKind.Unspecified).AddTicks(8189), new TimeSpan(0, 0, 0, 0, 0)),
                             RestaurantCode = "RE_001",
                             RestaurantName = "Default Restaurant",
                             RestaurantPhone = "0902388123",
@@ -1433,10 +1425,10 @@ namespace FOV.Infrastructure.Migrations
                         {
                             Id = new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"),
                             Address = "Thu Duc",
-                            Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2024, 10, 5, 16, 25, 28, 587, DateTimeKind.Unspecified).AddTicks(8236), new TimeSpan(0, 7, 0, 0, 0)),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ReleaseDate = new DateTimeOffset(new DateTime(2024, 10, 11, 15, 31, 1, 204, DateTimeKind.Unspecified).AddTicks(7382), new TimeSpan(0, 0, 0, 0, 0)),
+                            ReleaseDate = new DateTimeOffset(new DateTime(2024, 10, 12, 9, 25, 28, 587, DateTimeKind.Unspecified).AddTicks(8234), new TimeSpan(0, 0, 0, 0, 0)),
                             RestaurantCode = "RE_002",
                             RestaurantName = "Vege Thu Duc",
                             RestaurantPhone = "0867960120",
