@@ -9,7 +9,7 @@ using FOV.Domain.Entities.WaiterScheduleAggregator;
 namespace FOV.Domain.Entities.UserAggregator;
 public class Employee : BaseAuditableEntity, IsSoftDeleted
 {
-    public DateTime HireDate { get; set; } = DateTime.UtcNow;
+    public DateTime? HireDate { get; set; } = DateTime.UtcNow;
     public string EmployeeCode { get; set; } = string.Empty;
     public User? User { get; set; }
     public string UserId { get; set; } = string.Empty;
@@ -33,6 +33,6 @@ public class Employee : BaseAuditableEntity, IsSoftDeleted
     public void UpdateState(bool isDelete)
     {
         Status = isDelete ? Status.Active : Status.Inactive;
-        LastModified = DateTimeOffset.UtcNow.AddHours(7);
+        LastModified = DateTime.UtcNow.AddHours(7);
     }
 }

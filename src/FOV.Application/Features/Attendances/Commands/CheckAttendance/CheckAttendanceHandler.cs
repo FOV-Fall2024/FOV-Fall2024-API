@@ -37,7 +37,7 @@ public class CheckAttendanceHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<
         {
             EmployeeId = request.EmployeeId,
             WaiterScheduleId = request.WaiterScheduleId,
-            CheckInTime = DateTimeOffset.UtcNow.AddHours(7)
+            CheckInTime = DateTime.UtcNow.AddHours(7)
         };
 
         await _unitOfWorks.AttendanceRepository.AddAsync(newAttendance);

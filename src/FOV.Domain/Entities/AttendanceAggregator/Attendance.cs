@@ -10,8 +10,8 @@ using FOV.Domain.Entities.WaiterScheduleAggregator;
 namespace FOV.Domain.Entities.AttendanceAggregator;
 public class Attendance : BaseAuditableEntity
 {
-    public DateTimeOffset CheckInTime { get; set; }
-    public DateTimeOffset? CheckOutTime { get; set; }
+    public DateTime? CheckInTime { get; set; } =  DateTime.UtcNow;
+    public DateTime? CheckOutTime { get; set; }
     public Guid EmployeeId { get; set; }
     public Employee? Employee { get; set; }
     public Guid WaiterScheduleId { get; set; }

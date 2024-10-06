@@ -1,4 +1,5 @@
-﻿using FOV.Domain.Entities.GroupChatAggregator;
+﻿using FOV.Domain.Common;
+using FOV.Domain.Entities.GroupChatAggregator;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -16,7 +17,9 @@ internal class GroupChatConfiguration : IEntityTypeConfiguration<GroupChat>
             Id = Guid.Parse("9ffc9ec6-6b72-4467-aaeb-1e45dc0110b0"),
             GroupName = "DefaultGroupChat",
             RestaurantId = Guid.Parse("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0"),
-            Created = DateTimeOffset.Parse("2022-01-01")
+            Created = DefaultDatetime.MinValue,
+            LastModified = DefaultDatetime.MinValue,
+            
         });
     }
 }

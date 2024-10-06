@@ -1,4 +1,5 @@
 ﻿using Elastic.Clients.Elasticsearch;
+using FOV.Domain.Common;
 using FOV.Domain.Entities.RestaurantAggregator;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -25,7 +26,10 @@ public class RestaurantConfiguration : IEntityTypeConfiguration<Restaurant>
             RestaurantPhone = "0902388123",
             Address = "Go Vap",
             RestaurantCode = "RE_001",
-            Status = Domain.Entities.TableAggregator.Enums.Status.Active
+            Status = Domain.Entities.TableAggregator.Enums.Status.Active,
+            Created = DefaultDatetime.MinValue,
+            ReleaseDate = DefaultDatetime.MinValue,
+            LastModified = DefaultDatetime.MinValue,
 
         },
         new Restaurant
@@ -36,7 +40,10 @@ public class RestaurantConfiguration : IEntityTypeConfiguration<Restaurant>
             RestaurantPhone = "0867960120",
             Address = "Thu Duc",
             RestaurantCode = "RE_002",
-            Status = Domain.Entities.TableAggregator.Enums.Status.Active
+            Status = Domain.Entities.TableAggregator.Enums.Status.Active,
+            Created = DefaultDatetime.MinValue,
+            ReleaseDate = DefaultDatetime.MinValue,
+            LastModified = DefaultDatetime.MinValue,
         }
         );
     }

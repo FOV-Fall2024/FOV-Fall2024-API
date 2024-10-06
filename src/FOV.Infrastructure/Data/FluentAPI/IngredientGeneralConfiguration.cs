@@ -1,4 +1,5 @@
-﻿using FOV.Domain.Entities.IngredientGeneralAggregator;
+﻿using FOV.Domain.Common;
+using FOV.Domain.Entities.IngredientGeneralAggregator;
 using FOV.Domain.Entities.IngredientGeneralAggregator.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -20,7 +21,8 @@ public class IngredientGeneralConfiguration : IEntityTypeConfiguration<Ingredien
             IngredientTypeId = Guid.Parse("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a7"),
             IngredientMeasure = IngredientMeasure.g,
             Status = Domain.Entities.TableAggregator.Enums.Status.Active,
-            Created = DateTimeOffset.Parse("2022-01-01")
+            Created = DefaultDatetime.MinValue,
+            LastModified = DefaultDatetime.MinValue,
         }, new IngredientGeneral
         {
             Id = Guid.Parse("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a0"),
@@ -29,7 +31,8 @@ public class IngredientGeneralConfiguration : IEntityTypeConfiguration<Ingredien
             IngredientTypeId = Guid.Parse("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a7"),
             IngredientMeasure = IngredientMeasure.g,
             Status = Domain.Entities.TableAggregator.Enums.Status.Active,
-            Created = DateTimeOffset.Parse("2022-01-01")
+            Created = DefaultDatetime.MinValue,
+            LastModified = DefaultDatetime.MinValue,
         },
          new IngredientGeneral
          {
@@ -39,7 +42,8 @@ public class IngredientGeneralConfiguration : IEntityTypeConfiguration<Ingredien
              IngredientTypeId = Guid.Parse("b8f66bab-13c9-4390-8582-545ddc7d2ec8"),
              IngredientMeasure = IngredientMeasure.g,
              Status = Domain.Entities.TableAggregator.Enums.Status.Active,
-             Created = DateTimeOffset.Parse("2022-01-01")
+             Created = DefaultDatetime.MinValue,
+             LastModified = DefaultDatetime.MinValue,
          }
         );
     }

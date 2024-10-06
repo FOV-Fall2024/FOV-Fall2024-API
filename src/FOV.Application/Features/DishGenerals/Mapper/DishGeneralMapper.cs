@@ -14,6 +14,6 @@ public static class DishGeneralMapper
 
     public static GetProductGeneralDetailResponse MapperDetailDTO(this DishGeneral dishGeneral, List<GetIngredientResponse> getIngredient)
     {
-        return new GetProductGeneralDetailResponse(dishGeneral.Id, dishGeneral.DishName, dishGeneral.DishDescription, dishGeneral.Created, dishGeneral.LastModified, getIngredient);
+        return new GetProductGeneralDetailResponse(dishGeneral.Id, dishGeneral.DishName, dishGeneral.DishDescription, dishGeneral.Created ?? DateTime.Now, dishGeneral.LastModified ?? DateTime.Now, getIngredient);
     }
 }

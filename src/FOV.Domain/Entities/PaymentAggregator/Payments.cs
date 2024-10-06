@@ -6,7 +6,7 @@ using FOV.Domain.Entities.PaymentAggregator.Enums;
 namespace FOV.Domain.Entities.PaymentAggregator;
 public class Payments : BaseAuditableEntity
 {
-    public DateTime PaymentDate { get; set; } = DateTime.UtcNow;
+    public DateTime? PaymentDate { get; set; } = DateTime.UtcNow;
     public decimal Amount { get; set; }
     public string VnpTxnRef { get; set; } // VNPay transaction reference
     public PaymentStatus PaymentStatus { get; set; }

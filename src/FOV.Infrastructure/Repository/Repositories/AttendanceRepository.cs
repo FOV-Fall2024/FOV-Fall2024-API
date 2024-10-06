@@ -19,11 +19,13 @@ public class AttendanceRepository : GenericRepository<Attendance>, IAttendanceRe
 
     public async Task<Attendance?> GetByEmployeeScheduleAndDateAsync(Guid employeeId, Guid waiterScheduleId, DateOnly date)
     {
-        return await _context.Attendances
-            .Where(a => a.EmployeeId == employeeId
-                     && a.WaiterScheduleId == waiterScheduleId
-                     && a.CheckInTime.Date == date.ToDateTime(TimeOnly.MinValue).Date)
-            .FirstOrDefaultAsync();
+        //return await _context.Attendances
+        //    .Where(a => a.EmployeeId == employeeId
+        //             && a.WaiterScheduleId == waiterScheduleId
+        //             && a.CheckInTime.Date == date.ToDateTime(TimeOnly.MinValue).Date)
+        //    .FirstOrDefaultAsync();
+
+        throw new NotImplementedException();
     }
 
 }

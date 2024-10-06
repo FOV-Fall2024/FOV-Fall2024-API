@@ -7,7 +7,7 @@ public class IngredientTransaction : BaseAuditableEntity, IsSoftDeleted
 {
     public decimal Quantity { get; set; }
 
-    public DateTime TransactionDate { get; set; }
+    public DateTime? TransactionDate { get; set; } = DateTime.UtcNow;
 
     public IngredientTransactionType Type { get; set; }
 

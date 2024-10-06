@@ -8,7 +8,7 @@ public class NewDishRecommendLog : BaseAuditableEntity
     public string Note { get; set; } = string.Empty;
     public NewDishRecommend? NewDishRecommend { get; set; }
     public Guid NewProductRecommendId { get; set; }
-    public DateTimeOffset LogDate { get; set; }
+    public DateTime? LogDate { get; set; } = DateTime.UtcNow;
     public LogType LogType { get; set; }
     public NewProductRecommendLogStatus NewProductRecommendLogStatus { get; set; }
     public string UserId { get; set; }
@@ -24,7 +24,7 @@ public class NewDishRecommendLog : BaseAuditableEntity
         NewProductRecommendId = newProductRecommendId;
         LogType = logType;
         UserId = userId;
-        LogDate = DateTimeOffset.Now;
+        LogDate = DateTime.UtcNow;
     }
 
     //? add New 

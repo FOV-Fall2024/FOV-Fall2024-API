@@ -1,4 +1,5 @@
-﻿using FOV.Domain.Entities.DishGeneralAggregator;
+﻿using FOV.Domain.Common;
+using FOV.Domain.Entities.DishGeneralAggregator;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -21,11 +22,7 @@ public class DishGeneralConfiguration : IEntityTypeConfiguration<DishGeneral>
                 DishName = "Coca-Cola",
                 DishDescription = "Coca-Cola ngon ",
                 IsDeleted = false,
-                Created = DateTimeOffset.Parse("2022-01-01"),
-                IsRefund = true,
-                PercentagePriceDifference = 20,
-                Price = 30
-
+                Created = DateTimeOffset.Parse("2022-01-01")
             },
              new DishGeneral()
              {
@@ -34,10 +31,7 @@ public class DishGeneralConfiguration : IEntityTypeConfiguration<DishGeneral>
                  DishName = "7up",
                  DishDescription = "7up ngon ",
                  IsDeleted = false,
-                 Created = DateTimeOffset.Parse("2022-01-01"),
-                 IsRefund = true,
-                 PercentagePriceDifference = 20,
-                 Price = 30
+                 Created = DateTimeOffset.Parse("2022-01-01")
              },
              new DishGeneral()
              {
@@ -47,9 +41,7 @@ public class DishGeneralConfiguration : IEntityTypeConfiguration<DishGeneral>
                  DishDescription = " Caprese Salad ngon ",
                  Price = 20,
                  IsDeleted = false,
-                 Created = DateTimeOffset.Parse("2022-01-01"),
-                 IsRefund = false,
-                 PercentagePriceDifference = 20
+                 Created = DateTimeOffset.Parse("2022-01-01")
              },
              new DishGeneral()
              {
@@ -58,12 +50,7 @@ public class DishGeneralConfiguration : IEntityTypeConfiguration<DishGeneral>
                  DishName = "Vegan Hotpot",
                  DishDescription = "Lẩu chay ngon",
                  IsDeleted = false,
-                 Created = DateTimeOffset.Parse("2022-01-01"),
-                 IsRefund = false,
-                 PercentagePriceDifference = 20,
-                 Price = 30
-
-
+                 Created = DateTimeOffset.Parse("2022-01-01")
              },
              new DishGeneral()
              {
@@ -72,10 +59,7 @@ public class DishGeneralConfiguration : IEntityTypeConfiguration<DishGeneral>
                  DishName = "Cơm trắng",
                  DishDescription = "Cơm ngon",
                  IsDeleted = false,
-                 Created = DateTimeOffset.Parse("2022-01-01"),
-                 IsRefund = false,
-                 PercentagePriceDifference = 20,
-                 Price = 31
+                 Created = DateTimeOffset.Parse("2022-01-01")
              }
     );
     }
