@@ -12,7 +12,7 @@ public class RefundDishInventoryTransaction : BaseAuditableEntity
 {
     public int Quantity { get; set; }
 
-    public DateTimeOffset TransactionDate { get; set; } = DateTimeOffset.Now;   
+    public DateTime? TransactionDate { get; set; } = DateTime.UtcNow;   
 
     public RefundDishInventory? RefundDishInventory { get; set; } 
 

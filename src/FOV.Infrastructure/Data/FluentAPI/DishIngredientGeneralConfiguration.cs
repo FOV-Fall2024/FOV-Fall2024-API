@@ -1,4 +1,5 @@
-﻿using FOV.Domain.Entities.DishGeneralAggregator;
+﻿using FOV.Domain.Common;
+using FOV.Domain.Entities.DishGeneralAggregator;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -15,7 +16,9 @@ internal class DishIngredientGeneralConfiguration : IEntityTypeConfiguration<Dis
             DishGeneralId = Guid.Parse("6535596e-a86a-4fcc-97e7-7e6182a5c022"),
             Quantity = 2,
             IsDeleted = false,
-            Created = DateTimeOffset.Parse("2022-01-01")
+            Created = DefaultDatetime.MinValue,
+            LastModified = DefaultDatetime.MinValue,
+            
         });
     }
 }

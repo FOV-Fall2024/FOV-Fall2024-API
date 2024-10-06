@@ -2,5 +2,5 @@
 
 public record GetProductGeneralResponse(Guid Id, string DishGeneralName, decimal DishGeneralPrice, string DishGeneralDescription, bool IsDeleted, string DishGeneralImage, Guid CategoryId, DateTimeOffset CreatedDate, DateTimeOffset UpdateTime);
 
-public record GetProductGeneralDetailResponse(Guid Id, string DishGeneralName, string DishGeneralDescription, DateTimeOffset CreatedDate, DateTimeOffset UpdateDated, List<GetIngredientResponse> GetIngredients);
+public record GetProductGeneralDetailResponse(Guid Id, string DishGeneralName, string DishGeneralDescription, DateTime CreatedDate, DateTime UpdateDated, List<GetIngredientResponse> GetIngredients);
 public record GetIngredientResponse(Guid IngredientGeneralId, string IngredientGeneralName, decimal IngredientGeneralQuantity);

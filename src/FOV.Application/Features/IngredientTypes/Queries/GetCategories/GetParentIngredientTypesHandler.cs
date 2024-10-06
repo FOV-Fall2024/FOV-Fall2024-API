@@ -28,7 +28,7 @@ public class GetParentIngredientTypesHandler(IUnitOfWorks unitOfWorks) : IReques
 
         // Map filtered results to the DTO (GetChildrenIngredientType)
         var mappedCategories = filteredResults
-            .Select(x => new GetChildrenIngredientType(x.Id, x.IngredientName, x.IngredientDescription, x.Created))
+            .Select(x => new GetChildrenIngredientType(x.Id, x.IngredientName, x.IngredientDescription, x.Created ?? DateTime.Now))
             .ToList();
 
         // Extract pagination and sorting details

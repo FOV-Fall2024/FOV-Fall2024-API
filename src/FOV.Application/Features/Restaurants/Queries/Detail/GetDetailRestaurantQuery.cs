@@ -55,7 +55,7 @@ namespace FOV.Application.Features.Restaurants.Queries.Detail
                 combo.Quantity,
                 combo.Price,
                 combo.PercentReduce,
-                combo.ExpiredDate
+                combo.ExpiredDate ?? DateTime.Now
             )).ToList();
 
             var response = new GetRestaurantDetailResponse(

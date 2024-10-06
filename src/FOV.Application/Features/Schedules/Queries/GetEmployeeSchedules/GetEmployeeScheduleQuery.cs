@@ -21,7 +21,7 @@ public class GetEmployeeScheduleQuery(IUnitOfWorks unitOfWorks) : IRequestHandle
         };
         var filterTable = schedule.AsQueryable().CustomFilterV1(filterEntities);
 
-        var mappedSchedule = filterTable.Select(s => new GetEmployeeScheduleResponse(s.Id, new EmployeeDto(s.EmployeeId, s.Employee.EmployeeCode), new ShiftDto(s.ShiftId, s.Shift.ShiftName), s.DateTime)).ToList();
+        var mappedSchedule = filterTable.Select(s => new GetEmployeeScheduleResponse(s.Id, new EmployeeDto(s.EmployeeId, s.Employee.EmployeeCode), new ShiftDto(s.ShiftId, s.Shift.ShiftName), s.DateTime ?? DateOnly.MinValue)).ToList();
 
         var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
 

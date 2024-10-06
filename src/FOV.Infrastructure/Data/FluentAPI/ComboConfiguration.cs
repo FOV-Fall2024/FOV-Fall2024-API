@@ -1,4 +1,5 @@
-﻿using FOV.Domain.Entities.ComboAggregator;
+﻿using FOV.Domain.Common;
+using FOV.Domain.Entities.ComboAggregator;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -21,11 +22,14 @@ public class ComboConfiguration : IEntityTypeConfiguration<Combo>
                 Quantity = 20,
                 Price = 50.00m,
                 PercentReduce = 10.0m,
-                ExpiredDate = DateTime.UtcNow.AddMonths(1),
+                ExpiredDate = DefaultDatetime.MinValue,
                 RestaurantId = Guid.Parse("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0"),
                 IsDeleted = false,
                 Thumbnail = "img1",
-                Created = DateTimeOffset.Parse("2022-01-01")
+                Created = DefaultDatetime.MinValue,
+                LastModified = DefaultDatetime.MinValue,
+                
+
             },
             new Combo
             {
@@ -35,11 +39,12 @@ public class ComboConfiguration : IEntityTypeConfiguration<Combo>
                 Quantity = 10,
                 Price = 30.00m,
                 PercentReduce = 5.0m,
-                ExpiredDate = DateTime.UtcNow.AddMonths(2),
+                ExpiredDate = DefaultDatetime.MinValue,
                 RestaurantId = Guid.Parse("d42cf3c6-cbe4-4431-ac91-9eae870fa007"),
                 IsDeleted = false,
                 Thumbnail = "img2",
-                Created = DateTimeOffset.Parse("2022-01-01")
+                Created = DefaultDatetime.MinValue,
+                LastModified = DefaultDatetime.MinValue,
             },
             new Combo
             {
@@ -49,11 +54,12 @@ public class ComboConfiguration : IEntityTypeConfiguration<Combo>
                 Quantity = 10,
                 Price = 30.00m,
                 PercentReduce = 5.0m,
-                ExpiredDate = DateTime.UtcNow.AddMonths(2),
+                ExpiredDate = DefaultDatetime.MinValue,
                 RestaurantId = Guid.Parse("d42cf3c6-cbe4-4431-ac91-9eae870fa007"),
                 IsDeleted = false,
                 Thumbnail = "img3",
-                Created = DateTimeOffset.Parse("2022-01-01")
+                Created = DefaultDatetime.MinValue,
+                LastModified = DefaultDatetime.MinValue,
 
             }
         );

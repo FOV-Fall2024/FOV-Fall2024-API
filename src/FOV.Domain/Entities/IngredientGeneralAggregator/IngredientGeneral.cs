@@ -42,6 +42,6 @@ public class IngredientGeneral : BaseAuditableEntity
     public void UpdateState(bool state)
     {
         Status = state ? Status.Active : Status.Inactive;
-        LastModified = DateTimeOffset.UtcNow.AddHours(7);
+        LastModified = DateTime.UtcNow.AddHours(7);
     }
 }

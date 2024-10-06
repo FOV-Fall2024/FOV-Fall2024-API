@@ -20,7 +20,7 @@ public class Restaurant : BaseAuditableEntity, IsSoftDeleted
 
     public string RestaurantCode { get; set; }
 
-    public DateTimeOffset ReleaseDate { get; set; } = DateTimeOffset.UtcNow.AddDays(7);
+    public DateTime? ReleaseDate { get; set; } = DateTime.UtcNow;
 
 
     public virtual ICollection<Employee> Employees { get; set; } = [];
@@ -46,7 +46,7 @@ public class Restaurant : BaseAuditableEntity, IsSoftDeleted
         Address = address;
         RestaurantPhone = phone;
         RestaurantCode = code;
-        Created = DateTimeOffset.UtcNow.AddHours(7);
+        Created = DateTime.UtcNow.AddHours(7);
         Status = Status.Inactive;
     }
     public void Update(string name, string address, string phone)
@@ -54,11 +54,11 @@ public class Restaurant : BaseAuditableEntity, IsSoftDeleted
         RestaurantName = name;
         Address = address;
         RestaurantPhone = phone;
-        LastModified = DateTimeOffset.UtcNow.AddHours(7);
+        LastModified = DateTime.UtcNow.AddHours(7);
     }
     public void UpdateState(bool state)
     {
         Status = state ? Status.Active : Status.Inactive;
-        LastModified = DateTimeOffset.UtcNow.AddHours(7);
+        LastModified = DateTime.UtcNow.AddHours(7);
     }
 }

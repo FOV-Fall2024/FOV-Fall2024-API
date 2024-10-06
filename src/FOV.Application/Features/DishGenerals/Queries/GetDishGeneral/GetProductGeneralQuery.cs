@@ -42,8 +42,8 @@ namespace FOV.Application.Features.DishGenerals.Queries.GetProductGeneral
                 x.IsDeleted,
                 x.DishImageDefault,
                 x.CategoryId ?? Guid.Empty,
-                x.Created,
-                x.LastModified)).ToList();
+                x.Created ?? DateTime.Now,
+                x.LastModified ?? DateTime.Now)).ToList();
 
             // Get pagination and sorting values
             var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);

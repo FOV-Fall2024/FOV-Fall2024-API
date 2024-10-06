@@ -66,11 +66,11 @@ public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> u
                     employee.User.FirstName + " " + employee.User.LastName,
                     employee.User.PhoneNumber,
                     employee.EmployeeCode,
-                    employee.HireDate,
+                    employee.HireDate ?? DateTime.Now,
                     roleName,
                     employee.RestaurantId ?? Guid.Empty,
                     employee.Status,
-                    employee.Created
+                    employee.Created ?? DateTime.Now
                 ));
             }
         }

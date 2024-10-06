@@ -18,7 +18,7 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
     }
     public async Task<TEntity> AddAsync(TEntity entity)
     {
-        entity.Created = CurrentTime.RecentTime;
+        entity.Created = DateTime.UtcNow;
         var result = await _dbSet.AddAsync(entity);
         return result.Entity;
     }
@@ -27,7 +27,7 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
     {
         foreach (var entity in entities)
         {
-            entity.Created = CurrentTime.RecentTime;
+            entity.Created = DateTime.UtcNow;
         }
         await _dbSet.AddRangeAsync(entities);
     }
@@ -78,7 +78,7 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
 
     public void Update(TEntity entity)
     {
-        entity.LastModified = CurrentTime.RecentTime;
+        entity.LastModified = DateTime.UtcNow   ;
         _dbSet.Update(entity);
     }
 

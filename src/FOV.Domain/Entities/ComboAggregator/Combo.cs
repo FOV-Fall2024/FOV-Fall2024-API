@@ -19,7 +19,7 @@ public class Combo : BaseAuditableEntity, IsSoftDeleted
 
     public decimal PercentReduce { get; set; }
 
-    public DateTime ExpiredDate { get; set; }
+    public DateTime? ExpiredDate { get; set; } = DateTime.UtcNow;
 
     public Restaurant? Restaurant { get; set; }
 
