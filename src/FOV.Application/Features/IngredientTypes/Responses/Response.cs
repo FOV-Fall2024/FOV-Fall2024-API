@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FOV.Application.Features.IngredientTypes.Responses;
 
-public record GetChildrenIngredientType(Guid Id, string IngredientTypeName,string IngredientTypeDescription);
+public record GetChildrenIngredientType(Guid Id, string IngredientTypeName,string IngredientTypeDescription,DateTimeOffset CreatedDate);
 
 public record GetParentCategoriesResponse(Guid Id, string Name);
 
