@@ -10,6 +10,7 @@ public class IngredientGeneralConfiguration : IEntityTypeConfiguration<Ingredien
     public void Configure(EntityTypeBuilder<IngredientGeneral> builder)
     {
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
         builder.HasMany(x => x.DishIngredientGenerals).WithOne(x => x.IngredientGeneral).HasForeignKey(x => x.IngredientGeneralId);
         builder.HasData(new IngredientGeneral
         {

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FOV.Infrastructure.Migrations
 {
     [DbContext(typeof(FOVContext))]
-    [Migration("20241005092529_DomainRefundInventorV4")]
-    partial class DomainRefundInventorV4
+    [Migration("20241006070011_DomainRefundInventorV36")]
+    partial class DomainRefundInventorV36
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -127,7 +127,7 @@ namespace FOV.Infrastructure.Migrations
                             Id = new Guid("941bcca9-52a6-41f7-9403-06cc5fa703ea"),
                             ComboName = "Combo 1",
                             Created = new DateTimeOffset(new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 7, 0, 0, 0)),
-                            ExpiredDate = new DateTime(2024, 11, 5, 9, 25, 28, 578, DateTimeKind.Utc).AddTicks(4644),
+                            ExpiredDate = new DateTime(2024, 11, 6, 7, 0, 11, 304, DateTimeKind.Utc).AddTicks(4157),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             PercentReduce = 10.0m,
@@ -142,7 +142,7 @@ namespace FOV.Infrastructure.Migrations
                             Id = new Guid("3907a193-c2ae-4f40-936b-9a2438595123"),
                             ComboName = "Combo 2",
                             Created = new DateTimeOffset(new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 7, 0, 0, 0)),
-                            ExpiredDate = new DateTime(2024, 12, 5, 9, 25, 28, 578, DateTimeKind.Utc).AddTicks(4695),
+                            ExpiredDate = new DateTime(2024, 12, 6, 7, 0, 11, 304, DateTimeKind.Utc).AddTicks(4195),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             PercentReduce = 5.0m,
@@ -157,7 +157,7 @@ namespace FOV.Infrastructure.Migrations
                             Id = new Guid("921b269a-db6e-4a1d-b285-70df523e010e"),
                             ComboName = "Combo 3",
                             Created = new DateTimeOffset(new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 7, 0, 0, 0)),
-                            ExpiredDate = new DateTime(2024, 12, 5, 9, 25, 28, 578, DateTimeKind.Utc).AddTicks(4703),
+                            ExpiredDate = new DateTime(2024, 12, 6, 7, 0, 11, 304, DateTimeKind.Utc).AddTicks(4204),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             PercentReduce = 5.0m,
@@ -582,6 +582,9 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
 
+                    b.Property<decimal>("PercentagePriceDifference")
+                        .HasColumnType("numeric");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
@@ -602,9 +605,10 @@ namespace FOV.Infrastructure.Migrations
                             DishName = "Coca-Cola",
                             IsDeleted = false,
                             IsDraft = true,
-                            IsRefund = false,
+                            IsRefund = true,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            Price = 0m
+                            PercentagePriceDifference = 20m,
+                            Price = 30m
                         },
                         new
                         {
@@ -616,9 +620,10 @@ namespace FOV.Infrastructure.Migrations
                             DishName = "7up",
                             IsDeleted = false,
                             IsDraft = true,
-                            IsRefund = false,
+                            IsRefund = true,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            Price = 0m
+                            PercentagePriceDifference = 20m,
+                            Price = 30m
                         },
                         new
                         {
@@ -632,7 +637,8 @@ namespace FOV.Infrastructure.Migrations
                             IsDraft = true,
                             IsRefund = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            Price = 0m
+                            PercentagePriceDifference = 20m,
+                            Price = 20m
                         },
                         new
                         {
@@ -646,7 +652,8 @@ namespace FOV.Infrastructure.Migrations
                             IsDraft = true,
                             IsRefund = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            Price = 0m
+                            PercentagePriceDifference = 20m,
+                            Price = 30m
                         },
                         new
                         {
@@ -660,7 +667,8 @@ namespace FOV.Infrastructure.Migrations
                             IsDraft = true,
                             IsRefund = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            Price = 0m
+                            PercentagePriceDifference = 20m,
+                            Price = 31m
                         });
                 });
 
@@ -1412,10 +1420,10 @@ namespace FOV.Infrastructure.Migrations
                         {
                             Id = new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0"),
                             Address = "Go Vap",
-                            Created = new DateTimeOffset(new DateTime(2024, 10, 5, 16, 25, 28, 587, DateTimeKind.Unspecified).AddTicks(8215), new TimeSpan(0, 7, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2024, 10, 6, 14, 0, 11, 311, DateTimeKind.Unspecified).AddTicks(4454), new TimeSpan(0, 7, 0, 0, 0)),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ReleaseDate = new DateTimeOffset(new DateTime(2024, 10, 12, 9, 25, 28, 587, DateTimeKind.Unspecified).AddTicks(8189), new TimeSpan(0, 0, 0, 0, 0)),
+                            ReleaseDate = new DateTimeOffset(new DateTime(2024, 10, 13, 7, 0, 11, 311, DateTimeKind.Unspecified).AddTicks(4430), new TimeSpan(0, 0, 0, 0, 0)),
                             RestaurantCode = "RE_001",
                             RestaurantName = "Default Restaurant",
                             RestaurantPhone = "0902388123",
@@ -1425,10 +1433,10 @@ namespace FOV.Infrastructure.Migrations
                         {
                             Id = new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"),
                             Address = "Thu Duc",
-                            Created = new DateTimeOffset(new DateTime(2024, 10, 5, 16, 25, 28, 587, DateTimeKind.Unspecified).AddTicks(8236), new TimeSpan(0, 7, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2024, 10, 6, 14, 0, 11, 311, DateTimeKind.Unspecified).AddTicks(4477), new TimeSpan(0, 7, 0, 0, 0)),
                             IsDeleted = false,
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ReleaseDate = new DateTimeOffset(new DateTime(2024, 10, 12, 9, 25, 28, 587, DateTimeKind.Unspecified).AddTicks(8234), new TimeSpan(0, 0, 0, 0, 0)),
+                            ReleaseDate = new DateTimeOffset(new DateTime(2024, 10, 13, 7, 0, 11, 311, DateTimeKind.Unspecified).AddTicks(4476), new TimeSpan(0, 0, 0, 0, 0)),
                             RestaurantCode = "RE_002",
                             RestaurantName = "Vege Thu Duc",
                             RestaurantPhone = "0867960120",
@@ -2408,8 +2416,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.Navigation("OrderDetails");
 
-                    b.Navigation("RefundDishInventory")
-                        .IsRequired();
+                    b.Navigation("RefundDishInventory");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.DishAggregator.RefundDishInventory", b =>

@@ -8,6 +8,7 @@ internal class DishIngredientGeneralConfiguration : IEntityTypeConfiguration<Dis
     public void Configure(EntityTypeBuilder<DishIngredientGeneral> builder)
     {
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
         builder.HasData(new DishIngredientGeneral
         {
             Id = Guid.Parse("9ccc8ec6-6b72-4467-aaeb-1e45dc0540b0"),

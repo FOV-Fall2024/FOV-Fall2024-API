@@ -10,6 +10,7 @@ public class TableConfiguration : IEntityTypeConfiguration<Table>
     public void Configure(EntityTypeBuilder<Table> builder)
     {
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
         builder.HasMany(x => x.Orders).WithOne(x => x.Table).HasForeignKey(x => x.TableId);
     }
 }

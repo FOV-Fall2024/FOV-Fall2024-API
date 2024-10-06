@@ -30,7 +30,7 @@ public class Dish : BaseAuditableEntity, IsSoftDeleted
 
     public Guid? DishGeneralId { get; set; }
 
-    public RefundDishInventory RefundDishInventory { get; set; }
+    public RefundDishInventory? RefundDishInventory { get; set; }
     public bool IsDeleted { get; set; }
 
     public Dish()

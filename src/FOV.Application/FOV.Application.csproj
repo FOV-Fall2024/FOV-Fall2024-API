@@ -33,6 +33,14 @@
     <Folder Include="Features\NewRecommendDishLog\Commands\" />
     <Folder Include="Features\NewRecommendDishLog\Queries\" />
     <Folder Include="Features\NewRecommendDishes\Queries\GetDetail\" />
+    <Folder Include="Features\RefundDishInventories\Commands\GetExportFile\" />
+    <Folder Include="Features\RefundDishInventories\Commands\AddSingle\" />
+    <Folder Include="Features\RefundDishInventories\Commands\AddMultiple\" />
+    <Folder Include="Features\RefundDishInventories\Commands\HandleImportFile\" />
+    <Folder Include="Features\RefundDishInventories\Responses\" />
+    <Folder Include="Features\RefundDishInventories\Queries\" />
+    <Folder Include="Features\RefundDishUnits\Mappers\" />
+    <Folder Include="Features\RefundDishUnits\Responses\" />
   </ItemGroup>
 
 </Project>

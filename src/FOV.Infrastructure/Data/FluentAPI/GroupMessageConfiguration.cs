@@ -8,5 +8,6 @@ public class GroupMessageConfiguration : IEntityTypeConfiguration<GroupMessage>
     public void Configure(EntityTypeBuilder<GroupMessage> builder)
     {
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
     }
 }

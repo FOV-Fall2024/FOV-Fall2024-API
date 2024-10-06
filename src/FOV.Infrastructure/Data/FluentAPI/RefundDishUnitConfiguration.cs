@@ -8,6 +8,7 @@ public class RefundDishUnitConfiguration : IEntityTypeConfiguration<RefundDishUn
     public void Configure(EntityTypeBuilder<RefundDishUnit> builder)
     {
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
         builder.HasOne(x => x.RefundDishInventory).WithMany(x => x.DishUnits).HasForeignKey(x => x.RefundDishInventoryId).OnDelete(DeleteBehavior.Cascade); 
         builder.HasOne(x => x.RefundDishUnitParent).WithMany(x => x.RefundDishChildUnits).HasForeignKey(x => x.RefundDishUnitParentId).OnDelete(DeleteBehavior.Restrict);
     }

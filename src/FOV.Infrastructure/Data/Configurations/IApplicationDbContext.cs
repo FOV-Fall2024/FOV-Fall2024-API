@@ -58,10 +58,10 @@ public interface IApplicationDbContext
 
     DbSet<NewDishRecommendLog> NewDishRecommendLogs { get; }
 
-    DbSet<RefundDishInventory> RefundDishInventory { get; }
+    DbSet<RefundDishInventory> RefundDishInventories { get; }
 
     DbSet<RefundDishInventoryTransaction> RefundDishInventoryTransactions { get; }
 
-    DbSet<RefundDishUnit> RefundDishUnit { get; }
+    DbSet<RefundDishUnit> RefundDishUnits { get; }
 
 }

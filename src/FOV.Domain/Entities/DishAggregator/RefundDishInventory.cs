@@ -12,5 +12,16 @@ public class RefundDishInventory : BaseAuditableEntity
 
     public virtual ICollection<RefundDishInventoryTransaction> Transaction { get; set; }
 
+    public RefundDishInventory()
+    {
+        
+    }
+
+    public RefundDishInventory(Guid dishId)
+    {
+        QuantityAvailable = 0;
+        DishId = dishId;
+    }
+
 
 }

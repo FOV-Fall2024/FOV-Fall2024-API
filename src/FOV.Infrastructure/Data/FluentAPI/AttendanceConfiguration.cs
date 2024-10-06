@@ -8,7 +8,7 @@ public class AttendanceConfiguration : IEntityTypeConfiguration<Attendance>
     public void Configure(EntityTypeBuilder<Attendance> builder)
     {
         builder.HasKey(x => x.Id);
-
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
         builder.HasOne(a => a.Employee)
                .WithMany(e => e.Attendances)
                .HasForeignKey(a => a.EmployeeId);

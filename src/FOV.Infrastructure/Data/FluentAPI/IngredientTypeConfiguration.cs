@@ -9,6 +9,7 @@ public class IngredientTypeConfiguration : IEntityTypeConfiguration<IngredientTy
     public void Configure(EntityTypeBuilder<IngredientType> builder)
     {
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
         builder.HasMany(x => x.Ingredients).WithOne(x => x.IngredientType).HasForeignKey(x => x.IngredientTypeId);
         builder.HasMany(x => x.IngredientGenerals).WithOne(x => x.IngredientType).HasForeignKey(x => x.IngredientTypeId);
         builder.HasData(

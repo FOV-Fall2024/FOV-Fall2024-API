@@ -8,5 +8,6 @@ public class OrderDetailConfiguration : IEntityTypeConfiguration<OrderDetail>
     public void Configure(EntityTypeBuilder<OrderDetail> builder)
     {
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
     }
 }

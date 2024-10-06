@@ -10,6 +10,7 @@ public class RestaurantConfiguration : IEntityTypeConfiguration<Restaurant>
     public void Configure(EntityTypeBuilder<Restaurant> builder)
     {
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
         builder.HasMany(x => x.Ingredients).WithOne(x => x.Restaurant).HasForeignKey(x => x.RestaurantId);
         builder.HasMany(x => x.Dishes).WithOne(x => x.Restaurant).HasForeignKey(x => x.RestaurantId);
         builder.HasMany(x => x.Combos).WithOne(x => x.Restaurant).HasForeignKey(x => x.RestaurantId);

@@ -8,5 +8,6 @@ public class IngredientTransactionConfiguration : IEntityTypeConfiguration<Ingre
     public void Configure(EntityTypeBuilder<IngredientTransaction> builder)
     {
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
     }
 }

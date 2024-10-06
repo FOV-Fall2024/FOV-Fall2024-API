@@ -7,6 +7,7 @@ public class RefundDishInventoryTransactionConfiguration : IEntityTypeConfigurat
 {
     public void Configure(EntityTypeBuilder<RefundDishInventoryTransaction> builder)
     {
-       builder.HasKey(x => x.Id);
+        builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
     }
 }

@@ -8,6 +8,7 @@ internal class GroupChatConfiguration : IEntityTypeConfiguration<GroupChat>
     public void Configure(EntityTypeBuilder<GroupChat> builder)
     {
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
         builder.HasMany(x => x.GroupUsers).WithOne(x => x.GroupChat).HasForeignKey(x => x.GroupChatId);
         builder.HasMany(x => x.GroupMessages).WithOne(x => x.GroupChat).HasForeignKey(x => x.GroupChatId);
         builder.HasData(new GroupChat

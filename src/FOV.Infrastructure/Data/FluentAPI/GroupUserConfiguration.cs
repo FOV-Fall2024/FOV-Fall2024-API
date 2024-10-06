@@ -8,5 +8,6 @@ public class GroupUserConfiguration : IEntityTypeConfiguration<GroupUser>
     public void Configure(EntityTypeBuilder<GroupUser> builder)
     {
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
     }
 }
