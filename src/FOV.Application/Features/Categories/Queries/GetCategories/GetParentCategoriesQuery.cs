@@ -19,7 +19,7 @@ public class GetParentCategoriesQuery(IUnitOfWorks unitOfWorks) : IRequestHandle
 
         };
         var filterCategory = responses.AsQueryable().CustomFilterV1(filterEntity);
-        var mappedCategory = filterCategory.Select(x => new GetParentCategoriesResponse(x.Id, x.CategoryName)).ToList();
+        var mappedCategory = filterCategory.Select(x => new GetParentCategoriesResponse(x.Id, x.CategoryName,x.Created)).ToList();
 
         var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
 

@@ -34,7 +34,8 @@ namespace FOV.Application.Features.IngredientGenerals.Queries.GetAllIngredientGe
                 x.IngredientType.IngredientName,
                 x.IngredientMeasure.ToString(),
                 x.IngredientDescription ?? string.Empty,
-                x.Status)).ToList();
+                x.Status,
+                x.Created)).ToList();
 
             // Get pagination and sorting values
             var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);

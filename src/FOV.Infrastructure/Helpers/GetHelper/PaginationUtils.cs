@@ -13,7 +13,7 @@ public static class PaginationUtils
         var page = request?.Page ?? 1;
         var pageSize = request?.PageSize ?? 10;
         var sortType = request?.SortType ?? SortOrder.Descending;
-        var sortField = request?.ColName ?? "Id"; // Default sorting field, can be changed to any field in the entity
+        var sortField = request?.ColName ?? "CreatedDate"; // Default sorting field, can be changed to any field in the entity
 
         return (page, pageSize, sortType, sortField);
     }

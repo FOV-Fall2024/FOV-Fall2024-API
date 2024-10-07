@@ -3,7 +3,7 @@ namespace FOV.Domain.Common;
 
 public abstract class BaseAuditableEntity : BaseEntity
 {
-    public DateTime? Created { get; set; } = DateTime.UtcNow;
+    public DateTime Created { get; set; } = DateTime.UtcNow;
 
     public string? CreatedBy { get; set; }
 

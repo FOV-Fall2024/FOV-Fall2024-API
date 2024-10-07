@@ -36,7 +36,7 @@ public class GetRestaurantQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetR
             restaurant.RestaurantPhone ?? string.Empty,
             restaurant.RestaurantCode ?? string.Empty,
             restaurant.Status,
-            restaurant.Created ?? DateTime.Now  
+            restaurant.Created  
         )).ToList();
 
         var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
