@@ -5,7 +5,7 @@ using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.RefundDishUnits.Commands.Update;
-public sealed record UpdateRefundUnitCommand(string Name, decimal ConversionFactor) : IRequest<Result>
+public sealed record UpdateRefundUnitCommand(string Name, int ConversionFactor) : IRequest<Result>
 {
     [JsonIgnore]
     public Guid Id { get; set; }

@@ -1,18 +1,18 @@
-﻿using FluentResults;
-using MediatR;
-using OfficeOpenXml.DataValidation;
-using OfficeOpenXml;
+﻿using FOV.Application.Common.Behaviours.Claim;
+using FOV.Application.Features.Ingredients.Commands.TakeImportFile;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
-using FOV.Application.Common.Behaviours.Claim;
+using MediatR;
+using OfficeOpenXml;
+using OfficeOpenXml.DataValidation;
 
-namespace FOV.Application.Features.Ingredients.Commands.TakeImportFile;
-public sealed record TakeImportFileCommand : IRequest<TakeImportFileResponse>;
-public sealed record TakeImportFileResponse(MemoryStream ExcelFile, string ExcelName);
-public class TakeImportFileHandler(IUnitOfWorks unitOfWorks,IClaimService claimService) : IRequestHandler<TakeImportFileCommand, TakeImportFileResponse>
+namespace FOV.Application.Features.RefundDishInventories.Queries.GetExportFile;
+public sealed record GetExportFileCommand : IRequest<TakeImportFileAddRefundDishResponse>;
+public sealed record TakeImportFileAddRefundDishResponse(MemoryStream ExcelFile, string ExcelName);
+internal class GetExportFileQuery(IUnitOfWorks unitOfWorks, IClaimService claimService) : IRequestHandler<GetExportFileCommand, TakeImportFileAddRefundDishResponse>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     private readonly IClaimService _claimService = claimService;
-    public  async Task<TakeImportFileResponse> Handle(TakeImportFileCommand request, CancellationToken cancellationToken)
+    public async Task<TakeImportFileAddRefundDishResponse> Handle(GetExportFileCommand request, CancellationToken cancellationToken)
     {
         ExcelPackage.LicenseContext = LicenseContext.Commercial;
 
@@ -21,17 +21,17 @@ public class TakeImportFileHandler(IUnitOfWorks unitOfWorks,IClaimService claimS
         var worksheet = package.Workbook.Worksheets.Add("DataSheet");
 
         // Add headers
-        worksheet.Cells[1, 1].Value = "IngredientName";      // Column A
+        worksheet.Cells[1, 1].Value = "Dish Name";      // Column A
         worksheet.Cells[1, 2].Value = "Quantity";   // Column B
         worksheet.Cells[1, 3].Value = "Measurement";   // Column C
 
         int rowIngredient = 2;
-        var ingredients = await _unitOfWorks.IngredientRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId,x => x.IngredientUnits);
-        foreach (var item in ingredients)
+        var dishes = await _unitOfWorks.DishRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId, x => x.RefundDishInventory,x => x.RefundDishInventory.DishUnits);
+        foreach (var item in dishes)
         {
-            worksheet.Cells[rowIngredient, 1].Value = item.IngredientName;
+            worksheet.Cells[rowIngredient, 1].Value = item.DishName;
             var listValidation = worksheet.DataValidations.AddListValidation($"C{rowIngredient}");
-            foreach (var ingredientUnit in item.IngredientUnits)
+            foreach (var ingredientUnit in item.RefundDishInventory.DishUnits)
             {
                 listValidation.Formula.Values.Add(ingredientUnit.UnitName);
             }
@@ -46,7 +46,7 @@ public class TakeImportFileHandler(IUnitOfWorks unitOfWorks,IClaimService claimS
 
         // Apply number validation for the second column (B)
         int count = _unitOfWorks.IngredientRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId).Result.Count;
-        var numberValidation = worksheet.DataValidations.AddDecimalValidation($"B2:B{count+=1}");
+        var numberValidation = worksheet.DataValidations.AddDecimalValidation($"B2:B{count += 1}");
         numberValidation.ShowErrorMessage = true;
         numberValidation.ErrorTitle = "Invalid Input";
         numberValidation.Error = "Only numbers between 0 and 100 are allowed.";
@@ -68,6 +68,6 @@ public class TakeImportFileHandler(IUnitOfWorks unitOfWorks,IClaimService claimS
 
         // Return the result with the stream and filename
         var excelName = $"GeneratedExcel-{DateTime.Now:yyyyMMddHHmmss}.xlsx";
-        return new TakeImportFileResponse(stream, excelName);
+        return new TakeImportFileAddRefundDishResponse(stream, excelName);
     }
 }

@@ -4,7 +4,7 @@ using MediatR;
 
 namespace FOV.Application.Features.RefundDishUnits.Commands.Create;
 
-public sealed record CreateNewRefundDishUnitCommand(Guid RefundDishInventoryId, decimal ConversionFactor, string UnitName) : IRequest<Guid>;
+public sealed record CreateNewRefundDishUnitCommand(Guid RefundDishInventoryId, int ConversionFactor, string UnitName) : IRequest<Guid>;
 public class CreateNewRefundDishUnitHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<CreateNewRefundDishUnitCommand, Guid>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;

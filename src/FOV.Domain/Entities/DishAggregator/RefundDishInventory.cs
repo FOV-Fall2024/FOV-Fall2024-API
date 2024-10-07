@@ -14,13 +14,18 @@ public class RefundDishInventory : BaseAuditableEntity
 
     public RefundDishInventory()
     {
-        
+
     }
 
     public RefundDishInventory(Guid dishId)
     {
         QuantityAvailable = 0;
         DishId = dishId;
+    }
+
+    public void AddQuantity(int quantity)
+    {
+        QuantityAvailable += quantity;
     }
 
 

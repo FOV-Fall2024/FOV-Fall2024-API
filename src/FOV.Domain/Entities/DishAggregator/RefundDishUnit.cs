@@ -9,7 +9,7 @@ public class RefundDishUnit : BaseAuditableEntity
 
     public string UnitName { get; set; } = string.Empty;
 
-    public decimal? ConversionFactor { get; set; }
+    public int ConversionFactor { get; set; } = 0;
 
 
     public Guid? RefundDishUnitParentId { get; set; }
@@ -26,7 +26,7 @@ public class RefundDishUnit : BaseAuditableEntity
 
     }
 
-    public RefundDishUnit(Guid refundDishInventoryId, decimal conversionFactor, string unitName)
+    public RefundDishUnit(Guid refundDishInventoryId, int conversionFactor, string unitName)
     {
         RefundDishInventoryId = refundDishInventoryId;
         ConversionFactor = conversionFactor;
@@ -34,7 +34,7 @@ public class RefundDishUnit : BaseAuditableEntity
         
     }
 
-    public void Update(string unitName,decimal? conversionFactor)
+    public void Update(string unitName,int conversionFactor)
     {
         UnitName = unitName;
         ConversionFactor = conversionFactor;

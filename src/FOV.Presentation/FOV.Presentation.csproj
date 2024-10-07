@@ -32,10 +32,10 @@
 		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.7.3" />
 		<PackageReference Include="System.Security.Permissions" Version="8.0.0" />
 	</ItemGroup>
-	
-  <ItemGroup>
-    <ProjectReference Include="..\FOV.Application\FOV.Application.csproj" />
-  </ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\FOV.Application\FOV.Application.csproj" />
+	</ItemGroup>
 	
   <ItemGroup>
     <Content Update="appsettings.json">
