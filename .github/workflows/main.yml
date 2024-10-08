@@ -18,10 +18,10 @@ jobs:
           port: 2222
           timeout: 60s
           script: |
-            cd /home/vktrng/deployment/
+            cd /home/vktrng/
 
             if [ -d ./FOV-Fall2024-API ]; then
-              docker-compose -f FOV-Fall2024-API/docker-compose.yml down -v
+              docker-compose -f FOV-Fall2024-API/docker-compose.yml down
               cd ./FOV-Fall2024-API
               git pull origin main
               make build
