@@ -1,4 +1,7 @@
+version: '3.9'
+
 services:
+  # FOV Presentation Service
   fov.presentation:
     container_name: fov_api
     image: ${DOCKER_REGISTRY:-fovpresentation}
@@ -21,7 +24,7 @@ services:
       - data-protection-keys:/home/app/.aspnet/DataProtection-Keys
     networks:
       - fov_network
-    restart: on-failure 
+    restart: on-failure
     deploy:
       resources:
         limits:
@@ -29,6 +32,7 @@ services:
         reservations:
           memory: 256M
 
+  # PostgreSQL Database for FOV
   database:
     image: postgres:15
     container_name: fov_database
@@ -43,6 +47,11 @@ services:
       - "5433:5432"
     networks:
       - fov_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
     deploy:
       resources:
         limits:
@@ -50,11 +59,14 @@ services:
         reservations:
           memory: 512M
 
+  # Redis Cache
   redis:
     image: redis:7.0.12
     container_name: redis-cache
     ports:
       - "6380:6379"
+    volumes:
+      - redis_data:/data  # Persistent storage for Redis
     networks:
       - fov_network
     deploy:
@@ -64,6 +76,7 @@ services:
         reservations:
           memory: 128M
 
+  # Prometheus for Monitoring
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
@@ -80,6 +93,7 @@ services:
         reservations:
           memory: 128M
 
+  # Grafana for Visualization
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
@@ -97,6 +111,7 @@ services:
         reservations:
           memory: 128M
 
+  # Elasticsearch
   elasticsearch:
     container_name: els
     image: elasticsearch:8.15.0
@@ -116,6 +131,7 @@ services:
         reservations:
           memory: 1G
 
+  # Kibana for Elasticsearch
   kibana:
     container_name: kibana
     image: kibana:8.15.0
@@ -134,6 +150,7 @@ services:
         reservations:
           memory: 256M
 
+  # SonarQube for Code Quality
   sonarqube:
     image: sonarqube:community
     container_name: sonarqube
@@ -158,6 +175,7 @@ services:
         reservations:
           memory: 512M
 
+  # PostgreSQL Database for SonarQube
   sonarqube_db:
     image: postgres:15
     container_name: sonarqube_db
@@ -176,15 +194,17 @@ services:
         reservations:
           memory: 256M
 
+
 networks:
   fov_network:
     driver: bridge
 
 volumes:
-  postgres_data: {}
-  elasticsearch-data: {}
-  data-protection-keys: {}
-  sonarqube_data: {}
-  sonarqube_extensions: {}
-  sonarqube_logs: {}
-  sonarqube_db_data: {}
+  postgres_data: {}  # PostgreSQL data persistence
+  redis_data: {}  # Redis data persistence (optional)
+  elasticsearch-data: {}  # Elasticsearch data persistence
+  data-protection-keys: {}  # ASP.NET data protection keys
+  sonarqube_data: {}  # SonarQube data persistence
+  sonarqube_extensions: {}  # SonarQube plugins
+  sonarqube_logs: {}  # SonarQube logs
+  sonarqube_db_data: {}  # PostgreSQL data for SonarQube

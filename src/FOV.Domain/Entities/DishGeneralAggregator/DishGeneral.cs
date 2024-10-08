@@ -19,13 +19,13 @@ public class DishGeneral : BaseAuditableEntity, IsSoftDeleted
     public bool IsDraft { get; set; } = true;
     public virtual ICollection<DishIngredientGeneral> Ingredients { get; set; } = [];
 
-
+    public string[] Images { get; set; } = [];
     public DishGeneral()
     {
 
     }
 
-    public DishGeneral(string name, decimal price, string description, Guid categoryId, string image, bool isDraft,bool isRefund,decimal percentagePriceDifference)
+    public DishGeneral(string name, decimal price, string description, Guid categoryId, string image, bool isDraft, bool isRefund, decimal percentagePriceDifference)
     {
         IsDraft = isDraft;
         DishImageDefault = image;

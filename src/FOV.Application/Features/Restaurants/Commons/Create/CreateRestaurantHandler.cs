@@ -84,8 +84,6 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
                 await _unitOfWorks.RefundDishInventoryRepository.AddAsync(inventory);
                 RefundDishUnit unit = new(inventory.Id);
                 await _unitOfWorks.RefundDishUnitRepository.AddAsync(unit);
-
-
                 //await Task.WhenAll(addProductTask, addInventoryTask, addUnitTask);
             }
         }

@@ -1,6 +1,7 @@
 ﻿using FluentResults;
 using FOV.Application.Common.Behaviours.Claim;
 using FOV.Domain.Entities.DishAggregator;
+using FOV.Domain.Entities.DishGeneralAggregator;
 using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Domain.Entities.IngredientAggregator.Enums;
 using FOV.Domain.Entities.IngredientGeneralAggregator;
@@ -27,19 +28,39 @@ internal class AddProductHandler : IRequestHandler<AddProductCommand, Result>
     {
         var productGeneral = await _unitOfWorks.DishGeneralRepository.GetByIdAsync(request.ProductId) ?? throw new Exception("Product not found");
 
-        var product = new Dish(productGeneral.DishName, productGeneral.Price, productGeneral.DishDescription, _claimService.RestaurantId, productGeneral.CategoryId, productGeneral.Id);
-        await _unitOfWorks.DishRepository.AddAsync(product);
+        if (productGeneral.IsRefund) { await AddRefundProductInventory(request.ProductId, _claimService.RestaurantId); }
+        else
+        {
+            var product = new Dish(productGeneral.DishName, productGeneral.Price, productGeneral.DishDescription, _claimService.RestaurantId, productGeneral.CategoryId, productGeneral.Id);
+            await _unitOfWorks.DishRepository.AddAsync(product);
+            await AddIngredientsToProduct(product.Id, request.ProductId);
+        }
 
-        await AddIngredientsToProduct(product.Id,request.ProductId);
         await _unitOfWorks.SaveChangeAsync();
 
         return Result.Ok();
     }
 
-    private async Task AddIngredientsToProduct(Guid productId,Guid dishGeneralId)
+
+    private async Task AddRefundProductInventory(Guid refundProduct, Guid restaurantId)
+    {
+        DishGeneral dish = await _unitOfWorks.DishGeneralRepository.GetByIdAsync(refundProduct)
+                           ?? throw new Exception($"Dish with ID {refundProduct} not found.");
+        if (dish.IsRefund)
+        {
+            Dish productAdding = new(dish.DishName, dish.Price, dish.DishDescription, restaurantId, dish.CategoryId, dish.Id);
+            await _unitOfWorks.DishRepository.AddAsync(productAdding);
+            RefundDishInventory inventory = new(productAdding.Id);
+            await _unitOfWorks.RefundDishInventoryRepository.AddAsync(inventory);
+            RefundDishUnit unit = new(inventory.Id);
+            await _unitOfWorks.RefundDishUnitRepository.AddAsync(unit);
+            //await Task.WhenAll(addProductTask, addInventoryTask, addUnitTask);
+        }
+    }
+    private async Task AddIngredientsToProduct(Guid productId, Guid dishGeneralId)
     {
         var ingredients = await _unitOfWorks.IngredientGeneralRepository
-            .WhereAsync(x => x.DishIngredientGenerals.Any(pig => pig.DishGeneralId == dishGeneralId),x => x.DishIngredientGenerals);
+            .WhereAsync(x => x.DishIngredientGenerals.Any(pig => pig.DishGeneralId == dishGeneralId), x => x.DishIngredientGenerals);
 
         var ingredientNames = ingredients.Select(i => i.IngredientName).ToList();
         var existingIngredients = await _unitOfWorks.IngredientRepository
@@ -53,7 +74,7 @@ internal class AddProductHandler : IRequestHandler<AddProductCommand, Result>
             {
                 var newIngredient = new Ingredient(item.IngredientName, item.IngredientTypeId, _claimService.RestaurantId);
                 await _unitOfWorks.IngredientRepository.AddAsync(newIngredient);
-                await AddDishIngredientAndUnits(productId, newIngredient.Id, item.IngredientMeasure,item.DishIngredientGenerals.FirstOrDefault().Quantity);
+                await AddDishIngredientAndUnits(productId, newIngredient.Id, item.IngredientMeasure, item.DishIngredientGenerals.FirstOrDefault().Quantity);
             }
             else
             {
@@ -63,9 +84,9 @@ internal class AddProductHandler : IRequestHandler<AddProductCommand, Result>
         }
     }
 
-    private async Task AddDishIngredientAndUnits(Guid productId, Guid ingredientId, IngredientMeasure measure,decimal quantity)
+    private async Task AddDishIngredientAndUnits(Guid productId, Guid ingredientId, IngredientMeasure measure, decimal quantity)
     {
-        await _unitOfWorks.DishIngredientRepository.AddAsync(new DishIngredient(productId, ingredientId,quantity));
+        await _unitOfWorks.DishIngredientRepository.AddAsync(new DishIngredient(productId, ingredientId, quantity));
         await AddDefaultIngredientUnit(ingredientId, measure);
     }
 
