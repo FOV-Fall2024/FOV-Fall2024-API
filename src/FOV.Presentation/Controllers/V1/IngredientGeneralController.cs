@@ -3,6 +3,7 @@ using FOV.Application.Features.IngredientGenerals.Commands.Create;
 using FOV.Application.Features.IngredientGenerals.Commands.Inactive;
 using FOV.Application.Features.IngredientGenerals.Commands.Update;
 using FOV.Application.Features.IngredientGenerals.Queries.GetAllIngredientGeneral;
+using FOV.Application.Features.IngredientGenerals.Queries.GetDetailIngredientGeneral;
 using FOV.Application.Features.IngredientGenerals.Responses;
 using FOV.Domain.Entities.UserAggregator.Enums;
 using FOV.Infrastructure.Helpers.GetHelper;
@@ -104,6 +105,16 @@ public class IngredientGeneralController : DefaultController
     public async Task<IActionResult> Get([FromQuery] GetAllIngredientCommand command)
     {
         var response = await _sender.Send(command);
+        return Ok(response);
+    }
+
+    [HttpGet("{id:guid}")]
+    [SwaggerOperation(Summary = "Retrieves an ingredient general by ID.")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        var response = await _sender.Send(new GetDetailIngredientGeneralCommand(id));
         return Ok(response);
     }
 }

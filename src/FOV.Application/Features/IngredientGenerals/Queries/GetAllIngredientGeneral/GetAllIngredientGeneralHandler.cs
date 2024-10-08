@@ -8,7 +8,7 @@ namespace FOV.Application.Features.IngredientGenerals.Queries.GetAllIngredientGe
 {
     public sealed record GetAllIngredientCommand(string? IngredientGeneralName, Guid? IngredientTypeId, string? ingredientMeasureType, PagingRequest? PagingRequest) : IRequest<PagedResult<GetAllIngredientResponse>>;
 
- 
+
 
     public class GetAllIngredientGeneralHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<GetAllIngredientCommand, PagedResult<GetAllIngredientResponse>>
     {
