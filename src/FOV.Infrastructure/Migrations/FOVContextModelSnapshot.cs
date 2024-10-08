@@ -291,6 +291,9 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<decimal?>("Price")
                         .HasColumnType("numeric");
 
+                    b.Property<byte>("PriorityDish")
+                        .HasColumnType("smallint");
+
                     b.Property<Guid>("RestaurantId")
                         .HasColumnType("uuid");
 
@@ -317,6 +320,7 @@ namespace FOV.Infrastructure.Migrations
                             IsDeleted = false,
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             Price = 10000m,
+                            PriorityDish = (byte)0,
                             RestaurantId = new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0")
                         },
                         new
@@ -331,6 +335,7 @@ namespace FOV.Infrastructure.Migrations
                             IsDeleted = false,
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             Price = 60000m,
+                            PriorityDish = (byte)0,
                             RestaurantId = new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007")
                         },
                         new
@@ -345,6 +350,7 @@ namespace FOV.Infrastructure.Migrations
                             IsDeleted = false,
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             Price = 20000m,
+                            PriorityDish = (byte)0,
                             RestaurantId = new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007")
                         });
                 });

@@ -2,6 +2,7 @@
 using FOV.Domain.Entities.ComboAggregator;
 using FOV.Domain.Entities.DishAggregator.Enums;
 using FOV.Domain.Entities.DishGeneralAggregator;
+using FOV.Domain.Entities.DishGeneralAggregator.Enums;
 using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.RestaurantAggregator;
 
@@ -14,6 +15,7 @@ public class Dish : BaseAuditableEntity, IsSoftDeleted
     public string DishDescription { get; set; } = string.Empty;
 
     public DishType DishType { get; set; }
+    public PriorityDish PriorityDish { get; set; }
     public virtual ICollection<DishCombo> DishCombos { get; set; } = [];
     public ICollection<OrderDetail> OrderDetails { get; set; } = [];
     public virtual ICollection<DishImage> DishImages { get; set; } = [];

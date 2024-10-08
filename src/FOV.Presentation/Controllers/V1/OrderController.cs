@@ -4,6 +4,8 @@ using FOV.Application.Features.Orders.Commands.CreateOrder;
 using FOV.Application.Features.Orders.Commands.RefundOrder;
 using FOV.Application.Features.Orders.Queries.GetOrderDetails;
 using FOV.Application.Features.Orders.Queries.GetOrders;
+using FOV.Application.Features.Orders.Queries.SuggestDishesForHeadchef;
+using FOV.Infrastructure.Helpers.GetHelper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,7 +45,7 @@ public class OrderController(ISender sender) : DefaultController
         var response = await _sender.Send(command);
         return Ok(response);
     }
-
+        
     [HttpGet("{orderId:guid}/details")]
     public async Task<IActionResult> GetOrderDetails(Guid orderId)
     {
@@ -63,6 +65,13 @@ public class OrderController(ISender sender) : DefaultController
     public async Task<IActionResult> RefundOrder(Guid orderId, [FromBody] RefundOrderCommand command)
     {
         command = command with { OrderId = orderId };
+        var response = await _sender.Send(command);
+        return Ok(response);
+    }
+    [HttpGet("{restaurantId:guid}/suggest-dishes")]
+    public async Task<IActionResult> SuggestDishesForHeadchef(Guid restaurantId, [FromQuery] PagingRequest pagingRequest)
+    {
+        var command = new SuggestDishesForHeadchefCommand(pagingRequest, restaurantId);
         var response = await _sender.Send(command);
         return Ok(response);
     }
