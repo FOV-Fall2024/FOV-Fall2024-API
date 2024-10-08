@@ -3,6 +3,7 @@ COMPOSE_PROJECT_NAME=fov
 DOCKER_IMAGE=fovpresentation
 DOCKERFILE_PATH=src/FOV.Presentation/Dockerfile
 DOCKER_COMPOSE_FILE=docker-compose.yml
+D
 
 # Targets
 .PHONY: all build run remove
@@ -23,3 +24,7 @@ build:
 run:
 	@echo "Starting containers..."
 	docker-compose --project-name $(COMPOSE_PROJECT_NAME) up -d
+
+commit:
+	@echo "Add New code update...."
+	docker-compose up -d --build
