@@ -30,7 +30,7 @@ public class Dish : BaseAuditableEntity, IsSoftDeleted
 
     public Guid? DishGeneralId { get; set; }
 
-    public RefundDishInventory RefundDishInventory { get; set; }
+    public RefundDishInventory? RefundDishInventory { get; set; }
     public bool IsDeleted { get; set; }
 
     public Dish()
@@ -45,7 +45,6 @@ public class Dish : BaseAuditableEntity, IsSoftDeleted
         CategoryId = categoryId;
         RestaurantId = restaurantId;
         DishGeneralId = dishGeneralId;
-
     }
 
     public void UpdateState(bool isDelete) => IsDeleted = isDelete;

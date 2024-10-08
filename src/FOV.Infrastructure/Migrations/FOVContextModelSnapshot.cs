@@ -343,7 +343,11 @@ namespace FOV.Infrastructure.Migrations
                             DishName = "Cơm Không",
                             DishType = (byte)0,
                             IsDeleted = false,
+<<<<<<< HEAD
                             LastModified = new DateTime(2024, 10, 6, 16, 53, 53, 382, DateTimeKind.Utc).AddTicks(6225),
+=======
+                            LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+>>>>>>> UpdateDatabaseV2
                             Price = 20000m,
                             RestaurantId = new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007")
                         });
@@ -452,7 +456,7 @@ namespace FOV.Infrastructure.Migrations
                     b.HasIndex("DishId")
                         .IsUnique();
 
-                    b.ToTable("RefundDishInventory");
+                    b.ToTable("RefundDishInventories");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.DishAggregator.RefundDishInventoryTransaction", b =>
@@ -503,8 +507,8 @@ namespace FOV.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<decimal?>("ConversionFactor")
-                        .HasColumnType("numeric");
+                    b.Property<int>("ConversionFactor")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime?>("Created")
                         .HasColumnType("timestamp with time zone");
@@ -534,7 +538,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasIndex("RefundDishUnitParentId");
 
-                    b.ToTable("RefundDishUnit");
+                    b.ToTable("RefundDishUnits");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.DishGeneralAggregator.DishGeneral", b =>
@@ -579,6 +583,9 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
 
+                    b.Property<decimal>("PercentagePriceDifference")
+                        .HasColumnType("numeric");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
@@ -601,7 +608,12 @@ namespace FOV.Infrastructure.Migrations
                             IsDraft = true,
                             IsRefund = false,
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+<<<<<<< HEAD
                             Price = 0m
+=======
+                            PercentagePriceDifference = 20m,
+                            Price = 30m
+>>>>>>> UpdateDatabaseV2
                         },
                         new
                         {
@@ -615,7 +627,12 @@ namespace FOV.Infrastructure.Migrations
                             IsDraft = true,
                             IsRefund = false,
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+<<<<<<< HEAD
                             Price = 0m
+=======
+                            PercentagePriceDifference = 20m,
+                            Price = 30m
+>>>>>>> UpdateDatabaseV2
                         },
                         new
                         {
@@ -629,6 +646,10 @@ namespace FOV.Infrastructure.Migrations
                             IsDraft = true,
                             IsRefund = false,
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+<<<<<<< HEAD
+=======
+                            PercentagePriceDifference = 0m,
+>>>>>>> UpdateDatabaseV2
                             Price = 0m
                         },
                         new
@@ -643,7 +664,12 @@ namespace FOV.Infrastructure.Migrations
                             IsDraft = true,
                             IsRefund = false,
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+<<<<<<< HEAD
                             Price = 0m
+=======
+                            PercentagePriceDifference = 20m,
+                            Price = 30m
+>>>>>>> UpdateDatabaseV2
                         },
                         new
                         {
@@ -657,7 +683,12 @@ namespace FOV.Infrastructure.Migrations
                             IsDraft = true,
                             IsRefund = false,
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+<<<<<<< HEAD
                             Price = 0m
+=======
+                            PercentagePriceDifference = 20m,
+                            Price = 30m
+>>>>>>> UpdateDatabaseV2
                         });
                 });
 
@@ -749,7 +780,11 @@ namespace FOV.Infrastructure.Migrations
                             Id = new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0110b0"),
                             Created = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             GroupName = "DefaultGroupChat",
+<<<<<<< HEAD
                             LastModified = new DateTime(2024, 10, 6, 16, 53, 53, 383, DateTimeKind.Utc).AddTicks(7999),
+=======
+                            LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+>>>>>>> UpdateDatabaseV2
                             RestaurantId = new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0")
                         });
                 });
@@ -2402,8 +2437,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.Navigation("OrderDetails");
 
-                    b.Navigation("RefundDishInventory")
-                        .IsRequired();
+                    b.Navigation("RefundDishInventory");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.DishAggregator.RefundDishInventory", b =>

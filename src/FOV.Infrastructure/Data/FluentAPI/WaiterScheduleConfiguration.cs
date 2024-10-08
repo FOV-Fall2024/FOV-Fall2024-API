@@ -8,6 +8,7 @@ public class WaiterScheduleConfiguration : IEntityTypeConfiguration<WaiterSchedu
     public void Configure(EntityTypeBuilder<WaiterSchedule> builder)
     {
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
         builder.HasMany(x => x.Attendances).WithOne(x => x.WaiterSchedule).HasForeignKey(x => x.WaiterScheduleId);
     }
 }

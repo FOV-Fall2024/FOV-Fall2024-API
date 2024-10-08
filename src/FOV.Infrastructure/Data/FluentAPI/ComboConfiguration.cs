@@ -11,6 +11,7 @@ public class ComboConfiguration : IEntityTypeConfiguration<Combo>
     public void Configure(EntityTypeBuilder<Combo> builder)
     {
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
         builder.HasMany(x => x.DishCombos).WithOne(x => x.Combo).HasForeignKey(x => x.ComboId);
         builder.HasMany(x => x.OrderDetails).WithOne(x => x.Combo).HasForeignKey(x => x.ComboId);
         builder.HasData(

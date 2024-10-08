@@ -1,4 +1,5 @@
 ﻿using FluentResults;
+using FOV.Domain.Entities.DishAggregator;
 using FOV.Domain.Entities.DishGeneralAggregator;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
@@ -12,9 +13,35 @@ public class RemoveIngredientHandler(IUnitOfWorks unitOfWorks) : IRequestHandler
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     public async Task<Result> Handle(RemoveIngredientCommand request, CancellationToken cancellationToken)
     {
-        DishIngredientGeneral general = await _unitOfWorks.DishIngredientGeneralRepository.FirstOrDefaultAsync(x => x.IngredientGeneralId == request.IngredientId && x.DishGeneralId == request.productId) ?? throw new Exception();
+        DishIngredientGeneral general = await _unitOfWorks.DishIngredientGeneralRepository.FirstOrDefaultAsync(x => x.IngredientGeneralId == request.IngredientId && x.DishGeneralId == request.productId,x => x.IngredientGeneral) ?? throw new Exception();
+        await UpdateDishesWithIngredient(request.productId, general.IngredientGeneral.IngredientName);
         _unitOfWorks.DishIngredientGeneralRepository.Remove(general);
+        await UpdateDishesWithIngredient(request.productId, general.IngredientGeneral.IngredientName);
         await _unitOfWorks.SaveChangeAsync();
         return Result.Ok();
     }
+
+    private async Task UpdateDishesWithIngredient(Guid dishGeneralId, string ingredientName)
+    {
+        var dishes = await _unitOfWorks.DishRepository.WhereAsync(d => d.DishGeneralId == dishGeneralId);
+
+        foreach (var dish in dishes)
+        {
+            var ingredient = await _unitOfWorks.IngredientRepository
+                .FirstOrDefaultAsync(i => i.IngredientName == ingredientName && i.RestaurantId == dish.RestaurantId);
+            await UpdateDishIngredient(dish.Id, ingredient.Id);
+        }
+    }
+
+
+
+    private async Task UpdateDishIngredient(Guid dishId, Guid ingredientId)
+    {
+        DishIngredient dishIngredient = await _unitOfWorks.DishIngredientRepository.FirstOrDefaultAsync(x => x.IngredientId == ingredientId && x.DishId == dishId) ?? throw new Exception();
+        dishIngredient.ChangeState(Domain.Entities.DishAggregator.Enums.DishIngredientStatus.RecentRemove);
+        _unitOfWorks.DishIngredientRepository.Update(dishIngredient);
+        await _unitOfWorks.SaveChangeAsync();
+    }
+
+
 }

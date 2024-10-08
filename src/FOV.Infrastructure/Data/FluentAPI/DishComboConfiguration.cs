@@ -9,5 +9,6 @@ public class DishComboConfiguration : IEntityTypeConfiguration<DishCombo>
     public void Configure(EntityTypeBuilder<DishCombo> builder)
     {
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
     }
 }

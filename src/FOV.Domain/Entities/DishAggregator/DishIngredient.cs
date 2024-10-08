@@ -29,4 +29,14 @@ public class DishIngredient : BaseAuditableEntity
         DishIngredientStatus = DishIngredientStatus.Normal;
 
     }
+
+    public DishIngredient(Guid dishId, Guid ingredientId, decimal quantity,DishIngredientStatus type)
+    {
+        IngredientId = ingredientId;
+        DishId = dishId;
+        Quantity = quantity;
+        DishIngredientStatus = type;
+    }
+
+    public void ChangeState(DishIngredientStatus status) => DishIngredientStatus = status;
 }

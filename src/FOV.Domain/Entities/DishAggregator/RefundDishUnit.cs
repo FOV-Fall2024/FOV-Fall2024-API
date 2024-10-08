@@ -9,7 +9,7 @@ public class RefundDishUnit : BaseAuditableEntity
 
     public string UnitName { get; set; } = string.Empty;
 
-    public decimal? ConversionFactor { get; set; }
+    public int ConversionFactor { get; set; } = 0;
 
 
     public Guid? RefundDishUnitParentId { get; set; }
@@ -17,6 +17,28 @@ public class RefundDishUnit : BaseAuditableEntity
     public RefundDishUnit? RefundDishUnitParent { get; set; }
 
     public virtual ICollection<RefundDishUnit> RefundDishChildUnits { get; set; } = [];
+
+    public RefundDishUnit(Guid refundDishInventoryId)
+    {
+        UnitName = "can";
+        ConversionFactor = 1;
+        RefundDishInventoryId = refundDishInventoryId;
+
+    }
+
+    public RefundDishUnit(Guid refundDishInventoryId, int conversionFactor, string unitName)
+    {
+        RefundDishInventoryId = refundDishInventoryId;
+        ConversionFactor = conversionFactor;
+        UnitName = unitName;
+        
+    }
+
+    public void Update(string unitName,int conversionFactor)
+    {
+        UnitName = unitName;
+        ConversionFactor = conversionFactor;
+    }
 
 
 }

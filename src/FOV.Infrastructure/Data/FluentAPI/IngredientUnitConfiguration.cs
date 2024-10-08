@@ -8,6 +8,7 @@ public class IngredientUnitConfiguration : IEntityTypeConfiguration<IngredientUn
     public void Configure(EntityTypeBuilder<IngredientUnit> builder)
     {
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
 
         builder.HasOne(x => x.Ingredient)
             .WithMany(x => x.IngredientUnits)

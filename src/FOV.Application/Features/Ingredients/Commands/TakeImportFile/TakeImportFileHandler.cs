@@ -37,9 +37,6 @@ public class TakeImportFileHandler(IUnitOfWorks unitOfWorks,IClaimService claimS
             }
             rowIngredient++;
         }
-
-       
-
         // Lock column A to make it read-only
         worksheet.Cells["A2:A10"].Style.Locked = true;
 
@@ -60,10 +57,6 @@ public class TakeImportFileHandler(IUnitOfWorks unitOfWorks,IClaimService claimS
         numberValidation.Operator = ExcelDataValidationOperator.between;
         numberValidation.Formula.Value = 0;    // Lower limit
         numberValidation.Formula2.Value = 100; // Upper limit
-
-      
-
-
         // Protect the worksheet to enforce read-only on column A
         worksheet.Protection.IsProtected = true;
         worksheet.Protection.AllowSelectLockedCells = true;

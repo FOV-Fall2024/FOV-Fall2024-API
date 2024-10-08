@@ -13,6 +13,7 @@ public class DishGeneralConfiguration : IEntityTypeConfiguration<DishGeneral>
         builder.HasMany(x => x.Dishes).WithOne(x => x.DishGeneral).HasForeignKey(x => x.DishGeneralId);
         builder.HasMany(x => x.Ingredients).WithOne(x => x.DishGeneral).HasForeignKey(x => x.DishGeneralId);
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
         builder.HasData(
             new DishGeneral()
             {
@@ -23,6 +24,11 @@ public class DishGeneralConfiguration : IEntityTypeConfiguration<DishGeneral>
                 IsDeleted = false,
                 Created = DefaultDatetime.MinValue,
                 LastModified = DefaultDatetime.MinValue,
+                PercentagePriceDifference = 20,
+                Price = 30,
+                IsDraft = false,
+                IsRefund = true,
+
             },
              new DishGeneral()
              {
@@ -33,6 +39,10 @@ public class DishGeneralConfiguration : IEntityTypeConfiguration<DishGeneral>
                  IsDeleted = false,
                  Created = DefaultDatetime.MinValue,
                  LastModified = DefaultDatetime.MinValue,
+                 PercentagePriceDifference = 20,
+                 Price = 30,
+                 IsDraft = false,
+                 IsRefund = true,
              },
              new DishGeneral()
              {
@@ -43,6 +53,11 @@ public class DishGeneralConfiguration : IEntityTypeConfiguration<DishGeneral>
                  IsDeleted = false,
                  Created = DefaultDatetime.MinValue,
                  LastModified = DefaultDatetime.MinValue,
+                 PercentagePriceDifference = 20,
+                 Price = 30,
+                 IsDraft = false,
+                 IsRefund = false,
+
              },
              new DishGeneral()
              {
@@ -53,6 +68,10 @@ public class DishGeneralConfiguration : IEntityTypeConfiguration<DishGeneral>
                  IsDeleted = false,
                  Created = DefaultDatetime.MinValue,
                  LastModified = DefaultDatetime.MinValue,
+                 PercentagePriceDifference = 20,
+                 Price = 30,
+                 IsDraft = false,
+                 IsRefund = true,
              },
              new DishGeneral()
              {
@@ -63,6 +82,11 @@ public class DishGeneralConfiguration : IEntityTypeConfiguration<DishGeneral>
                  IsDeleted = false,
                  Created = DefaultDatetime.MinValue,
                  LastModified = DefaultDatetime.MinValue,
+                 PercentagePriceDifference = 20,
+                 Price = 30,
+                 IsDraft = false,
+                 IsRefund = true,
+
              }
     );
     }

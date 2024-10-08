@@ -76,11 +76,11 @@ public class FOVContext : IdentityDbContext<User>, IApplicationDbContext
 
     public DbSet<IngredientUnit> IngredientUnits => Set<IngredientUnit>();
 
-    public DbSet<RefundDishInventory> RefundDishInventory => Set<RefundDishInventory>();
+    public DbSet<RefundDishInventory> RefundDishInventories => Set<RefundDishInventory>();
 
     public DbSet<RefundDishInventoryTransaction> RefundDishInventoryTransactions => Set<RefundDishInventoryTransaction>();
 
-    public DbSet<RefundDishUnit> RefundDishUnit => Set<RefundDishUnit>();
+    public DbSet<RefundDishUnit> RefundDishUnits => Set<RefundDishUnit>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

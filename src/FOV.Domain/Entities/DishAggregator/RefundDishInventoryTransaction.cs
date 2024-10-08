@@ -14,13 +14,25 @@ public class RefundDishInventoryTransaction : BaseAuditableEntity
 
     public DateTime? TransactionDate { get; set; } = DateTime.UtcNow;   
 
-    public RefundDishInventory? RefundDishInventory { get; set; } 
+    public RefundDishInventory? RefundDishInventory { get; set; }
 
     public Guid RefundDishInventoryId { get; set; }
 
     public Order? Order { get; set; }
     public RefundDishInventoryTransactionType RefundDishInventoryTransactionType { get; set; }
     public Guid? OrderId { get; set; }
+
+    public RefundDishInventoryTransaction(int Quantity)
+    {
+
+    }
+
+    public RefundDishInventoryTransaction(int quantity, Guid refundDishInventoryId, RefundDishInventoryTransactionType type)
+    {
+        Quantity = quantity;
+        RefundDishInventoryTransactionType = type;
+        RefundDishInventoryId = refundDishInventoryId;
+    }
 
 
 }

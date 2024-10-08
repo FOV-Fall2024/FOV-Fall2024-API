@@ -6,7 +6,7 @@ using MediatR;
 
 namespace FOV.Application.Features.IngredientTypes.Queries.GetParentCategories;
 
-public sealed record GetIngredientTypeCommand(PagingRequest? PagingRequest, Guid? Id, string? IngredientTypeName) : IRequest<PagedResult<GetChildrenIngredientType>>;
+public sealed record GetIngredientTypeCommand(PagingRequest? PagingRequest, Guid? Id, string? IngredientTypeName,DateTimeOffset jkon ) : IRequest<PagedResult<GetChildrenIngredientType>>;
 //public sealed record GetIngredientTypeCommand(PagingRequest? PagingRequest, string? IngredientTypeName) : IRequest<PagedResult<GetChildrenIngredientType>>;
 
 public class GetParentIngredientTypesHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<GetIngredientTypeCommand, PagedResult<GetChildrenIngredientType>>
@@ -14,8 +14,10 @@ public class GetParentIngredientTypesHandler(IUnitOfWorks unitOfWorks) : IReques
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     public async Task<PagedResult<GetChildrenIngredientType>> Handle(GetIngredientTypeCommand request, CancellationToken cancellationToken)
     {
+        // Fetch all ingredient types from the repository
         var responses = await _unitOfWorks.IngredientTypeRepository.GetAllAsync();
 
+        // Create a filter entity based on the command
         var filterEntity = new Domain.Entities.IngredientAggregator.IngredientType
         {
             IngredientName = request.IngredientTypeName ?? string.Empty,

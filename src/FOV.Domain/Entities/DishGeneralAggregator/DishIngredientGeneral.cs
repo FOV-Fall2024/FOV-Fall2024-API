@@ -32,4 +32,6 @@ public class DishIngredientGeneral : BaseAuditableEntity, IsSoftDeleted
         this.IngredientGeneralId = ingredientGeneralId;
         this.Quantity = quantity;
     }
+
+    public void UpdateQuantity(decimal quantity) => Quantity = quantity;
 }

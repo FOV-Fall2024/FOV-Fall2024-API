@@ -8,5 +8,6 @@ public class RatingConfiguration : IEntityTypeConfiguration<Rating>
     public void Configure(EntityTypeBuilder<Rating> builder)
     {
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
     }
 }

@@ -63,12 +63,34 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
         Restaurant restaurant = new(request.RestaurantName, request.Address, request.RestaurantPhone, await GeneratedCode());
         await _unitOfWorks.RestaurantRepository.AddAsync(restaurant);
         await AddNewProduct(request.Products, restaurant.Id);
+        await AddRefundProductInventory(request.Products, restaurant.Id);
         await _unitOfWorks.SaveChangeAsync();
 
         return restaurant.Id;
     }
 
+    private async Task AddRefundProductInventory(ICollection<Guid> refundProduct, Guid restaurantId)
+    {
 
+        foreach (var product in refundProduct)
+        {
+            DishGeneral dish = await _unitOfWorks.DishGeneralRepository.GetByIdAsync(product)
+                               ?? throw new Exception($"Dish with ID {product} not found.");
+            if (dish.IsRefund)
+            {
+                Dish productAdding = new(dish.DishName, dish.Price, restaurantId, dish.CategoryId, dish.Id);
+                await _unitOfWorks.DishRepository.AddAsync(productAdding);
+                RefundDishInventory inventory = new(productAdding.Id);
+                await _unitOfWorks.RefundDishInventoryRepository.AddAsync(inventory);
+                RefundDishUnit unit = new(inventory.Id);
+                await _unitOfWorks.RefundDishUnitRepository.AddAsync(unit);
+
+
+                //await Task.WhenAll(addProductTask, addInventoryTask, addUnitTask);
+            }
+        }
+
+    }
     private async Task<string> GeneratedCode()
     {
         static string GenerateNewCode(int number)
@@ -93,15 +115,18 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
     {
         foreach (var product in products)
         {
-            DishGeneral productGeneral = await _unitOfWorks.DishGeneralRepository.GetByIdAsync(product, x => x.Ingredients) ?? throw new Exception();
-            var ingredientGenerals = await _unitOfWorks.IngredientGeneralRepository.WhereAsync(x => x.DishIngredientGenerals.Any(pg => pg.DishGeneralId == productGeneral.Id));
-            Dish productAdding = new(productGeneral.DishName, productGeneral.Price, restaurantId, productGeneral.CategoryId, productGeneral.Id);
-            await _unitOfWorks.DishRepository.AddAsync(productAdding);
-            await ProductIngredientAdd(ingredientGenerals.Select(x => x.IngredientName).ToList(), restaurantId, productAdding.Id,productGeneral.Id);
+            DishGeneral? productGeneral = await _unitOfWorks.DishGeneralRepository.GetByIdAsync(product, x => x.Ingredients);
+            if (productGeneral is not null)
+            {
+                var ingredientGenerals = await _unitOfWorks.IngredientGeneralRepository.WhereAsync(x => x.DishIngredientGenerals.Any(pg => pg.DishGeneralId == productGeneral.Id));
+                Dish productAdding = new(productGeneral.DishName, productGeneral.Price, restaurantId, productGeneral.CategoryId, productGeneral.Id);
+                await _unitOfWorks.DishRepository.AddAsync(productAdding);
+                await ProductIngredientAdd(ingredientGenerals.Select(x => x.IngredientName).ToList(), restaurantId, productAdding.Id, productGeneral.Id);
+            }
         }
     }
 
-    private async Task ProductIngredientAdd(ICollection<string> ingredientNames, Guid restaurantId, Guid productId,Guid productGeneralId)
+    private async Task ProductIngredientAdd(ICollection<string> ingredientNames, Guid restaurantId, Guid productId, Guid productGeneralId)
     {
         foreach (var item in ingredientNames)
         {
