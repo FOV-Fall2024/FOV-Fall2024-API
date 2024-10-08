@@ -12,11 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FOV.Infrastructure.Migrations
 {
     [DbContext(typeof(FOVContext))]
-<<<<<<<< HEAD:src/FOV.Infrastructure/Migrations/20241006165353_DomainV1.Designer.cs
-    [Migration("20241006165353_DomainV1")]
-========
-    [Migration("20241008030748_DomainV1")]
->>>>>>>> UpdateDatabaseV2:src/FOV.Infrastructure/Migrations/20241008030748_DomainV1.Designer.cs
+    [Migration("20241008051947_DomainV1")]
     partial class DomainV1
     {
         /// <inheritdoc />
@@ -41,7 +37,7 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<DateTime?>("CheckOutTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -83,7 +79,7 @@ namespace FOV.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -182,7 +178,7 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<Guid>("ComboId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -219,7 +215,7 @@ namespace FOV.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -266,7 +262,7 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<Guid?>("CategoryId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -350,11 +346,7 @@ namespace FOV.Infrastructure.Migrations
                             DishName = "Cơm Không",
                             DishType = (byte)0,
                             IsDeleted = false,
-<<<<<<<< HEAD:src/FOV.Infrastructure/Migrations/20241006165353_DomainV1.Designer.cs
-                            LastModified = new DateTime(2024, 10, 6, 16, 53, 53, 382, DateTimeKind.Utc).AddTicks(6225),
-========
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
->>>>>>>> UpdateDatabaseV2:src/FOV.Infrastructure/Migrations/20241008030748_DomainV1.Designer.cs
                             Price = 20000m,
                             RestaurantId = new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007")
                         });
@@ -366,7 +358,7 @@ namespace FOV.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -401,7 +393,7 @@ namespace FOV.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -440,7 +432,7 @@ namespace FOV.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -472,7 +464,7 @@ namespace FOV.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -517,7 +509,7 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<int>("ConversionFactor")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -557,7 +549,7 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<Guid?>("CategoryId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -612,15 +604,11 @@ namespace FOV.Infrastructure.Migrations
                             DishImageDefault = "",
                             DishName = "Coca-Cola",
                             IsDeleted = false,
-                            IsDraft = true,
-                            IsRefund = false,
+                            IsDraft = false,
+                            IsRefund = true,
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
-<<<<<<<< HEAD:src/FOV.Infrastructure/Migrations/20241006165353_DomainV1.Designer.cs
-                            Price = 0m
-========
                             PercentagePriceDifference = 20m,
                             Price = 30m
->>>>>>>> UpdateDatabaseV2:src/FOV.Infrastructure/Migrations/20241008030748_DomainV1.Designer.cs
                         },
                         new
                         {
@@ -631,15 +619,11 @@ namespace FOV.Infrastructure.Migrations
                             DishImageDefault = "",
                             DishName = "7up",
                             IsDeleted = false,
-                            IsDraft = true,
-                            IsRefund = false,
+                            IsDraft = false,
+                            IsRefund = true,
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
-<<<<<<<< HEAD:src/FOV.Infrastructure/Migrations/20241006165353_DomainV1.Designer.cs
-                            Price = 0m
-========
                             PercentagePriceDifference = 20m,
                             Price = 30m
->>>>>>>> UpdateDatabaseV2:src/FOV.Infrastructure/Migrations/20241008030748_DomainV1.Designer.cs
                         },
                         new
                         {
@@ -650,14 +634,11 @@ namespace FOV.Infrastructure.Migrations
                             DishImageDefault = "",
                             DishName = " Caprese Salad",
                             IsDeleted = false,
-                            IsDraft = true,
+                            IsDraft = false,
                             IsRefund = false,
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
-<<<<<<<< HEAD:src/FOV.Infrastructure/Migrations/20241006165353_DomainV1.Designer.cs
-========
-                            PercentagePriceDifference = 0m,
->>>>>>>> UpdateDatabaseV2:src/FOV.Infrastructure/Migrations/20241008030748_DomainV1.Designer.cs
-                            Price = 0m
+                            PercentagePriceDifference = 20m,
+                            Price = 30m
                         },
                         new
                         {
@@ -668,15 +649,11 @@ namespace FOV.Infrastructure.Migrations
                             DishImageDefault = "",
                             DishName = "Vegan Hotpot",
                             IsDeleted = false,
-                            IsDraft = true,
-                            IsRefund = false,
+                            IsDraft = false,
+                            IsRefund = true,
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
-<<<<<<<< HEAD:src/FOV.Infrastructure/Migrations/20241006165353_DomainV1.Designer.cs
-                            Price = 0m
-========
                             PercentagePriceDifference = 20m,
                             Price = 30m
->>>>>>>> UpdateDatabaseV2:src/FOV.Infrastructure/Migrations/20241008030748_DomainV1.Designer.cs
                         },
                         new
                         {
@@ -687,15 +664,11 @@ namespace FOV.Infrastructure.Migrations
                             DishImageDefault = "",
                             DishName = "Cơm trắng",
                             IsDeleted = false,
-                            IsDraft = true,
-                            IsRefund = false,
+                            IsDraft = false,
+                            IsRefund = true,
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
-<<<<<<<< HEAD:src/FOV.Infrastructure/Migrations/20241006165353_DomainV1.Designer.cs
-                            Price = 0m
-========
                             PercentagePriceDifference = 20m,
                             Price = 30m
->>>>>>>> UpdateDatabaseV2:src/FOV.Infrastructure/Migrations/20241008030748_DomainV1.Designer.cs
                         });
                 });
 
@@ -705,7 +678,7 @@ namespace FOV.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -756,7 +729,7 @@ namespace FOV.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -787,11 +760,7 @@ namespace FOV.Infrastructure.Migrations
                             Id = new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0110b0"),
                             Created = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             GroupName = "DefaultGroupChat",
-<<<<<<<< HEAD:src/FOV.Infrastructure/Migrations/20241006165353_DomainV1.Designer.cs
-                            LastModified = new DateTime(2024, 10, 6, 16, 53, 53, 383, DateTimeKind.Utc).AddTicks(7999),
-========
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
->>>>>>>> UpdateDatabaseV2:src/FOV.Infrastructure/Migrations/20241008030748_DomainV1.Designer.cs
                             RestaurantId = new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0")
                         });
                 });
@@ -806,7 +775,7 @@ namespace FOV.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -840,7 +809,7 @@ namespace FOV.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -874,7 +843,7 @@ namespace FOV.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -917,7 +886,7 @@ namespace FOV.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -962,7 +931,7 @@ namespace FOV.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -1019,7 +988,7 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<decimal>("ConversionFactor")
                         .HasColumnType("numeric");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -1056,7 +1025,7 @@ namespace FOV.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -1139,7 +1108,7 @@ namespace FOV.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -1175,7 +1144,7 @@ namespace FOV.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -1225,7 +1194,7 @@ namespace FOV.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -1268,7 +1237,7 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<Guid?>("ComboId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -1316,7 +1285,7 @@ namespace FOV.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -1361,7 +1330,7 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("numeric");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -1406,7 +1375,7 @@ namespace FOV.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -1478,7 +1447,7 @@ namespace FOV.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -1513,7 +1482,7 @@ namespace FOV.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -1560,7 +1529,7 @@ namespace FOV.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -1593,7 +1562,7 @@ namespace FOV.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -1713,7 +1682,7 @@ namespace FOV.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -1753,7 +1722,7 @@ namespace FOV.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")

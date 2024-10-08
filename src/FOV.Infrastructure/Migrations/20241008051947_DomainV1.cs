@@ -62,7 +62,7 @@ namespace FOV.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     CategoryName = table.Column<string>(type: "text", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
@@ -80,7 +80,7 @@ namespace FOV.Infrastructure.Migrations
                     IngredientName = table.Column<string>(type: "text", nullable: false),
                     IngredientDescription = table.Column<string>(type: "text", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
@@ -102,7 +102,7 @@ namespace FOV.Infrastructure.Migrations
                     RestaurantCode = table.Column<string>(type: "text", nullable: false),
                     ReleaseDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
@@ -121,7 +121,7 @@ namespace FOV.Infrastructure.Migrations
                     StartTime = table.Column<TimeSpan>(type: "interval", nullable: true),
                     EndTime = table.Column<TimeSpan>(type: "interval", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
@@ -245,7 +245,7 @@ namespace FOV.Infrastructure.Migrations
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     Address = table.Column<string>(type: "text", nullable: false),
                     UserId = table.Column<string>(type: "text", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
@@ -271,7 +271,7 @@ namespace FOV.Infrastructure.Migrations
                     Status = table.Column<string>(type: "text", nullable: true),
                     PayDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     UserId = table.Column<string>(type: "text", nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
@@ -300,7 +300,7 @@ namespace FOV.Infrastructure.Migrations
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     IsRefund = table.Column<bool>(type: "boolean", nullable: false),
                     IsDraft = table.Column<bool>(type: "boolean", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
@@ -326,7 +326,7 @@ namespace FOV.Infrastructure.Migrations
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     Status = table.Column<byte>(type: "smallint", nullable: false),
                     IngredientMeasure = table.Column<byte>(type: "smallint", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
@@ -356,7 +356,7 @@ namespace FOV.Infrastructure.Migrations
                     PercentReduce = table.Column<decimal>(type: "numeric", nullable: false),
                     ExpiredDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     RestaurantId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
@@ -383,7 +383,7 @@ namespace FOV.Infrastructure.Migrations
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     Status = table.Column<byte>(type: "smallint", nullable: false),
                     RestaurantId = table.Column<Guid>(type: "uuid", nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
@@ -411,7 +411,7 @@ namespace FOV.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     GroupName = table.Column<string>(type: "text", nullable: false),
                     RestaurantId = table.Column<Guid>(type: "uuid", nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
@@ -436,7 +436,7 @@ namespace FOV.Infrastructure.Migrations
                     ExpiredQuantity = table.Column<decimal>(type: "numeric", nullable: false),
                     IngredientTypeId = table.Column<Guid>(type: "uuid", nullable: true),
                     RestaurantId = table.Column<Guid>(type: "uuid", nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
@@ -467,7 +467,7 @@ namespace FOV.Infrastructure.Migrations
                     TableQRCode = table.Column<string>(type: "text", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     RestaurantId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
@@ -496,7 +496,7 @@ namespace FOV.Infrastructure.Migrations
                     RestaurantId = table.Column<Guid>(type: "uuid", nullable: false),
                     DishGeneralId = table.Column<Guid>(type: "uuid", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
@@ -530,7 +530,7 @@ namespace FOV.Infrastructure.Migrations
                     RestaurantId = table.Column<Guid>(type: "uuid", nullable: false),
                     DishGeneralId = table.Column<Guid>(type: "uuid", nullable: false),
                     Status = table.Column<byte>(type: "smallint", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
@@ -561,7 +561,7 @@ namespace FOV.Infrastructure.Migrations
                     Quantity = table.Column<decimal>(type: "numeric", nullable: false),
                     IngredientGeneralId = table.Column<Guid>(type: "uuid", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
@@ -592,7 +592,7 @@ namespace FOV.Infrastructure.Migrations
                     EmployeeId = table.Column<Guid>(type: "uuid", nullable: false),
                     ShiftId = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<string>(type: "text", nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
@@ -627,7 +627,7 @@ namespace FOV.Infrastructure.Migrations
                     GroupChatId = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<string>(type: "text", nullable: false),
                     Content = table.Column<string>(type: "text", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
@@ -656,7 +656,7 @@ namespace FOV.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     GroupChatId = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<string>(type: "text", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
@@ -687,7 +687,7 @@ namespace FOV.Infrastructure.Migrations
                     UnitName = table.Column<string>(type: "text", nullable: false),
                     ConversionFactor = table.Column<decimal>(type: "numeric", nullable: false),
                     IngredientUnitParentId = table.Column<Guid>(type: "uuid", nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
@@ -719,7 +719,7 @@ namespace FOV.Infrastructure.Migrations
                     OrderTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     TotalPrice = table.Column<decimal>(type: "numeric", nullable: false),
                     TableId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
@@ -743,7 +743,7 @@ namespace FOV.Infrastructure.Migrations
                     ComboId = table.Column<Guid>(type: "uuid", nullable: false),
                     DishId = table.Column<Guid>(type: "uuid", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
@@ -773,7 +773,7 @@ namespace FOV.Infrastructure.Migrations
                     ImageUrl = table.Column<string>(type: "text", nullable: false),
                     IsMain = table.Column<bool>(type: "boolean", nullable: false),
                     DishId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
@@ -798,7 +798,7 @@ namespace FOV.Infrastructure.Migrations
                     Quantity = table.Column<decimal>(type: "numeric", nullable: false),
                     IngredientId = table.Column<Guid>(type: "uuid", nullable: false),
                     DishIngredientStatus = table.Column<byte>(type: "smallint", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
@@ -827,7 +827,7 @@ namespace FOV.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     QuantityAvailable = table.Column<int>(type: "integer", nullable: false),
                     DishId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
@@ -855,7 +855,7 @@ namespace FOV.Infrastructure.Migrations
                     LogType = table.Column<byte>(type: "smallint", nullable: false),
                     NewProductRecommendLogStatus = table.Column<byte>(type: "smallint", nullable: false),
                     UserId = table.Column<string>(type: "text", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
@@ -886,7 +886,7 @@ namespace FOV.Infrastructure.Migrations
                     EmployeeId = table.Column<Guid>(type: "uuid", nullable: false),
                     WaiterScheduleId = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<string>(type: "text", nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
@@ -924,7 +924,7 @@ namespace FOV.Infrastructure.Migrations
                     IngredientId = table.Column<Guid>(type: "uuid", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     OrderId = table.Column<Guid>(type: "uuid", nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
@@ -956,7 +956,7 @@ namespace FOV.Infrastructure.Migrations
                     Status = table.Column<byte>(type: "smallint", nullable: true),
                     Quantity = table.Column<int>(type: "integer", nullable: false),
                     Price = table.Column<decimal>(type: "numeric", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
@@ -992,7 +992,7 @@ namespace FOV.Infrastructure.Migrations
                     PaymentStatus = table.Column<byte>(type: "smallint", nullable: false),
                     PaymentMethods = table.Column<byte>(type: "smallint", nullable: false),
                     OrderId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
@@ -1019,7 +1019,7 @@ namespace FOV.Infrastructure.Migrations
                     OrderId = table.Column<Guid>(type: "uuid", nullable: false),
                     UsefulQuantity = table.Column<int>(type: "integer", nullable: false),
                     NonUsefulQuantity = table.Column<int>(type: "integer", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
@@ -1045,7 +1045,7 @@ namespace FOV.Infrastructure.Migrations
                     RefundDishInventoryId = table.Column<Guid>(type: "uuid", nullable: false),
                     RefundDishInventoryTransactionType = table.Column<byte>(type: "smallint", nullable: false),
                     OrderId = table.Column<Guid>(type: "uuid", nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
@@ -1075,7 +1075,7 @@ namespace FOV.Infrastructure.Migrations
                     UnitName = table.Column<string>(type: "text", nullable: false),
                     ConversionFactor = table.Column<int>(type: "integer", nullable: false),
                     RefundDishUnitParentId = table.Column<Guid>(type: "uuid", nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
@@ -1139,29 +1139,17 @@ namespace FOV.Infrastructure.Migrations
                 columns: new[] { "Id", "CategoryId", "Created", "CreatedBy", "DishDescription", "DishImageDefault", "DishName", "IsDeleted", "IsDraft", "IsRefund", "LastModified", "LastModifiedBy", "PercentagePriceDifference", "Price" },
                 values: new object[,]
                 {
-<<<<<<<< HEAD:src/FOV.Infrastructure/Migrations/20241006165353_DomainV1.cs
-                    { new Guid("2b9941ee-2f72-4417-8a0a-2e14a6d00fbb"), new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"), new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, "Lẩu chay ngon", "", "Vegan Hotpot", false, true, false, new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, 0m },
-                    { new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c012"), new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c011"), new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, "Coca-Cola ngon ", "", "Coca-Cola", false, true, false, new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, 0m },
-                    { new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c013"), new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c011"), new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, "7up ngon ", "", "7up", false, true, false, new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, 0m },
-                    { new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c022"), new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"), new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, " Caprese Salad ngon ", "", " Caprese Salad", false, true, false, new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, 0m },
-                    { new Guid("a4aade28-ecdf-4caa-b21d-eea8c01b6598"), new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"), new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, "Cơm ngon", "", "Cơm trắng", false, true, false, new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, 0m }
-========
-                    { new Guid("2b9941ee-2f72-4417-8a0a-2e14a6d00fbb"), new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"), new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, "Lẩu chay ngon", "", "Vegan Hotpot", false, true, false, new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, 20m, 30m },
-                    { new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c012"), new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c011"), new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, "Coca-Cola ngon ", "", "Coca-Cola", false, true, false, new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, 20m, 30m },
-                    { new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c013"), new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c011"), new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, "7up ngon ", "", "7up", false, true, false, new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, 20m, 30m },
-                    { new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c022"), new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"), new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, " Caprese Salad ngon ", "", " Caprese Salad", false, true, false, new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, 0m, 0m },
-                    { new Guid("a4aade28-ecdf-4caa-b21d-eea8c01b6598"), new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"), new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, "Cơm ngon", "", "Cơm trắng", false, true, false, new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, 20m, 30m }
->>>>>>>> UpdateDatabaseV2:src/FOV.Infrastructure/Migrations/20241008030748_DomainV1.cs
+                    { new Guid("2b9941ee-2f72-4417-8a0a-2e14a6d00fbb"), new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"), new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, "Lẩu chay ngon", "", "Vegan Hotpot", false, false, true, new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, 20m, 30m },
+                    { new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c012"), new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c011"), new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, "Coca-Cola ngon ", "", "Coca-Cola", false, false, true, new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, 20m, 30m },
+                    { new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c013"), new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c011"), new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, "7up ngon ", "", "7up", false, false, true, new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, 20m, 30m },
+                    { new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c022"), new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"), new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, " Caprese Salad ngon ", "", " Caprese Salad", false, false, false, new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, 20m, 30m },
+                    { new Guid("a4aade28-ecdf-4caa-b21d-eea8c01b6598"), new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"), new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, "Cơm ngon", "", "Cơm trắng", false, false, true, new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, 20m, 30m }
                 });
 
             migrationBuilder.InsertData(
                 table: "GroupChats",
                 columns: new[] { "Id", "Created", "CreatedBy", "GroupName", "LastModified", "LastModifiedBy", "RestaurantId" },
-<<<<<<<< HEAD:src/FOV.Infrastructure/Migrations/20241006165353_DomainV1.cs
-                values: new object[] { new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0110b0"), new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, "DefaultGroupChat", new DateTime(2024, 10, 6, 16, 53, 53, 383, DateTimeKind.Utc).AddTicks(7999), null, new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0") });
-========
                 values: new object[] { new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0110b0"), new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, "DefaultGroupChat", new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0") });
->>>>>>>> UpdateDatabaseV2:src/FOV.Infrastructure/Migrations/20241008030748_DomainV1.cs
 
             migrationBuilder.InsertData(
                 table: "IngredientGenerals",
@@ -1183,11 +1171,7 @@ namespace FOV.Infrastructure.Migrations
                 columns: new[] { "Id", "CategoryId", "Created", "CreatedBy", "DishDescription", "DishGeneralId", "DishName", "DishType", "IsDeleted", "LastModified", "LastModifiedBy", "Price", "RestaurantId" },
                 values: new object[,]
                 {
-<<<<<<<< HEAD:src/FOV.Infrastructure/Migrations/20241006165353_DomainV1.cs
-                    { new Guid("9d40c875-bd7f-403a-9734-c7b5dbba5e78"), new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"), new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, "Description", new Guid("a4aade28-ecdf-4caa-b21d-eea8c01b6598"), "Cơm Không", (byte)0, false, new DateTime(2024, 10, 6, 16, 53, 53, 382, DateTimeKind.Utc).AddTicks(6225), null, 20000m, new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007") },
-========
                     { new Guid("9d40c875-bd7f-403a-9734-c7b5dbba5e78"), new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"), new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, "Description", new Guid("a4aade28-ecdf-4caa-b21d-eea8c01b6598"), "Cơm Không", (byte)0, false, new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, 20000m, new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007") },
->>>>>>>> UpdateDatabaseV2:src/FOV.Infrastructure/Migrations/20241008030748_DomainV1.cs
                     { new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540c3"), new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c011"), new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, "Description", new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c013"), "7up", (byte)0, false, new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, 10000m, new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0") },
                     { new Guid("e311d82d-452c-4603-a029-762a2a4e5e19"), new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"), new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, "Siêu rẻ", new Guid("2b9941ee-2f72-4417-8a0a-2e14a6d00fbb"), "Lẩu chay Thủ Đức", (byte)0, false, new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, 60000m, new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007") }
                 });

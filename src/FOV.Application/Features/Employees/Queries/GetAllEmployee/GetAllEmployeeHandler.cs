@@ -70,7 +70,7 @@ public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> u
                     roleName,
                     employee.RestaurantId ?? Guid.Empty,
                     employee.Status,
-                    employee.Created ?? DateTime.Now
+                    employee.Created
                 ));
             }
         }
