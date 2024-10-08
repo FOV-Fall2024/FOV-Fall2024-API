@@ -5,6 +5,7 @@ using FOV.Application.Features.DishGenerals.Commands.Inactive;
 using FOV.Application.Features.DishGenerals.Commands.RemoveIngredient;
 using FOV.Application.Features.DishGenerals.Commands.Update;
 using FOV.Application.Features.DishGenerals.Commands.UpdateIngredientQuantity;
+using FOV.Application.Features.DishGenerals.Commands.UploadImageDefault;
 using FOV.Application.Features.DishGenerals.Queries.GetProductGeneral;
 using FOV.Application.Features.DishGenerals.Queries.GetProductGeneralDetail;
 using FOV.Application.Features.DishGenerals.Responses;
@@ -59,7 +60,7 @@ public class DishGeneralController : DefaultController
     [SwaggerOperation(Summary = "Uploads an image.")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UploadImage([FromForm] UpdateIngredientQuantityCommand imageFile)
+    public async Task<IActionResult> UploadImage([FromForm] UploadImageDefaultCommand imageFile)
     {
 
         return CreatedAtAction(nameof(UploadImage), await _sender.Send(imageFile));

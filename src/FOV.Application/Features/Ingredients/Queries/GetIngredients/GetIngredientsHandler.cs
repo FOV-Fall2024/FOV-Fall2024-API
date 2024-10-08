@@ -30,7 +30,8 @@ public class GetIngredientsHandler : IRequestHandler<GetIngredientsCommand, Page
             x.Id,
             x.RestaurantId ?? Guid.Empty,
             x.IngredientName ?? string.Empty,
-            x.IngredientAmount)).ToList();
+            x.IngredientAmount,
+            x.Created)).ToList();
 
         // Get pagination and sorting values
         var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);

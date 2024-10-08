@@ -7,7 +7,7 @@ using MediatR;
 
 namespace FOV.Application.Features.Restaurants.Queries.Get;
 public record GetRestaurantCommand(PagingRequest? PagingRequest, Guid? RestaurantId, string? RestaurantName, string? Address, string? RestaurantPhone, string? RestaurantCode, Status? RestaurantStatus) : IRequest<PagedResult<GetRestaurantResponse>>;
-public record GetRestaurantResponse(Guid Id, string RestaurantName, string Address, string RestaurantPhone, string RestaurantCode, Status RestaurantStatus, DateTimeOffset Created);
+public record GetRestaurantResponse(Guid Id, string RestaurantName, string Address, string RestaurantPhone, string RestaurantCode, Status RestaurantStatus, DateTime CreatedDate);
 public class GetRestaurantQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetRestaurantCommand, PagedResult<GetRestaurantResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;

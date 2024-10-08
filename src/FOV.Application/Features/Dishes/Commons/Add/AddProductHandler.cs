@@ -27,7 +27,7 @@ internal class AddProductHandler : IRequestHandler<AddProductCommand, Result>
     {
         var productGeneral = await _unitOfWorks.DishGeneralRepository.GetByIdAsync(request.ProductId) ?? throw new Exception("Product not found");
 
-        var product = new Dish(productGeneral.DishName, productGeneral.Price, _claimService.RestaurantId, productGeneral.CategoryId, productGeneral.Id);
+        var product = new Dish(productGeneral.DishName, productGeneral.Price, productGeneral.DishDescription, _claimService.RestaurantId, productGeneral.CategoryId, productGeneral.Id);
         await _unitOfWorks.DishRepository.AddAsync(product);
 
         await AddIngredientsToProduct(product.Id,request.ProductId);
@@ -74,7 +74,7 @@ internal class AddProductHandler : IRequestHandler<AddProductCommand, Result>
         var smallUnit = new IngredientUnit(MeasureTransfer.ToSmallUnit(measure), ingredientId);
         await _unitOfWorks.IngredientUnitRepository.AddAsync(smallUnit);
 
-        if (measure == IngredientMeasure.g || measure == IngredientMeasure.ml)
+        if (measure == IngredientMeasure.gam || measure == IngredientMeasure.ml)
         {
             var largeUnit = new IngredientUnit(MeasureTransfer.ToLargeUnit(measure), ingredientId, smallUnit.Id, 1000);
             await _unitOfWorks.IngredientUnitRepository.AddAsync(largeUnit);

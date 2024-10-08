@@ -78,7 +78,7 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
                                ?? throw new Exception($"Dish with ID {product} not found.");
             if (dish.IsRefund)
             {
-                Dish productAdding = new(dish.DishName, dish.Price, restaurantId, dish.CategoryId, dish.Id);
+                Dish productAdding = new(dish.DishName, dish.Price, dish.DishDescription, restaurantId, dish.CategoryId, dish.Id);
                 await _unitOfWorks.DishRepository.AddAsync(productAdding);
                 RefundDishInventory inventory = new(productAdding.Id);
                 await _unitOfWorks.RefundDishInventoryRepository.AddAsync(inventory);
@@ -119,7 +119,7 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
             if (productGeneral is not null)
             {
                 var ingredientGenerals = await _unitOfWorks.IngredientGeneralRepository.WhereAsync(x => x.DishIngredientGenerals.Any(pg => pg.DishGeneralId == productGeneral.Id));
-                Dish productAdding = new(productGeneral.DishName, productGeneral.Price, restaurantId, productGeneral.CategoryId, productGeneral.Id);
+                Dish productAdding = new(productGeneral.DishName, productGeneral.Price, productGeneral.DishDescription, restaurantId, productGeneral.CategoryId, productGeneral.Id);
                 await _unitOfWorks.DishRepository.AddAsync(productAdding);
                 await ProductIngredientAdd(ingredientGenerals.Select(x => x.IngredientName).ToList(), restaurantId, productAdding.Id, productGeneral.Id);
             }
@@ -157,7 +157,7 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
         await _unitOfWorks.IngredientUnitRepository.AddAsync(ingredientUnit);
         await _unitOfWorks.SaveChangeAsync();
 
-        if (minMeasure == IngredientMeasure.g || minMeasure == IngredientMeasure.ml)
+        if (minMeasure == IngredientMeasure.gam || minMeasure == IngredientMeasure.ml)
         {
             IngredientUnit ingredientUnit2 = new(MeasureTransfer.ToLargeUnit(minMeasure), ingredientId, ingredientUnit.Id, 1000);
 

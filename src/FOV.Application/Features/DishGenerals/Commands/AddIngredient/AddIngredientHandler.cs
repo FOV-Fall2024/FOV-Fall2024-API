@@ -73,7 +73,7 @@ public class AddIngredientHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<Ad
         var baseUnit = new IngredientUnit(MeasureTransfer.ToSmallUnit(measure), ingredientId);
         await _unitOfWorks.IngredientUnitRepository.AddAsync(baseUnit);
 
-        if (measure is IngredientMeasure.g or IngredientMeasure.ml)
+        if (measure is IngredientMeasure.gam or IngredientMeasure.ml)
         {
             var largerUnit = new IngredientUnit(MeasureTransfer.ToLargeUnit(measure), ingredientId, baseUnit.Id, 1000);
             await _unitOfWorks.IngredientUnitRepository.AddAsync(largerUnit);

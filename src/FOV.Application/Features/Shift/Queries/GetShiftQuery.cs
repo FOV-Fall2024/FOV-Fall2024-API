@@ -20,6 +20,6 @@ public class GetShiftQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetShiftR
             EndTime = request.EndTime.HasValue ? request.EndTime.Value : TimeSpan.Zero
         };
         var filterTable = shifts.AsQueryable().CustomFilterV1(filterEntity);
-        return filterTable.Select(shift => new GetShiftResponse(shift.Id, shift.ShiftName ?? string.Empty, shift.StartTime ?? TimeSpan.Zero, shift.EndTime ?? TimeSpan.Zero)).ToList();
+        return filterTable.Select(shift => new GetShiftResponse(shift.Id, shift.ShiftName ?? string.Empty, shift.StartTime ?? TimeSpan.Zero, shift.EndTime ?? TimeSpan.Zero, shift.Created)).ToList();
     }
 }

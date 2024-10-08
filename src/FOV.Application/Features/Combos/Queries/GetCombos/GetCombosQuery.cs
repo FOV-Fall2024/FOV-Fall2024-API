@@ -26,7 +26,8 @@ public class GetCombosQuery(IUnitOfWorks unitOfWorks,IClaimService claimService)
             combo.ComboName,
             combo.Quantity,
             combo.Price,
-            combo.ExpiredDate ?? DateTime.Now
+            combo.ExpiredDate ?? DateTime.Now,
+            combo.Created
         )).ToList();
 
         var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);

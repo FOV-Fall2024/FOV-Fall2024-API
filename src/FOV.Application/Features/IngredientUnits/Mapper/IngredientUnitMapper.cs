@@ -7,6 +7,6 @@ public static class IngredientUnitMapper
 {
     public static GetIngredientUnitResponse MapperIngredientUnitDTO(this IngredientUnit ingredientUnit)
     {
-        return new GetIngredientUnitResponse(ingredientUnit.Id, ingredientUnit.IngredientUnitParentId, ingredientUnit.UnitName, ingredientUnit.ConversionFactor);
+        return new GetIngredientUnitResponse(ingredientUnit.Id, ingredientUnit.IngredientUnitParentId, ingredientUnit.UnitName, ingredientUnit.ConversionFactor, ingredientUnit.Created);
     }
 }

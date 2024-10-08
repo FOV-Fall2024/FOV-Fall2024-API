@@ -9,7 +9,7 @@ namespace FOV.Application.Features.Tables.Queries;
 
 public record GetTableCommand(PagingRequest? PagingRequest, Guid? Id, int? TableNumber, TableStatus? TableStatus, Guid? RestaurantId, SortOrder? Sort) : IRequest<PagedResult<GetTableResponse>>;
 
-public record GetTableResponse(Guid Id, int TableNumber, string TableStatus, Guid RestaurantId);
+public record GetTableResponse(Guid Id, int TableNumber, string TableStatus, Guid RestaurantId, DateTime CreatedDate);
 
 public class GetTableQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetTableCommand, PagedResult<GetTableResponse>>
 {
@@ -32,7 +32,8 @@ public class GetTableQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetTableC
             table.Id,
             table.TableNumber,
             table.TableStatus.ToString(),
-            table.RestaurantId
+            table.RestaurantId,
+            table.Created
         )).ToList();
 
         var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(command.PagingRequest);

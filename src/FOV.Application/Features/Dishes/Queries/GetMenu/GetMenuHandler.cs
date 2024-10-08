@@ -28,7 +28,7 @@ namespace FOV.Application.Features.Dishes.Queries.GetMenu
                     (string.IsNullOrEmpty(request.ProductDescription) || x.DishDescription.Contains(request.ProductDescription, StringComparison.OrdinalIgnoreCase)) &&
                     (!Guid.TryParse(request.RestaurantId, out var restaurantGuid) || x.RestaurantId == restaurantGuid) &&
                     !x.IsDeleted)
-                .Select(x => new GetMenuResponse(x.Id, x.DishName, x.DishDescription))
+                .Select(x => new GetMenuResponse(x.Id, x.DishName, x.DishDescription, x.Created))
                 .ToList();
 
             // Get pagination values
