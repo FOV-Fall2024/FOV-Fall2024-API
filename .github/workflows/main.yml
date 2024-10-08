@@ -21,7 +21,7 @@ jobs:
             cd /home/vktrng/deployment/
 
             if [ -d ./FOV-Fall2024-API ]; then
-              docker-compose -f FOV-Fall2024-API/docker-compose.yml down -v
+              docker-compose up -d --build
               cd ./FOV-Fall2024-API
               git pull origin main
             else

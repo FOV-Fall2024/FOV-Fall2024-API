@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
+using FOV.Domain.Entities.DishAggregator;
 using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.OrderAggregator.Enums;
 using FOV.Domain.Entities.TableAggregator.Enums;
@@ -138,7 +139,9 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
 
     private async Task<decimal> ProcessDish(Guid productId, int quantity, LockingHandler lockService, Domain.Entities.OrderAggregator.Order order, decimal totalPrice)
     {
-        var dish = await _unitOfWorks.DishRepository.GetByIdAsync(productId);
+        var dishes = await _unitOfWorks.DishRepository.GetAllAsync(x => x.DishIngredients);
+        var dish = dishes.FirstOrDefault(x => x.Id == productId);
+
         if (dish == null)
         {
             await lockService.ReleaseLockAsync();
