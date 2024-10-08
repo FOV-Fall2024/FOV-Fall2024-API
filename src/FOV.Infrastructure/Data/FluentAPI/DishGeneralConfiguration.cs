@@ -25,7 +25,9 @@ public class DishGeneralConfiguration : IEntityTypeConfiguration<DishGeneral>
                 Created = DefaultDatetime.MinValue,
                 LastModified = DefaultDatetime.MinValue,
                 PercentagePriceDifference = 20,
-                Price = 30
+                Price = 30,
+                IsDraft = false,
+                IsRefund = true,
 
             },
              new DishGeneral()
@@ -38,7 +40,9 @@ public class DishGeneralConfiguration : IEntityTypeConfiguration<DishGeneral>
                  Created = DefaultDatetime.MinValue,
                  LastModified = DefaultDatetime.MinValue,
                  PercentagePriceDifference = 20,
-                 Price = 30
+                 Price = 30,
+                 IsDraft = false,
+                 IsRefund = true,
              },
              new DishGeneral()
              {
@@ -50,7 +54,9 @@ public class DishGeneralConfiguration : IEntityTypeConfiguration<DishGeneral>
                  Created = DefaultDatetime.MinValue,
                  LastModified = DefaultDatetime.MinValue,
                  PercentagePriceDifference = 20,
-                 Price = 30
+                 Price = 30,
+                 IsDraft = false,
+                 IsRefund = false,
 
              },
              new DishGeneral()
@@ -63,8 +69,9 @@ public class DishGeneralConfiguration : IEntityTypeConfiguration<DishGeneral>
                  Created = DefaultDatetime.MinValue,
                  LastModified = DefaultDatetime.MinValue,
                  PercentagePriceDifference = 20,
-                 Price = 30
-
+                 Price = 30,
+                 IsDraft = false,
+                 IsRefund = true,
              },
              new DishGeneral()
              {
@@ -76,7 +83,10 @@ public class DishGeneralConfiguration : IEntityTypeConfiguration<DishGeneral>
                  Created = DefaultDatetime.MinValue,
                  LastModified = DefaultDatetime.MinValue,
                  PercentagePriceDifference = 20,
-                 Price = 30
+                 Price = 30,
+                 IsDraft = false,
+                 IsRefund = true,
+
              }
     );
     }
