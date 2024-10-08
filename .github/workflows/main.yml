@@ -21,9 +21,10 @@ jobs:
             cd /home/vktrng/deployment/
 
             if [ -d ./FOV-Fall2024-API ]; then
-              docker-compose down -v
               cd ./FOV-Fall2024-API
               git pull origin main
+              make build
+              make commit
             else
               echo "Cloning the repository..."
               git clone https://github.com/FOV-Fall2024/FOV-Fall2024-API.git
