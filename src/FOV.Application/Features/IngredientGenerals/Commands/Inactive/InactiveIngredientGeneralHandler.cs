@@ -11,7 +11,7 @@ public class InactiveIngredientGeneralHandler(IUnitOfWorks unitOfWorks) : IReque
     public async Task<Result> Handle(InactiveIngredientGeneralCommand request, CancellationToken cancellationToken)
     {
         IngredientGeneral ingredientGenerals = await _unitOfWorks.IngredientGeneralRepository.GetByIdAsync(request.Id) ?? throw new Exception();
-        ingredientGenerals.UpdateState(true);
+        ingredientGenerals.UpdateState(false);
         _unitOfWorks.IngredientGeneralRepository.Update(ingredientGenerals);
         await _unitOfWorks.SaveChangeAsync();
         return Result.Ok();

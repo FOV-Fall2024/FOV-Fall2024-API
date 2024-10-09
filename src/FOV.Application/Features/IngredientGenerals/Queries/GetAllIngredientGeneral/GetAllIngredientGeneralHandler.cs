@@ -1,12 +1,13 @@
 ﻿using FOV.Application.Features.IngredientGenerals.Responses;
 using FOV.Domain.Entities.IngredientGeneralAggregator; // Adjust as necessary
+using FOV.Domain.Entities.TableAggregator.Enums;
 using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.IngredientGenerals.Queries.GetAllIngredientGeneral
 {
-    public sealed record GetAllIngredientCommand(string? IngredientGeneralName, Guid? IngredientTypeId, string? ingredientMeasureType, PagingRequest? PagingRequest) : IRequest<PagedResult<GetAllIngredientResponse>>;
+    public sealed record GetAllIngredientCommand(string? IngredientGeneralName, Guid? IngredientTypeId, string? ingredientMeasureType, Status? Status, PagingRequest? PagingRequest) : IRequest<PagedResult<GetAllIngredientResponse>>;
 
 
 
@@ -25,8 +26,12 @@ namespace FOV.Application.Features.IngredientGenerals.Queries.GetAllIngredientGe
                 {
                     IngredientName = request.IngredientGeneralName ?? string.Empty,
                     IngredientTypeId = request.IngredientTypeId ?? Guid.Empty,
+                    Status = request.Status ?? Status.Unknown
                 });
-
+            if (request.Status.HasValue)
+            {
+                filteredIngredients = filteredIngredients.Where(x => x.Status == request.Status.Value);
+            }
             // Select and map to response DTO
             var mappedIngredients = filteredIngredients.Select(x => new GetAllIngredientResponse(
                 x.Id,
