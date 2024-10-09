@@ -8,7 +8,7 @@ using MediatR;
 
 namespace FOV.Application.Features.DishGenerals.Queries.GetProductGeneral
 {
-    public sealed record GetProductGeneralCommand(string? DishGeneralName, string? DishGeneralDescription, Guid? CategoryId, PagingRequest? PagingRequest) : IRequest<PagedResult<GetProductGeneralResponse>>;
+    public sealed record GetProductGeneralCommand(string? DishGeneralName, string? DishGeneralDescription, Guid? CategoryId,bool? IsDeleted, PagingRequest? PagingRequest) : IRequest<PagedResult<GetProductGeneralResponse>>;
 
 
 
@@ -32,6 +32,10 @@ namespace FOV.Application.Features.DishGenerals.Queries.GetProductGeneral
                 DishName = request.DishGeneralName ?? string.Empty,
                 DishDescription = request.DishGeneralDescription ?? string.Empty,
             });
+            if (request.IsDeleted.HasValue)
+            {
+                filteredProducts = filteredProducts.Where(p => p.IsDeleted == request.IsDeleted.Value);
+            }
 
             // Select and map to response DTO
             var mappedProducts = filteredProducts.Select(x => new GetProductGeneralResponse(
@@ -43,7 +47,8 @@ namespace FOV.Application.Features.DishGenerals.Queries.GetProductGeneral
                 x.DishImageDefault,
                 x.CategoryId ?? Guid.Empty,
                 x.Created,
-                x.LastModified ?? DateTime.Now)).ToList();
+                x.LastModified ?? DateTime.Now,
+                x.PercentagePriceDifference)).ToList();
 
             // Get pagination and sorting values
             var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
