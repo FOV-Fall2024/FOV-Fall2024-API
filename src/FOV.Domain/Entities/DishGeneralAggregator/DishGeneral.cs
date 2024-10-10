@@ -1,5 +1,6 @@
 ﻿using FOV.Domain.Common;
 using FOV.Domain.Entities.DishAggregator;
+using FOV.Domain.Entities.TableAggregator.Enums;
 
 
 namespace FOV.Domain.Entities.DishGeneralAggregator;
@@ -18,7 +19,7 @@ public class DishGeneral : BaseAuditableEntity, IsSoftDeleted
     public bool IsRefund { get; set; }
     public bool IsDraft { get; set; } = true;
     public virtual ICollection<DishIngredientGeneral> Ingredients { get; set; } = [];
-
+    //public Status Status { get; set; }
     public string[] Images { get; set; } = [];
     public DishGeneral()
     {
