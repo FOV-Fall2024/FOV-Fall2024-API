@@ -33,7 +33,6 @@ public class Restaurant : BaseAuditableEntity, IsSoftDeleted
     public virtual ICollection<NewDishRecommend> NewDishRecommends { get; set; } = [];
 
     public virtual ICollection<GroupChat> GroupChats { get; set; } = [];
-    public bool IsDeleted { get; set; }
 
     public Restaurant()
     {

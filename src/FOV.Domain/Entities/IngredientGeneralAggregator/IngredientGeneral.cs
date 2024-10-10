@@ -6,13 +6,12 @@ using FOV.Domain.Entities.TableAggregator.Enums;
 
 namespace FOV.Domain.Entities.IngredientGeneralAggregator;
 
-public class IngredientGeneral : BaseAuditableEntity
+public class IngredientGeneral : BaseAuditableEntity, IsSoftDeleted
 {
     public string IngredientName { get; set; } = string.Empty;
     public string IngredientDescription { get; set; } = string.Empty;
     public IngredientType? IngredientType { get; set; }
     public Guid IngredientTypeId { get; set; }
-    public bool IsDeleted { get; set; } = false;
     public Status Status { get; set; } = Status.Active;
     public IngredientMeasure IngredientMeasure { get; set; }
 

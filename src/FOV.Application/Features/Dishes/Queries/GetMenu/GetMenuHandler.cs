@@ -1,4 +1,5 @@
 ﻿using FOV.Application.Features.Dishes.Responses;
+using FOV.Domain.Entities.TableAggregator.Enums;
 using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
@@ -26,8 +27,7 @@ namespace FOV.Application.Features.Dishes.Queries.GetMenu
                 .Where(x =>
                     (string.IsNullOrEmpty(request.ProductName) || x.DishName.Contains(request.ProductName, StringComparison.OrdinalIgnoreCase)) &&
                     (string.IsNullOrEmpty(request.ProductDescription) || x.DishDescription.Contains(request.ProductDescription, StringComparison.OrdinalIgnoreCase)) &&
-                    (!Guid.TryParse(request.RestaurantId, out var restaurantGuid) || x.RestaurantId == restaurantGuid) &&
-                    !x.IsDeleted)
+                    (!Guid.TryParse(request.RestaurantId, out var restaurantGuid) || x.RestaurantId == restaurantGuid) && x.Status == Status.Active)
                 .Select(x => new GetMenuResponse(x.Id, x.DishName, x.DishDescription, x.Created))
                 .ToList();
 

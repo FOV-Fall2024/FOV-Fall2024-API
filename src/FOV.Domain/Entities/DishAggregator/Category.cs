@@ -1,5 +1,6 @@
 ﻿using FOV.Domain.Common;
 using FOV.Domain.Entities.DishGeneralAggregator;
+using FOV.Domain.Entities.TableAggregator.Enums;
 
 namespace FOV.Domain.Entities.DishAggregator;
 
@@ -9,7 +10,7 @@ public class Category : BaseAuditableEntity, IsSoftDeleted
     public virtual ICollection<DishGeneral> DishGenerals { get; set; } = [];
 
     public virtual ICollection<Dish> Dishes { get; set; } = [];
-    public bool IsDeleted { get; set; }
+    public Status Status { get; set; }
 
     public Category()
     {
@@ -30,6 +31,10 @@ public class Category : BaseAuditableEntity, IsSoftDeleted
         CategoryName = categoryName;
     }
 
-    public void SetState(bool isDelete) => IsDeleted = isDelete;
+    public void UpdateState(bool state)
+    {
+        Status = state ? Status.Active : Status.Inactive;
+        LastModified = DateTime.UtcNow.AddHours(7);
+    }
 
 }

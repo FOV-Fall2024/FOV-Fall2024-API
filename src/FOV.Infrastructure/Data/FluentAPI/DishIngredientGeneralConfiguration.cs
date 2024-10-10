@@ -16,7 +16,7 @@ internal class DishIngredientGeneralConfiguration : IEntityTypeConfiguration<Dis
             IngredientGeneralId = Guid.Parse("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a8"),
             DishGeneralId = Guid.Parse("6535596e-a86a-4fcc-97e7-7e6182a5c022"),
             Quantity = 2,
-            IsDeleted = false,
+            Status = Domain.Entities.TableAggregator.Enums.Status.Active,
             Created = DefaultDatetime.MinValue,
             LastModified = DefaultDatetime.MinValue,
             

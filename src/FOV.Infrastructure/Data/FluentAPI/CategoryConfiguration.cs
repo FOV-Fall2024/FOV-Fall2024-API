@@ -17,7 +17,7 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
         new Category("Khai Vị")
         {
             Id = Guid.Parse("6535596e-a86a-4fcc-97e7-7e6182a5c011"),  //? 
-            IsDeleted = false,
+            Status = Domain.Entities.TableAggregator.Enums.Status.Active,
             Created = DefaultDatetime.MinValue,
             LastModified = DefaultDatetime.MinValue,
 
@@ -25,7 +25,7 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
         new Category("Món Chính")
         {
             Id = Guid.Parse("3140b8af-2124-44fa-8f43-907cddc26c3d"),  // Assign a unique ID
-            IsDeleted = false,
+            Status = Domain.Entities.TableAggregator.Enums.Status.Active,
             Created = DefaultDatetime.MinValue,
             LastModified = DefaultDatetime.MinValue,
         }

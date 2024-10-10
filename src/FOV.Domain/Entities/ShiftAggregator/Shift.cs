@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FOV.Domain.Common;
+using FOV.Domain.Entities.TableAggregator.Enums;
 using FOV.Domain.Entities.WaiterScheduleAggregator;
 
 namespace FOV.Domain.Entities.ShiftAggregator;
@@ -13,7 +14,8 @@ public class Shift : BaseAuditableEntity, IsSoftDeleted
     public TimeSpan? StartTime { get; set; }
     public TimeSpan? EndTime { get; set; }
     public ICollection<WaiterSchedule> WaiterSchedules { get; set; } = [];
-    public bool IsDeleted { get; set; }
+    public Status Status { get; set; }
+
 
     public Shift()
     {
@@ -31,5 +33,9 @@ public class Shift : BaseAuditableEntity, IsSoftDeleted
         this.StartTime = startTime;
         this.EndTime = endTime;
     }
-    public void UpdateState(bool state) => IsDeleted = state;
+    public void UpdateState(bool state)
+    {
+        Status = state ? Status.Active : Status.Inactive;
+        LastModified = DateTime.UtcNow.AddHours(7);
+    }
 }

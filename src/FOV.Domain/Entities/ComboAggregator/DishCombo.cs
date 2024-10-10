@@ -1,5 +1,6 @@
 ﻿using FOV.Domain.Common;
 using FOV.Domain.Entities.DishAggregator;
+using FOV.Domain.Entities.TableAggregator.Enums;
 
 namespace FOV.Domain.Entities.ComboAggregator;
 
@@ -11,7 +12,7 @@ public class DishCombo : BaseAuditableEntity, IsSoftDeleted
 
     public Guid DishId { get; set; }
     public Dish? Dish { get; set; }
-    public bool IsDeleted { get; set; }
+    public Status Status { get; set; }
 
     public DishCombo()
     {
@@ -24,6 +25,5 @@ public class DishCombo : BaseAuditableEntity, IsSoftDeleted
     {
         ComboId = comboId;
         DishId = dishId;
-        IsDeleted = false;
     }
 }

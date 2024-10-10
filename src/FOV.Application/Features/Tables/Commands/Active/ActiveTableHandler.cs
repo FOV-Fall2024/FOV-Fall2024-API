@@ -15,7 +15,7 @@ public class ActiveTableHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<Acti
     public async Task<Result> Handle(ActiveTableCommand request, CancellationToken cancellationToken)
     {
         var table = await _unitOfWorks.TableRepository.GetByIdAsync(request.id) ?? throw new Exception();
-        table.UpdateState(false); //IsDeleted = false means Active
+        table.UpdateState(true);
         _unitOfWorks.TableRepository.Update(table);
         await _unitOfWorks.SaveChangeAsync();
         return Result.Ok();

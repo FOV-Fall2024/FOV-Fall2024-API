@@ -15,12 +15,12 @@ public class DishGeneral : BaseAuditableEntity, IsSoftDeleted
     public decimal PercentagePriceDifference { get; set; } = 0;
     public Category Category { get; set; }
     public Guid? CategoryId { get; set; }
-    public bool IsDeleted { get; set; }
     public bool IsRefund { get; set; }
     public bool IsDraft { get; set; } = true;
     public virtual ICollection<DishIngredientGeneral> Ingredients { get; set; } = [];
-    //public Status Status { get; set; }
+    public Status Status { get; set; }
     public string[] Images { get; set; } = [];
+
     public DishGeneral()
     {
 
@@ -33,12 +33,11 @@ public class DishGeneral : BaseAuditableEntity, IsSoftDeleted
         DishName = name;
         Price = price;
         DishDescription = description;
+        Status = Status.Active;
         CategoryId = categoryId;
-        IsDeleted = false;
         Id = Guid.NewGuid();
         IsRefund = isRefund;
         PercentagePriceDifference = percentagePriceDifference;
-
     }
 
     public void Update(string name, string description, Guid categoryId)
@@ -62,12 +61,11 @@ public class DishGeneral : BaseAuditableEntity, IsSoftDeleted
         DishImageDefault = Image;
         CategoryId = categoryId;
     }
-
-
-
-
-
-    public void SetState(bool isDeleted) => IsDeleted = isDeleted;
+    public void UpdateState(bool state)
+    {
+        Status = state ? Status.Active : Status.Inactive;
+        LastModified = DateTime.UtcNow.AddHours(7);
+    }
 
     public void SetDraftState(bool isDraftState) => IsDraft = isDraftState;
 }

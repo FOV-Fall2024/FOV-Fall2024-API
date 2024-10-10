@@ -16,17 +16,18 @@ namespace FOV.Application.Features.Users.Queries.GetAllUser
 
         public async Task<PagedResult<GetUsersResponse>> Handle(GetUsersCommand request, CancellationToken cancellationToken)
         {
-            var users = await _userManager.GetUsersInRoleAsync(Domain.Entities.UserAggregator.Enums.Role.User);
+            var users = await _unitOfWorks.CustomerRepository.GetAllAsync(x => x.User);
             var filteredUsers = users.Where(x =>
-                                            (string.IsNullOrEmpty(request.UserName) || x.UserName.Contains(request.UserName, StringComparison.OrdinalIgnoreCase)) &&
+                                            (string.IsNullOrEmpty(request.UserName) || x.User.UserName.Contains(request.UserName, StringComparison.OrdinalIgnoreCase)) &&
                                             //(string.IsNullOrEmpty(request.FirstName) || x.FirstName.Contains(request.FirstName, StringComparison.OrdinalIgnoreCase)) &&
                                             //(string.IsNullOrEmpty(request.LastName) || x.LastName.Contains(request.LastName, StringComparison.OrdinalIgnoreCase)) &&
-                                            (string.IsNullOrEmpty(request.PhoneNumber) || x.Email.Contains(request.PhoneNumber, StringComparison.OrdinalIgnoreCase)));
-
+                                            (string.IsNullOrEmpty(request.PhoneNumber) || x.User.Email.Contains(request.PhoneNumber, StringComparison.OrdinalIgnoreCase)));
+            
             var mappedUsers = filteredUsers.Select(x => new GetUsersResponse(
-                x.Id,
-                $"{x.FirstName} {x.LastName}",
-                x.PhoneNumber ?? string.Empty)).ToList();
+                x.User.Id,
+                $"{x.User.FirstName} {x.User.LastName}",
+                x.User.PhoneNumber ?? string.Empty,
+                x.Created)).ToList();
 
             var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
 

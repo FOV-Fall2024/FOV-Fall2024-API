@@ -12,7 +12,7 @@ internal class DeleteCategoryHandler(IUnitOfWorks unitOfWorks) : IRequestHandler
     public async Task<Result> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
     {
         Category category = await _unitOfWorks.CategoryRepository.GetByIdAsync(request.Id) ?? throw new Exception();
-        category.SetState(true);
+        category.UpdateState(true);
         _unitOfWorks.CategoryRepository.Update(category);
         await _unitOfWorks.SaveChangeAsync();
         return Result.Ok();

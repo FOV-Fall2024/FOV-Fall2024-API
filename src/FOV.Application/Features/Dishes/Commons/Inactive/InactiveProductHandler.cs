@@ -11,7 +11,7 @@ internal class InactiveProductHandler(IUnitOfWorks unitOfWorks) : IRequestHandle
     public async Task<Result> Handle(InactiveProductCommand request, CancellationToken cancellationToken)
     {
         Dish product = await _unitOfWorks.DishRepository.GetByIdAsync(request.Id) ?? throw new Exception();
-        product.UpdateState(true);
+        product.UpdateState(false);
         _unitOfWorks.DishRepository.Update(product);
         await _unitOfWorks.SaveChangeAsync();
         return Result.Ok();

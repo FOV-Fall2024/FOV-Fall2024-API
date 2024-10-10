@@ -12,7 +12,7 @@ public class ActiveComboHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<Acti
     public async Task<Result> Handle(ActiveComboCommand request, CancellationToken cancellationToken)
     {
         Combo combo = await _unitOfWorks.ComboRepository.GetByIdAsync(request.ComboId) ?? throw new Exception();
-        combo.UpdateState(false);
+        combo.UpdateState(true);
         _unitOfWorks.ComboRepository.Update(combo);
         await _unitOfWorks.SaveChangeAsync();
         return Result.Ok();

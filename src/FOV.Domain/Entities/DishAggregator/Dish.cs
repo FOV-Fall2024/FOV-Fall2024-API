@@ -5,6 +5,7 @@ using FOV.Domain.Entities.DishGeneralAggregator;
 using FOV.Domain.Entities.DishGeneralAggregator.Enums;
 using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.RestaurantAggregator;
+using FOV.Domain.Entities.TableAggregator.Enums;
 
 namespace FOV.Domain.Entities.DishAggregator;
 
@@ -22,6 +23,7 @@ public class Dish : BaseAuditableEntity, IsSoftDeleted
     public virtual ICollection<DishIngredient> DishIngredients { get; set; } = [];
     public Category? Category { get; set; }
     public Guid? CategoryId { get; set; }
+    public Status Status { get; set; }
 
     public decimal? Price { get; set; }
     public Restaurant? Restaurant { get; set; }
@@ -33,7 +35,6 @@ public class Dish : BaseAuditableEntity, IsSoftDeleted
     public Guid? DishGeneralId { get; set; }
 
     public RefundDishInventory? RefundDishInventory { get; set; }
-    public bool IsDeleted { get; set; }
 
     public Dish()
     {
@@ -46,11 +47,16 @@ public class Dish : BaseAuditableEntity, IsSoftDeleted
         Price = price;
         DishDescription = dishDescription;
         CategoryId = categoryId;
+        Status = Status.Active;
         RestaurantId = restaurantId;
         DishGeneralId = dishGeneralId;
     }
 
-    public void UpdateState(bool isDelete) => IsDeleted = isDelete;
+    public void UpdateState(bool state)
+    {
+        Status = state ? Status.Active : Status.Inactive;
+        LastModified = DateTime.UtcNow.AddHours(7);
+    }
 
     public void Update(string name, string description)
     {

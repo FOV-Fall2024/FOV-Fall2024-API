@@ -29,7 +29,8 @@ public class GetProductHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<GetPr
             x.Id,
             x.RestaurantId,
             x.DishName,
-            x.DishDescription)).ToList();
+            x.DishDescription,
+            x.Created)).ToList();
 
         // Get pagination and sorting values
         var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);

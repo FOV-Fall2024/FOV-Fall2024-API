@@ -10,11 +10,10 @@ public class Table : BaseAuditableEntity, IsSoftDeleted
     public string? TableCode { get; set; }
     public TableStatus TableStatus { get; set; }
     public string? TableQRCode { get; set; }
-    public bool IsDeleted { get; set; }
     public Restaurant? Restaurant { get; set; }
     public Guid RestaurantId { get; set; }
     public virtual ICollection<Order> Orders { get; set; } = [];
-
+    public Status Status { get; set; }
     public Table()
     {
 
@@ -31,5 +30,9 @@ public class Table : BaseAuditableEntity, IsSoftDeleted
         this.TableStatus = tableStatus;
         this.TableQRCode = TableQRCode;
     }
-    public void UpdateState(bool state) => IsDeleted = state;
+    public void UpdateState(bool state)
+    {
+        Status = state ? Status.Active : Status.Inactive;
+        LastModified = DateTime.UtcNow.AddHours(7);
+    }
 }

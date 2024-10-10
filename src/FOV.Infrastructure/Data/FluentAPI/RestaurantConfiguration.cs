@@ -22,7 +22,6 @@ public class RestaurantConfiguration : IEntityTypeConfiguration<Restaurant>
         {
             Id = Guid.Parse("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0"),
             RestaurantName = "Default Restaurant",
-            IsDeleted = false,
             RestaurantPhone = "0902388123",
             Address = "Go Vap",
             RestaurantCode = "RE_001",
@@ -36,7 +35,6 @@ public class RestaurantConfiguration : IEntityTypeConfiguration<Restaurant>
         {
             Id = Guid.Parse("d42cf3c6-cbe4-4431-ac91-9eae870fa007"),
             RestaurantName = "Vege Thu Duc",
-            IsDeleted = false,
             RestaurantPhone = "0867960120",
             Address = "Thu Duc",
             RestaurantCode = "RE_002",

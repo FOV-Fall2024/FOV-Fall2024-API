@@ -54,6 +54,7 @@ public class CreateUserCommandHandler(UserManager<User> userManager,IUnitOfWorks
     private User CreateUser(CreateUserCommand request) => new()
     {
         LastName = request.LastName,
+        FirstName = request.FirstName,
         PhoneNumber = request.PhoneNumber,
         UserName = $"{request.FirstName}{request.LastName}",
         Email = request.PhoneNumber + "@gmail.com",

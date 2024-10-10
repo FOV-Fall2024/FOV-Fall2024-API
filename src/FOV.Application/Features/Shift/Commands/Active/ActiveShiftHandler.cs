@@ -19,7 +19,7 @@ public class ActiveShiftHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<Acti
         {
             return Result.Fail("Không tìm thấy ca làm nào");
         }
-        shift.UpdateState(false);
+        shift.UpdateState(true);
         _unitOfWorks.ShiftRepository.Update(shift);
         await _unitOfWorks.SaveChangeAsync();
         return Result.Ok();

@@ -13,7 +13,6 @@ public class Employee : BaseAuditableEntity, IsSoftDeleted
     public string EmployeeCode { get; set; } = string.Empty;
     public User? User { get; set; }
     public string UserId { get; set; } = string.Empty;
-    public bool IsDeleted { get; set; }
     public Status Status { get; set; } = Status.Active;
     public ICollection<Attendance> Attendances { get; set; } = new List<Attendance>(); // Use List<Attendance>
     public ICollection<WaiterSchedule> WaiterSchedules { get; set; } = new List<WaiterSchedule>(); // Use List<WaiterSchedule>

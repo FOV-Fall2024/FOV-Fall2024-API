@@ -11,7 +11,7 @@ public class InactiveDishGeneralHandler(IUnitOfWorks unitOfWorks) : IRequestHand
     public async Task<Result> Handle(InactiveProductGeneralCommand request, CancellationToken cancellationToken)
     {
         DishGeneral productGeneral = await _unitOfWorks.DishGeneralRepository.GetByIdAsync(request.Id) ?? throw new Exception();
-        productGeneral.SetState(true);
+        productGeneral.UpdateState(false);
         _unitOfWorks.DishGeneralRepository.Update(productGeneral);
         await _unitOfWorks.SaveChangeAsync();
         return Result.Ok();

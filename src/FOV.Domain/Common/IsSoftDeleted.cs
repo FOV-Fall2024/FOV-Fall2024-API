@@ -1,7 +1,9 @@
-﻿namespace FOV.Domain.Common;
+﻿using FOV.Domain.Entities.TableAggregator.Enums;
+
+namespace FOV.Domain.Common;
 
 public interface IsSoftDeleted
 {
-    bool IsDeleted { get; set; }
+    public Status Status { get; set; }
 }
 

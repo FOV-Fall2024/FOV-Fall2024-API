@@ -16,7 +16,7 @@ public class InactiveTableHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<In
     public async Task<Result> Handle(InactiveTableCommand request, CancellationToken cancellationToken)
     {
         var table = await _unitOfWorks.TableRepository.GetByIdAsync(request.id) ?? throw new Exception();
-        table.UpdateState(true);
+        table.UpdateState(false);
         _unitOfWorks.TableRepository.Update(table);
         await _unitOfWorks.SaveChangeAsync();
         return Result.Ok();

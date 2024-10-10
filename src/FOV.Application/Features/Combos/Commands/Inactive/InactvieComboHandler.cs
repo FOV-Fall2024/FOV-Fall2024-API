@@ -11,7 +11,7 @@ internal class InactvieComboHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<
     public async Task<Result> Handle(InactiveComboCommand request, CancellationToken cancellationToken)
     {
         Combo combo = await _unitOfWorks.ComboRepository.GetByIdAsync(request.ComboId) ?? throw new Exception();
-        combo.UpdateState(true);
+        combo.UpdateState(false);
         _unitOfWorks.ComboRepository.Update(combo);
         await _unitOfWorks.SaveChangeAsync();
         return Result.Ok();

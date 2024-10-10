@@ -1,5 +1,6 @@
 ﻿using FOV.Domain.Common;
 using FOV.Domain.Entities.IngredientGeneralAggregator;
+using FOV.Domain.Entities.TableAggregator.Enums;
 
 
 namespace FOV.Domain.Entities.IngredientAggregator;
@@ -12,7 +13,8 @@ public class IngredientType : BaseAuditableEntity, IsSoftDeleted
     public virtual ICollection<Ingredient>? Ingredients { get; set; } = [];
 
     public virtual ICollection<IngredientGeneral>? IngredientGenerals { get; set; } = [];
-    public bool IsDeleted { get; set; }
+    public Status Status { get; set; }
+
     public IngredientType()
     {
 
@@ -34,7 +36,9 @@ public class IngredientType : BaseAuditableEntity, IsSoftDeleted
         IngredientDescription = ingredientDescription;
     }
 
-    public void UpdateState(bool state) => IsDeleted = state;
-
-
+    public void UpdateState(bool state)
+    {
+        Status = state ? Status.Active : Status.Inactive;
+        LastModified = DateTime.UtcNow.AddHours(7);
+    }
 }
