@@ -13,9 +13,11 @@ public class DishGeneralImage : BaseAuditableEntity
 
     }
 
-    public DishGeneralImage(string url,Guid dishGeneralId)
+    public DishGeneralImage(string url, Guid dishGeneralId)
     {
         DishGeneralId = dishGeneralId;
         Url = url;
     }
+
+    public void UpdateImage(string imageUrl) => Url = imageUrl;
 }
