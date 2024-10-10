@@ -19,8 +19,8 @@ public class DishGeneral : BaseAuditableEntity, IsSoftDeleted
     public bool IsDraft { get; set; } = true;
     public virtual ICollection<DishIngredientGeneral> Ingredients { get; set; } = [];
     public Status Status { get; set; }
-    public string[] Images { get; set; } = [];
 
+    public ICollection<DishGeneralImage> DishGeneralImages { get; set; } = [];
     public DishGeneral()
     {
 
@@ -40,11 +40,12 @@ public class DishGeneral : BaseAuditableEntity, IsSoftDeleted
         PercentagePriceDifference = percentagePriceDifference;
     }
 
-    public void Update(string name, string description, Guid categoryId)
+    public void Update(string name, string description, Guid categoryId,string image)
     {
         DishName = name;
         DishDescription = description;
         CategoryId = categoryId;
+        DishImageDefault = image;
     }
 
     public void Update(string name, string description, string Image)

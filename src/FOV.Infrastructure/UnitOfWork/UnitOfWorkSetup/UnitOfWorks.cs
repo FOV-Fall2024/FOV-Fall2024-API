@@ -39,11 +39,12 @@ public class UnitOfWorks : IUnitOfWorks
     private readonly IRefundDishInventoryRepository _refundDishInventoryRepository;
     private readonly IRefundDishUnitRepository _refundDishUnitRepository;
     private readonly IRefundDishInventoryTransactionRepository _refundDishInventoryTransactionRepository;
+    private readonly IDishGeneralImageRepository _dishGeneralImageRepository;
 
     public UnitOfWorks(FOVContext context, IIngredientTypeRepository ingredientTypeRepository, IIngredientGeneralRepository ingredientGeneralRepository, IDishGeneralRepository productGeneralRepository, IDishIngredientGeneralRepository productIngredientGeneralRepository, ITableRepository tableRepository, IRestaurantRepository restaurantRepository, ICategoryRepository categoryRepository, IDishRepository productRepository, IIngredientRepository ingredientRepository, IDishIngredientRepository productIngredientRepository, ICustomerRepository customerRepository, IEmployeeRepository employeeRepository, IIngrdientTransactionRepository ingrdientTransactionRepository, IDishComboRepository productComboRepository, IComboRepository comboRepository, IOrderRepository orderRepository, IOrderDetailRepository orderDetailRepository, IShiftRepository shiftRepository, IWaiterScheduleRepository waiterScheduleRepository,
         IGroupChatRepository groupChatRepository, IGroupMessageRepository groupMessageRepository, IGroupUserRepository groupUserRepository,
         IDishImageRepository productImageRepository,
-        IRatingRepository ratingRepository, IPaymentRepository paymentRepository, IAttendanceRepository attendanceRepository, IIngredientUnitRepository ingredientUnitRepository, INewDishRecommendRepository newProductRecommendRepository, INewDishRecommendLogRepository newProductRecommendLogRepository, IRefundDishInventoryRepository refundDishInventoryRepository, IRefundDishUnitRepository refundDishUnitRepository, IRefundDishInventoryTransactionRepository refundDishInventoryTransactionRepository)
+        IRatingRepository ratingRepository, IPaymentRepository paymentRepository, IAttendanceRepository attendanceRepository, IIngredientUnitRepository ingredientUnitRepository, INewDishRecommendRepository newProductRecommendRepository, INewDishRecommendLogRepository newProductRecommendLogRepository, IRefundDishInventoryRepository refundDishInventoryRepository, IRefundDishUnitRepository refundDishUnitRepository, IRefundDishInventoryTransactionRepository refundDishInventoryTransactionRepository, IDishGeneralImageRepository dishGeneralImageRepository)
     {
         _context = context;
         _ingredientTypeRepository = ingredientTypeRepository;
@@ -79,6 +80,7 @@ public class UnitOfWorks : IUnitOfWorks
         _refundDishInventoryRepository = refundDishInventoryRepository;
         _refundDishUnitRepository = refundDishUnitRepository;
         _refundDishInventoryTransactionRepository = refundDishInventoryTransactionRepository;
+        _dishGeneralImageRepository = dishGeneralImageRepository;
     }
     public IIngredientTypeRepository IngredientTypeRepository => _ingredientTypeRepository;
     public IIngredientGeneralRepository IngredientGeneralRepository => _ingredientGeneralRepository;
@@ -136,6 +138,9 @@ public class UnitOfWorks : IUnitOfWorks
     public IRefundDishUnitRepository RefundDishUnitRepository => _refundDishUnitRepository;
 
     public IRefundDishInventoryTransactionRepository RefundDishInventoryTransactionRepository => _refundDishInventoryTransactionRepository;
+
+    public IDishGeneralImageRepository DishGeneralImageRepository => _dishGeneralImageRepository;
+
     public async Task<int> SaveChangeAsync()
     {
         return await _context.SaveChangesAsync();

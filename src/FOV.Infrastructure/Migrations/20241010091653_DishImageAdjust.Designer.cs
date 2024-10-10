@@ -3,6 +3,7 @@ using System;
 using FOV.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FOV.Infrastructure.Migrations
 {
     [DbContext(typeof(FOVContext))]
-    partial class FOVContextModelSnapshot : ModelSnapshot
+    [Migration("20241010091653_DishImageAdjust")]
+    partial class DishImageAdjust
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -76,9 +79,6 @@ namespace FOV.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<byte>("ComboStatus")
-                        .HasColumnType("smallint");
-
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
@@ -87,6 +87,9 @@ namespace FOV.Infrastructure.Migrations
 
                     b.Property<DateTime?>("ExpiredDate")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("timestamp with time zone");
@@ -123,45 +126,45 @@ namespace FOV.Infrastructure.Migrations
                         {
                             Id = new Guid("941bcca9-52a6-41f7-9403-06cc5fa703ea"),
                             ComboName = "Combo 1",
-                            ComboStatus = (byte)0,
                             Created = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             ExpiredDate = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IsDeleted = false,
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             PercentReduce = 10.0m,
                             Price = 50.00m,
                             Quantity = 20,
                             RestaurantId = new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0"),
-                            Status = (byte)1,
+                            Status = (byte)0,
                             Thumbnail = "img1"
                         },
                         new
                         {
                             Id = new Guid("3907a193-c2ae-4f40-936b-9a2438595123"),
                             ComboName = "Combo 2",
-                            ComboStatus = (byte)0,
                             Created = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             ExpiredDate = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IsDeleted = false,
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             PercentReduce = 5.0m,
                             Price = 30.00m,
                             Quantity = 10,
                             RestaurantId = new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"),
-                            Status = (byte)1,
+                            Status = (byte)0,
                             Thumbnail = "img2"
                         },
                         new
                         {
                             Id = new Guid("921b269a-db6e-4a1d-b285-70df523e010e"),
                             ComboName = "Combo 3",
-                            ComboStatus = (byte)0,
                             Created = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             ExpiredDate = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IsDeleted = false,
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             PercentReduce = 5.0m,
                             Price = 30.00m,
                             Quantity = 10,
                             RestaurantId = new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"),
-                            Status = (byte)1,
+                            Status = (byte)0,
                             Thumbnail = "img3"
                         });
                 });
@@ -184,14 +187,14 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<Guid>("DishId")
                         .HasColumnType("uuid");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
-
-                    b.Property<byte>("Status")
-                        .HasColumnType("smallint");
 
                     b.HasKey("Id");
 
@@ -218,14 +221,14 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
-
-                    b.Property<byte>("Status")
-                        .HasColumnType("smallint");
 
                     b.HasKey("Id");
 
@@ -237,16 +240,16 @@ namespace FOV.Infrastructure.Migrations
                             Id = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c011"),
                             CategoryName = "Khai Vị",
                             Created = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Status = (byte)1
+                            IsDeleted = false,
+                            LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             Id = new Guid("3140b8af-2124-44fa-8f43-907cddc26c3d"),
                             CategoryName = "Món Chính",
                             Created = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Status = (byte)1
+                            IsDeleted = false,
+                            LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc)
                         });
                 });
 
@@ -279,6 +282,13 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<byte>("DishType")
                         .HasColumnType("smallint");
 
+                    b.Property<string[]>("Images")
+                        .IsRequired()
+                        .HasColumnType("text[]");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
@@ -293,9 +303,6 @@ namespace FOV.Infrastructure.Migrations
 
                     b.Property<Guid>("RestaurantId")
                         .HasColumnType("uuid");
-
-                    b.Property<byte>("Status")
-                        .HasColumnType("smallint");
 
                     b.HasKey("Id");
 
@@ -322,8 +329,7 @@ namespace FOV.Infrastructure.Migrations
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             Price = 10000m,
                             PriorityDish = (byte)0,
-                            RestaurantId = new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0"),
-                            Status = (byte)0
+                            RestaurantId = new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0")
                         },
                         new
                         {
@@ -339,8 +345,7 @@ namespace FOV.Infrastructure.Migrations
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             Price = 60000m,
                             PriorityDish = (byte)0,
-                            RestaurantId = new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"),
-                            Status = (byte)0
+                            RestaurantId = new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007")
                         },
                         new
                         {
@@ -356,8 +361,7 @@ namespace FOV.Infrastructure.Migrations
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             Price = 20000m,
                             PriorityDish = (byte)0,
-                            RestaurantId = new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"),
-                            Status = (byte)0
+                            RestaurantId = new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007")
                         });
                 });
 
@@ -575,6 +579,7 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("DishName")
                         .IsRequired()
                         .HasColumnType("text");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
@@ -596,9 +601,6 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
-                    b.Property<byte>("Status")
-                        .HasColumnType("smallint");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
@@ -614,14 +616,12 @@ namespace FOV.Infrastructure.Migrations
                             DishDescription = "Coca-Cola ngon ",
                             DishImageDefault = "",
                             DishName = "Coca-Cola",
-                            Images = new string[0],
                             IsDeleted = false,
                             IsDraft = false,
                             IsRefund = true,
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             PercentagePriceDifference = 20m,
-                            Price = 30m,
-                            Status = (byte)1
+                            Price = 30m
                         },
                         new
                         {
@@ -636,8 +636,7 @@ namespace FOV.Infrastructure.Migrations
                             IsRefund = true,
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             PercentagePriceDifference = 20m,
-                            Price = 30m,
-                            Status = (byte)1
+                            Price = 30m
                         },
                         new
                         {
@@ -652,8 +651,7 @@ namespace FOV.Infrastructure.Migrations
                             IsRefund = false,
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             PercentagePriceDifference = 20m,
-                            Price = 30m,
-                            Status = (byte)1
+                            Price = 30m
                         },
                         new
                         {
@@ -668,8 +666,7 @@ namespace FOV.Infrastructure.Migrations
                             IsRefund = true,
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             PercentagePriceDifference = 20m,
-                            Price = 30m,
-                            Status = (byte)1
+                            Price = 30m
                         },
                         new
                         {
@@ -684,8 +681,7 @@ namespace FOV.Infrastructure.Migrations
                             IsRefund = true,
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             PercentagePriceDifference = 20m,
-                            Price = 30m,
-                            Status = (byte)1
+                            Price = 30m
                         });
                 });
 
@@ -739,6 +735,9 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<Guid>("IngredientGeneralId")
                         .HasColumnType("uuid");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
@@ -747,9 +746,6 @@ namespace FOV.Infrastructure.Migrations
 
                     b.Property<decimal>("Quantity")
                         .HasColumnType("numeric");
-
-                    b.Property<byte>("Status")
-                        .HasColumnType("smallint");
 
                     b.HasKey("Id");
 
@@ -766,9 +762,9 @@ namespace FOV.Infrastructure.Migrations
                             Created = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             DishGeneralId = new Guid("6535596e-a86a-4fcc-97e7-7e6182a5c022"),
                             IngredientGeneralId = new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a8"),
+                            IsDeleted = false,
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Quantity = 2m,
-                            Status = (byte)1
+                            Quantity = 2m
                         });
                 });
 
@@ -944,6 +940,9 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<Guid>("IngredientId")
                         .HasColumnType("uuid");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
@@ -955,9 +954,6 @@ namespace FOV.Infrastructure.Migrations
 
                     b.Property<decimal>("Quantity")
                         .HasColumnType("numeric");
-
-                    b.Property<byte>("Status")
-                        .HasColumnType("smallint");
 
                     b.Property<DateTime?>("TransactionDate")
                         .HasColumnType("timestamp with time zone");
@@ -994,14 +990,14 @@ namespace FOV.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
-
-                    b.Property<byte>("Status")
-                        .HasColumnType("smallint");
 
                     b.HasKey("Id");
 
@@ -1014,8 +1010,8 @@ namespace FOV.Infrastructure.Migrations
                             Created = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             IngredientDescription = "",
                             IngredientName = "Rau",
-                            LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Status = (byte)1
+                            IsDeleted = false,
+                            LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
@@ -1023,8 +1019,8 @@ namespace FOV.Infrastructure.Migrations
                             Created = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             IngredientDescription = "",
                             IngredientName = "Short Storage Ingredients",
-                            LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Status = (byte)1
+                            IsDeleted = false,
+                            LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc)
                         });
                 });
 
@@ -1094,6 +1090,9 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<Guid>("IngredientTypeId")
                         .HasColumnType("uuid");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
@@ -1118,6 +1117,7 @@ namespace FOV.Infrastructure.Migrations
                             IngredientMeasure = (byte)0,
                             IngredientName = "Rice",
                             IngredientTypeId = new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a7"),
+                            IsDeleted = false,
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             Status = (byte)1
                         },
@@ -1129,6 +1129,7 @@ namespace FOV.Infrastructure.Migrations
                             IngredientMeasure = (byte)0,
                             IngredientName = "Pasta",
                             IngredientTypeId = new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a7"),
+                            IsDeleted = false,
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             Status = (byte)1
                         },
@@ -1140,6 +1141,7 @@ namespace FOV.Infrastructure.Migrations
                             IngredientMeasure = (byte)0,
                             IngredientName = "Spinach",
                             IngredientTypeId = new Guid("b8f66bab-13c9-4390-8582-545ddc7d2ec8"),
+                            IsDeleted = false,
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             Status = (byte)1
                         });
@@ -1398,6 +1400,7 @@ namespace FOV.Infrastructure.Migrations
                         .HasColumnType("smallint");
 
                     b.Property<string>("VnpTxnRef")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -1422,6 +1425,9 @@ namespace FOV.Infrastructure.Migrations
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("timestamp with time zone");
@@ -1457,6 +1463,7 @@ namespace FOV.Infrastructure.Migrations
                             Id = new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0"),
                             Address = "Go Vap",
                             Created = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IsDeleted = false,
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             ReleaseDate = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             RestaurantCode = "RE_001",
@@ -1469,6 +1476,7 @@ namespace FOV.Infrastructure.Migrations
                             Id = new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"),
                             Address = "Thu Duc",
                             Created = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IsDeleted = false,
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             ReleaseDate = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             RestaurantCode = "RE_002",
@@ -1493,6 +1501,9 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<TimeSpan?>("EndTime")
                         .HasColumnType("interval");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
@@ -1504,9 +1515,6 @@ namespace FOV.Infrastructure.Migrations
 
                     b.Property<TimeSpan?>("StartTime")
                         .HasColumnType("interval");
-
-                    b.Property<byte>("Status")
-                        .HasColumnType("smallint");
 
                     b.HasKey("Id");
 
@@ -1525,6 +1533,9 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
@@ -1533,9 +1544,6 @@ namespace FOV.Infrastructure.Migrations
 
                     b.Property<Guid>("RestaurantId")
                         .HasColumnType("uuid");
-
-                    b.Property<byte>("Status")
-                        .HasColumnType("smallint");
 
                     b.Property<string>("TableCode")
                         .HasColumnType("text");
@@ -1572,14 +1580,14 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
-
-                    b.Property<byte>("Status")
-                        .HasColumnType("smallint");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -1611,6 +1619,9 @@ namespace FOV.Infrastructure.Migrations
 
                     b.Property<DateTime?>("HireDate")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("timestamp with time zone");

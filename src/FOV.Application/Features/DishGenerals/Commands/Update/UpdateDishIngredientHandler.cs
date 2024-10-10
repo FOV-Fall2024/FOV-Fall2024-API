@@ -12,6 +12,7 @@ public sealed record UpdateProductGeneralCommand : IRequest<Result>
     public string IngredientGeneralName { get; set; } = string.Empty;
 
     public string IngredientGeneralDescription { get; set; } = string.Empty;
+    public string IngredientGeneralImage { get; set; } = string.Empty;
 
     public Guid CategoryId { get; set; }
 }
@@ -23,7 +24,7 @@ internal class UpdateDishIngredientHandler(IUnitOfWorks unitOfWorks) : IRequestH
     public async Task<Result> Handle(UpdateProductGeneralCommand request, CancellationToken cancellationToken)
     {
         DishGeneral product = await _unitOfWorks.DishGeneralRepository.GetByIdAsync(request.Id) ?? throw new Exception();
-        product.Update(request.IngredientGeneralName, request.IngredientGeneralDescription, request.CategoryId);
+        product.Update(request.IngredientGeneralName, request.IngredientGeneralDescription, request.CategoryId,request.IngredientGeneralImage);
 
         _unitOfWorks.DishGeneralRepository.Update(product);
         await _unitOfWorks.SaveChangeAsync();

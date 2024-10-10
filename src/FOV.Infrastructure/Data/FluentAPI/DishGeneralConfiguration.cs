@@ -12,6 +12,7 @@ public class DishGeneralConfiguration : IEntityTypeConfiguration<DishGeneral>
     {
         builder.HasMany(x => x.Dishes).WithOne(x => x.DishGeneral).HasForeignKey(x => x.DishGeneralId);
         builder.HasMany(x => x.Ingredients).WithOne(x => x.DishGeneral).HasForeignKey(x => x.DishGeneralId);
+        builder.HasMany(x => x.DishGeneralImages).WithOne(x => x.DishGeneral).HasForeignKey(x => x.DishGeneralId);
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).ValueGeneratedOnAdd();
         builder.HasData(

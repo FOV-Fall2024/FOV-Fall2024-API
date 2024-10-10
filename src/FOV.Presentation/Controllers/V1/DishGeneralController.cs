@@ -1,7 +1,9 @@
 ﻿using FOV.Application.Features.DishGenerals.Commands.Active;
+using FOV.Application.Features.DishGenerals.Commands.AddAdditionalImage;
 using FOV.Application.Features.DishGenerals.Commands.AddIngredient;
 using FOV.Application.Features.DishGenerals.Commands.Create;
 using FOV.Application.Features.DishGenerals.Commands.Inactive;
+using FOV.Application.Features.DishGenerals.Commands.RemoveAdditionalImage;
 using FOV.Application.Features.DishGenerals.Commands.RemoveIngredient;
 using FOV.Application.Features.DishGenerals.Commands.Update;
 using FOV.Application.Features.DishGenerals.Commands.UpdateIngredientQuantity;
@@ -10,7 +12,6 @@ using FOV.Application.Features.DishGenerals.Queries.GetProductGeneral;
 using FOV.Application.Features.DishGenerals.Queries.GetProductGeneralDetail;
 using FOV.Application.Features.DishGenerals.Responses;
 using FOV.Domain.Entities.UserAggregator.Enums;
-using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Presentation.Infrastructure.Core;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -51,6 +52,8 @@ public class DishGeneralController : DefaultController
         return CreatedAtAction(nameof(Add), new { id = response }, new CREATED_Result("Tạo product general thành công"));
     }
 
+
+
     /// <summary>
     /// Uploads an image.
     /// </summary>
@@ -66,6 +69,30 @@ public class DishGeneralController : DefaultController
         return CreatedAtAction(nameof(UploadImage), await _sender.Send(imageFile));
     }
 
+
+    [HttpPost("{id}/add-images")]
+    [SwaggerOperation(Summary = "Add Additional Images")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> AddAdditionalImages(Guid id, AddAdditionalImageCommand command)
+    {
+        command.Id = id;
+        var reponse = await _sender.Send(command);
+        return Ok(new UPDATED_Result("Cập nhật ảnh phụ thành công"));
+    }
+
+    [HttpPost("{id}/remove-images")]
+    [SwaggerOperation(Summary = "Add Additional Images")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> RemoveAdditionalImages(Guid id, RemoveAdditionalImageCommand command)
+    {
+        command.Id = id;
+        var reponse = await _sender.Send(command);
+        return Ok(new UPDATED_Result("Cập nhật ảnh phụ thành công"));
+    }
+
+
     /// <summary>
     /// Updates the ingredient quantity for a specific product.
     /// </summary>
@@ -74,14 +101,13 @@ public class DishGeneralController : DefaultController
     /// <param name="command">The command containing the new quantity.</param>
     /// <returns>A success message.</returns>
     [Authorize(Roles = Role.Administrator)]
-    [HttpPatch("{productId}/ingredient/{ingredientId}")]
+    [HttpPatch("{id}")]
     [SwaggerOperation(Summary = "Updates the ingredient quantity for a specific product.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UpdateQuantity(Guid productId, Guid ingredientId, [FromBody] UpdateIngredientQuantityCommand command)
+    public async Task<IActionResult> UpdateQuantity(Guid id, [FromBody] UpdateIngredientQuantityCommand command)
     {
-        command.DishGeneralId = productId;
-        command.IngredientGeneralId = ingredientId;
+        command.DishGeneralId = id;
         var response = await _sender.Send(command);
         return Ok(new UPDATED_Result("Cập nhật số lượng nguyên liệu thành công"));
     }
@@ -168,19 +194,26 @@ public class DishGeneralController : DefaultController
         return Ok(new OK_Result<GetProductGeneralDetailResponse>("Lấy chi tiết product general thành công", response));
     }
 
-
-    [HttpDelete("{id:guid}/ingredients/{ingredientId:guid}")]
-    public async Task<IActionResult> RemoveIngredient(Guid id, Guid ingredientId)
+    [Authorize(Roles = Role.Administrator)]
+    [HttpDelete("{id:guid}")]
+    [SwaggerOperation(Summary = "Remove ingredients in dish")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> RemoveIngredient(Guid id, RemoveIngredientCommand command)
     {
-        var response = await _sender.Send(new RemoveIngredientCommand(id, ingredientId));
+        command.ProductId = id;
+        var response = await _sender.Send(command);
         return Ok(response);
     }
 
-    [HttpPost("{id:guid}/ingredients/{ingredientId:guid}")]
-    public async Task<IActionResult> AddIngredient(Guid id, Guid ingredientId,Application.Features.DishGenerals.Commands.AddIngredient.AddIngredientInProductCommand command)
+    [Authorize(Roles = Role.Administrator)]
+    [HttpPost("{id:guid}")]
+    [SwaggerOperation(Summary = "Add ingredients in dish")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> AddIngredient(Guid id, AddIngredientInProductCommand command)
     {
         command.Id = id;
-        command.IngredientId = ingredientId;
         var response = await _sender.Send(command);
         return Ok(response);
     }

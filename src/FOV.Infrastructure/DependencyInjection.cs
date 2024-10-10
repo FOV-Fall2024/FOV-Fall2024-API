@@ -60,6 +60,7 @@ public static class DependencyInjection
         services.AddScoped<IRefundDishInventoryRepository, RefundDishInventoryRepository>();
         services.AddScoped<IRefundDishInventoryTransactionRepository, RefundDishInventoryTransactionRepository>();
         services.AddScoped<IRefundDishUnitRepository, RefundDishUnitRepository>();
+        services.AddScoped<IDishGeneralImageRepository, DishGeneralImageRepository>();
         return services;
 
     }

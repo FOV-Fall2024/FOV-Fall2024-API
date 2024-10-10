@@ -64,4 +64,6 @@ public interface IApplicationDbContext
 
     DbSet<RefundDishUnit> RefundDishUnits { get; }
 
+    DbSet<DishGeneralImage> DishGeneralImages { get; }
+
 }

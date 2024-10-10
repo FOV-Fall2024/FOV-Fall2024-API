@@ -10,9 +10,11 @@ namespace FOV.Application.Features.DishGenerals.Commands.UpdateIngredientQuantit
 public sealed record UpdateIngredientQuantityCommand : IRequest<Result>
 {
     [JsonIgnore] public Guid DishGeneralId { get; set; }
-    [JsonIgnore] public Guid IngredientGeneralId { get; set; }
-    public decimal Quantity { get; set; }
+
+    public List<UpdateIngredientCommand> UpdateIngredient { get; set; } 
 }
+
+public sealed record UpdateIngredientCommand(Guid IngredientGeneralId, decimal Quantity);
 
 public class UpdateIngredientQuantityHandler : IRequestHandler<UpdateIngredientQuantityCommand, Result>
 {
@@ -24,18 +26,22 @@ public class UpdateIngredientQuantityHandler : IRequestHandler<UpdateIngredientQ
     {
         try
         {
-            var general = await _unitOfWorks.DishIngredientGeneralRepository
-                .FirstOrDefaultAsync(x => x.IngredientGeneralId == request.IngredientGeneralId && x.DishGeneralId == request.DishGeneralId)
-                ?? throw new InvalidOperationException("Dish ingredient general not found");
+            foreach (var ingredient in request.UpdateIngredient)
+            {
+                var general = await _unitOfWorks.DishIngredientGeneralRepository
+               .FirstOrDefaultAsync(x => x.IngredientGeneralId == ingredient.IngredientGeneralId && x.DishGeneralId == request.DishGeneralId)
+               ?? throw new InvalidOperationException("Dish ingredient general not found");
 
-            var ingredientGeneral = await _unitOfWorks.IngredientGeneralRepository
-                .GetByIdAsync(request.IngredientGeneralId)
-                ?? throw new InvalidOperationException("Ingredient not found");
+                var ingredientGeneral = await _unitOfWorks.IngredientGeneralRepository
+                    .GetByIdAsync(ingredient.IngredientGeneralId)
+                    ?? throw new InvalidOperationException("Ingredient not found");
 
-            general.UpdateQuantity(request.Quantity);
-            _unitOfWorks.DishIngredientGeneralRepository.Update(general);
+                general.UpdateQuantity(ingredient.Quantity);
+                _unitOfWorks.DishIngredientGeneralRepository.Update(general);
 
-            await UpdateDishesWithIngredient(general.Id, ingredientGeneral.IngredientName);
+                await UpdateDishesWithIngredient(general.Id, ingredientGeneral.IngredientName);
+            }
+           
             await _unitOfWorks.SaveChangeAsync();
 
             return Result.Ok();

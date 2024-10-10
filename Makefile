@@ -3,7 +3,7 @@ COMPOSE_PROJECT_NAME=fov
 DOCKER_IMAGE=fovpresentation
 DOCKERFILE_PATH=src/FOV.Presentation/Dockerfile
 DOCKER_COMPOSE_FILE=docker-compose.yml
-D
+
 
 # Targets
 .PHONY: all build run remove

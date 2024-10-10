@@ -6,9 +6,10 @@ using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 namespace FOV.Application.Features.DishGenerals.Commands.RemoveIngredient;
 public class RemoveIngredientValidator : AbstractValidator<RemoveIngredientCommand>
 {
-    public RemoveIngredientValidator(CheckIdInGeneralRemoveValidator checkValidator)
+    public RemoveIngredientValidator(CheckIdInGeneralRemoveValidator checkValidator, CheckDishGeneralIdValidator dishId)
     {
         RuleFor(x => x).SetValidator(checkValidator);
+        RuleFor(x => x.ProductId).SetValidator(dishId);
     }
 }
 
@@ -27,8 +28,13 @@ public class CheckIdInGeneralRemoveValidator : AbstractValidator<RemoveIngredien
 
     private async Task<bool> CheckId(RemoveIngredientCommand tuple, CancellationToken token)
     {
-        DishIngredientGeneral? dishIngredientGeneral = await _unitOfWorks.DishIngredientGeneralRepository
-            .FirstOrDefaultAsync(x => x.DishGeneralId == tuple.productId && x.IngredientGeneralId == tuple.IngredientId);
-        return dishIngredientGeneral != null;
+        foreach (var ingredient in tuple.IngredientId)
+        {
+            DishIngredientGeneral? dishIngredientGeneral = await _unitOfWorks.DishIngredientGeneralRepository
+           .FirstOrDefaultAsync(x => x.DishGeneralId == tuple.ProductId && x.IngredientGeneralId == ingredient);
+
+            if (dishIngredientGeneral == null) return false;
+        }
+        return true;
     }
 }

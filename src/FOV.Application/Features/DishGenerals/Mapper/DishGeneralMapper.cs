@@ -12,8 +12,8 @@ public static class DishGeneralMapper
         return new GetIngredientResponse(ingredient.Id, ingredient.IngredientName, ingredient.DishIngredientGenerals.Where(x => x.DishGeneralId == productId).FirstOrDefault().Quantity, ingredient.Created);
     }
 
-    public static GetProductGeneralDetailResponse MapperDetailDTO(this DishGeneral dishGeneral, List<GetIngredientResponse> getIngredient)
+    public static GetProductGeneralDetailResponse MapperDetailDTO(this DishGeneral dishGeneral, List<GetIngredientResponse>? getIngredient)
     {
-        return new GetProductGeneralDetailResponse(dishGeneral.Id, dishGeneral.DishName, dishGeneral.DishDescription, dishGeneral.Created, dishGeneral.LastModified ?? DateTime.Now, getIngredient);
+        return new GetProductGeneralDetailResponse(dishGeneral.Id, dishGeneral.DishName, dishGeneral.DishDescription, dishGeneral.Created, dishGeneral.LastModified ?? DateTime.Now, getIngredient ?? [], dishGeneral.DishGeneralImages.Select(x =>new GetAdditionalImage(x.Id,x.Url)), dishGeneral.DishImageDefault);
     }
 }

@@ -56,5 +56,7 @@ public interface IUnitOfWorks
 
     public IRefundDishInventoryTransactionRepository RefundDishInventoryTransactionRepository { get; }
 
+    public IDishGeneralImageRepository DishGeneralImageRepository { get; }
+
     public Task<int> SaveChangeAsync();
 }

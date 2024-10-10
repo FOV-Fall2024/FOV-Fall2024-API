@@ -1,4 +1,5 @@
-﻿using FluentResults;
+﻿using System.Text.Json.Serialization;
+using FluentResults;
 using FOV.Domain.Entities.DishAggregator;
 using FOV.Domain.Entities.DishGeneralAggregator;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
@@ -6,17 +7,25 @@ using MediatR;
 
 namespace FOV.Application.Features.DishGenerals.Commands.RemoveIngredient;
 
-public sealed record RemoveIngredientCommand(Guid productId, Guid IngredientId) : IRequest<Result>;
+public sealed record RemoveIngredientCommand(List<Guid> IngredientId) : IRequest<Result>
+{
+    [JsonIgnore]
+    public Guid ProductId { get; set; }
+};
 
 public class RemoveIngredientHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<RemoveIngredientCommand, Result>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     public async Task<Result> Handle(RemoveIngredientCommand request, CancellationToken cancellationToken)
     {
-        DishIngredientGeneral general = await _unitOfWorks.DishIngredientGeneralRepository.FirstOrDefaultAsync(x => x.IngredientGeneralId == request.IngredientId && x.DishGeneralId == request.productId,x => x.IngredientGeneral) ?? throw new Exception();
-        await UpdateDishesWithIngredient(request.productId, general.IngredientGeneral.IngredientName);
-        _unitOfWorks.DishIngredientGeneralRepository.Remove(general);
-        await UpdateDishesWithIngredient(request.productId, general.IngredientGeneral.IngredientName);
+        foreach (var ingreId in request.IngredientId)
+        {
+            DishIngredientGeneral general = await _unitOfWorks.DishIngredientGeneralRepository.FirstOrDefaultAsync(x => x.IngredientGeneralId == ingreId && x.DishGeneralId == request.ProductId, x => x.IngredientGeneral) ?? throw new Exception();
+            await UpdateDishesWithIngredient(request.ProductId, general.IngredientGeneral.IngredientName);
+            _unitOfWorks.DishIngredientGeneralRepository.Remove(general);
+            await UpdateDishesWithIngredient(request.ProductId, general.IngredientGeneral.IngredientName);
+        }
+
         await _unitOfWorks.SaveChangeAsync();
         return Result.Ok();
     }

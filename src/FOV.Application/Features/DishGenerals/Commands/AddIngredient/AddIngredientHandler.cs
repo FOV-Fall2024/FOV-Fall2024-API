@@ -3,7 +3,6 @@ using FOV.Domain.Entities.DishAggregator;
 using FOV.Domain.Entities.DishGeneralAggregator;
 using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Domain.Entities.IngredientAggregator.Enums;
-using FOV.Domain.Entities.IngredientGeneralAggregator;
 using FOV.Domain.Entities.IngredientGeneralAggregator.Enums;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
@@ -13,22 +12,27 @@ namespace FOV.Application.Features.DishGenerals.Commands.AddIngredient;
 public sealed record AddIngredientInProductCommand : IRequest<Guid>
 {
     [JsonIgnore] public Guid Id { get; set; }
-    [JsonIgnore] public Guid IngredientId { get; set; }
-    public decimal Quantity { get; set; }
+
+    public List<IngredientAddCommand> IngredientAdds { get; set; } = [];
 }
 
+public sealed record IngredientAddCommand(Guid IngredientId,decimal Quantity);
 public class AddIngredientHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<AddIngredientInProductCommand, Guid>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
 
     public async Task<Guid> Handle(AddIngredientInProductCommand request, CancellationToken cancellationToken)
     {
-        var ingredientGeneral = await _unitOfWorks.IngredientGeneralRepository
-            .GetByIdAsync(request.IngredientId) ?? throw new Exception("Ingredient not found");
+        foreach (var ingredient in request.IngredientAdds)
+        {
+            var ingredientGeneral = await _unitOfWorks.IngredientGeneralRepository
+           .GetByIdAsync(ingredient.IngredientId) ?? throw new Exception("Ingredient not found");
 
-        var dishIngredientGeneral = new DishIngredientGeneral(request.Id, request.IngredientId, request.Quantity);
-        await _unitOfWorks.DishIngredientGeneralRepository.AddAsync(dishIngredientGeneral);
-        await UpdateDishesWithIngredient(request.Id, ingredientGeneral.IngredientName, request.Quantity);
+            var dishIngredientGeneral = new DishIngredientGeneral(request.Id, ingredient.IngredientId, ingredient.Quantity);
+            await _unitOfWorks.DishIngredientGeneralRepository.AddAsync(dishIngredientGeneral);
+            await UpdateDishesWithIngredient(request.Id, ingredientGeneral.IngredientName, ingredient.Quantity);
+        }
+       
         await _unitOfWorks.SaveChangeAsync();
 
         return request.Id;

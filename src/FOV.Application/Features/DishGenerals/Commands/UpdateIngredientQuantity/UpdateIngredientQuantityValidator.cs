@@ -1,18 +1,17 @@
 ﻿using FluentValidation;
+using FOV.Application.Features.DishGenerals.Commands.AddIngredient;
 using FOV.Domain.Entities.DishGeneralAggregator;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace FOV.Application.Features.DishGenerals.Commands.UpdateIngredientQuantity;
 
 public class UpdateIngredientQuantityValidator : AbstractValidator<UpdateIngredientQuantityCommand>
 {
-    public UpdateIngredientQuantityValidator(CheckIdInGeneralValidator checkIdPairValidator)
+    public UpdateIngredientQuantityValidator(CheckIdInGeneralValidator checkIdPairValidator, CheckDishGeneralIdValidator dishId)
     {
-        RuleFor(x => x.Quantity)
-            .GreaterThan(0)
-            .WithMessage("Số lượng phải lớn hơn 0.");
-
         RuleFor(x => x).SetValidator(checkIdPairValidator);
+        RuleFor(x => x.DishGeneralId).SetValidator(dishId);
     }
 }
 
@@ -26,12 +25,50 @@ public class CheckIdInGeneralValidator : AbstractValidator<UpdateIngredientQuant
         RuleFor(command => command)
             .MustAsync(CheckId)
             .WithMessage("ID không hợp lệ hoặc nguyên liệu đã tồn tại.");
+
+        RuleFor(command => command).MustAsync(CheckQuantity).WithMessage("Không được nhập số âm");
     }
 
-    private async Task<bool> CheckId(UpdateIngredientQuantityCommand tuple, CancellationToken token)
+    private async Task<bool> CheckId(UpdateIngredientQuantityCommand command, CancellationToken token)
     {
-        DishIngredientGeneral? dishIngredientGeneral = await _unitOfWorks.DishIngredientGeneralRepository
-            .FirstOrDefaultAsync(x => x.DishGeneralId == tuple.DishGeneralId && x.IngredientGeneralId == tuple.IngredientGeneralId);
-        return dishIngredientGeneral != null;
+        foreach (var ingredient in command.UpdateIngredient)
+        {
+            DishIngredientGeneral? dishIngredientGeneral = await _unitOfWorks.DishIngredientGeneralRepository
+            .FirstOrDefaultAsync(x => x.DishGeneralId == command.DishGeneralId && x.IngredientGeneralId == ingredient.IngredientGeneralId);
+            if (dishIngredientGeneral == null) return false;
+        }
+        return true;
     }
+
+    private async Task<bool> CheckQuantity(UpdateIngredientQuantityCommand command, CancellationToken token)
+    {
+        foreach (var ingredient in command.UpdateIngredient)
+        {
+            if (ingredient.Quantity <= 0) return false;
+        }
+        return true;
+    }
+}
+
+
+public class CheckDishGeneralIdValidator : AbstractValidator<Guid>
+{
+    private readonly IUnitOfWorks _unitOfWorks;
+
+    public CheckDishGeneralIdValidator(IUnitOfWorks unitOfWorks)
+    {
+        _unitOfWorks = unitOfWorks;
+        RuleFor(command => command)
+            .MustAsync(CheckId)
+            .WithMessage("ID món ăn  không hợp lệ");
+
+    }
+
+    private async Task<bool> CheckId(Guid command, CancellationToken token)
+    {
+        DishGeneral? dishGeneral = await _unitOfWorks.DishGeneralRepository.GetByIdAsync(command);
+        return dishGeneral != null;
+
+    }
+
 }
