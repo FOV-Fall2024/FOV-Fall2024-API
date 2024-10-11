@@ -54,43 +54,43 @@ public class DishGeneralController : DefaultController
 
 
 
-    /// <summary>
-    /// Uploads an image.
-    /// </summary>
-    /// <param name="imageFile">The image file to upload.</param>
-    /// <returns>The URL of the uploaded image.</returns>
-    [HttpPost("upload")]
-    [SwaggerOperation(Summary = "Uploads an image.")]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UploadImage([FromForm] UploadImageDefaultCommand imageFile)
-    {
+    ///// <summary>
+    ///// Uploads an image.
+    ///// </summary>
+    ///// <param name="imageFile">The image file to upload.</param>
+    ///// <returns>The URL of the uploaded image.</returns>
+    //[HttpPost("upload")]
+    //[SwaggerOperation(Summary = "Uploads an image.")]
+    //[ProducesResponseType(StatusCodes.Status201Created)]
+    //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+    //public async Task<IActionResult> UploadImage([FromForm] UploadImageDefaultCommand imageFile)
+    //{
 
-        return CreatedAtAction(nameof(UploadImage), await _sender.Send(imageFile));
-    }
+    //    return CreatedAtAction(nameof(UploadImage), await _sender.Send(imageFile));
+    //}
 
 
-    [HttpPost("{id}/add-images")]
-    [SwaggerOperation(Summary = "Add Additional Images")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> AddAdditionalImages(Guid id, AddAdditionalImageCommand command)
-    {
-        command.Id = id;
-        var reponse = await _sender.Send(command);
-        return Ok(new UPDATED_Result("Cập nhật ảnh phụ thành công"));
-    }
+    //[HttpPost("{id}/add-images")]
+    //[SwaggerOperation(Summary = "Add Additional Images")]
+    //[ProducesResponseType(StatusCodes.Status200OK)]
+    //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+    //public async Task<IActionResult> AddAdditionalImages(Guid id, AddAdditionalImageCommand command)
+    //{
+    //    command.Id = id;
+    //    var reponse = await _sender.Send(command);
+    //    return Ok(new UPDATED_Result("Cập nhật ảnh phụ thành công"));
+    //}
 
-    [HttpPost("{id}/remove-images")]
-    [SwaggerOperation(Summary = "Add Additional Images")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> RemoveAdditionalImages(Guid id, RemoveAdditionalImageCommand command)
-    {
-        command.Id = id;
-        var reponse = await _sender.Send(command);
-        return Ok(new UPDATED_Result("Cập nhật ảnh phụ thành công"));
-    }
+    //[HttpPost("{id}/remove-images")]
+    //[SwaggerOperation(Summary = "Add Additional Images")]
+    //[ProducesResponseType(StatusCodes.Status200OK)]
+    //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+    //public async Task<IActionResult> RemoveAdditionalImages(Guid id, RemoveAdditionalImageCommand command)
+    //{
+    //    command.Id = id;
+    //    var reponse = await _sender.Send(command);
+    //    return Ok(new UPDATED_Result("Cập nhật ảnh phụ thành công"));
+    //}
 
 
     /// <summary>
@@ -123,7 +123,7 @@ public class DishGeneralController : DefaultController
     [SwaggerOperation(Summary = "Updates an existing product general.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Update(Guid productId, [FromBody] UpdateProductGeneralCommand command)
+    public async Task<IActionResult> Update(Guid productId, UpdateProductGeneralCommand command)
     {
         command.Id = productId;
         var response = await _sender.Send(command);
