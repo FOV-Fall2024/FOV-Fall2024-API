@@ -1,7 +1,6 @@
 ﻿using FOV.Application.Features.Dishes.Commons.Active;
 using FOV.Application.Features.Dishes.Commons.Add;
 using FOV.Application.Features.Dishes.Commons.Inactive;
-using FOV.Application.Features.Dishes.Commons.Update;
 using FOV.Application.Features.Dishes.Queries.GetMenu;
 using FOV.Application.Features.Dishes.Queries.GetProduct;
 using FOV.Application.Features.Dishes.Responses;
@@ -102,7 +101,7 @@ public class DishController : DefaultController
     public async Task<IActionResult> Get([FromQuery] GetProductCommand command)
     {
         var response = await _mediator.Send(command);
-        return Ok(new OK_Result<PagedResult<GetProductResponse>>("Lấy món ăn thành công", response));
+        return Ok(response);
     }
 
     /// <summary>

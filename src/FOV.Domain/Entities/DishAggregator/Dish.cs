@@ -15,6 +15,8 @@ public class Dish : BaseAuditableEntity, IsSoftDeleted
 
     public string DishDescription { get; set; } = string.Empty;
 
+    public string DishMainImage { get ; set; } = string.Empty;  
+
     public DishType DishType { get; set; }
     public PriorityDish PriorityDish { get; set; }
     public virtual ICollection<DishCombo> DishCombos { get; set; } = [];
@@ -40,12 +42,13 @@ public class Dish : BaseAuditableEntity, IsSoftDeleted
 
     }
 
-    public Dish(string name, decimal price, string dishDescription, Guid restaurantId, Guid? categoryId, Guid dishGeneralId)
+    public Dish(string name, decimal price, string dishDescription, Guid restaurantId, Guid? categoryId, Guid dishGeneralId,string mainImage)
     {
         DishName = name;
         Price = price;
         DishDescription = dishDescription;
         CategoryId = categoryId;
+        DishMainImage = mainImage;
         Status = Status.Active;
         RestaurantId = restaurantId;
         DishGeneralId = dishGeneralId;

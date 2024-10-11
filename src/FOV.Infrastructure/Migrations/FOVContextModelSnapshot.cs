@@ -85,9 +85,6 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("ExpiredDate")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
@@ -99,9 +96,6 @@ namespace FOV.Infrastructure.Migrations
 
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("integer");
 
                     b.Property<Guid>("RestaurantId")
                         .HasColumnType("uuid");
@@ -125,11 +119,9 @@ namespace FOV.Infrastructure.Migrations
                             ComboName = "Combo 1",
                             ComboStatus = (byte)0,
                             Created = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
-                            ExpiredDate = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             PercentReduce = 10.0m,
                             Price = 50.00m,
-                            Quantity = 20,
                             RestaurantId = new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0"),
                             Status = (byte)1,
                             Thumbnail = "img1"
@@ -140,11 +132,9 @@ namespace FOV.Infrastructure.Migrations
                             ComboName = "Combo 2",
                             ComboStatus = (byte)0,
                             Created = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
-                            ExpiredDate = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             PercentReduce = 5.0m,
                             Price = 30.00m,
-                            Quantity = 10,
                             RestaurantId = new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"),
                             Status = (byte)1,
                             Thumbnail = "img2"
@@ -155,11 +145,9 @@ namespace FOV.Infrastructure.Migrations
                             ComboName = "Combo 3",
                             ComboStatus = (byte)0,
                             Created = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
-                            ExpiredDate = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             PercentReduce = 5.0m,
                             Price = 30.00m,
-                            Quantity = 10,
                             RestaurantId = new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"),
                             Status = (byte)1,
                             Thumbnail = "img3"
@@ -271,6 +259,10 @@ namespace FOV.Infrastructure.Migrations
 
                     b.Property<Guid?>("DishGeneralId")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("DishMainImage")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("DishName")
                         .IsRequired()

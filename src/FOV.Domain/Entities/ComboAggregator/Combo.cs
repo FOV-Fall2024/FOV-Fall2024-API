@@ -12,11 +12,9 @@ public class Combo : BaseAuditableEntity, IsSoftDeleted
 
     public ComboStatus ComboStatus { get; set; }
     public Status Status { get; set; } //For filter
-    public int Quantity { get; set; }
     public decimal Price { get; set; }
     public string? Thumbnail { get; set; }
     public decimal PercentReduce { get; set; }
-    public DateTime? ExpiredDate { get; set; } = DateTime.UtcNow;
     public Restaurant? Restaurant { get; set; }
     public Guid RestaurantId { get; set; }
     public ICollection<DishCombo> DishCombos { get; set; } = [];
@@ -26,15 +24,13 @@ public class Combo : BaseAuditableEntity, IsSoftDeleted
     {
 
     }
-    public Combo(string comboName, int quantity, decimal price, DateTime expiredDate, Guid restaurantId,string thumbnail)
+    public Combo(string comboName, decimal price, Guid restaurantId,string thumbnail)
     {
         Thumbnail = thumbnail;
         ComboName = comboName;
         ComboStatus = ComboStatus.InStock;
         Status = Status.Active;
-        Quantity = quantity;
         Price = price;
-        ExpiredDate = expiredDate;
         RestaurantId = restaurantId;
     }
 

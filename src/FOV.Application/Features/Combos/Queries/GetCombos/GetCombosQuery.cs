@@ -24,9 +24,7 @@ public class GetCombosQuery(IUnitOfWorks unitOfWorks,IClaimService claimService)
             combo.Id,
             combo.RestaurantId,
             combo.ComboName,
-            combo.Quantity,
             combo.Price,
-            combo.ExpiredDate ?? DateTime.Now,
             combo.Created
         )).ToList();
 

@@ -5,7 +5,7 @@ using MediatR;
 
 namespace FOV.Application.Features.Dishes.Commons.Active;
 public sealed record ActiveProductCommand(Guid Id) : IRequest<Result>;
-internal class ActiveProductHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<ActiveProductCommand, Result>
+public class ActiveProductHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<ActiveProductCommand, Result>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     public async Task<Result> Handle(ActiveProductCommand request, CancellationToken cancellationToken)

@@ -27,7 +27,7 @@ public class GetProductHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<GetPr
         var filteredProducts = products.AsQueryable().CustomFilterV1(filterEntity);
         var mappedProducts = filteredProducts.Select(x => new GetProductResponse(
             x.Id,
-            x.RestaurantId,
+            x.DishMainImage,
             x.DishName,
             x.DishDescription,
             x.Created)).ToList();
