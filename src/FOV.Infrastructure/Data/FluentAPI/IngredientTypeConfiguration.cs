@@ -26,7 +26,7 @@ public class IngredientTypeConfiguration : IEntityTypeConfiguration<IngredientTy
      new IngredientType
      {
          Id = Guid.Parse("b8f66bab-13c9-4390-8582-545ddc7d2ec8"),  // Ensure to provide a unique ID
-         IngredientName = "Short Storage Ingredients",
+         IngredientName = "Nguyên liệt ngắn hạn",
          Status = Status.Active,
          Created = DefaultDatetime.MinValue,
          LastModified = DefaultDatetime.MinValue,
