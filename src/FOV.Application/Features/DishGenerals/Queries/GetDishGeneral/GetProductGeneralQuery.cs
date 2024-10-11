@@ -16,7 +16,7 @@ namespace FOV.Application.Features.DishGenerals.Queries.GetProductGeneral
         private readonly IClaimService _claimService = claimService;
         public async Task<PagedResult<GetProductGeneralResponse>> Handle(GetProductGeneralCommand request, CancellationToken cancellationToken)
         {
-            var allProducts = await _unitOfWorks.DishGeneralRepository.GetAllAsync();
+            var allProducts = await _unitOfWorks.DishGeneralRepository.GetAllAsync(x => x.Category);
 
             if (_claimService.UserRole == Role.Manager) allProducts = allProducts.Where(x => x.Status == Status.Active).ToList();
 
@@ -38,7 +38,7 @@ namespace FOV.Application.Features.DishGenerals.Queries.GetProductGeneral
                 x.DishDescription ?? string.Empty,
                 x.Status,
                 x.DishImageDefault,
-                x.CategoryId ?? Guid.Empty,
+                x.Category.CategoryName,
                 x.Created,
                 x.LastModified ?? DateTime.Now,
                 x.PercentagePriceDifference)).ToList();

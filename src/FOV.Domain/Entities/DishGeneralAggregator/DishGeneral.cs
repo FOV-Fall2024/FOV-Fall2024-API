@@ -26,10 +26,9 @@ public class DishGeneral : BaseAuditableEntity, IsSoftDeleted
 
     }
 
-    public DishGeneral(string name, decimal price, string description, Guid categoryId, string image, bool isDraft, bool isRefund, decimal percentagePriceDifference)
+    public DishGeneral(string name, decimal price, string description, Guid categoryId, bool isDraft, bool isRefund, decimal percentagePriceDifference)
     {
         IsDraft = isDraft;
-        DishImageDefault = image;
         DishName = name;
         Price = price;
         DishDescription = description;
