@@ -26,13 +26,19 @@ internal class AddProductHandler : IRequestHandler<AddProductCommand, Result>
 
     public async Task<Result> Handle(AddProductCommand request, CancellationToken cancellationToken)
     {
-        var productGeneral = await _unitOfWorks.DishGeneralRepository.GetByIdAsync(request.ProductId) ?? throw new Exception("Product not found");
+        var productGeneral = await _unitOfWorks.DishGeneralRepository.GetByIdAsync(request.ProductId, x => x.DishGeneralImages) ?? throw new Exception("Product not found");
 
-        if (productGeneral.IsRefund) { await AddRefundProductInventory(request.ProductId, _claimService.RestaurantId); }
+        if (productGeneral.IsRefund)
+        {
+
+            await AddRefundProductInventory(request.ProductId, _claimService.RestaurantId, productGeneral.DishGeneralImages.Select(x => x.Url
+            ).ToList());
+        }
         else
         {
-            var product = new Dish(productGeneral.DishName, productGeneral.Price, productGeneral.DishDescription, _claimService.RestaurantId, productGeneral.CategoryId, productGeneral.Id);
+            var product = new Dish(productGeneral.DishName, productGeneral.Price, productGeneral.DishDescription, _claimService.RestaurantId, productGeneral.CategoryId, productGeneral.Id, productGeneral.DishImageDefault);
             await _unitOfWorks.DishRepository.AddAsync(product);
+            if (productGeneral.DishGeneralImages.Count != 0) await UpdateInBranch(product.Id, productGeneral.DishGeneralImages.Select(x => x.Url).ToList());
             await AddIngredientsToProduct(product.Id, request.ProductId);
         }
 
@@ -40,20 +46,26 @@ internal class AddProductHandler : IRequestHandler<AddProductCommand, Result>
 
         return Result.Ok();
     }
+    public async Task UpdateInBranch(Guid dishId, ICollection<string> images)
+    {
+        await _unitOfWorks.DishImageRepository.AddRangeAsync(images.Select(x => new DishImage(dishId, x)).ToList());
+    }
 
 
-    private async Task AddRefundProductInventory(Guid refundProduct, Guid restaurantId)
+
+    private async Task AddRefundProductInventory(Guid refundProduct, Guid restaurantId, List<string> Images)
     {
         DishGeneral dish = await _unitOfWorks.DishGeneralRepository.GetByIdAsync(refundProduct)
                            ?? throw new Exception($"Dish with ID {refundProduct} not found.");
         if (dish.IsRefund)
         {
-            Dish productAdding = new(dish.DishName, dish.Price, dish.DishDescription, restaurantId, dish.CategoryId, dish.Id);
+            Dish productAdding = new(dish.DishName, dish.Price, dish.DishDescription, restaurantId, dish.CategoryId, dish.Id, dish.DishImageDefault);
             await _unitOfWorks.DishRepository.AddAsync(productAdding);
             RefundDishInventory inventory = new(productAdding.Id);
             await _unitOfWorks.RefundDishInventoryRepository.AddAsync(inventory);
             RefundDishUnit unit = new(inventory.Id);
             await _unitOfWorks.RefundDishUnitRepository.AddAsync(unit);
+            if (Images.Count != 0) await UpdateInBranch(productAdding.Id, Images);
             //await Task.WhenAll(addProductTask, addInventoryTask, addUnitTask);
         }
     }

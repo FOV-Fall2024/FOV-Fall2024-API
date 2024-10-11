@@ -27,10 +27,8 @@ namespace FOV.Application.Features.Restaurants.Queries.Detail
     public sealed record ComboDto(
         Guid ComboId,
         string ComboName,
-        int Quantity,
         decimal Price,
-        decimal PercentReduce,
-        DateTime ExpiredDate
+        decimal PercentReduce
     );
 
     public class GetDetailRestaurantQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetRestaurantDetailCommand, GetRestaurantDetailResponse>
@@ -52,10 +50,8 @@ namespace FOV.Application.Features.Restaurants.Queries.Detail
             var combos = restaurant.Combos.Select(combo => new ComboDto(
                 combo.Id,
                 combo.ComboName,
-                combo.Quantity,
                 combo.Price,
-                combo.PercentReduce,
-                combo.ExpiredDate ?? DateTime.Now
+                combo.PercentReduce
             )).ToList();
 
             var response = new GetRestaurantDetailResponse(

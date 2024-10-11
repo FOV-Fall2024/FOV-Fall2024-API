@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace FOV.Application.Features.Dishes.Responses;
 
-public sealed record GetProductResponse(Guid Id, Guid RestaurantName, string ProductName, string ProductDescription, DateTime CreatedDate);
+public sealed record GetProductResponse(Guid Id, string DishImage, string ProductName, string ProductDescription, DateTime CreatedDate);
 
-public sealed record GetMenuResponse(Guid Id, string ProductName, string ProductDescription, DateTime CreatedDate);
+public sealed record GetMenuResponse(Guid Id, string DishName, string DishDescription, DateTime CreatedDate);
 
+public sealed record GetDetailResponse(Guid Id,string DishName,string DishDescription,DateTime CreateDate,string DishMainImage,List<string> AdditionalImages,List<GetIngredientResponse> GetIngredients);
 
+public sealed record GetIngredientResponse(Guid ingredientId,string ingredientName);

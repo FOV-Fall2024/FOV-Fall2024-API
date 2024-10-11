@@ -15,7 +15,7 @@ public class CreateComboHandler(IUnitOfWorks unitOfWorks, IClaimService claimSer
     public async Task<Guid> Handle(CreateComboCommand request, CancellationToken cancellationToken)
     {
         Guid restaurantId = _claimService.RestaurantId;
-        Combo combo = new(request.ComboName, request.Quantity, request.Price, request.ExpiredDate, _claimService.RestaurantId, request.Thumbnail);
+        Combo combo = new(request.ComboName, request.Price, _claimService.RestaurantId, request.Thumbnail);
         await _unitOfWorks.ComboRepository.AddAsync(combo);
         decimal totalPrice = 0;
         foreach (var item in request.ProductInCombos)
