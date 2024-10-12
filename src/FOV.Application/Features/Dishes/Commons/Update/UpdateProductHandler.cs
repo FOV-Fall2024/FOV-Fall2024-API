@@ -5,7 +5,7 @@ using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Dishes.Commons.Update;
-public sealed record UpdateProductCommand(string ProductName, string ProductDescription) : IRequest<Result>
+public sealed record UpdateProductCommand(decimal Price) : IRequest<Result>
 {
     [JsonIgnore]
     public Guid ProductId { get; set; }
@@ -17,7 +17,7 @@ internal class UpdateProductHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<
     public async Task<Result> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
         Dish product = await _unitOfWorks.DishRepository.GetByIdAsync(request.ProductId) ?? throw new Exception();
-        product.Update(request.ProductName, request.ProductDescription);
+        product.Update(request.Price);
         await _unitOfWorks.SaveChangeAsync();
         return Result.Ok();
 

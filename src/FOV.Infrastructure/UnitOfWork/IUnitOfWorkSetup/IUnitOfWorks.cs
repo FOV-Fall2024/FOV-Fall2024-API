@@ -6,7 +6,6 @@ namespace FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 public interface IUnitOfWorks
 {
 
-    public IDishImageRepository DishImageRepository { get; }
     public IIngredientTypeRepository IngredientTypeRepository { get; }
 
     public IIngredientGeneralRepository IngredientGeneralRepository { get; }

@@ -25,10 +25,10 @@ namespace FOV.Application.Features.Dishes.Queries.GetMenu
             // Filter products based on the request parameters
             var filteredProducts = products
                 .Where(x =>
-                    (string.IsNullOrEmpty(request.ProductName) || x.DishName.Contains(request.ProductName, StringComparison.OrdinalIgnoreCase)) &&
-                    (string.IsNullOrEmpty(request.ProductDescription) || x.DishDescription.Contains(request.ProductDescription, StringComparison.OrdinalIgnoreCase)) &&
+                    (string.IsNullOrEmpty(request.ProductName) || x.DishGeneral.DishName.Contains(request.ProductName, StringComparison.OrdinalIgnoreCase)) &&
+                    (string.IsNullOrEmpty(request.ProductDescription) || x.DishGeneral.DishDescription.Contains(request.ProductDescription, StringComparison.OrdinalIgnoreCase)) &&
                     (!Guid.TryParse(request.RestaurantId, out var restaurantGuid) || x.RestaurantId == restaurantGuid) && x.Status == Status.Active)
-                .Select(x => new GetMenuResponse(x.Id, x.DishName, x.DishDescription, x.Created))
+                .Select(x => new GetMenuResponse(x.Id, x.DishGeneral.DishName, x.DishGeneral.DishDescription, x.Created))
                 .ToList();
 
             // Get pagination values

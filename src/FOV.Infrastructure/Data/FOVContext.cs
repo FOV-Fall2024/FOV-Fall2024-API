@@ -66,7 +66,6 @@ public class FOVContext : IdentityDbContext<User>, IApplicationDbContext
 
     public DbSet<Restaurant> Restaurants => Set<Restaurant>();
 
-    public DbSet<DishImage> DishImages => Set<DishImage>();
     public DbSet<Payments> Payments => Set<Payments>();
     public DbSet<Rating> Ratings => Set<Rating>();
 

@@ -36,9 +36,8 @@ internal class AddProductHandler : IRequestHandler<AddProductCommand, Result>
         }
         else
         {
-            var product = new Dish(productGeneral.DishName, productGeneral.Price, productGeneral.DishDescription, _claimService.RestaurantId, productGeneral.CategoryId, productGeneral.Id, productGeneral.DishImageDefault);
+            var product = new Dish(productGeneral.Price, _claimService.RestaurantId, productGeneral.CategoryId, productGeneral.Id);
             await _unitOfWorks.DishRepository.AddAsync(product);
-            if (productGeneral.DishGeneralImages.Count != 0) await UpdateInBranch(product.Id, productGeneral.DishGeneralImages.Select(x => x.Url).ToList());
             await AddIngredientsToProduct(product.Id, request.ProductId);
         }
 
@@ -46,10 +45,7 @@ internal class AddProductHandler : IRequestHandler<AddProductCommand, Result>
 
         return Result.Ok();
     }
-    public async Task UpdateInBranch(Guid dishId, ICollection<string> images)
-    {
-        await _unitOfWorks.DishImageRepository.AddRangeAsync(images.Select(x => new DishImage(dishId, x)).ToList());
-    }
+
 
 
 
@@ -59,14 +55,12 @@ internal class AddProductHandler : IRequestHandler<AddProductCommand, Result>
                            ?? throw new Exception($"Dish with ID {refundProduct} not found.");
         if (dish.IsRefund)
         {
-            Dish productAdding = new(dish.DishName, dish.Price, dish.DishDescription, restaurantId, dish.CategoryId, dish.Id, dish.DishImageDefault);
+            Dish productAdding = new(dish.Price, restaurantId, dish.CategoryId, dish.Id);
             await _unitOfWorks.DishRepository.AddAsync(productAdding);
             RefundDishInventory inventory = new(productAdding.Id);
             await _unitOfWorks.RefundDishInventoryRepository.AddAsync(inventory);
             RefundDishUnit unit = new(inventory.Id);
             await _unitOfWorks.RefundDishUnitRepository.AddAsync(unit);
-            if (Images.Count != 0) await UpdateInBranch(productAdding.Id, Images);
-            //await Task.WhenAll(addProductTask, addInventoryTask, addUnitTask);
         }
     }
     private async Task AddIngredientsToProduct(Guid productId, Guid dishGeneralId)

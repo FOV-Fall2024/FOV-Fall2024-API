@@ -14,31 +14,33 @@ public class GetProductHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<GetPr
 
     public async Task<PagedResult<GetProductResponse>> Handle(GetProductCommand request, CancellationToken cancellationToken)
     {
-        var products = await _unitOfWorks.DishRepository.GetAllAsync();
+        //var products = await _unitOfWorks.DishRepository.GetAllAsync();
 
-        var filterEntity = new Dish
-        {
-            DishName = request.ProductName ?? string.Empty,
-            DishDescription = request.ProductDescription ?? string.Empty,
-            RestaurantId = Guid.TryParse(request.RestaurantId, out var restaurantGuid) ? restaurantGuid : Guid.Empty
-        };
+        //var filterEntity = new Dish
+        //{
+        //    DishName = request.ProductName ?? string.Empty,
+        //    DishDescription = request.ProductDescription ?? string.Empty,
+        //    RestaurantId = Guid.TryParse(request.RestaurantId, out var restaurantGuid) ? restaurantGuid : Guid.Empty
+        //};
 
-        // Apply filtering using a custom filter function
-        var filteredProducts = products.AsQueryable().CustomFilterV1(filterEntity);
-        var mappedProducts = filteredProducts.Select(x => new GetProductResponse(
-            x.Id,
-            x.DishMainImage,
-            x.DishName,
-            x.DishDescription,
-            x.Created)).ToList();
+        //// Apply filtering using a custom filter function
+        //var filteredProducts = products.AsQueryable().CustomFilterV1(filterEntity);
+        //var mappedProducts = filteredProducts.Select(x => new GetProductResponse(
+        //    x.Id,
+        //    x.DishMainImage,
+        //    x.DishName,
+        //    x.DishDescription,
+        //    x.Created)).ToList();
 
-        // Get pagination and sorting values
-        var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
+        //// Get pagination and sorting values
+        //var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
 
-        // Apply sorting and pagination
-        var sortedResult = PaginationHelper<GetProductResponse>.Sorting(sortType, mappedProducts, sortField);
-        var pagedResult = PaginationHelper<GetProductResponse>.Paging(sortedResult, page, pageSize);
+        //// Apply sorting and pagination
+        //var sortedResult = PaginationHelper<GetProductResponse>.Sorting(sortType, mappedProducts, sortField);
+        //var pagedResult = PaginationHelper<GetProductResponse>.Paging(sortedResult, page, pageSize);
 
-        return pagedResult;
+        //return pagedResult;
+
+        throw new NotImplementedException();
     }
 }

@@ -11,17 +11,10 @@ namespace FOV.Domain.Entities.DishAggregator;
 
 public class Dish : BaseAuditableEntity, IsSoftDeleted
 {
-    public string DishName { get; set; } = string.Empty;
-
-    public string DishDescription { get; set; } = string.Empty;
-
-    public string DishMainImage { get ; set; } = string.Empty;  
-
     public DishType DishType { get; set; }
     public PriorityDish PriorityDish { get; set; }
     public virtual ICollection<DishCombo> DishCombos { get; set; } = [];
     public ICollection<OrderDetail> OrderDetails { get; set; } = [];
-    public virtual ICollection<DishImage> DishImages { get; set; } = [];
     public virtual ICollection<DishIngredient> DishIngredients { get; set; } = [];
     public Category? Category { get; set; }
     public Guid? CategoryId { get; set; }
@@ -42,13 +35,10 @@ public class Dish : BaseAuditableEntity, IsSoftDeleted
 
     }
 
-    public Dish(string name, decimal price, string dishDescription, Guid restaurantId, Guid? categoryId, Guid dishGeneralId,string mainImage)
+    public Dish(decimal price, Guid restaurantId, Guid? categoryId, Guid dishGeneralId)
     {
-        DishName = name;
         Price = price;
-        DishDescription = dishDescription;
         CategoryId = categoryId;
-        DishMainImage = mainImage;
         Status = Status.Active;
         RestaurantId = restaurantId;
         DishGeneralId = dishGeneralId;
@@ -60,9 +50,7 @@ public class Dish : BaseAuditableEntity, IsSoftDeleted
         LastModified = DateTime.UtcNow.AddHours(7);
     }
 
-    public void Update(string name, string description)
-    {
-        DishName = name;
-        DishDescription = description;
-    }
+    public void Update(decimal dishPrice) => Price = dishPrice;
+
+
 }

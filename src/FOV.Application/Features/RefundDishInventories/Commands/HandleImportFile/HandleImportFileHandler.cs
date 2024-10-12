@@ -28,7 +28,7 @@ public class HandleImportFileHandler(IUnitOfWorks
             var quantity = worksheet.Cells[row, 2].Text;  // Column B
             var measurement = worksheet.Cells[row, 3].Text;  // Column C
 
-            Dish? dish = await _unitOfWorks.DishRepository.FirstOrDefaultAsync(x => x.DishName == dishName && x.RestaurantId == _claimService.RestaurantId, x => x.RefundDishInventory);
+            Dish? dish = await _unitOfWorks.DishRepository.FirstOrDefaultAsync(x => x.DishGeneral.DishName == dishName && x.RestaurantId == _claimService.RestaurantId, x => x.RefundDishInventory);
             RefundDishInventory inventory = await _unitOfWorks.RefundDishInventoryRepository.GetByIdAsync(dish.RefundDishInventory.Id) ?? throw new Exception();
             if (dish == null) break;
             RefundDishUnit unit = await _unitOfWorks.RefundDishUnitRepository.FirstOrDefaultAsync(x => x.RefundDishInventoryId == dish.RefundDishInventory.Id && x.UnitName == measurement) ?? throw new Exception();

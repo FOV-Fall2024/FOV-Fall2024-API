@@ -25,30 +25,13 @@ public class AddAdditionalImageHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
 
 
         _unitOfWorks.DishGeneralRepository.Update(dishGeneral);
-        // Convert the selection to a list and add them as a range
-
         await _unitOfWorks.DishGeneralImageRepository.AddRangeAsync(request.Images
             .Select(item => new DishGeneralImage(item, request.Id))
             .ToList());
-        // Update images in related branches (ensure this operation succeeds)
-        await UpdateInBranch(dishGeneral.Id, request.Images);
-
-        // Save all changes in the unit of work
         await _unitOfWorks.SaveChangeAsync();
 
         return Result.Ok();
     }
 
-
-    public async Task UpdateInBranch(Guid dishId, ICollection<string> images)
-    {
-        List<Dish> dishes = await _unitOfWorks.DishRepository.WhereAsync(x => x.DishGeneralId == dishId);
-        foreach (var dish in dishes)
-        {
-            await _unitOfWorks.DishImageRepository.AddRangeAsync(images.Select(x => new DishImage(dish.Id, x)).ToList());
-            
-        }
-        await _unitOfWorks.SaveChangeAsync();
-
-    }
+   
 }
