@@ -24,7 +24,7 @@ public class IngredientUnitController : DefaultController
     /// </summary>
     /// <param name="id">The ID of the ingredient unit.</param>
     /// <returns>The ingredient unit details.</returns>
-    [HttpGet("{id:guid}")]
+    [HttpGet("ingredient/{id:guid}")]
     [SwaggerOperation(Summary = "Retrieves an ingredient unit by ID.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
