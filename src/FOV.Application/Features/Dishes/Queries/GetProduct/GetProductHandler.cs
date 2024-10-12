@@ -1,46 +1,55 @@
-﻿using FOV.Application.Features.Dishes.Responses;
+﻿using FOV.Application.Common.Behaviours.Claim;
+using FOV.Application.Features.Dishes.Responses;
 using FOV.Domain.Entities.DishAggregator;
+using FOV.Domain.Entities.DishGeneralAggregator;
 using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Dishes.Queries.GetProduct;
 
-public sealed record GetProductCommand(PagingRequest? PagingRequest, string? ProductName, string? ProductDescription, string? RestaurantId) : IRequest<PagedResult<GetProductResponse>>;
+public sealed record GetProductCommand(PagingRequest? PagingRequest, string? ProductName, string? ProductDescription) : IRequest<PagedResult<GetProductResponse>>;
 
-public class GetProductHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<GetProductCommand, PagedResult<GetProductResponse>>
+public class GetProductHandler(IUnitOfWorks unitOfWorks, IClaimService claimService) : IRequestHandler<GetProductCommand, PagedResult<GetProductResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
+    private readonly IClaimService _claimService = claimService;
 
     public async Task<PagedResult<GetProductResponse>> Handle(GetProductCommand request, CancellationToken cancellationToken)
     {
-        //var products = await _unitOfWorks.DishRepository.GetAllAsync();
+        // Get all products from repository
+        var products = await _unitOfWorks.DishRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId, x => x.DishGeneral);
 
-        //var filterEntity = new Dish
-        //{
-        //    DishName = request.ProductName ?? string.Empty,
-        //    DishDescription = request.ProductDescription ?? string.Empty,
-        //    RestaurantId = Guid.TryParse(request.RestaurantId, out var restaurantGuid) ? restaurantGuid : Guid.Empty
-        //};
+        // Create filter entity, instantiate DishGeneral and assign values
+        var filterEntity = new Dish
+        {
+            DishGeneral = new DishGeneral
+            {
+                DishName = request.ProductName ?? string.Empty,
+                DishDescription = request.ProductDescription ?? string.Empty,
 
-        //// Apply filtering using a custom filter function
-        //var filteredProducts = products.AsQueryable().CustomFilterV1(filterEntity);
-        //var mappedProducts = filteredProducts.Select(x => new GetProductResponse(
-        //    x.Id,
-        //    x.DishMainImage,
-        //    x.DishName,
-        //    x.DishDescription,
-        //    x.Created)).ToList();
+            },
+        };
 
-        //// Get pagination and sorting values
-        //var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
+        // Apply filtering using the CustomFilterV1 function
+        var filteredProducts = products.AsQueryable().CustomFilterV1(filterEntity);
 
-        //// Apply sorting and pagination
-        //var sortedResult = PaginationHelper<GetProductResponse>.Sorting(sortType, mappedProducts, sortField);
-        //var pagedResult = PaginationHelper<GetProductResponse>.Paging(sortedResult, page, pageSize);
+        // Map filtered products to the GetProductResponse DTO
+        var mappedProducts = filteredProducts.Select(x => new GetProductResponse(
+            x.Id,
+            x.DishGeneral.DishGeneralImages.First().Url,
+            x.DishGeneral.DishName,
+            x.DishGeneral.DishDescription,
+            x.Created)).ToList();
 
-        //return pagedResult;
+        // Get pagination and sorting values
+        var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
 
-        throw new NotImplementedException();
+        // Apply sorting and pagination
+        var sortedResult = PaginationHelper<GetProductResponse>.Sorting(sortType, mappedProducts, sortField);
+        var pagedResult = PaginationHelper<GetProductResponse>.Paging(sortedResult, page, pageSize);
+
+        return pagedResult;
     }
+
 }
