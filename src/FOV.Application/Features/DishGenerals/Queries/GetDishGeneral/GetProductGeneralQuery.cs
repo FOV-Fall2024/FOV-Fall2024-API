@@ -26,6 +26,10 @@ namespace FOV.Application.Features.DishGenerals.Queries.GetProductGeneral
                 DishName = request.DishGeneralName ?? string.Empty,
                 DishDescription = request.DishGeneralDescription ?? string.Empty,
             });
+            if (request.Status.HasValue)
+            {
+                filteredProducts = filteredProducts.Where(x => x.Status == request.Status.Value);
+            }
 
             var mappedProducts = filteredProducts.Select(x => new GetProductGeneralResponse(
                 x.Id,
@@ -37,7 +41,7 @@ namespace FOV.Application.Features.DishGenerals.Queries.GetProductGeneral
                 x.Created,
                 x.LastModified ?? DateTime.Now,
                 x.PercentagePriceDifference,
-                x.DishGeneralImages.Select(img => new GetAdditionalImage(img.Id, img.Url)).ToList())).ToList();
+                x.DishGeneralImages.OrderBy(img => img.Order).Select(img => new GetAdditionalImage(img.Id, img.Url)).ToList())).ToList();
 
             var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
                 

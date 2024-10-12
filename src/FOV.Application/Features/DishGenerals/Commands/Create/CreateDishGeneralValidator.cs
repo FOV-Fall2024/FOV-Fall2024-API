@@ -25,8 +25,8 @@ public class CreateProductGeneralValidator : AbstractValidator<CreateProductGene
             .SetValidator(categoryIdCheck);
 
         RuleFor(command => command.Images)
-              .Must(images => images != null && images.Count == 3)
-              .WithMessage("Bạn phải cung cấp chính xác ba hình ảnh bổ sung.");
+            .NotNull().WithMessage("Bạn phải cung cấp ít nhất một hình ảnh.")
+            .Must(images => images.Count >= 1 && images.Count <= 3).WithMessage("Bạn phải cung cấp từ 1 đến 3 hình ảnh.");
 
         //RuleFor(command => command.Ingredients)
         //    .NotEmpty().WithMessage("Cần ít nhất một thành phần.");
