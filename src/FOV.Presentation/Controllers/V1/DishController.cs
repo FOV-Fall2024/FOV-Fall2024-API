@@ -1,9 +1,11 @@
-﻿using FOV.Application.Features.Dishes.Commons.Active;
+﻿using FOV.Application.Common.Exceptions;
+using FOV.Application.Features.Dishes.Commons.Active;
 using FOV.Application.Features.Dishes.Commons.Add;
 using FOV.Application.Features.Dishes.Commons.Inactive;
 using FOV.Application.Features.Dishes.Queries.GetMenu;
 using FOV.Application.Features.Dishes.Queries.GetProduct;
 using FOV.Application.Features.Dishes.Responses;
+using FOV.Application.Features.Restaurants.Queries.Detail;
 using FOV.Domain.Entities.UserAggregator.Enums;
 using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Presentation.Infrastructure.Core;
@@ -78,14 +80,21 @@ public class DishController : DefaultController
     /// </summary>
     /// <param name="command">The command containing query parameters for the menu.</param>
     /// <returns>A list of products in the menu.</returns>
-    [HttpGet("menu")]
+    [HttpGet("/restaurant/{id:guid}/menu")]
     [SwaggerOperation(Summary = "Retrieves the menu of products.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetMenu([FromQuery] GetMenuCommand command)
+    public async Task<IActionResult> GetMenu(Guid id)
     {
-        var response = await _mediator.Send(command);
-        return Ok(response);
+        try
+        {
+            var response = await _mediator.Send(new GetRestaurantDetailCommand(id));
+            return Ok(response);
+        }
+        catch (AppException ex)
+        {
+            return BadRequest(new Error<string>("Lấy thông tin nhà hàng thất bại", ErrorStatusCodeConfig.BAD_REQUEST, new List<string> { ex.Message }));
+        }
     }
 
     /// <summary>

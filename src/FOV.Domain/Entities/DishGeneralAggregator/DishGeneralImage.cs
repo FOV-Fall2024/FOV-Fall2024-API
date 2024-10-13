@@ -13,10 +13,11 @@ public class DishGeneralImage : BaseAuditableEntity
 
     }
 
-    public DishGeneralImage(string url, Guid dishGeneralId)
+    public DishGeneralImage(string url, Guid dishGeneralId, int Order)
     {
         DishGeneralId = dishGeneralId;
         Url = url;
+        this.Order = Order;
     }
 
     public void UpdateImage(string imageUrl) => Url = imageUrl;

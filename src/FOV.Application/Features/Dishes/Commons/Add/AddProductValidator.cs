@@ -7,9 +7,11 @@ namespace FOV.Application.Features.Dishes.Commons.Add;
 
 public class AddProductValidator : AbstractValidator<AddProductCommand>
 {
-    public AddProductValidator(ProductValidator validations)
+    public AddProductValidator(ProductValidator productValidator)
     {
-        RuleFor(x => x.ProductId).NotEmpty().SetValidator(validations);
+        RuleForEach(x => x.ProductId)
+            .SetValidator(productValidator)
+            .WithMessage("Invalid product in the list.");
     }
 }
 
@@ -17,18 +19,22 @@ public sealed class ProductValidator : AbstractValidator<Guid>
 {
     private readonly IUnitOfWorks _unitOfWorks;
     private readonly IClaimService _claimService;
+
     public ProductValidator(IUnitOfWorks unitOfWorks, IClaimService claimService)
     {
         _unitOfWorks = unitOfWorks;
         _claimService = claimService;
-        RuleFor(name => name)
-             .MustAsync(CheckDuplicateProductId)
-             .WithMessage("Món ăn này đã có trong hệ thống");
+
+        RuleFor(productId => productId)
+            .MustAsync(CheckDuplicateProductId)
+            .WithMessage("Món ăn này đã có trong hệ thống");
     }
 
     private async Task<bool> CheckDuplicateProductId(Guid productId, CancellationToken cancellationToken)
     {
-        Dish? product = await _unitOfWorks.DishRepository.FirstOrDefaultAsync(x => x.RestaurantId == _claimService.RestaurantId && x.DishGeneralId == productId);
+        var product = await _unitOfWorks.DishRepository
+            .FirstOrDefaultAsync(x => x.RestaurantId == _claimService.RestaurantId && x.DishGeneralId == productId);
+
         return product == null;
     }
 }

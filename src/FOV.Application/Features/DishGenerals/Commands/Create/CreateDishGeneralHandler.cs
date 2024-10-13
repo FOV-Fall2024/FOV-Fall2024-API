@@ -35,13 +35,12 @@ public class CreateDishGeneralHandler(IUnitOfWorks unitOfWorks) : IRequestHandle
     //}
     private async ValueTask AddImage(List<string> images, Guid dishGeneralId)
     {
-        var dishImages = images.Select((item, index) => new DishGeneralImage(item, dishGeneralId)
-        {
-            Order = index + 1 // This will set an explicit order for each image
-        }).ToList();
+        // Ensure you are passing the 'Order' parameter when creating each DishGeneralImage
+        var dishImages = images.Select((item, index) => new DishGeneralImage(item, dishGeneralId, index + 1)).ToList();
 
         await _unitOfWorks.DishGeneralImageRepository.AddRangeAsync(dishImages);
     }
+
 
     private async ValueTask AddIngredient(List<AddIngredientCommand> commands, Guid productId)
     {

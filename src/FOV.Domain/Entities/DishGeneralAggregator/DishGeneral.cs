@@ -39,12 +39,11 @@ public class DishGeneral : BaseAuditableEntity, IsSoftDeleted
         PercentagePriceDifference = percentagePriceDifference;
     }
 
-    public void Update(string name, string description, Guid categoryId,string image)
+    public void Update(string name, string description, Guid categoryId)
     {
         DishName = name;
         DishDescription = description;
         CategoryId = categoryId;
-        DishImageDefault = image;
     }
 
     public void Update(string name, string description, string Image)
