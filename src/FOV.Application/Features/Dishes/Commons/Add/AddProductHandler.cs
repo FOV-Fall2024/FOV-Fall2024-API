@@ -29,7 +29,7 @@ internal class AddProductHandler : IRequestHandler<AddProductCommand, Result>
         foreach (var productId in request.ProductId)
         {
             var productGeneral = await _unitOfWorks.DishGeneralRepository.GetByIdAsync(productId, x => x.DishGeneralImages)
-                                   ?? throw new Exception($"Product with ID {productId} not found");
+                                ?? throw new Exception($"Product with ID {productId} not found.");
 
             if (productGeneral.IsRefund)
             {
@@ -37,23 +37,8 @@ internal class AddProductHandler : IRequestHandler<AddProductCommand, Result>
             }
             else
             {
-                var product = new Dish(
-                    productGeneral.DishName,
-                    productGeneral.Price,
-                    productGeneral.DishDescription,
-                    _claimService.RestaurantId,
-                    productGeneral.CategoryId,
-                    productGeneral.Id,
-                    productGeneral.DishImageDefault
-                );
-
+                var product = new Dish(productGeneral.Price, _claimService.RestaurantId, productGeneral.CategoryId, productGeneral.Id);
                 await _unitOfWorks.DishRepository.AddAsync(product);
-
-                if (productGeneral.DishGeneralImages.Any())
-                {
-                    await UpdateInBranch(product.Id, productGeneral.DishGeneralImages.Select(x => x.Url).ToList());
-                }
-
                 await AddIngredientsToProduct(product.Id, productId);
             }
         }
@@ -63,31 +48,18 @@ internal class AddProductHandler : IRequestHandler<AddProductCommand, Result>
         return Result.Ok();
     }
 
-    public async Task UpdateInBranch(Guid dishId, ICollection<string> images)
+    private async Task AddRefundProductInventory(Guid refundProduct, Guid restaurantId, List<string> Images)
     {
-        await _unitOfWorks.DishImageRepository.AddRangeAsync(images.Select(x => new DishImage(dishId, x)).ToList());
-    }
-
-    private async Task AddRefundProductInventory(Guid refundProduct, Guid restaurantId, List<string> images)
-    {
-        var dish = await _unitOfWorks.DishGeneralRepository.GetByIdAsync(refundProduct)
-                    ?? throw new Exception($"Dish with ID {refundProduct} not found.");
-
+        DishGeneral dish = await _unitOfWorks.DishGeneralRepository.GetByIdAsync(refundProduct)
+                           ?? throw new Exception($"Dish with ID {refundProduct} not found.");
         if (dish.IsRefund)
         {
-            var productAdding = new Dish(dish.DishName, dish.Price, dish.DishDescription, restaurantId, dish.CategoryId, dish.Id, dish.DishImageDefault);
+            Dish productAdding = new(dish.Price, restaurantId, dish.CategoryId, dish.Id);
             await _unitOfWorks.DishRepository.AddAsync(productAdding);
-
-            var inventory = new RefundDishInventory(productAdding.Id);
+            RefundDishInventory inventory = new(productAdding.Id);
             await _unitOfWorks.RefundDishInventoryRepository.AddAsync(inventory);
-
-            var unit = new RefundDishUnit(inventory.Id);
+            RefundDishUnit unit = new(inventory.Id);
             await _unitOfWorks.RefundDishUnitRepository.AddAsync(unit);
-
-            if (images.Any())
-            {
-                await UpdateInBranch(productAdding.Id, images);
-            }
         }
     }
 
@@ -103,21 +75,19 @@ internal class AddProductHandler : IRequestHandler<AddProductCommand, Result>
         foreach (var item in ingredients)
         {
             var existingIngredient = existingIngredients.FirstOrDefault(e => e.IngredientName == item.IngredientName);
-            var ingredientGeneral = await _unitOfWorks.IngredientGeneralRepository.FirstOrDefaultAsync(x => x.IngredientName == item.IngredientName, x => x.DishIngredientGenerals);
-
+            IngredientGeneral? ingredientGeneral = await _unitOfWorks.IngredientGeneralRepository.FirstOrDefaultAsync(x => x.IngredientName == item.IngredientName, x => x.DishIngredientGenerals);
             if (existingIngredient is null)
             {
                 var newIngredient = new Ingredient(item.IngredientName, item.IngredientTypeId, _claimService.RestaurantId);
                 await _unitOfWorks.IngredientRepository.AddAsync(newIngredient);
-                await AddDishIngredientAndUnits(productId, newIngredient.Id, item.IngredientMeasure, item.DishIngredientGenerals.FirstOrDefault()?.Quantity ?? 0);
+                await AddDishIngredientAndUnits(productId, newIngredient.Id, item.IngredientMeasure, item.DishIngredientGenerals.FirstOrDefault().Quantity);
             }
             else
             {
-                await _unitOfWorks.DishIngredientRepository.AddAsync(new DishIngredient(productId, existingIngredient.Id, ingredientGeneral.DishIngredientGenerals.FirstOrDefault(x => x.DishGeneralId == dishGeneralId)?.Quantity ?? 0));
+                await _unitOfWorks.DishIngredientRepository.AddAsync(new DishIngredient(productId, existingIngredient.Id, ingredientGeneral.DishIngredientGenerals.FirstOrDefault(x => x.DishGeneralId == dishGeneralId && x.IngredientGeneralId == ingredientGeneral.Id).Quantity));
             }
-
-            await _unitOfWorks.SaveChangeAsync();
         }
+        await _unitOfWorks.SaveChangeAsync();
     }
 
     private async Task AddDishIngredientAndUnits(Guid productId, Guid ingredientId, IngredientMeasure measure, decimal quantity)
