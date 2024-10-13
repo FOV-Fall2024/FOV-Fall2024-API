@@ -36,10 +36,10 @@ public class AddAdditionalImageHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
 
         await UpdateInBranch(dishGeneral.Id, request.Images);
 
-        await _unitOfWorks.SaveChangeAsync();
 
-        return Result.Ok();
-    }
+        // Save all changes in the unit of work
+
+        // Save all changes in the unit of work
 
     public async Task UpdateInBranch(Guid dishId, ICollection<string> images)
     {
@@ -49,5 +49,20 @@ public class AddAdditionalImageHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
             await _unitOfWorks.DishImageRepository.AddRangeAsync(images.Select(x => new DishImage(dish.Id, x)).ToList());
         }
         await _unitOfWorks.SaveChangeAsync();
+    }
+            
+        }
+        await _unitOfWorks.SaveChangeAsync();
+
+    }
+            
+        }
+        await _unitOfWorks.SaveChangeAsync();
+
+    }
+            
+        }
+        await _unitOfWorks.SaveChangeAsync();
+
     }
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FOV.Domain.Entities.DishGeneralAggregator.Enums;
-using FOV.Domain.Entities.RestaurantAggregator;
+﻿using FOV.Domain.Entities.DishGeneralAggregator.Enums;
 using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
@@ -22,7 +16,7 @@ public class SuggestDishesForHeadchefQuery(IUnitOfWorks unitOfWorks) : IRequestH
         var prioritizedDishes = orderDishes
             .OrderBy(d => d.PriorityDish)
             .ThenByDescending(d => d.Created)
-            .Select(d => new SuggestDishesForHeadchefResponse(d.Id, d.DishName, d.PriorityDish, d.Created))
+            .Select(d => new SuggestDishesForHeadchefResponse(d.Id, d.DishGeneral.DishName, d.PriorityDish, d.Created))
             .ToList();
 
         var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);

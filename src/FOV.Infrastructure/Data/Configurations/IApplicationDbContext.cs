@@ -16,7 +16,6 @@ public interface IApplicationDbContext
 {
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 
-    DbSet<DishImage> DishImages { get; }
 
     DbSet<Rating> Ratings { get; }
     DbSet<Restaurant> Restaurants { get; }

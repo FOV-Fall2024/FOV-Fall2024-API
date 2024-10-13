@@ -188,7 +188,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             if (maxServings < quantity)
             {
                 await lockService.ReleaseLockAsync();
-                throw new Exception($"Chỉ có thể chuẩn bị {maxServings} phần {dish.DishName} do không đủ nguyên liệu.");
+                throw new Exception($"Chỉ có thể chuẩn bị {maxServings} phần {dish.DishGeneral.DishName} do không đủ nguyên liệu.");
             }
 
             if (ingredient.IngredientAmount < requiredAmount)

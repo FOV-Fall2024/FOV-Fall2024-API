@@ -26,10 +26,10 @@ internal class GetExportFileQuery(IUnitOfWorks unitOfWorks, IClaimService claimS
         worksheet.Cells[1, 3].Value = "Measurement";   // Column C
 
         int rowIngredient = 2;
-        var dishes = await _unitOfWorks.DishRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId, x => x.RefundDishInventory,x => x.RefundDishInventory.DishUnits);
+        var dishes = await _unitOfWorks.DishRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId, x => x.RefundDishInventory, x => x.RefundDishInventory.DishUnits);
         foreach (var item in dishes)
         {
-            worksheet.Cells[rowIngredient, 1].Value = item.DishName;
+            worksheet.Cells[rowIngredient, 1].Value = item.DishGeneral.DishName;
             var listValidation = worksheet.DataValidations.AddListValidation($"C{rowIngredient}");
             foreach (var ingredientUnit in item.RefundDishInventory.DishUnits)
             {

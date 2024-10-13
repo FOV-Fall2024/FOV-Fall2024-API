@@ -41,8 +41,8 @@ namespace FOV.Application.Features.Restaurants.Queries.Detail
 
             var products = restaurant.Dishes.Select(product => new ProductDto(
                 product.Id,
-                product.DishName,
-                product.DishDescription,
+                product.DishGeneral.DishName,
+                product.DishGeneral.DishDescription,
                 product.DishType,
                 product.Price ?? 0
             )).ToList();

@@ -13,7 +13,6 @@ public class DishConfiguration : IEntityTypeConfiguration<Dish>
         builder.HasKey(x => x.Id);
         builder.HasMany(x => x.DishCombos).WithOne(x => x.Dish).HasForeignKey(x => x.DishId);
         builder.HasMany(x => x.OrderDetails).WithOne(x => x.Dish).HasForeignKey(x => x.ProductId);
-        builder.HasMany(x => x.DishImages).WithOne(x => x.Dish).HasForeignKey(x => x.DishId);
         
         //builder.HasData(new Dish
         //{
