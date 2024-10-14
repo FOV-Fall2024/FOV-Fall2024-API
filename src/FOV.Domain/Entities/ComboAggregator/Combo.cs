@@ -9,6 +9,7 @@ namespace FOV.Domain.Entities.ComboAggregator;
 public class Combo : BaseAuditableEntity, IsSoftDeleted
 {
     public string ComboName { get; set; }
+    public string? ComboDescription { get; set; }
 
     public ComboStatus ComboStatus { get; set; }
     public Status Status { get; set; } //For filter
@@ -24,10 +25,11 @@ public class Combo : BaseAuditableEntity, IsSoftDeleted
     {
 
     }
-    public Combo(string comboName, decimal price, Guid restaurantId,string thumbnail)
+    public Combo(string comboName, decimal price, Guid restaurantId, string thumbnail, string description)
     {
         Thumbnail = thumbnail;
         ComboName = comboName;
+        ComboDescription = description;
         ComboStatus = ComboStatus.InStock;
         Status = Status.Active;
         Price = price;
@@ -41,4 +43,14 @@ public class Combo : BaseAuditableEntity, IsSoftDeleted
         Status = state ? Status.Active : Status.Inactive;
         LastModified = DateTime.UtcNow.AddHours(7);
     }
+
+    public void Update(string comboName, string comboDescription, string thumbnail, decimal price)
+    {
+        ComboName = comboName;
+        ComboDescription = comboDescription;
+        Thumbnail = thumbnail;
+        Price = price;
+    }
+
+    public void Update(decimal price) => Price = price; 
 }
