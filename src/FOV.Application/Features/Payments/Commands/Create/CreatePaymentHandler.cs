@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using FOV.Domain.Entities.OrderAggregator.Enums;
 using FOV.Domain.Entities.PaymentAggregator.Enums;
+using FOV.Infrastructure.Order.Setup;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
@@ -15,9 +16,10 @@ public record CreatePaymentCommands(PaymentMethods PaymentMethods) : IRequest<Gu
     [JsonIgnore]
     public Guid OrderId { get; set; }
 }
-public class CreatePaymentHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<CreatePaymentCommands, Guid>
+public class CreatePaymentHandler(IUnitOfWorks unitOfWorks, OrderHub orderHub) : IRequestHandler<CreatePaymentCommands, Guid>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
+    private readonly OrderHub _orderHub = orderHub;
     public async Task<Guid> Handle(CreatePaymentCommands request, CancellationToken cancellationToken)
     {
         var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.OrderDetails)
@@ -43,6 +45,7 @@ public class CreatePaymentHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<Cr
 
         await _unitOfWorks.PaymentRepository.AddAsync(payment);
         await _unitOfWorks.SaveChangeAsync();
+        await _orderHub.UpdateOrderStatus(order.Id, order.OrderStatus.ToString());
 
         return payment.Id;
     }

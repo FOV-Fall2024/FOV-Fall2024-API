@@ -9,8 +9,10 @@ using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.OrderAggregator.Enums;
 using FOV.Domain.Entities.TableAggregator.Enums;
 using FOV.Infrastructure.Caching.CachingService;
+using FOV.Infrastructure.Order.Setup;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
+using Microsoft.AspNetCore.SignalR;
 using StackExchange.Redis;
 
 namespace FOV.Application.Features.Orders.Commands.CreateOrder;
@@ -36,13 +38,15 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
 {
     private readonly IUnitOfWorks _unitOfWorks;
     private readonly IDatabase _database;
+    private readonly OrderHub _orderHub;
     private readonly ConcurrentDictionary<string, LockingHandler> _lockHandlers;
 
-    public CreateOrderHandler(IUnitOfWorks unitOfWorks, IDatabase database)
+    public CreateOrderHandler(IUnitOfWorks unitOfWorks, IDatabase database, OrderHub orderHub)
     {
         _unitOfWorks = unitOfWorks;
         _database = database;
         _lockHandlers = new ConcurrentDictionary<string, LockingHandler>();
+        _orderHub = orderHub;
     }
 
     public async Task<Guid> Handle(CreateOrderWithTableIdCommand request, CancellationToken cancellationToken)
@@ -136,6 +140,8 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             await _unitOfWorks.OrderRepository.AddAsync(order);
             await _unitOfWorks.SaveChangeAsync();
             await lockService.ReleaseLockAsync();
+            //await _hubContext.Clients.All.SendAsync("SendOrder", order.Id);
+            await _orderHub.SendOrder(order.Id);
 
             return order.Id;
         }

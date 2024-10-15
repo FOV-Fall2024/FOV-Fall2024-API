@@ -11,7 +11,7 @@ using FOV.Infrastructure.Repository.IRepositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace FOV.Infrastructure.Repository.Repositories;
-public class OrderRepository : GenericRepository<Order>, IOrderRepository
+public class OrderRepository : GenericRepository<Domain.Entities.OrderAggregator.Order>, IOrderRepository
 {
     private readonly FOVContext _context;
     public OrderRepository(FOVContext context) : base(context)
@@ -19,7 +19,7 @@ public class OrderRepository : GenericRepository<Order>, IOrderRepository
         _context = context;
     }
 
-    public async Task<Order> GetByTableIdAsync(Guid tableId)
+    public async Task<Domain.Entities.OrderAggregator.Order> GetByTableIdAsync(Guid tableId)
     {
         return await _context.Orders
                              .FirstOrDefaultAsync(o => o.TableId == tableId);

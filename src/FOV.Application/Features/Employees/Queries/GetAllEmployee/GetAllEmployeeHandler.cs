@@ -1,4 +1,5 @@
-﻿using FOV.Application.Features.Users.Responses;
+﻿using FOV.Application.Common.Behaviours.Claim;
+using FOV.Application.Features.Users.Responses;
 using FOV.Domain.Entities.TableAggregator.Enums;
 using FOV.Domain.Entities.UserAggregator;
 using FOV.Domain.Entities.UserAggregator.Enums;
@@ -11,17 +12,24 @@ namespace FOV.Application.Features.Employees.Queries.GetAllEmployee;
 
 public sealed record GetAllEmployeeCommand(PagingRequest? PagingRequest, string? Role, Guid? RestaurantId, string? FullName, string? PhoneNumber, string? EmployeeCode, Status? Status = Status.Unknown) : IRequest<PagedResult<GetAllEmployeeResponse>>;
 
-
-
-public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager) : IRequestHandler<GetAllEmployeeCommand, PagedResult<GetAllEmployeeResponse>>
+public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager, IClaimService claimService) : IRequestHandler<GetAllEmployeeCommand, PagedResult<GetAllEmployeeResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     private readonly UserManager<User> _userManager = userManager;
+    private readonly IClaimService _claimService = claimService;
 
     public async Task<PagedResult<GetAllEmployeeResponse>> Handle(GetAllEmployeeCommand request, CancellationToken cancellationToken)
     {
+        var userRoles = _claimService.UserRole;
+        var restaurantId = _claimService.RestaurantId;
+
         var employees = await _unitOfWorks.EmployeeRepository.GetAllAsync(x => x.User);
         var employeesQuery = employees.AsQueryable();
+
+        if (userRoles.Contains(Role.Manager))
+        {
+            employeesQuery = employeesQuery.Where(x => x.RestaurantId == restaurantId);
+        }
 
         if (request.RestaurantId.HasValue)
         {

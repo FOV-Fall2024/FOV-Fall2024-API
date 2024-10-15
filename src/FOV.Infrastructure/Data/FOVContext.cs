@@ -43,7 +43,7 @@ public class FOVContext : IdentityDbContext<User>, IApplicationDbContext
 
     public DbSet<Dish> Dishes => Set<Dish>();
     public DbSet<Attendance> Attendances => Set<Attendance>();
-    public DbSet<Order> Orders => Set<Order>();
+    public DbSet<Domain.Entities.OrderAggregator.Order> Orders => Set<Domain.Entities.OrderAggregator.Order>();
     public DbSet<OrderDetail> OrderDetails => Set<OrderDetail>();
     public DbSet<DishCombo> DishCombos => Set<DishCombo>();
     public DbSet<Table> Tables => Set<Table>();

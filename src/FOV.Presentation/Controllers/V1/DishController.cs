@@ -80,22 +80,24 @@ public class DishController : DefaultController
     /// </summary>
     /// <param name="command">The command containing query parameters for the menu.</param>
     /// <returns>A list of products in the menu.</returns>
-    //[HttpGet("/restaurant/{id:guid}/menu")]
-    //[SwaggerOperation(Summary = "Retrieves the menu of products.")]
-    //[ProducesResponseType(StatusCodes.Status200OK)]
-    //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-    //public async Task<IActionResult> GetMenu(Guid id)
-    //{
-    //    try
-    //    {
-    //        var response = await _mediator.Send(new GetRestaurantDetailCommand(id));
-    //        return Ok(response);
-    //    }
-    //    catch (AppException ex)
-    //    {
-    //        return BadRequest(new Error<string>("Lấy thông tin nhà hàng thất bại", ErrorStatusCodeConfig.BAD_REQUEST, new List<string> { ex.Message }));
-    //    }
-    //}
+    [HttpGet("/restaurant/{restaurantId:guid}/menu")]
+    [SwaggerOperation(Summary = "Retrieves the menu of products.")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetMenu(Guid restaurantId, [FromQuery] PagingRequest? pagingRequest)
+    {
+        try
+        {
+            var command = new GetMenuCommand(restaurantId, pagingRequest);
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
+        catch (AppException ex)
+        {
+            return BadRequest(new Error<string>("Lấy thông tin nhà hàng thất bại", ErrorStatusCodeConfig.BAD_REQUEST, new List<string> { ex.Message }));
+        }
+    }
+
 
     /// <summary>
     /// Retrieves a specific product.

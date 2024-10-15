@@ -1,6 +1,7 @@
 ﻿using FOV.Application;
 using FOV.Domain.Entities.UserAggregator;
 using FOV.Infrastructure;
+using FOV.Infrastructure.Order.Setup;
 using FOV.Presentation.Infrastructure;
 using FOV.Presentation.Infrastructure.Middleware;
 using OpenTelemetry.Metrics;
@@ -13,8 +14,6 @@ builder.Services.AddInfrastructureDI();
 builder.Services.AddApplicationDI();
 builder.Services.AddControllers();
 builder.Services.AddPresentationDI(conn ?? throw new ArgumentNullException(nameof(conn), "Connection string cannot be null."), builder);
-
-
 
 builder.Services.AddOpenTelemetry().WithMetrics(x =>
 {
@@ -60,8 +59,9 @@ app.UseSwaggerUI(c =>
 app.ApplyMigrations();
 
 await app.InitializeDatabaseAsync();
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 // Map the default Identity API endpoints except for registration
+app.MapHub<OrderHub>("order-hub");
 app.MapIdentityApi<User>();
 app.UseMiddleware<ExceptionMiddleware>();
 

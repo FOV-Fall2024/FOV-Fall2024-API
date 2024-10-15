@@ -16,9 +16,16 @@ namespace FOV.Application.Features.DishGenerals.Queries.GetProductGeneral
         private readonly IClaimService _claimService = claimService;
         public async Task<PagedResult<GetProductGeneralResponse>> Handle(GetProductGeneralCommand request, CancellationToken cancellationToken)
         {
+            var restaurantId = _claimService.RestaurantId;
             var allProducts = await _unitOfWorks.DishGeneralRepository.GetAllAsync(x => x.Category, x => x.DishGeneralImages);
 
-            if (_claimService.UserRole == Role.Manager) allProducts = allProducts.Where(x => x.Status == Status.Active).ToList();
+            if (_claimService.UserRole == Role.Manager)
+            {
+                allProducts = allProducts.Where(x => x.Status == Status.Active).ToList();
+                var clonedDished = await _unitOfWorks.DishRepository.WhereAsync(x => x.RestaurantId == restaurantId);
+                var dishGeneralIdsInDish = clonedDished.Select(x => x.DishGeneralId).Distinct().ToList();
+                allProducts = allProducts.Where(x => !dishGeneralIdsInDish.Contains(x.Id)).ToList();
+            }
 
             var filteredProducts = allProducts.AsQueryable().CustomFilterV1(new DishGeneral
             {

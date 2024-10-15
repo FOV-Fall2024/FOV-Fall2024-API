@@ -7,8 +7,8 @@ using FOV.Domain.Entities.DishAggregator;
 using FOV.Domain.Entities.OrderAggregator;
 
 namespace FOV.Infrastructure.Repository.IRepositories;
-public interface IOrderRepository : IGenericRepository<Order>
+public interface IOrderRepository : IGenericRepository<Domain.Entities.OrderAggregator.Order>
 {
-    Task<Order> GetByTableIdAsync(Guid tableId);
+    Task<Domain.Entities.OrderAggregator.Order> GetByTableIdAsync(Guid tableId);
     Task<List<Dish>> GetOrderDishes(Guid restaurantId);
 }
