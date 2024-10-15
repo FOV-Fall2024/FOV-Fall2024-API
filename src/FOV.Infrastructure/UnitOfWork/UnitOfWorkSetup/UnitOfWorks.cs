@@ -36,13 +36,12 @@ public class UnitOfWorks : IUnitOfWorks
     private readonly INewDishRecommendLogRepository _newProductRecommendLogRepository;
     private readonly INewDishRecommendRepository _newProductRecommendRepository;
     private readonly IRefundDishInventoryRepository _refundDishInventoryRepository;
-    private readonly IRefundDishUnitRepository _refundDishUnitRepository;
     private readonly IRefundDishInventoryTransactionRepository _refundDishInventoryTransactionRepository;
     private readonly IDishGeneralImageRepository _dishGeneralImageRepository;
 
     public UnitOfWorks(FOVContext context, IIngredientTypeRepository ingredientTypeRepository, IIngredientGeneralRepository ingredientGeneralRepository, IDishGeneralRepository productGeneralRepository, IDishIngredientGeneralRepository productIngredientGeneralRepository, ITableRepository tableRepository, IRestaurantRepository restaurantRepository, ICategoryRepository categoryRepository, IDishRepository productRepository, IIngredientRepository ingredientRepository, IDishIngredientRepository productIngredientRepository, ICustomerRepository customerRepository, IEmployeeRepository employeeRepository, IIngrdientTransactionRepository ingrdientTransactionRepository, IDishComboRepository productComboRepository, IComboRepository comboRepository, IOrderRepository orderRepository, IOrderDetailRepository orderDetailRepository, IShiftRepository shiftRepository, IWaiterScheduleRepository waiterScheduleRepository,
         IGroupChatRepository groupChatRepository, IGroupMessageRepository groupMessageRepository, IGroupUserRepository groupUserRepository,
-        IRatingRepository ratingRepository, IPaymentRepository paymentRepository, IAttendanceRepository attendanceRepository, IIngredientUnitRepository ingredientUnitRepository, INewDishRecommendRepository newProductRecommendRepository, INewDishRecommendLogRepository newProductRecommendLogRepository, IRefundDishInventoryRepository refundDishInventoryRepository, IRefundDishUnitRepository refundDishUnitRepository, IRefundDishInventoryTransactionRepository refundDishInventoryTransactionRepository, IDishGeneralImageRepository dishGeneralImageRepository)
+        IRatingRepository ratingRepository, IPaymentRepository paymentRepository, IAttendanceRepository attendanceRepository, IIngredientUnitRepository ingredientUnitRepository, INewDishRecommendRepository newProductRecommendRepository, INewDishRecommendLogRepository newProductRecommendLogRepository, IRefundDishInventoryRepository refundDishInventoryRepository, IRefundDishInventoryTransactionRepository refundDishInventoryTransactionRepository, IDishGeneralImageRepository dishGeneralImageRepository)
     {
         _context = context;
         _ingredientTypeRepository = ingredientTypeRepository;
@@ -75,7 +74,6 @@ public class UnitOfWorks : IUnitOfWorks
         _newProductRecommendLogRepository = newProductRecommendLogRepository;
         _newProductRecommendRepository = newProductRecommendRepository;
         _refundDishInventoryRepository = refundDishInventoryRepository;
-        _refundDishUnitRepository = refundDishUnitRepository;
         _refundDishInventoryTransactionRepository = refundDishInventoryTransactionRepository;
         _dishGeneralImageRepository = dishGeneralImageRepository;
     }
@@ -131,7 +129,6 @@ public class UnitOfWorks : IUnitOfWorks
 
     public IRefundDishInventoryRepository RefundDishInventoryRepository => _refundDishInventoryRepository;
 
-    public IRefundDishUnitRepository RefundDishUnitRepository => _refundDishUnitRepository;
 
     public IRefundDishInventoryTransactionRepository RefundDishInventoryTransactionRepository => _refundDishInventoryTransactionRepository;
 

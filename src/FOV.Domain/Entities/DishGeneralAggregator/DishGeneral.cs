@@ -46,18 +46,18 @@ public class DishGeneral : BaseAuditableEntity, IsSoftDeleted
         CategoryId = categoryId;
     }
 
-    public void Update(string name, string description, string Image)
+    public void Update(string name, string description, string image)
     {
         DishName = name;
         DishDescription = description;
-        DishImageDefault = Image;
+        DishImageDefault = image;
     }
 
-    public void Update(string name, string description, string Image, Guid categoryId)
+    public void Update(string name, string description, string image, Guid categoryId)
     {
         DishName = name;
         DishDescription = description;
-        DishImageDefault = Image;
+        DishImageDefault = image;
         CategoryId = categoryId;
     }
     public void UpdateState(bool state)

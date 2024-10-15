@@ -22,20 +22,16 @@
 
   <ItemGroup>
     <Folder Include="Common\Models\" />
-    <Folder Include="Features\Combos\Commands\Update\" />
     <Folder Include="Features\Combos\Queries\GetComboByUser\" />
     <Folder Include="Features\Employees\Mappers\" />
     <Folder Include="Features\Employees\Responses\" />
     <Folder Include="Features\GroupChats\Queries\" />
     <Folder Include="Features\GroupMessages\Queries\" />
     <Folder Include="Features\Ingredients\Queries\GetIngredientDetail\" />
-    <Folder Include="Features\IngredientUnits\Commands\Remove\" />
     <Folder Include="Features\NewRecommendDishLog\Commands\" />
     <Folder Include="Features\NewRecommendDishLog\Queries\" />
     <Folder Include="Features\NewRecommendDishes\Queries\GetDetail\" />
     <Folder Include="Features\RefundDishInventories\Responses\" />
-    <Folder Include="Features\RefundDishUnits\Mappers\" />
-    <Folder Include="Features\RefundDishUnits\Responses\" />
   </ItemGroup>
 
 </Project>

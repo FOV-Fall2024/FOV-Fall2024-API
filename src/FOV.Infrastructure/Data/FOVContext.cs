@@ -79,8 +79,6 @@ public class FOVContext : IdentityDbContext<User>, IApplicationDbContext
 
     public DbSet<RefundDishInventoryTransaction> RefundDishInventoryTransactions => Set<RefundDishInventoryTransaction>();
 
-    public DbSet<RefundDishUnit> RefundDishUnits => Set<RefundDishUnit>();
-
     public DbSet<DishGeneralImage> DishGeneralImages => Set<DishGeneralImage>();
 
     protected override void OnModelCreating(ModelBuilder builder)

@@ -5,8 +5,8 @@ using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Combos.Commands.Create;
-public sealed record CreateComboCommand(List<Guid> ProductInCombos, string ComboName, bool isActive, int Quantity, decimal Price, DateTime ExpiredDate, string Thumbnail) : IRequest<Guid>;
-public sealed record ProductInCombo(Guid ProductId);
+public sealed record CreateComboCommand(List<ProductInCombo> ProductInCombos, string ComboName, bool IsActive, string ComboDescription, decimal Price, DateTime ExpiredDate, string Thumbnail) : IRequest<Guid>;
+public sealed record ProductInCombo(Guid ProductId, int Quantity);
 public class CreateComboHandler(IUnitOfWorks unitOfWorks, IClaimService claimService) : IRequestHandler<CreateComboCommand, Guid>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
@@ -15,14 +15,14 @@ public class CreateComboHandler(IUnitOfWorks unitOfWorks, IClaimService claimSer
     public async Task<Guid> Handle(CreateComboCommand request, CancellationToken cancellationToken)
     {
         Guid restaurantId = _claimService.RestaurantId;
-        Combo combo = new(request.ComboName, request.Price, _claimService.RestaurantId, request.Thumbnail);
+        Combo combo = new(request.ComboName, request.Price, _claimService.RestaurantId, request.Thumbnail, request.ComboDescription);
         await _unitOfWorks.ComboRepository.AddAsync(combo);
         decimal totalPrice = 0;
         foreach (var item in request.ProductInCombos)
         {
-            Dish product = await _unitOfWorks.DishRepository.FirstOrDefaultAsync(x => x.RestaurantId == restaurantId && x.Id == item) ?? throw new Exception();
+            Dish product = await _unitOfWorks.DishRepository.FirstOrDefaultAsync(x => x.RestaurantId == restaurantId && x.Id == item.ProductId) ?? throw new Exception();
             totalPrice += (decimal)product.Price;
-            await _unitOfWorks.DishComboRepository.AddAsync(new(item, combo.Id));
+            await _unitOfWorks.DishComboRepository.AddAsync(new(item.ProductId, combo.Id, item.Quantity));
         }
 
         combo.PercentReduce = totalPrice / request.Price;

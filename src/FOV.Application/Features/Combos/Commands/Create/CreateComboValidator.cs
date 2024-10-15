@@ -24,12 +24,12 @@ public sealed class PriceValidator : AbstractValidator<decimal>
         _unitOfWorks = unitOfWorks;
     }
 
-    public async Task<bool> CheckPrice(decimal price, List<Guid> productIds, CancellationToken token)
+    public async Task<bool> CheckPrice(decimal price, List<ProductInCombo> productIds, CancellationToken token)
     {
         decimal totalPrice = 0;
-        foreach (var productId in productIds)
+        foreach (var dishCheck in productIds)
         {
-            Dish? dish = await _unitOfWorks.DishRepository.GetByIdAsync(productId);
+            Dish? dish = await _unitOfWorks.DishRepository.GetByIdAsync(dishCheck.ProductId);
             totalPrice += dish?.Price ?? 0; // Use null-coalescing to avoid null references
         }
         return price < totalPrice; // Ensure the provided price is less than the total price of dishes

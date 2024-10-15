@@ -61,7 +61,6 @@ public interface IApplicationDbContext
 
     DbSet<RefundDishInventoryTransaction> RefundDishInventoryTransactions { get; }
 
-    DbSet<RefundDishUnit> RefundDishUnits { get; }
 
     DbSet<DishGeneralImage> DishGeneralImages { get; }
 

@@ -29,7 +29,8 @@ public class GetMenuHandler : IRequestHandler<GetMenuCommand, PagedResult<GetMen
             dish.Id,
             dish.DishGeneral.DishName,
             dish.DishGeneral.DishDescription,
-            dish.Created
+            dish.Created,
+            dish.GetType().Name
         )).ToList();
 
         var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);

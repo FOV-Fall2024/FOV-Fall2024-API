@@ -16,8 +16,8 @@ public class AddSingleRefundDishInventoryHandler(IUnitOfWorks unitOfWorks) : IRe
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     public async Task<Result> Handle(AddSingleRefundDishInventoryCommand request, CancellationToken cancellationToken)
     {
-        Dish dishSystem = await _unitOfWorks.DishRepository.GetByIdAsync(request.DishId, x => x.RefundDishInventory, x => x.RefundDishInventory.DishUnits) ?? throw new Exception();
-        int quantityAdding = request.Quantity * _unitOfWorks.RefundDishUnitRepository.GetTotalConversionFactor(request.RefundDishUnitId);
+        Dish dishSystem = await _unitOfWorks.DishRepository.GetByIdAsync(request.DishId, x => x.RefundDishInventory) ?? throw new Exception();
+        int quantityAdding = request.Quantity;
         RefundDishInventory inventory = await _unitOfWorks.RefundDishInventoryRepository.GetByIdAsync(dishSystem.RefundDishInventory.Id) ?? throw new Exception();
         inventory.AddQuantity(quantityAdding);
         _unitOfWorks.RefundDishInventoryRepository.Update(inventory);

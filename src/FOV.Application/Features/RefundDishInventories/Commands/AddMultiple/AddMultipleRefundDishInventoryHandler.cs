@@ -18,17 +18,15 @@ public class AddMultipleRefundDishInventoryHandler(IUnitOfWorks unitOfWorks, ICl
     {
         foreach (var dish in request.Dishes)
         {
-            Dish dishSystem = await _unitOfWorks.DishRepository.GetByIdAsync(dish.DishId, x => x.RefundDishInventory, x => x.RefundDishInventory.DishUnits) ?? throw new Exception();
-            if (dishSystem.RefundDishInventory.DishUnits.Where(x => x.Id == dish.RefundDishUnitId).Any())
-            {
-                int quantityAdding = dish.Quantity * _unitOfWorks.RefundDishUnitRepository.GetTotalConversionFactor(dish.RefundDishUnitId);
-                RefundDishInventory inventory = await _unitOfWorks.RefundDishInventoryRepository.GetByIdAsync(dishSystem.RefundDishInventory.Id) ?? throw new Exception();
-                inventory.AddQuantity(quantityAdding);
-                _unitOfWorks.RefundDishInventoryRepository.Update(inventory);
-                RefundDishInventoryTransaction transaction = new(quantityAdding, dishSystem.RefundDishInventory.Id, RefundDishInventoryTransactionType.Add);
-                await _unitOfWorks.RefundDishInventoryTransactionRepository.AddAsync(transaction);
-                await _unitOfWorks.SaveChangeAsync();
-            }
+            Dish dishSystem = await _unitOfWorks.DishRepository.GetByIdAsync(dish.DishId, x => x.RefundDishInventory) ?? throw new Exception();
+
+            int quantityAdding = dish.Quantity;
+            RefundDishInventory inventory = await _unitOfWorks.RefundDishInventoryRepository.GetByIdAsync(dishSystem.RefundDishInventory.Id) ?? throw new Exception();
+            inventory.AddQuantity(quantityAdding);
+            _unitOfWorks.RefundDishInventoryRepository.Update(inventory);
+            RefundDishInventoryTransaction transaction = new(quantityAdding, dishSystem.RefundDishInventory.Id, RefundDishInventoryTransactionType.Add);
+            await _unitOfWorks.RefundDishInventoryTransactionRepository.AddAsync(transaction);
+            await _unitOfWorks.SaveChangeAsync();
 
         }
 
