@@ -23,20 +23,19 @@ internal class GetExportFileQuery(IUnitOfWorks unitOfWorks, IClaimService claimS
         // Add headers
         worksheet.Cells[1, 1].Value = "Dish Name";      // Column A
         worksheet.Cells[1, 2].Value = "Quantity";   // Column B
-        worksheet.Cells[1, 3].Value = "Measurement";   // Column C
 
         int rowIngredient = 2;
-        var dishes = await _unitOfWorks.DishRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId, x => x.RefundDishInventory, x => x.RefundDishInventory.DishUnits);
-        foreach (var item in dishes)
-        {
-            worksheet.Cells[rowIngredient, 1].Value = item.DishGeneral.DishName;
-            var listValidation = worksheet.DataValidations.AddListValidation($"C{rowIngredient}");
-            foreach (var ingredientUnit in item.RefundDishInventory.DishUnits)
-            {
-                listValidation.Formula.Values.Add(ingredientUnit.UnitName);
-            }
-            rowIngredient++;
-        }
+       // var dishes = await _unitOfWorks.DishRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId, x => x.RefundDishInventory, x => x.RefundDishInventory.DishUnits);
+        //foreach (var item in dishes)
+        //{
+        //    worksheet.Cells[rowIngredient, 1].Value = item.DishGeneral.DishName;
+        //    var listValidation = worksheet.DataValidations.AddListValidation($"C{rowIngredient}");
+        //    foreach (var ingredientUnit in item.RefundDishInventory.DishUnits)
+        //    {
+        //        listValidation.Formula.Values.Add(ingredientUnit.UnitName);
+        //    }
+        //    rowIngredient++;
+        //}
         // Lock column A to make it read-only
         worksheet.Cells["A2:A10"].Style.Locked = true;
 

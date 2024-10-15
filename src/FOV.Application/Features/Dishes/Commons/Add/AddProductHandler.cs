@@ -58,8 +58,6 @@ internal class AddProductHandler : IRequestHandler<AddProductCommand, Result>
             await _unitOfWorks.DishRepository.AddAsync(productAdding);
             RefundDishInventory inventory = new(productAdding.Id);
             await _unitOfWorks.RefundDishInventoryRepository.AddAsync(inventory);
-            RefundDishUnit unit = new(inventory.Id);
-            await _unitOfWorks.RefundDishUnitRepository.AddAsync(unit);
         }
     }
 

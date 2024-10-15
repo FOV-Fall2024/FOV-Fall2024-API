@@ -31,8 +31,8 @@ public class HandleImportFileHandler(IUnitOfWorks
             Dish? dish = await _unitOfWorks.DishRepository.FirstOrDefaultAsync(x => x.DishGeneral.DishName == dishName && x.RestaurantId == _claimService.RestaurantId, x => x.RefundDishInventory);
             RefundDishInventory inventory = await _unitOfWorks.RefundDishInventoryRepository.GetByIdAsync(dish.RefundDishInventory.Id) ?? throw new Exception();
             if (dish == null) break;
-            RefundDishUnit unit = await _unitOfWorks.RefundDishUnitRepository.FirstOrDefaultAsync(x => x.RefundDishInventoryId == dish.RefundDishInventory.Id && x.UnitName == measurement) ?? throw new Exception();
-            int quantityCalculate = int.Parse(quantity) * _unitOfWorks.RefundDishUnitRepository.GetTotalConversionFactor(unit.Id);
+            //RefundDishUnit unit = await _unitOfWorks.RefundDishUnitRepository.FirstOrDefaultAsync(x => x.RefundDishInventoryId == dish.RefundDishInventory.Id && x.UnitName == measurement) ?? throw new Exception();
+            int quantityCalculate = int.Parse(quantity);
             RefundDishInventoryTransaction transaction = new(quantityCalculate, dish.RefundDishInventory.Id, Domain.Entities.DishAggregator.Enums.RefundDishInventoryTransactionType.Add);
 
             await _unitOfWorks.RefundDishInventoryTransactionRepository.AddAsync(transaction);

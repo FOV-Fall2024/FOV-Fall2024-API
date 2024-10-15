@@ -8,7 +8,6 @@ public class RefundDishInventory : BaseAuditableEntity
     public Dish? Dish { get; set; }
 
     public Guid DishId { get; set; }
-    public virtual ICollection<RefundDishUnit> DishUnits { get; set; } = [];
 
     public virtual ICollection<RefundDishInventoryTransaction> Transaction { get; set; }
 

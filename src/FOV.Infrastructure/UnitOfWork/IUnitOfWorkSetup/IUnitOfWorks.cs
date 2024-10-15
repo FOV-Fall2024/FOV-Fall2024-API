@@ -51,7 +51,6 @@ public interface IUnitOfWorks
 
     public IRefundDishInventoryRepository RefundDishInventoryRepository { get; }
 
-    public IRefundDishUnitRepository RefundDishUnitRepository { get; }
 
     public IRefundDishInventoryTransactionRepository RefundDishInventoryTransactionRepository { get; }
 
