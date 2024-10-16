@@ -61,7 +61,7 @@ app.ApplyMigrations();
 await app.InitializeDatabaseAsync();
 app.UseHttpsRedirection();
 // Map the default Identity API endpoints except for registration
-app.MapHub<OrderHub>("order-hub");
+//app.MapHub<OrderHub>("order-hub");
 app.MapIdentityApi<User>();
 app.UseMiddleware<ExceptionMiddleware>();
 
