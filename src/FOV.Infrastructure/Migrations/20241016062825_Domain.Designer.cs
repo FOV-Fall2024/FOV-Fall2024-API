@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FOV.Infrastructure.Migrations
 {
     [DbContext(typeof(FOVContext))]
-    [Migration("20241011090549_FixMigration")]
-    partial class FixMigration
+    [Migration("20241016062825_Domain")]
+    partial class Domain
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -74,6 +74,9 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<string>("ComboDescription")
+                        .HasColumnType("text");
 
                     b.Property<string>("ComboName")
                         .IsRequired()
@@ -181,6 +184,9 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
 
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
                     b.Property<byte>("Status")
                         .HasColumnType("smallint");
 
@@ -256,20 +262,8 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
-                    b.Property<string>("DishDescription")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<Guid?>("DishGeneralId")
                         .HasColumnType("uuid");
-
-                    b.Property<string>("DishMainImage")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("DishName")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<byte>("DishType")
                         .HasColumnType("smallint");
@@ -301,38 +295,6 @@ namespace FOV.Infrastructure.Migrations
                     b.HasIndex("RestaurantId");
 
                     b.ToTable("Dishes");
-                });
-
-            modelBuilder.Entity("FOV.Domain.Entities.DishAggregator.DishImage", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("DishId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DishId");
-
-                    b.ToTable("DishImages");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.DishAggregator.DishIngredient", b =>
@@ -448,46 +410,6 @@ namespace FOV.Infrastructure.Migrations
                     b.ToTable("RefundDishInventoryTransactions");
                 });
 
-            modelBuilder.Entity("FOV.Domain.Entities.DishAggregator.RefundDishUnit", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("ConversionFactor")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("RefundDishInventoryId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("RefundDishUnitParentId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("UnitName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RefundDishInventoryId");
-
-                    b.HasIndex("RefundDishUnitParentId");
-
-                    b.ToTable("RefundDishUnits");
-                });
-
             modelBuilder.Entity("FOV.Domain.Entities.DishGeneralAggregator.DishGeneral", b =>
                 {
                     b.Property<Guid>("Id")
@@ -563,6 +485,9 @@ namespace FOV.Infrastructure.Migrations
 
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Url")
                         .IsRequired()
@@ -1841,17 +1766,6 @@ namespace FOV.Infrastructure.Migrations
                     b.Navigation("Restaurant");
                 });
 
-            modelBuilder.Entity("FOV.Domain.Entities.DishAggregator.DishImage", b =>
-                {
-                    b.HasOne("FOV.Domain.Entities.DishAggregator.Dish", "Dish")
-                        .WithMany("DishImages")
-                        .HasForeignKey("DishId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Dish");
-                });
-
             modelBuilder.Entity("FOV.Domain.Entities.DishAggregator.DishIngredient", b =>
                 {
                     b.HasOne("FOV.Domain.Entities.DishAggregator.Dish", "Dish")
@@ -1897,24 +1811,6 @@ namespace FOV.Infrastructure.Migrations
                     b.Navigation("Order");
 
                     b.Navigation("RefundDishInventory");
-                });
-
-            modelBuilder.Entity("FOV.Domain.Entities.DishAggregator.RefundDishUnit", b =>
-                {
-                    b.HasOne("FOV.Domain.Entities.DishAggregator.RefundDishInventory", "RefundDishInventory")
-                        .WithMany("DishUnits")
-                        .HasForeignKey("RefundDishInventoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FOV.Domain.Entities.DishAggregator.RefundDishUnit", "RefundDishUnitParent")
-                        .WithMany("RefundDishChildUnits")
-                        .HasForeignKey("RefundDishUnitParentId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("RefundDishInventory");
-
-                    b.Navigation("RefundDishUnitParent");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.DishGeneralAggregator.DishGeneral", b =>
@@ -2292,8 +2188,6 @@ namespace FOV.Infrastructure.Migrations
                 {
                     b.Navigation("DishCombos");
 
-                    b.Navigation("DishImages");
-
                     b.Navigation("DishIngredients");
 
                     b.Navigation("OrderDetails");
@@ -2303,14 +2197,7 @@ namespace FOV.Infrastructure.Migrations
 
             modelBuilder.Entity("FOV.Domain.Entities.DishAggregator.RefundDishInventory", b =>
                 {
-                    b.Navigation("DishUnits");
-
                     b.Navigation("Transaction");
-                });
-
-            modelBuilder.Entity("FOV.Domain.Entities.DishAggregator.RefundDishUnit", b =>
-                {
-                    b.Navigation("RefundDishChildUnits");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.DishGeneralAggregator.DishGeneral", b =>

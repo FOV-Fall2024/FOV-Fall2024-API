@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FOV.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class FixMigration : Migration
+    public partial class Domain : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -346,6 +346,7 @@ namespace FOV.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ComboName = table.Column<string>(type: "text", nullable: false),
+                    ComboDescription = table.Column<string>(type: "text", nullable: true),
                     ComboStatus = table.Column<byte>(type: "smallint", nullable: false),
                     Status = table.Column<byte>(type: "smallint", nullable: false),
                     Price = table.Column<decimal>(type: "numeric", nullable: false),
@@ -483,9 +484,6 @@ namespace FOV.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    DishName = table.Column<string>(type: "text", nullable: false),
-                    DishDescription = table.Column<string>(type: "text", nullable: false),
-                    DishMainImage = table.Column<string>(type: "text", nullable: false),
                     DishType = table.Column<byte>(type: "smallint", nullable: false),
                     PriorityDish = table.Column<byte>(type: "smallint", nullable: false),
                     CategoryId = table.Column<Guid>(type: "uuid", nullable: true),
@@ -526,6 +524,7 @@ namespace FOV.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     DishGeneralId = table.Column<Guid>(type: "uuid", nullable: true),
                     Url = table.Column<string>(type: "text", nullable: false),
+                    Order = table.Column<int>(type: "integer", nullable: false),
                     Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
@@ -759,6 +758,7 @@ namespace FOV.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Quantity = table.Column<int>(type: "integer", nullable: false),
                     ComboId = table.Column<Guid>(type: "uuid", nullable: false),
                     DishId = table.Column<Guid>(type: "uuid", nullable: false),
                     Status = table.Column<byte>(type: "smallint", nullable: false),
@@ -778,29 +778,6 @@ namespace FOV.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_DishCombos_Dishes_DishId",
-                        column: x => x.DishId,
-                        principalTable: "Dishes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "DishImages",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ImageUrl = table.Column<string>(type: "text", nullable: false),
-                    DishId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DishImages", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_DishImages_Dishes_DishId",
                         column: x => x.DishId,
                         principalTable: "Dishes",
                         principalColumn: "Id",
@@ -1084,37 +1061,6 @@ namespace FOV.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "RefundDishUnits",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    RefundDishInventoryId = table.Column<Guid>(type: "uuid", nullable: false),
-                    UnitName = table.Column<string>(type: "text", nullable: false),
-                    ConversionFactor = table.Column<int>(type: "integer", nullable: false),
-                    RefundDishUnitParentId = table.Column<Guid>(type: "uuid", nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RefundDishUnits", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_RefundDishUnits_RefundDishInventories_RefundDishInventoryId",
-                        column: x => x.RefundDishInventoryId,
-                        principalTable: "RefundDishInventories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RefundDishUnits_RefundDishUnits_RefundDishUnitParentId",
-                        column: x => x.RefundDishUnitParentId,
-                        principalTable: "RefundDishUnits",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
             migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "Id", "CategoryName", "Created", "CreatedBy", "LastModified", "LastModifiedBy", "Status" },
@@ -1144,12 +1090,12 @@ namespace FOV.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Combos",
-                columns: new[] { "Id", "ComboName", "ComboStatus", "Created", "CreatedBy", "LastModified", "LastModifiedBy", "PercentReduce", "Price", "RestaurantId", "Status", "Thumbnail" },
+                columns: new[] { "Id", "ComboDescription", "ComboName", "ComboStatus", "Created", "CreatedBy", "LastModified", "LastModifiedBy", "PercentReduce", "Price", "RestaurantId", "Status", "Thumbnail" },
                 values: new object[,]
                 {
-                    { new Guid("3907a193-c2ae-4f40-936b-9a2438595123"), "Combo 2", (byte)0, new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, 5.0m, 30.00m, new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"), (byte)1, "img2" },
-                    { new Guid("921b269a-db6e-4a1d-b285-70df523e010e"), "Combo 3", (byte)0, new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, 5.0m, 30.00m, new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"), (byte)1, "img3" },
-                    { new Guid("941bcca9-52a6-41f7-9403-06cc5fa703ea"), "Combo 1", (byte)0, new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, 10.0m, 50.00m, new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0"), (byte)1, "img1" }
+                    { new Guid("3907a193-c2ae-4f40-936b-9a2438595123"), null, "Combo 2", (byte)0, new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, 5.0m, 30.00m, new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"), (byte)1, "img2" },
+                    { new Guid("921b269a-db6e-4a1d-b285-70df523e010e"), null, "Combo 3", (byte)0, new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, 5.0m, 30.00m, new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"), (byte)1, "img3" },
+                    { new Guid("941bcca9-52a6-41f7-9403-06cc5fa703ea"), null, "Combo 1", (byte)0, new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, 10.0m, 50.00m, new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0"), (byte)1, "img1" }
                 });
 
             migrationBuilder.InsertData(
@@ -1264,11 +1210,6 @@ namespace FOV.Infrastructure.Migrations
                 name: "IX_DishGenerals_CategoryId",
                 table: "DishGenerals",
                 column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DishImages_DishId",
-                table: "DishImages",
-                column: "DishId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DishIngredientGenerals_DishGeneralId",
@@ -1429,16 +1370,6 @@ namespace FOV.Infrastructure.Migrations
                 column: "RefundDishInventoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RefundDishUnits_RefundDishInventoryId",
-                table: "RefundDishUnits",
-                column: "RefundDishInventoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RefundDishUnits_RefundDishUnitParentId",
-                table: "RefundDishUnits",
-                column: "RefundDishUnitParentId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Tables_RestaurantId",
                 table: "Tables",
                 column: "RestaurantId");
@@ -1495,9 +1426,6 @@ namespace FOV.Infrastructure.Migrations
                 name: "DishGeneralImages");
 
             migrationBuilder.DropTable(
-                name: "DishImages");
-
-            migrationBuilder.DropTable(
                 name: "DishIngredientGenerals");
 
             migrationBuilder.DropTable(
@@ -1529,9 +1457,6 @@ namespace FOV.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "RefundDishInventoryTransactions");
-
-            migrationBuilder.DropTable(
-                name: "RefundDishUnits");
 
             migrationBuilder.DropTable(
                 name: "WaiterSalary");
