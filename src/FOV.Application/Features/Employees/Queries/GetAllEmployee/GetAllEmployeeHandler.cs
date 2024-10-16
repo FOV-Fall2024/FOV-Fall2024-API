@@ -23,7 +23,7 @@ public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> u
         var userRoles = _claimService.UserRole;
         var restaurantId = _claimService.RestaurantId;
 
-        var employees = await _unitOfWorks.EmployeeRepository.GetAllAsync(x => x.User);
+        var employees = await _unitOfWorks.EmployeeRepository.GetAllAsync(x => x.User, x => x.Restaurant);
         var employeesQuery = employees.AsQueryable();
 
         if (userRoles.Contains(Role.Manager))
@@ -76,7 +76,7 @@ public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> u
                     employee.EmployeeCode,
                     employee.HireDate ?? DateTime.Now,
                     roleName,
-                    employee.RestaurantId ?? Guid.Empty,
+                    employee.Restaurant.RestaurantName,
                     employee.Status,
                     employee.Created
                 ));
