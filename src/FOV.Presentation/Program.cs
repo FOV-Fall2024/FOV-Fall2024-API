@@ -14,6 +14,17 @@ builder.Services.AddInfrastructureDI();
 builder.Services.AddApplicationDI();
 builder.Services.AddControllers();
 builder.Services.AddPresentationDI(conn ?? throw new ArgumentNullException(nameof(conn), "Connection string cannot be null."), builder);
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", builder =>
+    {
+        builder.WithOrigins("http://vktrng.ddns.net:8080/")
+               .AllowAnyMethod()
+               .AllowAnyHeader()
+               .AllowCredentials();
+    });
+});
+
 
 builder.Services.AddOpenTelemetry().WithMetrics(x =>
 {
@@ -69,6 +80,6 @@ app.MapPrometheusScrapingEndpoint();
 app.UseCookiePolicy();
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseCors("AllowAllOrigins");
+app.UseCors("CorsPolicy");
 app.MapControllers();
 app.Run();
