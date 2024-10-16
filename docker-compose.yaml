@@ -18,7 +18,7 @@ services:
       - "8081:8081"
     environment:
       - TZ=Etc/UTC
-      - CONNECTIONSTRINGS__PostgresConnection=Host=fov_database;Port=5432;Database=RestaurantManagementDatabase;Username=admin;Password=admin;
+      - CONNECTIONSTRINGS__PostgresConnection=Host=dpg-cs7lrmtumphs73a8polg-a.singapore-postgres.render.com;Port=5432;Database=restaurantmanagementdatabase;Username=restaurantmanagementdatabase_user;Password=fsXuO4Kj1hzaxhnx8ZVqltbgfoT5qrvT;
       - CONNECTIONSTRINGS__RedisConnection=redis:6379
     volumes:
       - data-protection-keys:/home/app/.aspnet/DataProtection-Keys
