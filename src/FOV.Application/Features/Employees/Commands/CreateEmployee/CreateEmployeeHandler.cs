@@ -22,6 +22,22 @@ public partial class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager
     public async Task<Result<string>> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
     {
         var fieldErrors = new List<FieldError>();
+        if (request.RoleId == 1)
+        {
+            var existingManager = await _unitOfWorks.EmployeeRepository.FirstOrDefaultAsync(
+                e => e.RestaurantId == request.RestaurantId,
+                e => e.User
+            );
+
+            if (existingManager != null && await _userManager.IsInRoleAsync(existingManager.User, Role.Manager))
+            {
+                fieldErrors.Add(new FieldError
+                {
+                    Field = "restaurantId",
+                    Message = $"Nhà hàng này đã tồn tại manager rồi"
+                });
+            }
+        }
 
         var existingUser = await _userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber);
         if (existingUser != null)
