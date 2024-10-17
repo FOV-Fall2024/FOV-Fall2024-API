@@ -45,24 +45,24 @@ public class DishController : DefaultController
     }
 
     [Authorize(Roles = Role.Manager)]
-    [HttpPost("active")]
+    [HttpPost("{id:guid}/active")]
     [SwaggerOperation(Summary = "Activates a product.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Active([FromQuery] ActiveProductCommand command)
+    public async Task<IActionResult> Active(Guid id)
     {
-        var response = await _mediator.Send(command);
+        var response = await _mediator.Send(new ActiveProductCommand(id));
         return Ok(new UPDATED_Result("Product activated successfully", response));
     }
 
     [Authorize(Roles = Role.Manager)]
-    [HttpPost("inactive")]
+    [HttpPost("{id:guid}/inactive")]
     [SwaggerOperation(Summary = "Deactivates a product.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Inactive([FromQuery] InactiveProductCommand command)
+    public async Task<IActionResult> Inactive(Guid id)
     {
-        var response = await _mediator.Send(command);
+        var response = await _mediator.Send(new InactiveProductCommand(id));
         return Ok(new UPDATED_Result("Product deactivated successfully", response));
     }
 
