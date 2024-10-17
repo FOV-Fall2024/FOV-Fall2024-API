@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace FOV.Application.Features.Dishes.Queries.GetMenu;
 
-public sealed record GetMenuCommand(string? DishName, string? CategoryName, PagingRequest? PagingRequest) : IRequest<PagedResult<GetMenuResponse>>
+public sealed record GetMenuCommand(string? DishName, string? CategoryName, Status? Status, PagingRequest? PagingRequest) : IRequest<PagedResult<GetMenuResponse>>
 {
     [Required]
     public Guid RestaurantId { get; set; }
@@ -40,21 +40,20 @@ public class GetMenuHandler : IRequestHandler<GetMenuCommand, PagedResult<GetMen
             c => c.Category
         );
 
-        var filterEntity = new Dish
+        if (!string.IsNullOrWhiteSpace(request.DishName))
         {
-            DishGeneral = new DishGeneral
-            {
-                DishName = string.IsNullOrWhiteSpace(request.DishName) ? string.Empty : request.DishName,
-                Category = new Category
-                {
-                    CategoryName = string.IsNullOrWhiteSpace(request.CategoryName) ? string.Empty : request.CategoryName
-                }
-            }
-        };
+            dishes = dishes.Where(x => x.DishGeneral.DishName.Contains(request.DishName, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+        if (!string.IsNullOrWhiteSpace(request.CategoryName))
+        {
+            dishes = dishes.Where(x => x.Category.CategoryName.Contains(request.CategoryName, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+        if (request.Status.HasValue && request.Status != 0)
+        {
+            dishes = dishes.Where(x => x.Status == request.Status.Value).ToList();
+        }
 
-        var filteredDishes = dishes.AsQueryable().CustomFilterV1(filterEntity);
-
-        var dishMappers = filteredDishes.Select(dish => new GetMenuResponse(
+        var dishMappers = dishes.Select(dish => new GetMenuResponse(
             dish.Id,
             dish.DishGeneral.DishName,
             dish.Price.ToString(),
@@ -63,7 +62,8 @@ public class GetMenuHandler : IRequestHandler<GetMenuCommand, PagedResult<GetMen
             dish.Created,
             dish.DishGeneral.DishGeneralImages.OrderBy(img => img.Order).Select(img => new GetAdditionalImage(img.Id, img.Url)).ToList(),
             dish.Category.CategoryName,
-            dish.GetType().Name
+            dish.GetType().Name,
+            dish.Status
         )).ToList();
 
         var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);

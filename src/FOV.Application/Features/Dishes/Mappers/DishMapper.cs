@@ -8,6 +8,6 @@ public static class DishMapper
 {
     public static GetDetailResponse MapperDetailDTO(this Dish dish, List<string> Images, List<DishIngredient> dishIngredients)
     {
-        return new GetDetailResponse(dish.Id, dish.DishGeneral.DishName, dish.DishGeneral.DishDescription, dish.Created, Images, dishIngredients.Select(ingredient => new GetIngredientResponse(ingredient.Id, ingredient.Ingredient.IngredientName)).ToList());
+        return new GetDetailResponse(dish.Id, dish.DishGeneral.DishName, dish.Price.ToString(), dish.DishGeneral.PercentagePriceDifference, dish.DishGeneral.DishDescription, dish.Created, Images, dishIngredients.Select(ingredient => new GetIngredientResponse(ingredient.Id, ingredient.Ingredient.IngredientName)).ToList(), dish.Category.CategoryName, dish.Status);
     }
 }

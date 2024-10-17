@@ -2,6 +2,7 @@
 using FOV.Application.Features.Dishes.Commons.Active;
 using FOV.Application.Features.Dishes.Commons.Add;
 using FOV.Application.Features.Dishes.Commons.Inactive;
+using FOV.Application.Features.Dishes.Queries.GetDetail;
 using FOV.Application.Features.Dishes.Queries.GetMenu;
 using FOV.Application.Features.Dishes.Queries.GetProduct;
 using FOV.Application.Features.Dishes.Responses;
@@ -97,6 +98,15 @@ public class DishController : DefaultController
         }
     }
 
+    [HttpGet("{id:guid}/detail")]
+    [SwaggerOperation(Summary = "Retrieves detailed information about a specific product.")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetProductDetail(Guid id)
+    {
+        var response = await _mediator.Send(new GetDetailCommand(id));
+        return Ok(response);
+    }
 
     /// <summary>
     /// Retrieves a specific product.
