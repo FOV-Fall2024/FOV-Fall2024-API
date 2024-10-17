@@ -668,6 +668,9 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<decimal>("IngredientAmount")
                         .HasColumnType("numeric");
 
+                    b.Property<byte>("IngredientMeasure")
+                        .HasColumnType("smallint");
+
                     b.Property<string>("IngredientName")
                         .IsRequired()
                         .HasColumnType("text");

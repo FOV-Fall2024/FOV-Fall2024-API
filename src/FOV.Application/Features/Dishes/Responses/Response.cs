@@ -9,4 +9,4 @@ public sealed record GetMenuResponse(Guid Id, string DishName, string Price, dec
 
 public sealed record GetDetailResponse(Guid Id,string DishName, string Price, decimal PercentagePriceDifference, string DishDescription, DateTime CreateDate, List<string> Images, List<GetIngredientResponse> Ingredients, string CategoryName, Status Status);
 
-public sealed record GetIngredientResponse(Guid ingredientId, string ingredientName);
+public sealed record GetIngredientResponse(Guid ingredientId, string ingredientName, string IngredientMeasureName, string IngredientType);
