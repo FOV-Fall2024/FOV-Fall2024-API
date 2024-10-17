@@ -56,6 +56,7 @@ public class GetMenuHandler : IRequestHandler<GetMenuCommand, PagedResult<GetMen
             dish.Id,
             dish.DishGeneral.DishName,
             dish.Price.ToString(),
+            dish.DishGeneral.PercentagePriceDifference,
             dish.DishGeneral.DishDescription,
             dish.Created,
             dish.DishGeneral.DishGeneralImages.OrderBy(img => img.Order).Select(img => new GetAdditionalImage(img.Id, img.Url)).ToList(),
