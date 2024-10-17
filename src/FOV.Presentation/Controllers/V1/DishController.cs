@@ -80,15 +80,14 @@ public class DishController : DefaultController
     /// </summary>
     /// <param name="command">The command containing query parameters for the menu.</param>
     /// <returns>A list of products in the menu.</returns>
-    [HttpGet("/restaurant/{restaurantId:guid}/menu")]
+    [HttpGet("/menu")]
     [SwaggerOperation(Summary = "Retrieves the menu of products.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetMenu(Guid restaurantId, [FromQuery] PagingRequest? pagingRequest)
+    public async Task<IActionResult> GetMenu([FromQuery] GetMenuCommand command)
     {
         try
         {
-            var command = new GetMenuCommand(restaurantId, pagingRequest);
             var response = await _mediator.Send(command);
             return Ok(response);
         }
@@ -104,16 +103,16 @@ public class DishController : DefaultController
     /// </summary>
     /// <param name="command">The command containing product query parameters.</param>
     /// <returns>The details of the requested product.</returns>
-    [Authorize]
-    [HttpGet]
-    [SwaggerOperation(Summary = "Retrieves a specific product.")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Get([FromQuery] GetProductCommand command)
-    {
-        var response = await _mediator.Send(command);
-        return Ok(response);
-    }
+    //[Authorize]
+    //[HttpGet]
+    //[SwaggerOperation(Summary = "Retrieves a specific product.")]
+    //[ProducesResponseType(StatusCodes.Status200OK)]
+    //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+    //public async Task<IActionResult> Get([FromQuery] GetProductCommand command)
+    //{
+    //    var response = await _mediator.Send(command);
+    //    return Ok(response);
+    //}
 
     /// <summary>
     /// Updates an existing product.

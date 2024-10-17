@@ -4,7 +4,7 @@ using MediatR;
 
 namespace FOV.Application.Features.DishGenerals.Commands.Create;
 
-public sealed record CreateProductGeneralCommand(string DishGeneralName, decimal DishGeneralPrice, string DishGeneralDescription, Guid CategoryId, bool IsPreparedDish, List<AddIngredientCommand> Ingredients, decimal PercentPriceDifference,List<string> Images) : IRequest<Guid>;
+public sealed record CreateProductGeneralCommand(string DishGeneralName, decimal DishGeneralPrice, string DishGeneralDescription, Guid CategoryId, bool IsRefund, List<AddIngredientCommand> Ingredients, decimal PercentPriceDifference,List<string> Images) : IRequest<Guid>;
 
 
 public sealed record AddIngredientCommand(Guid IngredientId, decimal Quantity);
@@ -17,11 +17,11 @@ public class CreateDishGeneralHandler(IUnitOfWorks unitOfWorks) : IRequestHandle
     {
 
 
-        DishGeneral productGeneral = new(request.DishGeneralName, request.DishGeneralPrice, request.DishGeneralDescription, request.CategoryId, false, request.IsPreparedDish,request.PercentPriceDifference);
+        DishGeneral productGeneral = new(request.DishGeneralName, request.DishGeneralPrice, request.DishGeneralDescription, request.CategoryId, false, request.IsRefund, request.PercentPriceDifference);
         await _unitOfWorks.DishGeneralRepository.AddAsync(productGeneral);
 
         await AddImage(request.Images, productGeneral.Id);
-        if (request.IsPreparedDish) await AddIngredient(request.Ingredients, productGeneral.Id);
+        if (!request.IsRefund) await AddIngredient(request.Ingredients, productGeneral.Id); //????
         await _unitOfWorks.SaveChangeAsync();
         return productGeneral.Id;
     }

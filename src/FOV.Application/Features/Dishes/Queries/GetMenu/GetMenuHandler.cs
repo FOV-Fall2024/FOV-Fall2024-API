@@ -1,5 +1,8 @@
-﻿using FOV.Application.Features.Dishes.Responses;
+﻿using System.ComponentModel.DataAnnotations;
+using FOV.Application.Features.Dishes.Responses;
+using FOV.Application.Features.DishGenerals.Responses;
 using FOV.Domain.Entities.DishAggregator;
+using FOV.Domain.Entities.DishGeneralAggregator;
 using FOV.Domain.Entities.TableAggregator.Enums;
 using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Infrastructure.Menu.Setup;
@@ -9,7 +12,11 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace FOV.Application.Features.Dishes.Queries.GetMenu;
 
-public sealed record GetMenuCommand(Guid RestaurantId, PagingRequest? PagingRequest) : IRequest<PagedResult<GetMenuResponse>>;
+public sealed record GetMenuCommand(string? DishName, string? CategoryName, PagingRequest? PagingRequest) : IRequest<PagedResult<GetMenuResponse>>
+{
+    [Required]
+    public Guid RestaurantId { get; set; }
+}
 
 public class GetMenuHandler : IRequestHandler<GetMenuCommand, PagedResult<GetMenuResponse>>
 {
@@ -24,12 +31,35 @@ public class GetMenuHandler : IRequestHandler<GetMenuCommand, PagedResult<GetMen
 
     public async Task<PagedResult<GetMenuResponse>> Handle(GetMenuCommand request, CancellationToken cancellationToken)
     {
-        var dishes = await _unitOfWorks.DishRepository.WhereAsync(x => x.RestaurantId == request.RestaurantId, d => d.DishGeneral, i => i.DishGeneral.DishGeneralImages);
-        var dishMappers = dishes.Select(dish => new GetMenuResponse(
+        var dishes = await _unitOfWorks.DishRepository.WhereAsync(
+            x => x.RestaurantId == request.RestaurantId,
+            d => d.DishGeneral,
+            i => i.DishGeneral.DishGeneralImages,
+            c => c.Category
+        );
+
+        var filterEntity = new Dish
+        {
+            DishGeneral = new DishGeneral
+            {
+                DishName = string.IsNullOrWhiteSpace(request.DishName) ? string.Empty : request.DishName,
+                Category = new Category
+                {
+                    CategoryName = string.IsNullOrWhiteSpace(request.CategoryName) ? string.Empty : request.CategoryName
+                }
+            }
+        };
+
+        var filteredDishes = dishes.AsQueryable().CustomFilterV1(filterEntity);
+
+        var dishMappers = filteredDishes.Select(dish => new GetMenuResponse(
             dish.Id,
             dish.DishGeneral.DishName,
+            dish.Price.ToString(),
             dish.DishGeneral.DishDescription,
             dish.Created,
+            dish.DishGeneral.DishGeneralImages.OrderBy(img => img.Order).Select(img => new GetAdditionalImage(img.Id, img.Url)).ToList(),
+            dish.Category.CategoryName,
             dish.GetType().Name
         )).ToList();
 
@@ -38,6 +68,8 @@ public class GetMenuHandler : IRequestHandler<GetMenuCommand, PagedResult<GetMen
         var pagedResult = PaginationHelper<GetMenuResponse>.Paging(sortedResults, page, pageSize);
 
         await _hubContext.Clients.All.SendAsync("UpdateMenu", pagedResult);
+
         return pagedResult;
     }
 }
+
