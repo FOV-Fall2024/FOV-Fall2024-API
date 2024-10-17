@@ -9,7 +9,7 @@ namespace FOV.Application.Features.RefundDishInventories.Commands.AddMultiple;
 
 public sealed record AddMultipleRefundDishInventoryCommand(List<DishAddingCommand> Dishes) : IRequest<Result>;
 
-public sealed record DishAddingCommand(Guid DishId, int Quantity, Guid RefundDishUnitId);
+public sealed record DishAddingCommand(Guid DishId, int Quantity);
 public class AddMultipleRefundDishInventoryHandler(IUnitOfWorks unitOfWorks, IClaimService claimService) : IRequestHandler<AddMultipleRefundDishInventoryCommand, Result>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
@@ -19,7 +19,6 @@ public class AddMultipleRefundDishInventoryHandler(IUnitOfWorks unitOfWorks, ICl
         foreach (var dish in request.Dishes)
         {
             Dish dishSystem = await _unitOfWorks.DishRepository.GetByIdAsync(dish.DishId, x => x.RefundDishInventory) ?? throw new Exception();
-
             int quantityAdding = dish.Quantity;
             RefundDishInventory inventory = await _unitOfWorks.RefundDishInventoryRepository.GetByIdAsync(dishSystem.RefundDishInventory.Id) ?? throw new Exception();
             inventory.AddQuantity(quantityAdding);

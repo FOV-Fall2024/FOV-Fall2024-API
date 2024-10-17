@@ -1,5 +1,4 @@
-﻿using FOV.Application.Common.Behaviours.Claim;
-using FOV.Application.Features.Dishes.Mappers;
+﻿using FOV.Application.Features.Dishes.Mappers;
 using FOV.Application.Features.Dishes.Responses;
 using FOV.Domain.Entities.DishAggregator;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;

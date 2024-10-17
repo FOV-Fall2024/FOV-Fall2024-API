@@ -18,7 +18,7 @@ public class GetIngredientsHandler : IRequestHandler<GetIngredientsCommand, Page
     public async Task<PagedResult<GetIngredientsResponse>> Handle(GetIngredientsCommand request, CancellationToken cancellationToken)
     {
         // Fetch all ingredients from the repository
-        var allIngredients = await _unitOfWorks.IngredientRepository.GetAllAsync();
+        var allIngredients = await _unitOfWorks.IngredientRepository.GetAllAsync(x => x.IngredientUnits);
 
         // Filter ingredients based on the request parameters
         var filteredIngredients = allIngredients.AsQueryable()
@@ -31,7 +31,9 @@ public class GetIngredientsHandler : IRequestHandler<GetIngredientsCommand, Page
             x.RestaurantId ?? Guid.Empty,
             x.IngredientName ?? string.Empty,
             x.IngredientAmount,
-            x.Created)).ToList();
+            x.Created,
+            x.IngredientUnits.Select(y => new GetIngredientUnitResponse(y.Id, y.IngredientUnitParentId, y.UnitName, y.ConversionFactor, y.Created)).ToList()
+            )).ToList();
 
         // Get pagination and sorting values
         var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);

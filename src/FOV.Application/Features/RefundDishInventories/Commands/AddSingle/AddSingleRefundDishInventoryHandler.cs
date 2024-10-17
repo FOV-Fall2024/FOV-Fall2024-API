@@ -6,7 +6,7 @@ using MediatR;
 using System.Text.Json.Serialization;
 
 namespace FOV.Application.Features.RefundDishInventories.Commands.AddSingle;
-public sealed record AddSingleRefundDishInventoryCommand(int Quantity, Guid RefundDishUnitId) : IRequest<Result>
+public sealed record AddSingleRefundDishInventoryCommand(int Quantity) : IRequest<Result>
 {
     [JsonIgnore]
     public Guid DishId { get; set; }

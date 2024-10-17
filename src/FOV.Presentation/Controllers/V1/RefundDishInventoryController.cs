@@ -34,9 +34,9 @@ namespace FOV.Presentation.Controllers.V1
         }
 
         [HttpGet("/export-file")]
-        public async Task<IActionResult> ExportInventoryFile()
+        public async Task<IActionResult> ExportInventoryFile(GetExportFileCommand command)
         {
-            var response = await _sender.Send(new GetExportFileCommand());
+            var response = await _sender.Send(command);
             return Ok(response);
         }
 

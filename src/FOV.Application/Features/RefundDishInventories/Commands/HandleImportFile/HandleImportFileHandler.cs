@@ -26,7 +26,6 @@ public class HandleImportFileHandler(IUnitOfWorks
         {
             var dishName = worksheet.Cells[row, 1].Text;  // Column A
             var quantity = worksheet.Cells[row, 2].Text;  // Column B
-            var measurement = worksheet.Cells[row, 3].Text;  // Column C
 
             Dish? dish = await _unitOfWorks.DishRepository.FirstOrDefaultAsync(x => x.DishGeneral.DishName == dishName && x.RestaurantId == _claimService.RestaurantId, x => x.RefundDishInventory);
             RefundDishInventory inventory = await _unitOfWorks.RefundDishInventoryRepository.GetByIdAsync(dish.RefundDishInventory.Id) ?? throw new Exception();

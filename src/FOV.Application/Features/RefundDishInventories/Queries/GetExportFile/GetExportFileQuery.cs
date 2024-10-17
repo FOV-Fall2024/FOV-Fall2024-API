@@ -1,12 +1,12 @@
 ﻿using FOV.Application.Common.Behaviours.Claim;
-using FOV.Application.Features.Ingredients.Commands.TakeImportFile;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 using OfficeOpenXml;
 using OfficeOpenXml.DataValidation;
 
 namespace FOV.Application.Features.RefundDishInventories.Queries.GetExportFile;
-public sealed record GetExportFileCommand : IRequest<TakeImportFileAddRefundDishResponse>;
+public sealed record GetExportFileCommand(int Type, IReadOnlyList<Guid> DishIds) : IRequest<TakeImportFileAddRefundDishResponse>;
+
 public sealed record TakeImportFileAddRefundDishResponse(MemoryStream ExcelFile, string ExcelName);
 internal class GetExportFileQuery(IUnitOfWorks unitOfWorks, IClaimService claimService) : IRequestHandler<GetExportFileCommand, TakeImportFileAddRefundDishResponse>
 {
@@ -25,17 +25,13 @@ internal class GetExportFileQuery(IUnitOfWorks unitOfWorks, IClaimService claimS
         worksheet.Cells[1, 2].Value = "Quantity";   // Column B
 
         int rowIngredient = 2;
-       // var dishes = await _unitOfWorks.DishRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId, x => x.RefundDishInventory, x => x.RefundDishInventory.DishUnits);
-        //foreach (var item in dishes)
-        //{
-        //    worksheet.Cells[rowIngredient, 1].Value = item.DishGeneral.DishName;
-        //    var listValidation = worksheet.DataValidations.AddListValidation($"C{rowIngredient}");
-        //    foreach (var ingredientUnit in item.RefundDishInventory.DishUnits)
-        //    {
-        //        listValidation.Formula.Values.Add(ingredientUnit.UnitName);
-        //    }
-        //    rowIngredient++;
-        //}
+        var nameDishes = await HandleImportType(request.Type,request.DishIds);
+        foreach (var item in nameDishes)
+        {
+            worksheet.Cells[rowIngredient, 1].Value = item;
+            var listValidation = worksheet.DataValidations.AddListValidation($"C{rowIngredient}");
+            rowIngredient++;
+        }
         // Lock column A to make it read-only
         worksheet.Cells["A2:A10"].Style.Locked = true;
 
@@ -68,5 +64,26 @@ internal class GetExportFileQuery(IUnitOfWorks unitOfWorks, IClaimService claimS
         // Return the result with the stream and filename
         var excelName = $"GeneratedExcel-{DateTime.Now:yyyyMMddHHmmss}.xlsx";
         return new TakeImportFileAddRefundDishResponse(stream, excelName);
+    }
+
+    public async Task<List<string>> HandleImportType(int importType, IReadOnlyList<Guid> importIds)
+    {
+        switch (importType)
+        {
+            case 1:
+                return _unitOfWorks.DishRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId).Result.Select(x => x.DishGeneral.DishName).ToList();
+            case 2:
+                return _unitOfWorks.DishRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId && x.RefundDishInventory.QuantityAvailable == 0).Result.Select(x => x.DishGeneral.DishName).ToList();
+            case 3:
+                // Filter the dishes by the provided importIds
+                return _unitOfWorks.DishRepository
+                    .WhereAsync(x => importIds.Contains(x.Id)) // Assuming x.Id is the GUID for the dish
+                    .Result
+                    .Select(x => x.DishGeneral.DishName)
+                    .ToList();
+            default:
+                return new List<string>();
+        }
+
     }
 }
