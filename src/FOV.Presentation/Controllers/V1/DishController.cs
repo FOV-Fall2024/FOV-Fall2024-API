@@ -44,37 +44,28 @@ public class DishController : DefaultController
         return Created("", new CREATED_Result("Tạo món ăn thành công", response));
     }
 
-    /// <summary>
-    /// Activates a product.
-    /// </summary>
-    /// <param name="command">The command containing product activation details.</param>
-    /// <returns>The result of the activation operation.</returns>
     [Authorize(Roles = Role.Manager)]
     [HttpPost("active")]
     [SwaggerOperation(Summary = "Activates a product.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Active(ActiveProductCommand command)
+    public async Task<IActionResult> Active([FromQuery] ActiveProductCommand command)
     {
         var response = await _mediator.Send(command);
         return Ok(new UPDATED_Result("Product activated successfully", response));
     }
 
-    /// <summary>
-    /// Deactivates a product.
-    /// </summary>
-    /// <param name="command">The command containing product deactivation details.</param>
-    /// <returns>The result of the deactivation operation.</returns>
     [Authorize(Roles = Role.Manager)]
     [HttpPost("inactive")]
     [SwaggerOperation(Summary = "Deactivates a product.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Inactive(InactiveProductCommand command)
+    public async Task<IActionResult> Inactive([FromQuery] InactiveProductCommand command)
     {
         var response = await _mediator.Send(command);
         return Ok(new UPDATED_Result("Product deactivated successfully", response));
     }
+
 
     /// <summary>
     /// Retrieves the menu of products.
