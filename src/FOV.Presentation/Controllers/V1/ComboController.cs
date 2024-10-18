@@ -1,6 +1,7 @@
 ﻿using FOV.Application.Features.Combos.Commands.Active;
 using FOV.Application.Features.Combos.Commands.Create;
 using FOV.Application.Features.Combos.Commands.Inactive;
+using FOV.Application.Features.Combos.Queries.GetComboDetail;
 using FOV.Application.Features.Combos.Queries.GetCombos;
 using FOV.Application.Features.Combos.Reponses;
 using FOV.Domain.Entities.UserAggregator.Enums;
@@ -38,6 +39,18 @@ namespace FOV.Presentation.Controllers.V1
             return Ok(response);
         }
 
+        [HttpGet("{id}")]
+        [SwaggerOperation(Summary = "Retrieves combo detail.")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetComboDetail(Guid id)
+        {
+            var response = await _mediator.Send(new GetComboDetailCommand(id));
+            return Ok(response);
+        }
+
+
+
         /// <summary>
         /// Adds a new combo.
         /// </summary>
@@ -46,7 +59,7 @@ namespace FOV.Presentation.Controllers.V1
         [SwaggerOperation(Summary = "Adds a new combo.")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> AddCombo( CreateComboCommand command)
+        public async Task<IActionResult> AddCombo(CreateComboCommand command)
         {
             var response = await _mediator.Send(command);
             return Created("", new CREATED_Result("Tạo combo thành công"));

@@ -25,13 +25,13 @@ public class Combo : BaseAuditableEntity, IsSoftDeleted
     {
 
     }
-    public Combo(string comboName, decimal price, Guid restaurantId, string thumbnail, string description)
+    public Combo(string comboName, decimal price, Guid restaurantId, string thumbnail, string description, bool isActive)
     {
         Thumbnail = thumbnail;
         ComboName = comboName;
         ComboDescription = description;
         ComboStatus = ComboStatus.InStock;
-        Status = Status.Active;
+        Status = isActive ? Status.Active : Status.Inactive;
         Price = price;
         RestaurantId = restaurantId;
     }
@@ -52,5 +52,5 @@ public class Combo : BaseAuditableEntity, IsSoftDeleted
         Price = price;
     }
 
-    public void Update(decimal price) => Price = price; 
+    public void Update(decimal price) => Price = price;
 }

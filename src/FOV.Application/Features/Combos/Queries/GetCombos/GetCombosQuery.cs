@@ -1,11 +1,12 @@
 ﻿using FOV.Application.Common.Behaviours.Claim;
 using FOV.Application.Features.Combos.Reponses;
+using FOV.Domain.Entities.ComboAggregator;
 using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Combos.Queries.GetCombos;
-public sealed record GetCombosCommand(PagingRequest? PagingRequest, Guid? RestaurantId) : IRequest<PagedResult<GetCombosResponse>>;
+public sealed record GetCombosCommand(PagingRequest? PagingRequest, Guid? RestaurantId,string? ComboName) : IRequest<PagedResult<GetCombosResponse>>;
 
 public class GetCombosQuery(IUnitOfWorks unitOfWorks,IClaimService claimService) : IRequestHandler<GetCombosCommand, PagedResult<GetCombosResponse>>
 {
@@ -13,12 +14,16 @@ public class GetCombosQuery(IUnitOfWorks unitOfWorks,IClaimService claimService)
     private readonly IClaimService _claimService = claimService;
     public async Task<PagedResult<GetCombosResponse>> Handle(GetCombosCommand request, CancellationToken cancellationToken)
     {
-        var combos = (await _unitOfWorks.ComboRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId))
-                     .OrderByDescending(c => c.Created);
+        var combos = (await _unitOfWorks.ComboRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId));
 
         var filteredCombos = combos
             .Where(c => request.RestaurantId == null || c.RestaurantId == request.RestaurantId)
             .AsQueryable();
+        var filteredCombo = new Combo
+        {
+            ComboName = string.IsNullOrEmpty(request.ComboName) ? string.Empty : request.ComboName,
+            RestaurantId = request.RestaurantId.HasValue ? request.RestaurantId.Value : Guid.Empty
+        };
 
         var mappedCombos = filteredCombos.Select(combo => new GetCombosResponse(
             combo.Id,

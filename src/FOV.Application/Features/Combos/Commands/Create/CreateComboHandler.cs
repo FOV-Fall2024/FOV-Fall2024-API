@@ -5,7 +5,7 @@ using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Combos.Commands.Create;
-public sealed record CreateComboCommand(List<ProductInCombo> ProductInCombos, string ComboName, bool IsActive, string ComboDescription, decimal Price, DateTime ExpiredDate, string Thumbnail) : IRequest<Guid>;
+public sealed record CreateComboCommand(List<ProductInCombo> ProductInCombos, string ComboName, bool IsActive, string ComboDescription, decimal Price, string Thumbnail) : IRequest<Guid>;
 public sealed record ProductInCombo(Guid ProductId, int Quantity);
 public class CreateComboHandler(IUnitOfWorks unitOfWorks, IClaimService claimService) : IRequestHandler<CreateComboCommand, Guid>
 {
@@ -15,7 +15,7 @@ public class CreateComboHandler(IUnitOfWorks unitOfWorks, IClaimService claimSer
     public async Task<Guid> Handle(CreateComboCommand request, CancellationToken cancellationToken)
     {
         Guid restaurantId = _claimService.RestaurantId;
-        Combo combo = new(request.ComboName, request.Price, _claimService.RestaurantId, request.Thumbnail, request.ComboDescription);
+        Combo combo = new(request.ComboName, request.Price, _claimService.RestaurantId, request.Thumbnail, request.ComboDescription,request.IsActive);
         await _unitOfWorks.ComboRepository.AddAsync(combo);
         decimal totalPrice = 0;
         foreach (var item in request.ProductInCombos)
