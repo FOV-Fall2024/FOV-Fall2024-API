@@ -32,6 +32,7 @@ public class HandleImportFileHandler(IUnitOfWorks
             if (dish == null) break;
             //RefundDishUnit unit = await _unitOfWorks.RefundDishUnitRepository.FirstOrDefaultAsync(x => x.RefundDishInventoryId == dish.RefundDishInventory.Id && x.UnitName == measurement) ?? throw new Exception();
             int quantityCalculate = int.Parse(quantity);
+            if (quantityCalculate <= 0) break; 
             RefundDishInventoryTransaction transaction = new(quantityCalculate, dish.RefundDishInventory.Id, Domain.Entities.DishAggregator.Enums.RefundDishInventoryTransactionType.Add);
 
             await _unitOfWorks.RefundDishInventoryTransactionRepository.AddAsync(transaction);

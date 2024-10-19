@@ -34,7 +34,7 @@ public class GetMenuHandler : IRequestHandler<GetMenuCommand, PagedResult<GetMen
     public async Task<PagedResult<GetMenuResponse>> Handle(GetMenuCommand request, CancellationToken cancellationToken)
     {
         var dishes = await _unitOfWorks.DishRepository.WhereAsync(
-            x => x.RestaurantId == request.RestaurantId,
+            x => x.RestaurantId == request.RestaurantId && x.Status == Status.Active,
             d => d.DishGeneral,
             i => i.DishGeneral.DishGeneralImages,
             c => c.Category

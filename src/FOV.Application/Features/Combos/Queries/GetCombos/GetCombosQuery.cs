@@ -30,6 +30,7 @@ public class GetCombosQuery(IUnitOfWorks unitOfWorks,IClaimService claimService)
             combo.RestaurantId,
             combo.ComboName,
             combo.Price,
+            combo.Thumbnail,
             combo.Created
         )).ToList();
 
