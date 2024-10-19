@@ -1,9 +1,11 @@
-﻿using FOV.Application.Features.RefundDishInventories.Commands.AddMultiple;
+﻿using System.IO;
+using FOV.Application.Features.RefundDishInventories.Commands.AddMultiple;
 using FOV.Application.Features.RefundDishInventories.Commands.AddSingle;
 using FOV.Application.Features.RefundDishInventories.Commands.HandleImportFile;
 using FOV.Application.Features.RefundDishInventories.Queries.GetExportFile;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using OfficeOpenXml.DataValidation;
 
 namespace FOV.Presentation.Controllers.V1
 {
@@ -37,7 +39,9 @@ namespace FOV.Presentation.Controllers.V1
         public async Task<IActionResult> ExportInventoryFile()
         {
             var response = await _sender.Send(new GetExportFileCommand());
-            return Ok(response);
+            var stream = response.ExcelFile;
+            var excelName = response.ExcelName;
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
         }
 
         [HttpPost("/upload-file")]
