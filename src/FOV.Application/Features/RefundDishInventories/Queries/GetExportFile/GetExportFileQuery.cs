@@ -25,7 +25,7 @@ internal class GetExportFileQuery(IUnitOfWorks unitOfWorks, IClaimService claimS
         worksheet.Cells[1, 2].Value = "Quantity";   // Column B
 
         int rowIngredient = 2;
-        var nameDishes = await _unitOfWorks.DishRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId);
+        List<string> nameDishes = _unitOfWorks.DishRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId).Result.Select(x => x.DishGeneral.DishName).ToList();
         foreach (var item in nameDishes)
         {
             worksheet.Cells[rowIngredient, 1].Value = item;
@@ -66,5 +66,5 @@ internal class GetExportFileQuery(IUnitOfWorks unitOfWorks, IClaimService claimS
         return new TakeImportFileAddRefundDishResponse(stream, excelName);
     }
 
- 
+
 }
