@@ -28,6 +28,7 @@ public class ComboRepository : GenericRepository<Combo>, IComboRepository
                 d.Status,
                 d.Dish.DishGeneral.DishName,
                 d.Dish.DishGeneral.DishDescription,
+                d.Quantity,
                 d.Dish.Price ?? 0,
                 d.Dish.DishGeneral.DishGeneralImages.Select(x => x.Url).ToList(),
                 d.Dish.DishIngredients.Select(i => new GetIngredientInDishResponse(
