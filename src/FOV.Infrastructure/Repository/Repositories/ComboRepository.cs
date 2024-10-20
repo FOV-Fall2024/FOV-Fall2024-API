@@ -21,6 +21,8 @@ public class ComboRepository : GenericRepository<Combo>, IComboRepository
             c.Id,
             c.ComboName,
             c.Price,
+            c.Thumbnail,
+            c.ComboDescription,
             c.DishCombos.Select(d => new GetDishComboResponse(
                 d.Id,
                 d.Status,
@@ -31,7 +33,7 @@ public class ComboRepository : GenericRepository<Combo>, IComboRepository
                 d.Dish.DishIngredients.Select(i => new GetIngredientInDishResponse(
                     i.Id,
                     i.Ingredient.IngredientName,
-                    i.Ingredient.IngredientAmount,
+                    i.Quantity,
                     i.Ingredient.IngredientMeasure.ToString(),
                     i.Ingredient.IngredientType.IngredientName
                 )).ToList()
