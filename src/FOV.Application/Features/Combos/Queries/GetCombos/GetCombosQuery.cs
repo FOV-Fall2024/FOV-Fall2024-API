@@ -31,7 +31,8 @@ public class GetCombosQuery(IUnitOfWorks unitOfWorks,IClaimService claimService)
             combo.ComboName,
             combo.Price,
             combo.Thumbnail,
-            combo.Created
+            combo.Created,
+            combo.Status
         )).ToList();
 
         var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
