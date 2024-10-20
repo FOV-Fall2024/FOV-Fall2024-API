@@ -14,7 +14,8 @@ class CreateComboValidator : AbstractValidator<CreateComboCommand>
             .MustAsync(async (command, price, cancellation) =>
                 await priceValidator.CheckPrice(price, command.ProductInCombos, cancellation))
             .WithMessage("Price must be less than the total price of the selected dishes.");
-        RuleFor(x => x.ComboName).MustAsync(async (comboName, cancellation) => await nameValidator.CheckNameCombo(comboName, cancellation)).WithMessage("Tên đã được sử dụng trong hệ thống");
+        RuleFor(x => x.ComboName).SetValidator(nameValidator);
+              
     }
 }
 
@@ -48,13 +49,29 @@ public sealed class ComboNameValidator : AbstractValidator<string>
     {
         _unitOfWorks = unitOfWorks;
         _claimService = claimService;
-      
+
+        // Validation rule to check combo name uniqueness
+        RuleFor(name => name)
+            .MustAsync(CheckNameCombo)
+            .WithMessage("Tên đã được sử dụng trong hệ thống");
     }
 
     public async Task<bool> CheckNameCombo(string comboName, CancellationToken token)
     {
-        Combo? combo = await _unitOfWorks.ComboRepository.FirstOrDefaultAsync(x => x.ComboName == comboName && x.RestaurantId == _claimService.RestaurantId);
+        // Ensure RestaurantId is available
+        var restaurantId = _claimService.RestaurantId;
+        if (restaurantId == null)
+        {
+            throw new InvalidOperationException("Restaurant ID is not available.");
+        }
+
+        // Query to check if the combo name already exists for this restaurant
+        Combo? combo = await _unitOfWorks.ComboRepository
+            .FirstOrDefaultAsync(x => x.ComboName == comboName && x.RestaurantId == restaurantId, token);
+
+        // Return true if combo name is unique (i.e., combo is null)
         return combo == null;
     }
 }
+
 
