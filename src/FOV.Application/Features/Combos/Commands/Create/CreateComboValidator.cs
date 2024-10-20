@@ -6,7 +6,7 @@ using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 
 namespace FOV.Application.Features.Combos.Commands.Create;
 
-class CreateComboValidator : AbstractValidator<CreateComboCommand>
+public class CreateComboValidator : AbstractValidator<CreateComboCommand>
 {
     public CreateComboValidator(PriceValidator priceValidator,ComboNameValidator nameValidator)
     {
