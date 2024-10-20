@@ -15,7 +15,7 @@ public class GetCombosQuery(IUnitOfWorks unitOfWorks, IClaimService claimService
     private readonly IClaimService _claimService = claimService;
     public async Task<PagedResult<GetCombosResponse>> Handle(GetCombosCommand request, CancellationToken cancellationToken)
     {
-        var combos = await _unitOfWorks.ComboRepository.GetAllAsync(x => x.RestaurantId == _claimService.RestaurantId);
+        var combos = await _unitOfWorks.ComboRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId);
 
         //var filteredCombos = combos.AsQueryable()
         //    .Where(c => request.RestaurantId == null || c.RestaurantId == request.RestaurantId);
@@ -25,6 +25,7 @@ public class GetCombosQuery(IUnitOfWorks unitOfWorks, IClaimService claimService
             ComboName = string.IsNullOrEmpty(request.ComboName) ? string.Empty : request.ComboName,
             RestaurantId = request.RestaurantId.HasValue ? request.RestaurantId.Value : Guid.Empty,
         });
+
         if (request.ComboStatus != null)
         {
             filteredCombo =  filteredCombo.Where(x => x.Status == request.ComboStatus.Value);

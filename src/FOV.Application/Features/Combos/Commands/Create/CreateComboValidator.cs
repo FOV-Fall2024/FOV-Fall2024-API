@@ -13,7 +13,7 @@ public class CreateComboValidator : AbstractValidator<CreateComboCommand>
         RuleFor(x => x.Price)
             .MustAsync(async (command, price, cancellation) =>
                 await priceValidator.CheckPrice(price, command.ProductInCombos, cancellation))
-            .WithMessage("Price must be less than the total price of the selected dishes.");
+            .WithMessage("Giá phải nhỏ hơn giá tổng ");
         RuleFor(x => x.ComboName).SetValidator(nameValidator);
               
     }
