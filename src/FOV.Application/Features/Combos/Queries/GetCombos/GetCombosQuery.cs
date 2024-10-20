@@ -7,30 +7,30 @@ using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Combos.Queries.GetCombos;
-public sealed record GetCombosCommand(PagingRequest? PagingRequest, Guid? RestaurantId,string? ComboName,Status? ComboStatus) : IRequest<PagedResult<GetCombosResponse>>;
+public sealed record GetCombosCommand(PagingRequest? PagingRequest, Guid? RestaurantId, string? ComboName, Status? ComboStatus) : IRequest<PagedResult<GetCombosResponse>>;
 
-public class GetCombosQuery(IUnitOfWorks unitOfWorks,IClaimService claimService) : IRequestHandler<GetCombosCommand, PagedResult<GetCombosResponse>>
+public class GetCombosQuery(IUnitOfWorks unitOfWorks, IClaimService claimService) : IRequestHandler<GetCombosCommand, PagedResult<GetCombosResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     private readonly IClaimService _claimService = claimService;
     public async Task<PagedResult<GetCombosResponse>> Handle(GetCombosCommand request, CancellationToken cancellationToken)
     {
-        var combos = (await _unitOfWorks.ComboRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId));
+        var combos = await _unitOfWorks.ComboRepository.GetAllAsync(x => x.RestaurantId == _claimService.RestaurantId);
 
-        var filteredCombos = combos
-            .Where(c => request.RestaurantId == null || c.RestaurantId == request.RestaurantId)
-            .AsQueryable();
-        var filteredCombo = new Combo
+        //var filteredCombos = combos.AsQueryable()
+        //    .Where(c => request.RestaurantId == null || c.RestaurantId == request.RestaurantId);
+
+        var filteredCombo = combos.AsQueryable().CustomFilterV1(new Combo
         {
             ComboName = string.IsNullOrEmpty(request.ComboName) ? string.Empty : request.ComboName,
             RestaurantId = request.RestaurantId.HasValue ? request.RestaurantId.Value : Guid.Empty,
-        };
+        });
         if (request.ComboStatus != null)
         {
-            filteredCombo.Status = request.ComboStatus.Value;
+            filteredCombo =  filteredCombo.Where(x => x.Status == request.ComboStatus.Value);
         }
 
-        var mappedCombos = filteredCombos.Select(combo => new GetCombosResponse(
+        var mappedCombos = filteredCombo.Select(combo => new GetCombosResponse(
             combo.Id,
             combo.RestaurantId,
             combo.ComboName,
