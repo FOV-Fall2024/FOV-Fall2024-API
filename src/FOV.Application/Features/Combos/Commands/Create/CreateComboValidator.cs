@@ -67,7 +67,7 @@ public sealed class ComboNameValidator : AbstractValidator<string>
 
         // Query to check if the combo name already exists for this restaurant
         Combo? combo = await _unitOfWorks.ComboRepository
-            .FirstOrDefaultAsync(x => x.ComboName == comboName && x.RestaurantId == restaurantId, token);
+            .FirstOrDefaultAsync(x => x.ComboName == comboName && x.RestaurantId == restaurantId);
 
         // Return true if combo name is unique (i.e., combo is null)
         return combo == null;
