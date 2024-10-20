@@ -21,23 +21,22 @@ public class RemoveIngredientHandler(IUnitOfWorks unitOfWorks) : IRequestHandler
         foreach (var ingreId in request.IngredientId)
         {
             DishIngredientGeneral general = await _unitOfWorks.DishIngredientGeneralRepository.FirstOrDefaultAsync(x => x.IngredientGeneralId == ingreId && x.DishGeneralId == request.ProductId, x => x.IngredientGeneral) ?? throw new Exception();
-            await UpdateDishesWithIngredient(request.ProductId, general.IngredientGeneral.IngredientName);
+            await UpdateDishesWithIngredient(request.ProductId,ingreId);
             _unitOfWorks.DishIngredientGeneralRepository.Remove(general);
-            await UpdateDishesWithIngredient(request.ProductId, general.IngredientGeneral.IngredientName);
         }
 
         await _unitOfWorks.SaveChangeAsync();
         return Result.Ok();
     }
 
-    private async Task UpdateDishesWithIngredient(Guid dishGeneralId, string ingredientName)
+    private async Task UpdateDishesWithIngredient(Guid dishGeneralId,Guid ingredientGeneralId)
     {
         var dishes = await _unitOfWorks.DishRepository.WhereAsync(d => d.DishGeneralId == dishGeneralId);
 
         foreach (var dish in dishes)
         {
             var ingredient = await _unitOfWorks.IngredientRepository
-                .FirstOrDefaultAsync(i => i.IngredientName == ingredientName && i.RestaurantId == dish.RestaurantId);
+                .FirstOrDefaultAsync(i => i.IngredientGeneralId == ingredientGeneralId && i.RestaurantId == dish.RestaurantId);
             await UpdateDishIngredient(dish.Id, ingredient.Id);
         }
     }

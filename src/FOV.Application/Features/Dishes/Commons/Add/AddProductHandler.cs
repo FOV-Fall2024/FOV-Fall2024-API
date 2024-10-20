@@ -66,17 +66,17 @@ internal class AddProductHandler : IRequestHandler<AddProductCommand, Result>
         var ingredients = await _unitOfWorks.IngredientGeneralRepository
             .WhereAsync(x => x.DishIngredientGenerals.Any(pig => pig.DishGeneralId == dishGeneralId), x => x.DishIngredientGenerals);
 
-        var ingredientNames = ingredients.Select(i => i.IngredientName).ToList();
+        var ingredientNames = ingredients.Select(i => i.Id).ToList();
         var existingIngredients = await _unitOfWorks.IngredientRepository
-            .WhereAsync(x => ingredientNames.Contains(x.IngredientName) && x.RestaurantId == _claimService.RestaurantId);
+            .WhereAsync(x => ingredientNames.Contains(x.IngredientGeneralId) && x.RestaurantId == _claimService.RestaurantId);
 
         foreach (var item in ingredients)
         {
-            var existingIngredient = existingIngredients.FirstOrDefault(e => e.IngredientName == item.IngredientName);
+            var existingIngredient = existingIngredients.FirstOrDefault(e => e.IngredientGeneralId == item.Id);
             IngredientGeneral? ingredientGeneral = await _unitOfWorks.IngredientGeneralRepository.FirstOrDefaultAsync(x => x.IngredientName == item.IngredientName, x => x.DishIngredientGenerals);
             if (existingIngredient is null)
             {
-                var newIngredient = new Ingredient(item.IngredientName, item.IngredientTypeId, _claimService.RestaurantId);
+                var newIngredient = new Ingredient(item.IngredientTypeId, _claimService.RestaurantId,item.Id);
                 await _unitOfWorks.IngredientRepository.AddAsync(newIngredient);
                 await AddDishIngredientAndUnits(productId, newIngredient.Id, item.IngredientMeasure, item.DishIngredientGenerals.FirstOrDefault().Quantity);
             }

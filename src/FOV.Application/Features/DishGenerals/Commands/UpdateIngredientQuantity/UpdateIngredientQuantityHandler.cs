@@ -39,7 +39,7 @@ public class UpdateIngredientQuantityHandler : IRequestHandler<UpdateIngredientQ
                 general.UpdateQuantity(ingredient.Quantity);
                 _unitOfWorks.DishIngredientGeneralRepository.Update(general);
 
-                await UpdateDishesWithIngredient(general.Id, ingredientGeneral.IngredientName);
+                await UpdateDishesWithIngredient(general.Id, ingredient.IngredientGeneralId);
             }
            
             await _unitOfWorks.SaveChangeAsync();
@@ -52,14 +52,14 @@ public class UpdateIngredientQuantityHandler : IRequestHandler<UpdateIngredientQ
         }
     }
 
-    private async Task UpdateDishesWithIngredient(Guid dishGeneralId, string ingredientName)
+    private async Task UpdateDishesWithIngredient(Guid dishGeneralId,Guid ingredientGeneralId)
     {
         var dishes = await _unitOfWorks.DishRepository.WhereAsync(d => d.DishGeneralId == dishGeneralId);
 
         foreach (var dish in dishes)
         {
             var ingredient = await _unitOfWorks.IngredientRepository
-                .FirstOrDefaultAsync(i => i.IngredientName == ingredientName && i.RestaurantId == dish.RestaurantId)
+                .FirstOrDefaultAsync(i => i.IngredientGeneralId == ingredientGeneralId && i.RestaurantId == dish.RestaurantId)
                 ?? throw new InvalidOperationException("Ingredient not found in the restaurant");
 
             await UpdateDishIngredient(dish.Id, ingredient.Id);

@@ -17,6 +17,8 @@ public class IngredientGeneral : BaseAuditableEntity, IsSoftDeleted
 
     public virtual ICollection<DishIngredientGeneral>? DishIngredientGenerals { get; set; }
 
+    public virtual ICollection<Ingredient>? Ingredients { get; set; }
+
     public IngredientGeneral()
     {
 

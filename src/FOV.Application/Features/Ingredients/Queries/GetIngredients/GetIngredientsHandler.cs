@@ -18,18 +18,18 @@ public class GetIngredientsHandler : IRequestHandler<GetIngredientsCommand, Page
     public async Task<PagedResult<GetIngredientsResponse>> Handle(GetIngredientsCommand request, CancellationToken cancellationToken)
     {
         // Fetch all ingredients from the repository
-        var allIngredients = await _unitOfWorks.IngredientRepository.GetAllAsync(x => x.IngredientUnits);
+        var allIngredients = await _unitOfWorks.IngredientRepository.GetAllAsync(x => x.IngredientUnits,x => x.IngredientGeneral);
 
         // Filter ingredients based on the request parameters
         var filteredIngredients = allIngredients.AsQueryable()
             .Where(x => string.IsNullOrEmpty(request.IngredientName) ||
-                        x.IngredientName.Contains(request.IngredientName, StringComparison.OrdinalIgnoreCase));
+                        x.IngredientGeneral.IngredientName.Contains(request.IngredientName, StringComparison.OrdinalIgnoreCase));
 
         // Select and map to response DTO
         var mappedIngredients = filteredIngredients.Select(x => new GetIngredientsResponse(
             x.Id,
             x.RestaurantId ?? Guid.Empty,
-            x.IngredientName ?? string.Empty,
+            x.IngredientGeneral.IngredientName ?? string.Empty,
             x.IngredientAmount,
             x.Created,
             x.IngredientUnits.Select(y => new GetIngredientUnitResponse(y.Id, y.IngredientUnitParentId, y.UnitName, y.ConversionFactor, y.Created)).ToList()

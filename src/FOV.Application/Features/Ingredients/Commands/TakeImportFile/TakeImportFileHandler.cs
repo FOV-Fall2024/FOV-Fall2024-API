@@ -26,10 +26,10 @@ public class TakeImportFileHandler(IUnitOfWorks unitOfWorks,IClaimService claimS
         worksheet.Cells[1, 3].Value = "Measurement";   // Column C
 
         int rowIngredient = 2;
-        var ingredients = await _unitOfWorks.IngredientRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId,x => x.IngredientUnits);
+        var ingredients = await _unitOfWorks.IngredientRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId,x => x.IngredientUnits,x => x.IngredientGeneral);
         foreach (var item in ingredients)
         {
-            worksheet.Cells[rowIngredient, 1].Value = item.IngredientName;
+            worksheet.Cells[rowIngredient, 1].Value = item.IngredientGeneral.IngredientName;
             var listValidation = worksheet.DataValidations.AddListValidation($"C{rowIngredient}");
             foreach (var ingredientUnit in item.IngredientUnits)
             {

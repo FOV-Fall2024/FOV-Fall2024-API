@@ -30,7 +30,7 @@ public class AddIngredientHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<Ad
 
             var dishIngredientGeneral = new DishIngredientGeneral(request.Id, ingredient.IngredientId, ingredient.Quantity);
             await _unitOfWorks.DishIngredientGeneralRepository.AddAsync(dishIngredientGeneral);
-            await UpdateDishesWithIngredient(request.Id, ingredientGeneral.IngredientName, ingredient.Quantity);
+            await UpdateDishesWithIngredient(request.Id, ingredientGeneral.Id, ingredient.Quantity);
         }
        
         await _unitOfWorks.SaveChangeAsync();
@@ -38,34 +38,34 @@ public class AddIngredientHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<Ad
         return request.Id;
     }
 
-    private async Task UpdateDishesWithIngredient(Guid dishGeneralId, string ingredientName, decimal quantity)
+    private async Task UpdateDishesWithIngredient(Guid dishGeneralId, Guid ingredientGeneralId, decimal quantity)
     {
         var dishes = await _unitOfWorks.DishRepository.WhereAsync(d => d.DishGeneralId == dishGeneralId);
 
         foreach (var dish in dishes)
         {
             var ingredient = await _unitOfWorks.IngredientRepository
-                .FirstOrDefaultAsync(i => i.IngredientName == ingredientName && i.RestaurantId == dish.RestaurantId);
+                .FirstOrDefaultAsync(i => i.IngredientGeneralId == ingredientGeneralId && i.RestaurantId == dish.RestaurantId);
 
-            ingredient ??= await AddIngredientToDish(ingredientName, dish.RestaurantId, dish.Id, dishGeneralId);
+            ingredient ??= await AddIngredientToDish(ingredient.IngredientGeneralId, dish.RestaurantId, dish.Id, dishGeneralId);
 
-            await AddDishIngredient(dish.Id, ingredient.Id, ingredientName, dishGeneralId, quantity);
+            await AddDishIngredient(dish.Id, ingredient.Id, dishGeneralId, quantity);
         }
     }
 
-    private async Task<Ingredient> AddIngredientToDish(string ingredientName, Guid restaurantId, Guid dishId, Guid dishGeneralId)
+    private async Task<Ingredient> AddIngredientToDish(Guid ingredientGeneralId, Guid restaurantId, Guid dishId, Guid dishGeneralId)
     {
         var ingredientGeneral = await _unitOfWorks.IngredientGeneralRepository
-            .FirstOrDefaultAsync(i => i.IngredientName == ingredientName) ?? throw new Exception("Ingredient General not found");
+            .FirstOrDefaultAsync(i => i.Id ==  ingredientGeneralId) ?? throw new Exception("Ingredient General not found");
 
-        var newIngredient = new Ingredient(ingredientGeneral.IngredientName, ingredientGeneral.IngredientTypeId, restaurantId);
+        var newIngredient = new Ingredient( ingredientGeneral.IngredientTypeId, restaurantId,ingredientGeneralId);
         await _unitOfWorks.IngredientRepository.AddAsync(newIngredient);
         await AddDefaultIngredientUnit(newIngredient.Id, ingredientGeneral.IngredientMeasure);
 
         return newIngredient;
     }
 
-    private async Task AddDishIngredient(Guid dishId, Guid ingredientId, string ingredientName, Guid dishGeneralId, decimal quantity)
+    private async Task AddDishIngredient(Guid dishId, Guid ingredientId, Guid dishGeneralId, decimal quantity)
     {
         var dishIngredient = new DishIngredient(dishId, ingredientId, quantity, Domain.Entities.DishAggregator.Enums.DishIngredientStatus.InComing);
         await _unitOfWorks.DishIngredientRepository.AddAsync(dishIngredient);

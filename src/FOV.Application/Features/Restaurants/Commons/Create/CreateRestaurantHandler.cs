@@ -116,20 +116,20 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
                 var ingredientGenerals = await _unitOfWorks.IngredientGeneralRepository.WhereAsync(x => x.DishIngredientGenerals.Any(pg => pg.DishGeneralId == productGeneral.Id));
                 Dish productAdding = new(productGeneral.Price, restaurantId, productGeneral.CategoryId, productGeneral.Id);
                 await _unitOfWorks.DishRepository.AddAsync(productAdding);
-                await ProductIngredientAdd(ingredientGenerals.Select(x => x.IngredientName).ToList(), restaurantId, productAdding.Id, productGeneral.Id);
+                await ProductIngredientAdd(ingredientGenerals.Select(x => x.Id).ToList(), restaurantId, productAdding.Id, productGeneral.Id);
             }
         }
     }
 
-    private async Task ProductIngredientAdd(ICollection<string> ingredientNames, Guid restaurantId, Guid productId, Guid productGeneralId)
+    private async Task ProductIngredientAdd(ICollection<Guid> ingredientGeneralIds, Guid restaurantId, Guid productId, Guid productGeneralId)
     {
-        foreach (var item in ingredientNames)
+        foreach (var item in ingredientGeneralIds)
         {
-            Ingredient? ingredient = _unitOfWorks.IngredientRepository.FirstOrDefaultAsync(x => x.IngredientName == item && x.RestaurantId == restaurantId).Result;
+            Ingredient? ingredient = _unitOfWorks.IngredientRepository.FirstOrDefaultAsync(x => x.IngredientGeneralId == item && x.RestaurantId == restaurantId).Result;
             if (ingredient == null)
             {
-                IngredientGeneral ingredientGeneral = await _unitOfWorks.IngredientGeneralRepository.FirstOrDefaultAsync(x => x.IngredientName == item, x => x.DishIngredientGenerals) ?? throw new Exception();
-                Ingredient ingredient1 = new(ingredientGeneral.IngredientName, ingredientGeneral.IngredientTypeId, restaurantId);
+                IngredientGeneral ingredientGeneral = await _unitOfWorks.IngredientGeneralRepository.FirstOrDefaultAsync(x => x.Id == item, x => x.DishIngredientGenerals) ?? throw new Exception();
+                Ingredient ingredient1 = new(ingredientGeneral.IngredientTypeId, restaurantId,ingredientGeneral.Id);
 
                 await _unitOfWorks.IngredientRepository.AddAsync(ingredient1);
                 await _unitOfWorks.DishIngredientRepository.AddAsync(new DishIngredient(productId, ingredient1.Id, ingredientGeneral.DishIngredientGenerals.FirstOrDefault(x => x.DishGeneralId == productGeneralId && x.IngredientGeneralId == ingredientGeneral.Id).Quantity));

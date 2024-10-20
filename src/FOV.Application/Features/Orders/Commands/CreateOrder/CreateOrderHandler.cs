@@ -181,7 +181,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
                 throw new Exception($"Không thể khóa nguyên liệu có ID: {dishIngredient.IngredientId}");
             }
 
-            var ingredient = await _unitOfWorks.IngredientRepository.GetByIdAsync(dishIngredient.IngredientId);
+            var ingredient = await _unitOfWorks.IngredientRepository.GetByIdAsync(dishIngredient.IngredientId,x => x.IngredientGeneral);
             if (ingredient == null)
             {
                 await lockService.ReleaseLockAsync();
@@ -200,7 +200,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             if (ingredient.IngredientAmount < requiredAmount)
             {
                 await lockService.ReleaseLockAsync();
-                throw new Exception($"Nguyên liệu {ingredient.IngredientName} không đủ. Yêu cầu: {requiredAmount}, Có sẵn: {ingredient.IngredientAmount}");
+                throw new Exception($"Nguyên liệu {ingredient.IngredientGeneral.IngredientName} không đủ. Yêu cầu: {requiredAmount}, Có sẵn: {ingredient.IngredientAmount}");
             }
 
             ingredient.IngredientAmount -= requiredAmount;

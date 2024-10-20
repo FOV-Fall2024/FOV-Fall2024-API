@@ -13,6 +13,7 @@ public class IngredientGeneralConfiguration : IEntityTypeConfiguration<Ingredien
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).ValueGeneratedOnAdd();
         builder.HasMany(x => x.DishIngredientGenerals).WithOne(x => x.IngredientGeneral).HasForeignKey(x => x.IngredientGeneralId);
+        builder.HasMany(x => x.Ingredients).WithOne(x => x.IngredientGeneral).HasForeignKey(x => x.IngredientGeneralId);
         builder.HasData(new IngredientGeneral
         {
             Id = Guid.Parse("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a8"),

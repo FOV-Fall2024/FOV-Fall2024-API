@@ -32,7 +32,7 @@ public class HandleImportFileHandler(IUnitOfWorks unitOfWorks, IClaimService cla
             var quantity = worksheet.Cells[row, 2].Text;  // Column B
             var measurement = worksheet.Cells[row, 3].Text;  // Column C
 
-            Ingredient? ingredient = await _unitOfWorks.IngredientRepository.FirstOrDefaultAsync(x => x.IngredientName == ingredientName && x.RestaurantId == _claimService.RestaurantId);
+            Ingredient? ingredient = await _unitOfWorks.IngredientRepository.FirstOrDefaultAsync(x => x.IngredientGeneral.IngredientName == ingredientName && x.RestaurantId == _claimService.RestaurantId);
             if (ingredient is null) break;
             IngredientUnit? unit = await _unitOfWorks.IngredientUnitRepository.FirstOrDefaultAsync(x => x.IngredientId == ingredient.Id && x.UnitName == measurement);
 

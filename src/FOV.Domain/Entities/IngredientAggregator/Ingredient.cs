@@ -1,4 +1,5 @@
 ﻿using FOV.Domain.Common;
+using FOV.Domain.Entities.IngredientGeneralAggregator;
 using FOV.Domain.Entities.IngredientGeneralAggregator.Enums;
 using FOV.Domain.Entities.RestaurantAggregator;
 
@@ -7,7 +8,8 @@ namespace FOV.Domain.Entities.IngredientAggregator;
 
 public class Ingredient : BaseAuditableEntity
 {
-    public string IngredientName { get; set; } = string.Empty;
+    public IngredientGeneral IngredientGeneral { get; set; }
+    public Guid IngredientGeneralId { get; set; }
     public decimal IngredientAmount { get; set; }
     public decimal ExpiredQuantity { get; set; }
     public IngredientType? IngredientType { get; set; }
@@ -22,10 +24,10 @@ public class Ingredient : BaseAuditableEntity
 
     }
 
-    public Ingredient(string name, Guid ingredientTypeId, Guid restaurantId)
+    public Ingredient(Guid ingredientTypeId, Guid restaurantId, Guid ingredientGeneralId)
     {
-        IngredientName = name;
         RestaurantId = restaurantId;
+        IngredientGeneralId = ingredientGeneralId;
         IngredientTypeId = ingredientTypeId;
     }
 
