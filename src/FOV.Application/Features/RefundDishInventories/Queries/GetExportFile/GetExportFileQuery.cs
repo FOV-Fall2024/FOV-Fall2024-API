@@ -41,15 +41,16 @@ internal class GetExportFileQuery(IUnitOfWorks unitOfWorks, IClaimService claimS
         worksheet.Cells["B2:B10"].Style.Locked = false;  // Unlock column B
 
         // Apply number validation for the second column (B)
-        int count = _unitOfWorks.DishRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId && x.DishGeneral.IsRefund == true, x => x.DishGeneral).Result.Count;
-        var numberValidation = worksheet.DataValidations.AddDecimalValidation($"B2:B{count + 1}");
-        numberValidation.ShowErrorMessage = true;
-        numberValidation.ErrorTitle = "Invalid Input";
-        numberValidation.Error = "Only numbers greater than or equal to 0 are allowed, and the cell cannot be empty.";
-        numberValidation.PromptTitle = "Enter a number";
-        numberValidation.Prompt = "Only numbers greater than or equal to 0 are allowed in this column.";
-        numberValidation.Operator = ExcelDataValidationOperator.greaterThanOrEqual;
-        numberValidation.Formula.Value = 0; // Lower limit (greater than or equal to 0)
+        int count =  _unitOfWorks.DishRepository
+     .WhereAsync(x => x.RestaurantId == _claimService.RestaurantId && x.DishGeneral.IsRefund == true, x => x.DishGeneral)
+     .Result.Count;
+        var numberAndNotEmptyValidation = worksheet.DataValidations.AddCustomValidation($"B2:B{count + 1}");
+        numberAndNotEmptyValidation.Formula.ExcelFormula = $"=AND(ISNUMBER(B{count + 1}), B{count + 1}>=0)";
+        numberAndNotEmptyValidation.ShowErrorMessage = true;
+        numberAndNotEmptyValidation.ErrorTitle = "Invalid Input";
+        numberAndNotEmptyValidation.Error = "Only numbers greater than or equal to 0 are allowed, and the cell cannot be empty.";
+        numberAndNotEmptyValidation.PromptTitle = "Enter a number";
+        numberAndNotEmptyValidation.Prompt = "Only numbers greater than or equal to 0 are allowed in this column.";
 
         // Set the range (>= 0)
 
