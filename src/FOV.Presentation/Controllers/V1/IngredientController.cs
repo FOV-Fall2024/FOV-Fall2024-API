@@ -5,9 +5,11 @@ using FOV.Application.Features.Ingredients.Commands.HandleImportFile;
 using FOV.Application.Features.Ingredients.Commands.TakeImportFile;
 using FOV.Application.Features.Ingredients.Queries.GetIngredients;
 using FOV.Application.Features.Ingredients.Responses;
+using FOV.Domain.Entities.UserAggregator.Enums;
 using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Presentation.Infrastructure.Core;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -93,6 +95,7 @@ namespace FOV.Presentation.Controllers.V1
             return Ok(result);
         }
 
+        [Authorize(Roles = Role.Manager)]
         [HttpGet("import-file")]
         public async Task<IActionResult> TakeImportFile()
         {
@@ -104,6 +107,7 @@ namespace FOV.Presentation.Controllers.V1
 
         }
 
+        [Authorize(Roles = Role.Manager)]
         [HttpPost("import-file")]
         public async Task<IActionResult> ImportFile([FromForm] ProcessImportFileCommand file)
         {
@@ -113,8 +117,8 @@ namespace FOV.Presentation.Controllers.V1
             }
 
             var result = await _mediator.Send(file);
-
-            return result.IsSuccess ? Ok("File processed successfully.") : BadRequest(result.Errors);
+            return result.IsSuccess ? Ok(new OK_Result<string>("Thêm nguyên liệu thành công")) : BadRequest(result.Errors);
+            //  return result.IsSuccess ? Ok("File processed successfully.") : BadRequest(result.Errors);
         }
 
 

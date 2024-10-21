@@ -74,7 +74,7 @@ public class TakeImportFileHandler(IUnitOfWorks unitOfWorks,IClaimService claimS
         numberValidation.Error = "Only numbers greater than 0 are allowed.";
         numberValidation.PromptTitle = "Enter a number";
         numberValidation.Prompt = "Only numbers greater than 0 are allowed in this column.";
-        numberValidation.Operator = ExcelDataValidationOperator.greaterThan;
+        numberValidation.Operator = ExcelDataValidationOperator.greaterThanOrEqual;
         numberValidation.Formula.Value = 0;  // Lower limit (greater than 0)
 
         // Protect the worksheet to enforce read-only on column A
