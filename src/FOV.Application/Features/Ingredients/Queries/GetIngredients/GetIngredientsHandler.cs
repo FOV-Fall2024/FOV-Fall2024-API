@@ -18,7 +18,7 @@ public class GetIngredientsHandler : IRequestHandler<GetIngredientsCommand, Page
     public async Task<PagedResult<GetIngredientsResponse>> Handle(GetIngredientsCommand request, CancellationToken cancellationToken)
     {
         // Fetch all ingredients from the repository
-        var allIngredients = await _unitOfWorks.IngredientRepository.GetAllAsync(x => x.IngredientUnits);
+        var allIngredients = await _unitOfWorks.IngredientRepository.GetAllAsync(x => x.IngredientUnits, x => x.IngredientType);
 
         // Filter ingredients based on the request parameters
         var filteredIngredients = allIngredients.AsQueryable()
