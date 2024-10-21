@@ -5,6 +5,7 @@ using FOV.Domain.Entities.IngredientAggregator.Enums;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Tokens;
 using OfficeOpenXml;
 
 namespace FOV.Application.Features.Ingredients.Commands.HandleImportFile;
@@ -35,7 +36,7 @@ public class HandleImportFileHandler(IUnitOfWorks unitOfWorks, IClaimService cla
             Ingredient? ingredient = await _unitOfWorks.IngredientRepository.FirstOrDefaultAsync(x => x.IngredientName == ingredientName && x.RestaurantId == _claimService.RestaurantId);
             if (ingredient is null) break;
             IngredientUnit? unit = await _unitOfWorks.IngredientUnitRepository.FirstOrDefaultAsync(x => x.IngredientId == ingredient.Id && x.UnitName == measurement);
-
+            if(quantity.IsNullOrEmpty()) break;
             decimal quantityCalculate = decimal.Parse(quantity) * _unitOfWorks.IngredientRepository.GetTotalConversionFactor(unit.Id);
             ingredient.AddQuantity(quantityCalculate);
             IngredientTransaction ingredientTransaction = new(quantityCalculate, IngredientTransactionType.Add, ingredient.Id);
