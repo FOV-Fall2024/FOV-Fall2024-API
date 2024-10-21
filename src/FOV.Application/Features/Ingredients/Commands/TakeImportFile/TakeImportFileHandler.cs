@@ -34,12 +34,18 @@ public class TakeImportFileHandler(IUnitOfWorks unitOfWorks,IClaimService claimS
         {
             worksheet.Cells[rowIngredient, 1].Value = item.IngredientName;
 
-            // Add list validation for column C
+            // Add list validation for column C (Measurement)
             var listValidation = worksheet.DataValidations.AddListValidation($"C{rowIngredient}");
             foreach (var ingredientUnit in item.IngredientUnits)
             {
                 listValidation.Formula.Values.Add(ingredientUnit.UnitName);
             }
+
+            // Enforce strict validation (disable input of anything outside the list)
+            listValidation.ShowErrorMessage = true;
+            listValidation.ErrorTitle = "Invalid Selection";
+            listValidation.Error = "Please select a valid option from the list.";
+            listValidation.AllowBlank = false;
 
             // Set the default value to the first item in the list
             if (item.IngredientUnits.Any())
@@ -47,8 +53,8 @@ public class TakeImportFileHandler(IUnitOfWorks unitOfWorks,IClaimService claimS
                 worksheet.Cells[rowIngredient, 3].Value = item.IngredientUnits.First().UnitName;
             }
 
-            // Lock column C (read-only)
-            worksheet.Cells[rowIngredient, 3].Style.Locked = true;
+            // Allow selection from the list (don't lock column C)
+            worksheet.Cells[rowIngredient, 3].Style.Locked = false;
 
             rowIngredient++;
         }
@@ -71,7 +77,7 @@ public class TakeImportFileHandler(IUnitOfWorks unitOfWorks,IClaimService claimS
         numberValidation.Formula.Value = 0;    // Lower limit
         numberValidation.Formula2.Value = 100; // Upper limit
 
-        // Protect the worksheet to enforce read-only on columns A and C
+        // Protect the worksheet to enforce read-only on column A
         worksheet.Protection.IsProtected = true;
         worksheet.Protection.AllowSelectLockedCells = true;
 
