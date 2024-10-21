@@ -25,11 +25,11 @@ internal class GetExportFileQuery(IUnitOfWorks unitOfWorks, IClaimService claimS
         worksheet.Cells[1, 2].Value = "Quantity";   // Column B
 
         int rowIngredient = 2;
-        List<string> nameDishes = _unitOfWorks.DishRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId && x.DishGeneral.IsRefund == true,x => x.DishGeneral).Result.Select(x => x.DishGeneral.DishName).ToList();
+        List<string> nameDishes = _unitOfWorks.DishRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId && x.DishGeneral.IsRefund == true, x => x.DishGeneral).Result.Select(x => x.DishGeneral.DishName).ToList();
         foreach (var item in nameDishes)
         {
             worksheet.Cells[rowIngredient, 1].Value = item;
-          //  var listValidation = worksheet.DataValidations.AddListValidation($"C{rowIngredient}");
+            //  var listValidation = worksheet.DataValidations.AddListValidation($"C{rowIngredient}");
             //worksheet.Cells[rowIngredient, 2].Value = 0;
             worksheet.Cells[$"B{rowIngredient}"].Value = 0;
             rowIngredient++;
@@ -41,16 +41,18 @@ internal class GetExportFileQuery(IUnitOfWorks unitOfWorks, IClaimService claimS
         worksheet.Cells["B2:B10"].Style.Locked = false;  // Unlock column B
 
         // Apply number validation for the second column (B)
-        int count =  _unitOfWorks.DishRepository
-     .WhereAsync(x => x.RestaurantId == _claimService.RestaurantId && x.DishGeneral.IsRefund == true, x => x.DishGeneral)
-     .Result.Count;
+        int count = _unitOfWorks.DishRepository
+            .WhereAsync(x => x.RestaurantId == _claimService.RestaurantId && x.DishGeneral.IsRefund == true, x => x.DishGeneral)
+           .Result.Count;
+
         var numberAndNotEmptyValidation = worksheet.DataValidations.AddCustomValidation($"B2:B{count + 1}");
-        numberAndNotEmptyValidation.Formula.ExcelFormula = $"=AND(ISNUMBER(B{count + 1}), B{count + 1}>=0)";
+        numberAndNotEmptyValidation.Formula.ExcelFormula = "AND(ISNUMBER(B2), B2>=0)";
         numberAndNotEmptyValidation.ShowErrorMessage = true;
         numberAndNotEmptyValidation.ErrorTitle = "Invalid Input";
         numberAndNotEmptyValidation.Error = "Only numbers greater than or equal to 0 are allowed, and the cell cannot be empty.";
         numberAndNotEmptyValidation.PromptTitle = "Enter a number";
         numberAndNotEmptyValidation.Prompt = "Only numbers greater than or equal to 0 are allowed in this column.";
+
 
         // Set the range (>= 0)
 
