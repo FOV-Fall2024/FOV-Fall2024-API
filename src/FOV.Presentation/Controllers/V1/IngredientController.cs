@@ -96,7 +96,7 @@ namespace FOV.Presentation.Controllers.V1
         }
 
         [Authorize(Roles = Role.Manager)]
-        [HttpGet("import-file")]
+        [HttpGet("/export")]
         public async Task<IActionResult> TakeImportFile()
         {
             var result = await _mediator.Send(new TakeImportFileCommand());
@@ -108,7 +108,7 @@ namespace FOV.Presentation.Controllers.V1
         }
 
         [Authorize(Roles = Role.Manager)]
-        [HttpPost("import-file")]
+        [HttpPost("/import")]
         public async Task<IActionResult> ImportFile([FromForm] ProcessImportFileCommand file)
         {
             if (file == null)
