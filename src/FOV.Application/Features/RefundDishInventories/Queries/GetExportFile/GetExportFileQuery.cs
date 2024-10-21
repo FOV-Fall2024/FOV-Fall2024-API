@@ -40,7 +40,7 @@ internal class GetExportFileQuery(IUnitOfWorks unitOfWorks, IClaimService claimS
         worksheet.Cells["B2:B10"].Style.Locked = false;  // Unlock column B
 
         // Apply number validation for the second column (B)
-        int count = _unitOfWorks.IngredientRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId).Result.Count;
+        int count = _unitOfWorks.DishRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId && x.DishGeneral.IsRefund == true, x => x.DishGeneral).Result.Count;
         var numberValidation = worksheet.DataValidations.AddDecimalValidation($"B2:B{count + 1}");
         numberValidation.ShowErrorMessage = true;
         numberValidation.ErrorTitle = "Invalid Input";
