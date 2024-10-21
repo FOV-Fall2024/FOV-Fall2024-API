@@ -3,7 +3,7 @@ using FOV.Application.Features.Dishes.Responses;
 using FOV.Application.Features.DishGenerals.Responses;
 using FOV.Domain.Entities.DishAggregator;
 using FOV.Domain.Entities.DishGeneralAggregator;
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 using FOV.Application.Features.Dishes.Responses;
 using FOV.Domain.Entities.TableAggregator.Enums;
 using FOV.Infrastructure.Helpers.GetHelper;
@@ -37,7 +37,8 @@ public class GetMenuHandler : IRequestHandler<GetMenuCommand, PagedResult<GetMen
             x => x.RestaurantId == request.RestaurantId && x.Status == Status.Active,
             d => d.DishGeneral,
             i => i.DishGeneral.DishGeneralImages,
-            c => c.Category
+            c => c.Category,
+            c => c.RefundDishInventory
         );
         //var combos = await _unitOfWorks.ComboRepository.WhereAsync(x )
 
@@ -61,6 +62,7 @@ public class GetMenuHandler : IRequestHandler<GetMenuCommand, PagedResult<GetMen
         var dishMappers = dishes.Select(dish => new GetMenuResponse(
             dish.Id,
             dish.DishGeneral.DishName,
+            dish.RefundDishInventory?.QuantityAvailable ?? 0,
             dish.Price.ToString(),
             dish.DishGeneral.PercentagePriceDifference,
             dish.DishGeneral.DishDescription,
