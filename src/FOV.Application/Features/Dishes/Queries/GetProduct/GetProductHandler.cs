@@ -8,7 +8,7 @@ using MediatR;
 
 namespace FOV.Application.Features.Dishes.Queries.GetProduct;
 
-public sealed record GetProductCommand(PagingRequest? PagingRequest, string? ProductName, string? ProductDescription) : IRequest<PagedResult<GetProductResponse>>;
+public sealed record GetProductCommand(PagingRequest? PagingRequest, string? ProductName, string? ProductDescription, bool? IsRefundDish) : IRequest<PagedResult<GetProductResponse>>;
 
 public class GetProductHandler(IUnitOfWorks unitOfWorks, IClaimService claimService) : IRequestHandler<GetProductCommand, PagedResult<GetProductResponse>>
 {
@@ -26,8 +26,14 @@ public class GetProductHandler(IUnitOfWorks unitOfWorks, IClaimService claimServ
             {
                 DishName = request.ProductName ?? string.Empty,
                 DishDescription = request.ProductDescription ?? string.Empty,
+               
             },
         };
+        if (request.IsRefundDish.HasValue)
+        {
+            filterEntity.DishGeneral.IsRefund = request.IsRefundDish.Value;
+        }
+
         // Apply filtering using the CustomFilterV1 function
         var filteredProducts = products.AsQueryable().CustomFilterV1(filterEntity);
         // Map filtered products to the GetProductResponse DTO

@@ -30,6 +30,8 @@ public class GetIngredientsHandler : IRequestHandler<GetIngredientsCommand, Page
             x.Id,
             x.RestaurantId ?? Guid.Empty,
             x.IngredientName ?? string.Empty,
+            x.IngredientType.IngredientName,
+            "hi hi",
             x.IngredientAmount,
             x.Created,
             x.IngredientUnits.Select(y => new GetIngredientUnitResponse(y.Id, y.IngredientUnitParentId, y.UnitName, y.ConversionFactor, y.Created)).ToList()
