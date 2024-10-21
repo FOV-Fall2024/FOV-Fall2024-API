@@ -70,12 +70,11 @@ public class TakeImportFileHandler(IUnitOfWorks unitOfWorks,IClaimService claimS
         var numberValidation = worksheet.DataValidations.AddDecimalValidation($"B2:B{count + 1}");
         numberValidation.ShowErrorMessage = true;
         numberValidation.ErrorTitle = "Invalid Input";
-        numberValidation.Error = "Only numbers between 0 and 100 are allowed.";
+        numberValidation.Error = "Only numbers greater than 0 are allowed.";
         numberValidation.PromptTitle = "Enter a number";
-        numberValidation.Prompt = "Only numbers between 0 and 100 are allowed in this column.";
-        numberValidation.Operator = ExcelDataValidationOperator.between;
-        numberValidation.Formula.Value = 0;    // Lower limit
-        numberValidation.Formula2.Value = 100; // Upper limit
+        numberValidation.Prompt = "Only numbers greater than 0 are allowed in this column.";
+        numberValidation.Operator = ExcelDataValidationOperator.greaterThan;
+        numberValidation.Formula.Value = 0;  // Lower limit (greater than 0)
 
         // Protect the worksheet to enforce read-only on column A
         worksheet.Protection.IsProtected = true;
