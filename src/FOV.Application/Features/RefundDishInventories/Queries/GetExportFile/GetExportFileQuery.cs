@@ -30,7 +30,8 @@ internal class GetExportFileQuery(IUnitOfWorks unitOfWorks, IClaimService claimS
         {
             worksheet.Cells[rowIngredient, 1].Value = item;
           //  var listValidation = worksheet.DataValidations.AddListValidation($"C{rowIngredient}");
-            worksheet.Cells[rowIngredient, 2].Value = 0;
+            //worksheet.Cells[rowIngredient, 2].Value = 0;
+            worksheet.Cells[$"B{rowIngredient}"].Value = 0;
             rowIngredient++;
         }
         // Lock column A to make it read-only
@@ -47,10 +48,10 @@ internal class GetExportFileQuery(IUnitOfWorks unitOfWorks, IClaimService claimS
         numberValidation.Error = "Only numbers greater than or equal to 0 are allowed.";
         numberValidation.PromptTitle = "Enter a number";
         numberValidation.Prompt = "Only numbers greater than or equal to 0 are allowed in this column.";
-
-        // Set the range (>= 0)
         numberValidation.Operator = ExcelDataValidationOperator.greaterThanOrEqual;
         numberValidation.Formula.Value = 0; // Lower limit (greater than or equal to 0)
+
+        // Set the range (>= 0)
 
         // Protect the worksheet to enforce read-only on column A
         worksheet.Protection.IsProtected = true;
