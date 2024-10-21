@@ -33,6 +33,7 @@ public class TakeImportFileHandler(IUnitOfWorks unitOfWorks,IClaimService claimS
         foreach (var item in ingredients)
         {
             worksheet.Cells[rowIngredient, 1].Value = item.IngredientName;
+            worksheet.Cells[$"B{rowIngredient}"].Value = 0;
 
             // Add list validation for column C (Measurement)
             var listValidation = worksheet.DataValidations.AddListValidation($"C{rowIngredient}");

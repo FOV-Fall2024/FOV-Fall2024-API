@@ -30,25 +30,43 @@ public class HandleImportFileHandler(IUnitOfWorks unitOfWorks, IClaimService cla
         for (int row = 2; row <= rowCount; row++)
         {
             var ingredientName = worksheet.Cells[row, 1].Text;  // Column A
-            var quantity = worksheet.Cells[row, 2].Text;  // Column B
+            var quantityText = worksheet.Cells[row, 2].Text;  // Column B
             var measurement = worksheet.Cells[row, 3].Text;  // Column C
 
-            Ingredient? ingredient = await _unitOfWorks.IngredientRepository.FirstOrDefaultAsync(x => x.IngredientName == ingredientName && x.RestaurantId == _claimService.RestaurantId);
-            if (ingredient is null) break;
-            IngredientUnit? unit = await _unitOfWorks.IngredientUnitRepository.FirstOrDefaultAsync(x => x.IngredientId == ingredient.Id && x.UnitName == measurement);
-            if(quantity.IsNullOrEmpty()) break;
-            decimal quantityCalculate = decimal.Parse(quantity) * _unitOfWorks.IngredientRepository.GetTotalConversionFactor(unit.Id);
-            ingredient.AddQuantity(quantityCalculate);
-            IngredientTransaction ingredientTransaction = new(quantityCalculate, IngredientTransactionType.Add, ingredient.Id);
+            Ingredient? ingredient = await _unitOfWorks.IngredientRepository.FirstOrDefaultAsync(
+                x => x.IngredientName == ingredientName && x.RestaurantId == _claimService.RestaurantId);
 
+            // Skip this row if the ingredient is not found
+            if (ingredient == null) continue;
+
+            IngredientUnit? unit = await _unitOfWorks.IngredientUnitRepository.FirstOrDefaultAsync(
+                x => x.IngredientId == ingredient.Id && x.UnitName == measurement);
+
+            // Skip this row if the unit is not found
+            if (unit == null) continue;
+
+            // Parse quantity safely
+            if (!decimal.TryParse(quantityText, out decimal quantity) || quantity == 0)
+            {
+                continue;  // Skip if the quantity is invalid or 0
+            }
+
+            // Calculate total quantity with conversion factor
+            decimal conversionFactor = _unitOfWorks.IngredientRepository.GetTotalConversionFactor(unit.Id);
+            decimal quantityCalculate = quantity * conversionFactor;
+
+            // Add quantity to the ingredient
+            ingredient.AddQuantity(quantityCalculate);
+
+            // Create a new ingredient transaction
+            IngredientTransaction ingredientTransaction = new(quantityCalculate, IngredientTransactionType.Add, ingredient.Id);
             await _unitOfWorks.IngredientTransactionRepository.AddAsync(ingredientTransaction);
 
+            // Update the ingredient and save changes
             _unitOfWorks.IngredientRepository.Update(ingredient);
-
             await _unitOfWorks.SaveChangeAsync();
-
-
         }
-            return Result.Ok();
+
+        return Result.Ok();
     }
 }
