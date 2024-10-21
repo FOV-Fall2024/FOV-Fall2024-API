@@ -3,7 +3,10 @@ using FOV.Application.Features.RefundDishInventories.Commands.AddMultiple;
 using FOV.Application.Features.RefundDishInventories.Commands.AddSingle;
 using FOV.Application.Features.RefundDishInventories.Commands.HandleImportFile;
 using FOV.Application.Features.RefundDishInventories.Queries.GetExportFile;
+using FOV.Domain.Entities.UserAggregator.Enums;
+using FOV.Presentation.Infrastructure.Core;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml.DataValidation;
 
@@ -35,6 +38,7 @@ namespace FOV.Presentation.Controllers.V1
             return Ok(response);
         }
 
+        [Authorize(Roles = Role.Manager)]
         [HttpGet("/export-file")]
         public async Task<IActionResult> ExportInventoryFile()
         {
@@ -44,11 +48,12 @@ namespace FOV.Presentation.Controllers.V1
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
         }
 
+        [Authorize(Roles = Role.Manager)]
         [HttpPost("/upload-file")]
         public async Task<IActionResult> UploadInventoryFile([FromForm] HandImportFileCommand file)
         {
             var response = await _sender.Send(file);
-            return Ok(response);
+            return response.IsSuccess ? Ok(new OK_Result<string>("Thêm số lượng  thành công")) : BadRequest(response.Errors);
         }
 
     }

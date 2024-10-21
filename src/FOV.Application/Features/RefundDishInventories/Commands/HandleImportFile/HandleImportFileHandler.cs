@@ -25,20 +25,53 @@ public class HandleImportFileHandler(IUnitOfWorks
         for (int row = 2; row <= rowCount; row++)
         {
             var dishName = worksheet.Cells[row, 1].Text;  // Column A
-            var quantity = worksheet.Cells[row, 2].Text;  // Column B
+            var quantityText = worksheet.Cells[row, 2].Text;  // Column B
+            if (string.IsNullOrEmpty(dishName) || string.IsNullOrEmpty(quantityText))
+            {
+                // Skip rows with missing data
+                continue;
+            }
 
-            Dish? dish = await _unitOfWorks.DishRepository.FirstOrDefaultAsync(x => x.DishGeneral.DishName == dishName && x.RestaurantId == _claimService.RestaurantId, x => x.RefundDishInventory);
-            RefundDishInventory inventory = await _unitOfWorks.RefundDishInventoryRepository.GetByIdAsync(dish.RefundDishInventory.Id) ?? throw new Exception();
-            if (dish == null) break;
-            //RefundDishUnit unit = await _unitOfWorks.RefundDishUnitRepository.FirstOrDefaultAsync(x => x.RefundDishInventoryId == dish.RefundDishInventory.Id && x.UnitName == measurement) ?? throw new Exception();
-            int quantityCalculate = int.Parse(quantity);
-            if (quantityCalculate <= 0) break; 
-            RefundDishInventoryTransaction transaction = new(quantityCalculate, dish.RefundDishInventory.Id, Domain.Entities.DishAggregator.Enums.RefundDishInventoryTransactionType.Add);
+            // Attempt to parse quantity
+            if (!int.TryParse(quantityText, out int quantityCalculate) || quantityCalculate <= 0)
+            {
+                // Skip invalid or zero/negative quantities
+                continue;
+            }
+            // Fetch the dish by name and restaurant ID, including its RefundDishInventory
+            Dish? dish = await _unitOfWorks.DishRepository.FirstOrDefaultAsync(
+                x => x.DishGeneral.DishName == dishName && x.RestaurantId == _claimService.RestaurantId,
+                x => x.RefundDishInventory
+            );
 
+            if (dish == null || dish.RefundDishInventory == null)
+            {
+                // Skip if dish or refund inventory is not found
+                continue;
+            }
+
+            // Fetch the refund dish inventory record
+            RefundDishInventory inventory = await _unitOfWorks.RefundDishInventoryRepository.GetByIdAsync(dish.RefundDishInventory.Id)
+                ?? throw new Exception("Refund Dish Inventory not found.");
+
+            // Create a new refund dish inventory transaction
+            RefundDishInventoryTransaction transaction = new(
+                quantityCalculate,
+                dish.RefundDishInventory.Id,
+                Domain.Entities.DishAggregator.Enums.RefundDishInventoryTransactionType.Add
+            );
+
+            // Add the transaction to the repository
             await _unitOfWorks.RefundDishInventoryTransactionRepository.AddAsync(transaction);
+
+            // Update the inventory quantity
             inventory.AddQuantity(quantityCalculate);
             _unitOfWorks.RefundDishInventoryRepository.Update(inventory);
+
+            // Save the changes
+            await _unitOfWorks.SaveChangeAsync();
         }
+
         return Result.Ok();
     }
 }
