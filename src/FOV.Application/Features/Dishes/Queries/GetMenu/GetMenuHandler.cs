@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace FOV.Application.Features.Dishes.Queries.GetMenu;
 
-public sealed record GetMenuCommand(string? DishName, string? CategoryName, Status? Status, PagingRequest? PagingRequest) : IRequest<PagedResult<GetMenuResponse>>
+public sealed record GetMenuCommand(string? DishName, string? CategoryName, Status? Status, bool? IsRefundDish, PagingRequest? PagingRequest) : IRequest<PagedResult<GetMenuResponse>>
 {
     [Required]
     public Guid RestaurantId { get; set; }
@@ -52,6 +52,10 @@ public class GetMenuHandler : IRequestHandler<GetMenuCommand, PagedResult<GetMen
         if (request.Status.HasValue && request.Status != 0)
         {
             dishes = dishes.Where(x => x.Status == request.Status.Value).ToList();
+        }
+        if (request.IsRefundDish.HasValue)
+        {
+            dishes = dishes.Where(x => x.DishGeneral.IsRefund == request.IsRefundDish.Value).ToList();
         }
 
         var dishMappers = dishes.Select(dish => new GetMenuResponse(
