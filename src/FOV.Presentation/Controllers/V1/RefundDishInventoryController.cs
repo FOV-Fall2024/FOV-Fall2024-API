@@ -39,7 +39,7 @@ namespace FOV.Presentation.Controllers.V1
         }
 
         [Authorize(Roles = Role.Manager)]
-        [HttpGet("/export")]
+        [HttpGet("export")]
         public async Task<IActionResult> ExportInventoryFile()
         {
             var response = await _sender.Send(new GetExportFileCommand());
@@ -49,7 +49,7 @@ namespace FOV.Presentation.Controllers.V1
         }
 
         [Authorize(Roles = Role.Manager)]
-        [HttpPost("/import")]
+        [HttpPost("import")]
         public async Task<IActionResult> UploadInventoryFile([FromForm] HandImportFileCommand file)
         {
             var response = await _sender.Send(file);
