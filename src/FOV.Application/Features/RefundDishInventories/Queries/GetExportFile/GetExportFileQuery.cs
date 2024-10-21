@@ -45,7 +45,7 @@ internal class GetExportFileQuery(IUnitOfWorks unitOfWorks, IClaimService claimS
         var numberValidation = worksheet.DataValidations.AddDecimalValidation($"B2:B{count + 1}");
         numberValidation.ShowErrorMessage = true;
         numberValidation.ErrorTitle = "Invalid Input";
-        numberValidation.Error = "Only numbers greater than or equal to 0 are allowed.";
+        numberValidation.Error = "Only numbers greater than or equal to 0 are allowed, and the cell cannot be empty.";
         numberValidation.PromptTitle = "Enter a number";
         numberValidation.Prompt = "Only numbers greater than or equal to 0 are allowed in this column.";
         numberValidation.Operator = ExcelDataValidationOperator.greaterThanOrEqual;
