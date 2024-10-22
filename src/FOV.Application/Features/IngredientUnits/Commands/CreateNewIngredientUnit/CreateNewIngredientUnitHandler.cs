@@ -30,7 +30,7 @@ public class CreateNewIngredientUnitHandler : IRequestHandler<CreateNewIngredien
         {
             fieldErrors.Add(new FieldError
             {
-                Field = nameof(request.UnitName),
+                Field = char.ToLowerInvariant(nameof(request.UnitName)[0]) + nameof(request.UnitName).Substring(1),
                 Message = "Tên đơn vị không được để trống."
             });
         }
@@ -38,7 +38,7 @@ public class CreateNewIngredientUnitHandler : IRequestHandler<CreateNewIngredien
         {
             fieldErrors.Add(new FieldError
             {
-                Field = nameof(request.UnitName),
+                Field = char.ToLowerInvariant(nameof(request.UnitName)[0]) + nameof(request.UnitName).Substring(1),
                 Message = "Tên đơn vị phải từ 1 đến 100 ký tự."
             });
         }
@@ -48,7 +48,7 @@ public class CreateNewIngredientUnitHandler : IRequestHandler<CreateNewIngredien
         {
             fieldErrors.Add(new FieldError
             {
-                Field = nameof(request.ConversionFactor),
+                Field = char.ToLowerInvariant(nameof(request.ConversionFactor)[0]) + nameof(request.ConversionFactor).Substring(1),
                 Message = "Hệ số chuyển đổi phải lớn hơn 0."
             });
         }
@@ -68,7 +68,7 @@ public class CreateNewIngredientUnitHandler : IRequestHandler<CreateNewIngredien
         {
             fieldErrors.Add(new FieldError
             {
-                Field = nameof(request.IngredientId),
+                Field = char.ToLowerInvariant(nameof(request.IngredientId)[0]) + nameof(request.IngredientId).Substring(1),
                 Message = "Mã nguyên liệu không được để trống."
             });
         }
@@ -79,7 +79,7 @@ public class CreateNewIngredientUnitHandler : IRequestHandler<CreateNewIngredien
         {
             fieldErrors.Add(new FieldError
             {
-                Field = nameof(request.UnitName),
+                Field = char.ToLowerInvariant(nameof(request.UnitName)[0]) + nameof(request.UnitName).Substring(1),
                 Message = "Tên đơn vị đã tồn tại trong hệ thống."
             });
         }

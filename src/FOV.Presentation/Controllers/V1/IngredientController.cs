@@ -85,6 +85,7 @@ namespace FOV.Presentation.Controllers.V1
         /// </summary>
         /// <param name="command">The command containing filter parameters.</param>
         /// <returns>A list of ingredients.</returns>
+        [Authorize(Roles = Role.Manager)]
         [HttpGet]
         [SwaggerOperation(Summary = "Retrieve a list of ingredients.")]
         [ProducesResponseType(StatusCodes.Status200OK)]

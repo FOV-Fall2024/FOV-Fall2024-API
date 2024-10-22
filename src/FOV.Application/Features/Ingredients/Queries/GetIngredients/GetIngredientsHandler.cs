@@ -1,4 +1,5 @@
-﻿using FOV.Application.Features.Ingredients.Responses;
+﻿using FOV.Application.Common.Behaviours.Claim;
+using FOV.Application.Features.Ingredients.Responses;
 using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
@@ -9,16 +10,19 @@ public sealed record GetIngredientsCommand(string? IngredientName, PagingRequest
 public class GetIngredientsHandler : IRequestHandler<GetIngredientsCommand, PagedResult<GetIngredientsResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks;
+    private readonly IClaimService _claimService;
 
-    public GetIngredientsHandler(IUnitOfWorks unitOfWorks)
+    public GetIngredientsHandler(IUnitOfWorks unitOfWorks, IClaimService claimService)
     {
         _unitOfWorks = unitOfWorks;
+        _claimService = claimService;
+
     }
 
     public async Task<PagedResult<GetIngredientsResponse>> Handle(GetIngredientsCommand request, CancellationToken cancellationToken)
     {
         // Fetch all ingredients from the repository
-        var allIngredients = await _unitOfWorks.IngredientRepository.GetAllAsync(x => x.IngredientUnits, x => x.IngredientType);
+        var allIngredients = await _unitOfWorks.IngredientRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId, x => x.IngredientUnits, x => x.IngredientType);
 
         // Filter ingredients based on the request parameters
         var filteredIngredients = allIngredients.AsQueryable()
