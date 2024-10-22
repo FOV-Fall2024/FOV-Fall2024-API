@@ -2,6 +2,7 @@
 using FOV.Application.Features.Tables.Commands.Active;
 using FOV.Application.Features.Tables.Commands.Create;
 using FOV.Application.Features.Tables.Commands.Inactive;
+using FOV.Application.Features.Tables.Commands.TableLogin;
 using FOV.Application.Features.Tables.Queries;
 using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Presentation.Controllers.V1;
@@ -37,6 +38,12 @@ public class TableController(ISender sender) : DefaultController
     public async Task<IActionResult> Inactive(Guid id)
     {
         var response = await _sender.Send(new InactiveTableCommand(id));
+        return Ok(response);
+    }
+    [HttpPatch("{id:guid}/TableLogin")]
+    public async Task<IActionResult> TableLogin(Guid id)
+    {
+        var response = await _sender.Send(new TableLoginCommand(id));
         return Ok(response);
     }
     [HttpGet]

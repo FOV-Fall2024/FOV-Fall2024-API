@@ -1292,6 +1292,9 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
+                    b.Property<bool>("IsLogin")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("timestamp with time zone");
 

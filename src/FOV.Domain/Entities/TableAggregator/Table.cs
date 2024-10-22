@@ -12,6 +12,7 @@ public class Table : BaseAuditableEntity, IsSoftDeleted
     public string? TableQRCode { get; set; }
     public Restaurant? Restaurant { get; set; }
     public Guid RestaurantId { get; set; }
+    public bool IsLogin { get; set; }
     public virtual ICollection<Order> Orders { get; set; } = [];
     public Status Status { get; set; }
     public Table()
@@ -33,6 +34,11 @@ public class Table : BaseAuditableEntity, IsSoftDeleted
     public void UpdateState(bool state)
     {
         Status = state ? Status.Active : Status.Inactive;
+        LastModified = DateTime.UtcNow.AddHours(7);
+    }
+    public void UpdateIsLogin(bool isLogin)
+    {
+        IsLogin = isLogin;
         LastModified = DateTime.UtcNow.AddHours(7);
     }
 }
