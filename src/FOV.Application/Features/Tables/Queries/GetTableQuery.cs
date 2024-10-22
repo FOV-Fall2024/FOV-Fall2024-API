@@ -23,7 +23,7 @@ public class GetTableQuery(IUnitOfWorks unitOfWorks, IClaimService claimService)
     {
         var tables = (await _unitOfWorks.TableRepository.GetAllAsync()).OrderByDescending(x => x.Created);
 
-        if (_claimService.UserRole != Role.Administrator)
+        if (_claimService.UserRole != Role.Manager)
         {
             tables = tables.Where(t => !t.IsLogin).OrderByDescending(x => x.Created);
         }

@@ -1304,9 +1304,6 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<Guid>("RestaurantId")
                         .HasColumnType("uuid");
 
-                    b.Property<byte>("Status")
-                        .HasColumnType("smallint");
-
                     b.Property<string>("TableCode")
                         .HasColumnType("text");
 
