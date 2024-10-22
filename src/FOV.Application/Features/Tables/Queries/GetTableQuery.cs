@@ -32,6 +32,11 @@ public class GetTableQuery(IUnitOfWorks unitOfWorks, IClaimService claimService)
             tables = tables.Where(t => t.IsLogin == command.IsLogin.Value).OrderByDescending(x => x.Created);
         }
 
+        if (command.TableNumber.HasValue && command.TableNumber.Value > 0)
+        {
+            tables = tables.Where(t => t.TableNumber == command.TableNumber.Value).OrderByDescending(x => x.Created);
+        }
+
         var filterEntity = new Table
         {
             Id = command.Id.HasValue ? command.Id.Value : Guid.Empty,
