@@ -38,7 +38,7 @@ public sealed class CheckIngredientParentIdValidator : AbstractValidator<CreateN
             .MustAsync(CheckIngredientId)
             .WithMessage("Không tìm thấy Id Nguyên Liệu");
 
-        RuleFor(command => command.UnitName)
+        RuleFor(command => command)
             .MustAsync(IsNameUnique)
             .WithMessage("Tên đã tồn tại trong hệ thống.");
         RuleFor(command => command.IngredientUnitParentId)
@@ -53,9 +53,9 @@ public sealed class CheckIngredientParentIdValidator : AbstractValidator<CreateN
         return ingredientType != null;
     }
 
-    private async Task<bool> IsNameUnique(string name, CancellationToken token)
+    private async Task<bool> IsNameUnique(CreateNewIngredientUnitCommand command, CancellationToken token)
     {
-        IngredientUnit? exists = await _unitOfWorks.IngredientUnitRepository.FirstOrDefaultAsync(x => x.UnitName == name && x.Ingredient.RestaurantId == _claimService.RestaurantId);
+        IngredientUnit? exists = await _unitOfWorks.IngredientUnitRepository.FirstOrDefaultAsync(x => x.UnitName == command.UnitName && x.Ingredient.RestaurantId == _claimService.RestaurantId&& x.IngredientId == command.IngredientId);
         return exists == null;
     }
 
