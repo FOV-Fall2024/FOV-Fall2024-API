@@ -44,6 +44,18 @@ public class UpdateIngredientUnitHandler : IRequestHandler<UpdateIngredientUnitC
                 Message = "Tên đơn vị phải từ 1 đến 100 ký tự."
             });
         }
+        else
+        {
+            // Check if the UnitName is unique
+            if (!await IsUnitNameUniqueAsync(request.UnitName, request.IngredientUnitId, cancellationToken))
+            {
+                fieldErrors.Add(new FieldError
+                {
+                    Field = char.ToLowerInvariant(nameof(request.UnitName)[0]) + nameof(request.UnitName).Substring(1),
+                    Message = "Tên đơn vị phải là duy nhất."
+                });
+            }
+        }
 
         // Validate ConversionFactor
         if (request.ConversionFactor <= 0)
@@ -56,9 +68,9 @@ public class UpdateIngredientUnitHandler : IRequestHandler<UpdateIngredientUnitC
         }
 
         // Check if there are validation errors
-        if (fieldErrors.Any())
+        if (fieldErrors.Count != 0)
         {
-            return Result.Fail(new ExceptionalError("Lỗi dữ liệu nhập vào", new AppException("Lỗi dữ liệu", fieldErrors)));
+            throw new AppException("Lỗi dữ liệu nhập vào", fieldErrors);
         }
 
         // Fetch the existing IngredientUnit by ID
@@ -79,4 +91,12 @@ public class UpdateIngredientUnitHandler : IRequestHandler<UpdateIngredientUnitC
 
         return Result.Ok();
     }
+    private async Task<bool> IsUnitNameUniqueAsync(string unitName, Guid ingredientUnitId, CancellationToken token)
+    {
+        IngredientUnit? existingUnit = await _unitOfWorks.IngredientUnitRepository
+            .FirstOrDefaultAsync(ui => ui.UnitName.Equals(unitName, StringComparison.OrdinalIgnoreCase)
+                                       && ui.Id != ingredientUnitId);
+        return existingUnit == null; // Return true if the name is unique, false if it exists.
+    }
 }
+
