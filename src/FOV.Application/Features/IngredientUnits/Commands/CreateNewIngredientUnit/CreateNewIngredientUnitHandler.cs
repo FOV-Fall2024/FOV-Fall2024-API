@@ -73,18 +73,22 @@ public class CreateNewIngredientUnitHandler : IRequestHandler<CreateNewIngredien
             });
         }
 
+        // Business logic validation: Check if the UnitName is unique
+        bool isNameUnique = await IsNameUnique(request, cancellationToken);
+        if (!isNameUnique)
+        {
+            fieldErrors.Add(new FieldError
+            {
+                Field = nameof(request.UnitName),
+                Message = "Tên đơn vị đã tồn tại trong hệ thống."
+            });
+        }
         // If there are validation errors, throw exception
         if (fieldErrors.Any())
         {
             throw new AppException("Lỗi dữ liệu nhập vào", fieldErrors);
         }
 
-        // Business logic validation: Check if the UnitName is unique
-        bool isNameUnique = await IsNameUnique(request, cancellationToken);
-        if (!isNameUnique)
-        {
-            return Result.Fail("Tên đơn vị đã tồn tại trong hệ thống.");
-        }
 
         // Proceed with creating the ingredient unit
         IngredientUnit ingredientUnit = new(request.UnitName, request.IngredientId, request.IngredientUnitParentId, request.ConversionFactor);
