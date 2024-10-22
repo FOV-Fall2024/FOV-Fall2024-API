@@ -1,4 +1,5 @@
-﻿using FOV.Domain.Entities.IngredientAggregator;
+﻿using FOV.Application.Common.Exceptions;
+using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
