@@ -94,7 +94,7 @@ public class UpdateIngredientUnitHandler : IRequestHandler<UpdateIngredientUnitC
     private async Task<bool> IsUnitNameUniqueAsync(string unitName, Guid ingredientUnitId, CancellationToken token)
     {
         IngredientUnit? existingUnit = await _unitOfWorks.IngredientUnitRepository
-            .FirstOrDefaultAsync(ui => ui.UnitName.Equals(unitName, StringComparison.OrdinalIgnoreCase)
+            .FirstOrDefaultAsync(ui => ui.UnitName == unitName
                                        && ui.Id != ingredientUnitId);
         return existingUnit == null; // Return true if the name is unique, false if it exists.
     }
