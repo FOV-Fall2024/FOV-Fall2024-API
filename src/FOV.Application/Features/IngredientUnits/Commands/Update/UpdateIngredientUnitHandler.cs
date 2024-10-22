@@ -91,11 +91,12 @@ public class UpdateIngredientUnitHandler : IRequestHandler<UpdateIngredientUnitC
 
         return Result.Ok();
     }
-    private async Task<bool> IsUnitNameUniqueAsync(string unitName, Guid ingredientUnitId, CancellationToken token)
+    private async Task<bool> IsUnitNameUniqueAsync(string unitName, Guid ingredientUnitId)
     {
+        Ingredient ingredient = await _unitOfWorks.IngredientRepository.GetByIdAsync(_unitOfWorks.IngredientUnitRepository.GetByIdAsync(ingredientUnitId).Result.IngredientId) ?? throw new Exception();
         IngredientUnit? existingUnit = await _unitOfWorks.IngredientUnitRepository
             .FirstOrDefaultAsync(ui => ui.UnitName == unitName
-                                       && ui.Id != ingredientUnitId);
+                                       && ui.IngredientId != ingredient.Id);
         return existingUnit == null; // Return true if the name is unique, false if it exists.
     }
 }

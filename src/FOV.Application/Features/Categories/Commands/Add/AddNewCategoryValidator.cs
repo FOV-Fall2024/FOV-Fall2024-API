@@ -1,7 +1,9 @@
 ﻿using FluentValidation;
 using FOV.Application.Features.Categories.Commands.AddNewChildCategory;
 using FOV.Domain.Entities.DishAggregator;
+using FOV.Domain.Entities.IngredientGeneralAggregator;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace FOV.Application.Features.Categories.Commands.Add;
 public class AddNewCategoryValidator : AbstractValidator<AddNewCategoryCommand>
@@ -29,5 +31,6 @@ public sealed class CheckDuplicateName : AbstractValidator<string>
     {
         Category? ingredientType = await _unitOfWorks.CategoryRepository.FirstOrDefaultAsync(x => x.CategoryName == name);
         return ingredientType == null;
+        
     }
 }
