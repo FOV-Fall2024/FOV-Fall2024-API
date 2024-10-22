@@ -55,13 +55,13 @@ public sealed class CheckIngredientParentIdValidator : AbstractValidator<CreateN
 
     private async Task<bool> IsNameUnique(CreateNewIngredientUnitCommand command, CancellationToken token)
     {
-        IngredientUnit? exists = await _unitOfWorks.IngredientUnitRepository.FirstOrDefaultAsync(x => x.UnitName == command.UnitName && x.Ingredient.RestaurantId == _claimService.RestaurantId&& x.IngredientId == command.IngredientId);
+        IngredientUnit? exists = await _unitOfWorks.IngredientUnitRepository.FirstOrDefaultAsync(x => x.UnitName == command.UnitName && x.Ingredient.RestaurantId == _claimService.RestaurantId&& x.IngredientId == command.IngredientId,x => x.Ingredient);
         return exists == null;
     }
 
     private async Task<bool> CheckParentId(Guid parentId, CancellationToken token)
     {
-        IngredientUnit? exists = await _unitOfWorks.IngredientUnitRepository.FirstOrDefaultAsync(x => x.IngredientId == parentId && x.Ingredient.RestaurantId == _claimService.RestaurantId);
+        IngredientUnit? exists = await _unitOfWorks.IngredientUnitRepository.FirstOrDefaultAsync(x => x.IngredientId == parentId && x.Ingredient.RestaurantId == _claimService.RestaurantId,x => x.Ingredient);
         return exists == null;
     }
 
