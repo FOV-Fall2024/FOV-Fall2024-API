@@ -12,7 +12,7 @@ public class IngredientUnit : BaseAuditableEntity
     public virtual ICollection<IngredientUnit> ChildUnits { get; set; } = new List<IngredientUnit>();
 
     public IngredientUnit() { }
-
+    `
     // Default Unit
     public IngredientUnit(string measure, Guid ingredientId)
     {
