@@ -56,8 +56,8 @@ public sealed class CheckIngredientParentIdValidator : AbstractValidator<CreateN
 
     private async Task<bool> IsNameUnique(CreateNewIngredientUnitCommand command, CancellationToken token)
     {
-        var allIngredientUnit = _unitOfWorks.IngredientUnitRepository.GetAllAsync(x => x.Ingredient);
-        IngredientUnit? exists = allIngredientUnit.Result.FirstOrDefault(x => x.UnitName == command.UnitName && x.Ingredient.RestaurantId == _claimService.RestaurantId && x.IngredientId == command.IngredientId);
+        var allIngredientUnit = _unitOfWorks.IngredientUnitRepository.WhereAsync(x => x.IngredientId == command.IngredientId);
+        IngredientUnit? exists = allIngredientUnit.Result.FirstOrDefault(x => x.UnitName == command.UnitName);
         return exists == null;
     }
 
