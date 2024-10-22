@@ -38,7 +38,7 @@ public class GetIngredientsHandler : IRequestHandler<GetIngredientsCommand, Page
             "hi hi",
             x.IngredientAmount,
             x.Created,
-            x.IngredientUnits.Select(y => new GetIngredientUnitResponse(y.Id, y.IngredientUnitParentId, y.UnitName, y.ConversionFactor, y.Created)).OrderByDescending(x => x.CreatedDate).ToList()
+            x.IngredientUnits.Select(y => new GetIngredientUnitResponse(y.Id, y.IngredientUnitParentId, y.IngredientUnitParent.UnitName y.UnitName, y.ConversionFactor, y.Created)).OrderByDescending(x => x.CreatedDate).ToList()
             )).ToList();
 
         // Get pagination and sorting values
