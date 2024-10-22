@@ -47,7 +47,7 @@ public class UpdateIngredientUnitHandler : IRequestHandler<UpdateIngredientUnitC
         else
         {
             // Check if the UnitName is unique
-            if (!await IsUnitNameUniqueAsync(request.UnitName, request.IngredientUnitId, cancellationToken))
+            if (!await IsUnitNameUniqueAsync(request.UnitName, request.IngredientUnitId))
             {
                 fieldErrors.Add(new FieldError
                 {
@@ -93,11 +93,23 @@ public class UpdateIngredientUnitHandler : IRequestHandler<UpdateIngredientUnitC
     }
     private async Task<bool> IsUnitNameUniqueAsync(string unitName, Guid ingredientUnitId)
     {
-        Ingredient ingredient = await _unitOfWorks.IngredientRepository.GetByIdAsync(_unitOfWorks.IngredientUnitRepository.GetByIdAsync(ingredientUnitId).Result.IngredientId,x => x.IngredientUnits) ?? throw new Exception();
+        // Fetch the current IngredientUnit being updated
+        var currentIngredientUnit = await _unitOfWorks.IngredientUnitRepository.GetByIdAsync(ingredientUnitId);
+        if (currentIngredientUnit == null)
+        {
+            throw new Exception("Ingredient Unit not found.");
+        }
 
-        var ingredeintChecking = ingredient.IngredientUnits.FirstOrDefault(ui => ui.UnitName == unitName && ui.Id != ingredientUnitId)  ;
-        
-        return ingredeintChecking == null; // Return true if the name is unique, false if it exists.
+        // Fetch the ingredient associated with the current unit
+        Ingredient ingredient = await _unitOfWorks.IngredientRepository.GetByIdAsync(currentIngredientUnit.IngredientId, x => x.IngredientUnits) ?? throw new Exception("Ingredient not found.");
+
+        // Check for any IngredientUnit with the same UnitName within the same Ingredient
+        var existingUnit = ingredient.IngredientUnits
+            .FirstOrDefault(ui =>
+                ui.UnitName.Equals(unitName, StringComparison.OrdinalIgnoreCase) &&
+                ui.Id != ingredientUnitId); // Ignore the current unit being updated
+
+        return existingUnit == null;
     }
 }
 
