@@ -70,7 +70,7 @@ public class IngredientUnitController : DefaultController
     {
         command.IngredientUnitId = id;
         await _sender.Send(command);
-        return NoContent(); // 204 No Content
+        return Ok(new UPDATED_Result("Cập nhật đơn vị nguyên liệu  thành công")); // 204 No Content
     }
 
     // Additional endpoints (e.g., Remove) can be added here

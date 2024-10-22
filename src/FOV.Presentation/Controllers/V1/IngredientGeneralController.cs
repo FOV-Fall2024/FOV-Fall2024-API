@@ -57,7 +57,7 @@ public class IngredientGeneralController : DefaultController
     {
         command.Id = id;
         var response = await _sender.Send(command);
-        return Ok(new UPDATED_Result("Cập nhật nguyên liệu gốc thành công", response));
+        return Ok(new UPDATED_Result("Cập nhật nguyên liệu gốc thành công",""));
     }
 
     /// <summary>

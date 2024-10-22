@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using FluentResults;
+using FOV.Application.Common.Behaviours.Claim;
 using FOV.Application.Common.Exceptions;
 using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
@@ -16,10 +17,12 @@ public sealed record UpdateIngredientUnitCommand(string UnitName, decimal Conver
 public class UpdateIngredientUnitHandler : IRequestHandler<UpdateIngredientUnitCommand, Result>
 {
     private readonly IUnitOfWorks _unitOfWorks;
+    private readonly IClaimService _claimService;
 
-    public UpdateIngredientUnitHandler(IUnitOfWorks unitOfWorks)
+    public UpdateIngredientUnitHandler(IUnitOfWorks unitOfWorks, IClaimService claimService)
     {
         _unitOfWorks = unitOfWorks;
+        _claimService = claimService;
     }
 
     public async Task<Result> Handle(UpdateIngredientUnitCommand request, CancellationToken cancellationToken)
@@ -97,17 +100,17 @@ public class UpdateIngredientUnitHandler : IRequestHandler<UpdateIngredientUnitC
         var currentIngredientUnit = await _unitOfWorks.IngredientUnitRepository.GetByIdAsync(ingredientUnitId);
         if (currentIngredientUnit == null)
         {
-            throw new Exception("Ingredient Unit not found.");
+            throw new Exception("Không tìm thấy Id nguyên liệu.");
         }
 
         // Fetch the ingredient associated with the current unit
-        Ingredient ingredient = await _unitOfWorks.IngredientRepository.GetByIdAsync(currentIngredientUnit.IngredientId, x => x.IngredientUnits) ?? throw new Exception("Ingredient not found.");
+        Ingredient ingredient = await _unitOfWorks.IngredientRepository.GetByIdAsync(currentIngredientUnit.IngredientId, x => x.IngredientUnits, x => x.Restaurant) ?? throw new Exception("Ingredient not found.");
 
         // Check for any IngredientUnit with the same UnitName within the same Ingredient
         var existingUnit = ingredient.IngredientUnits
             .FirstOrDefault(ui =>
-                ui.UnitName.Equals(unitName, StringComparison.OrdinalIgnoreCase) &&
-                ui.Id != ingredientUnitId); // Ignore the current unit being updated
+                ui.UnitName == unitName &&
+                ui.Id != ingredientUnitId && ui.IngredientId == ingredient.Id && ui.Ingredient.RestaurantId == _claimService.RestaurantId); // Ignore the current unit being updated
 
         return existingUnit == null;
     }
