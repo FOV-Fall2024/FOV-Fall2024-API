@@ -39,7 +39,7 @@ public class IngredientUnitController : DefaultController
     /// </summary>
     /// <param name="command">The command containing ingredient unit details.</param>
     /// <returns>The ID of the newly created ingredient unit.</returns>
-    [Authorize(Roles = Role.Administrator)]
+    [Authorize(Roles = Role.Manager)]
     [HttpPost]
     [SwaggerOperation(Summary = "Adds a new ingredient unit.")]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -60,7 +60,7 @@ public class IngredientUnitController : DefaultController
     /// <param name="id">The ID of the ingredient unit to update.</param>
     /// <param name="command">The command with updated ingredient unit details.</param>
     /// <returns>No content.</returns>
-    [Authorize(Roles = Role.Administrator)]
+    [Authorize(Roles = Role.Manager)]
     [HttpPut("{id:guid}")]
     [SwaggerOperation(Summary = "Updates an existing ingredient unit.")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
