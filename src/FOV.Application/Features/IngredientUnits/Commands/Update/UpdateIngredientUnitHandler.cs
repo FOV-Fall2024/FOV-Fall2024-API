@@ -100,7 +100,7 @@ public class UpdateIngredientUnitHandler : IRequestHandler<UpdateIngredientUnitC
         var currentIngredientUnit = await _unitOfWorks.IngredientUnitRepository.GetByIdAsync(ingredientUnitId);
         if (currentIngredientUnit == null)
         {
-            throw new Exception("Ingredient Unit not found.");
+            throw new Exception("Không tìm thấy Id nguyên liệu.");
         }
 
         // Fetch the ingredient associated with the current unit
