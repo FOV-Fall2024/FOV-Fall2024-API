@@ -107,7 +107,7 @@ public class UpdateIngredientUnitHandler : IRequestHandler<UpdateIngredientUnitC
         var existingUnit = ingredient.IngredientUnits
             .FirstOrDefault(ui =>
                 ui.UnitName.Equals(unitName, StringComparison.OrdinalIgnoreCase) &&
-                ui.Id != ingredientUnitId); // Ignore the current unit being updated
+                ui.Id != ingredientUnitId && ui.IngredientId == ingredient.Id); // Ignore the current unit being updated
 
         return existingUnit == null;
     }
