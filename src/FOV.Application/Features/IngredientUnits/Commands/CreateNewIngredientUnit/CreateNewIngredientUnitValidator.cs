@@ -18,9 +18,9 @@ public class CreateNewIngredientUnitValidator : AbstractValidator<CreateNewIngre
         RuleFor(x => x.IngredientUnitParentId)
             .NotEqual(Guid.Empty).WithMessage("Mã đơn vị cha không được để trống.");
 
-        RuleFor(x => x).SetValidator(rule);
         RuleFor(x => x.IngredientId)
             .NotEqual(Guid.Empty).WithMessage("Mã nguyên liệu không được để trống.");
+        RuleFor(x => x).SetValidator(rule);
     }
 }
 
@@ -41,6 +41,7 @@ public sealed class CheckIngredientParentIdValidator : AbstractValidator<CreateN
         RuleFor(command => command)
             .MustAsync(IsNameUnique)
             .WithMessage("Tên đã tồn tại trong hệ thống.");
+
         RuleFor(command => command.IngredientUnitParentId)
           .MustAsync(CheckParentId)
           .WithMessage("Không Tìm thấy Id Nguyên liệu đơn vị");
@@ -55,13 +56,14 @@ public sealed class CheckIngredientParentIdValidator : AbstractValidator<CreateN
 
     private async Task<bool> IsNameUnique(CreateNewIngredientUnitCommand command, CancellationToken token)
     {
-        IngredientUnit? exists = await _unitOfWorks.IngredientUnitRepository.FirstOrDefaultAsync(x => x.UnitName == command.UnitName && x.Ingredient.RestaurantId == _claimService.RestaurantId&& x.IngredientId == command.IngredientId,x => x.Ingredient);
+        var allIngredientUnit = _unitOfWorks.IngredientUnitRepository.GetAllAsync(x => x.Ingredient);
+        IngredientUnit? exists = allIngredientUnit.Result.FirstOrDefault(x => x.UnitName == command.UnitName && x.Ingredient.RestaurantId == _claimService.RestaurantId && x.IngredientId == command.IngredientId);
         return exists == null;
     }
 
     private async Task<bool> CheckParentId(Guid parentId, CancellationToken token)
     {
-        IngredientUnit? exists = await _unitOfWorks.IngredientUnitRepository.FirstOrDefaultAsync(x => x.IngredientId == parentId && x.Ingredient.RestaurantId == _claimService.RestaurantId,x => x.Ingredient);
+        IngredientUnit? exists = await _unitOfWorks.IngredientUnitRepository.FirstOrDefaultAsync(x => x.Id == parentId && x.Ingredient.RestaurantId == _claimService.RestaurantId, x => x.Ingredient);
         return exists == null;
     }
 
