@@ -4,7 +4,7 @@ using FOV.Domain.Entities.RestaurantAggregator;
 using FOV.Domain.Entities.TableAggregator.Enums;
 
 namespace FOV.Domain.Entities.TableAggregator;
-public class Table : BaseAuditableEntity, IsSoftDeleted
+public class Table : BaseAuditableEntity
 {
     public int TableNumber { get; set; }
     public string? TableCode { get; set; }
@@ -14,7 +14,7 @@ public class Table : BaseAuditableEntity, IsSoftDeleted
     public Guid RestaurantId { get; set; }
     public bool IsLogin { get; set; }
     public virtual ICollection<Order> Orders { get; set; } = [];
-    public Status Status { get; set; }
+    //public Status Status { get; set; }
     public Table()
     {
 
@@ -33,7 +33,7 @@ public class Table : BaseAuditableEntity, IsSoftDeleted
     }
     public void UpdateState(bool state)
     {
-        Status = state ? Status.Active : Status.Inactive;
+        TableStatus = state ? TableStatus.Free : TableStatus.Disable;
         LastModified = DateTime.UtcNow.AddHours(7);
     }
     public void UpdateIsLogin(bool isLogin)

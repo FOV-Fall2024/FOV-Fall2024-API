@@ -6,6 +6,7 @@ using FOV.Application.Features.Tables.Commands.TableLogin;
 using FOV.Application.Features.Tables.Queries;
 using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Presentation.Controllers.V1;
+using FOV.Presentation.Infrastructure.Core;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,11 +16,11 @@ public class TableController(ISender sender) : DefaultController
     private readonly ISender _sender = sender;
 
     [HttpPost("{restaurantId:guid}")]
-    public async Task<IActionResult> Add(Guid restaurantId)
+    public async Task<IActionResult> Add(Guid restaurantId, [FromQuery] int Amount)
     {
-        var request = new CreateTableCommand(restaurantId);
+        var request = new CreateTableCommand(restaurantId, Amount);
         var response = await _sender.Send(request);
-        return Ok(response);
+        return Ok(new OK_Result<List<Guid>>("Thêm bàn mới thành công", response));
     }
     //[HttpPut("{id:guid}")]
     //public async Task<IActionResult> Update(Guid id, [FromBody] UpdateTableCommand command)
@@ -32,19 +33,19 @@ public class TableController(ISender sender) : DefaultController
     public async Task<IActionResult> Active(Guid id)
     {
         var response = await _sender.Send(new ActiveTableCommand(id));
-        return Ok(response);
+        return Ok(new OK_Result<Guid>("Đổi trạng thái của bàn thành công", response));
     }
     [HttpPost("{id:guid}/inactive")]
     public async Task<IActionResult> Inactive(Guid id)
     {
         var response = await _sender.Send(new InactiveTableCommand(id));
-        return Ok(response);
+        return Ok(new OK_Result<Guid>("Đổi trạng thái của bàn thành công", response));
     }
     [HttpPatch("{id:guid}/TableLogin")]
     public async Task<IActionResult> TableLogin(Guid id)
     {
         var response = await _sender.Send(new TableLoginCommand(id));
-        return Ok(response);
+        return Ok(new OK_Result<Guid>("Đăng nhập bàn thành công", response));
     }
     [HttpGet]
     public async Task<IActionResult> Get([FromQuery] GetTableCommand command)

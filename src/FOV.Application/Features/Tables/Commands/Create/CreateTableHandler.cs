@@ -10,33 +10,36 @@ using MediatR;
 
 namespace FOV.Application.Features.Tables.Commands.Create;
 
-public record CreateTableCommand(Guid RestaurantId) : IRequest<Guid>
+public record CreateTableCommand(Guid RestaurantId, int Amount) : IRequest<List<Guid>>
 {
     [JsonIgnore]
     public TableStatus Status { get; set; } = TableStatus.Free;
 }
-public class CreateTableHandler(IUnitOfWorks unitOfWorks, StorageHandler storageHandler, QRCodeGeneratorHandler qrCodeGeneratorHandler) : IRequestHandler<CreateTableCommand, Guid>
+public class CreateTableHandler(IUnitOfWorks unitOfWorks, StorageHandler storageHandler, QRCodeGeneratorHandler qrCodeGeneratorHandler) : IRequestHandler<CreateTableCommand, List<Guid>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     private readonly StorageHandler _storageHandler = storageHandler;
     private readonly QRCodeGeneratorHandler _qrCodeGeneratorHandler = qrCodeGeneratorHandler;
 
-    public async Task<Guid> Handle(CreateTableCommand request, CancellationToken cancellationToken)
+    public async Task<List<Guid>> Handle(CreateTableCommand request, CancellationToken cancellationToken)
     {
-        Table table = new(request.Status);
+        var tableIds = new List<Guid>();
         int nextTableNumber = await GetNextTableNumberAsync(request.RestaurantId);
 
-        //string tableCode = $"{nextTableNumber.ToString("D3")}";
+        for (int i = 0; i < request.Amount; i++)
+        {
+            Table table = new(request.Status)
+            {
+                RestaurantId = request.RestaurantId,
+                TableNumber = nextTableNumber + i,
+                TableStatus = TableStatus.Free
+            };
+            await _unitOfWorks.TableRepository.AddAsync(table);
+            tableIds.Add(table.Id);
+        }
 
-        table.RestaurantId = request.RestaurantId;
-        //table.TableCode = tableCode;
-        table.TableNumber = nextTableNumber;
-        table.TableStatus = TableStatus.Free;
-        //table.TableQRCode = await GenerateAndUploadQRCodeAsync(request.RestaurantId, tableCode);
-
-        await _unitOfWorks.TableRepository.AddAsync(table);
         await _unitOfWorks.SaveChangeAsync();
-        return table.Id;
+        return tableIds;
     }
 
     private async Task<int> GetNextTableNumberAsync(Guid restaurantId)

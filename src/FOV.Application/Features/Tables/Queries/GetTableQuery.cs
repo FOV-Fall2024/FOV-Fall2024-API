@@ -10,7 +10,7 @@ using MediatR;
 
 namespace FOV.Application.Features.Tables.Queries;
 
-public record GetTableCommand(PagingRequest? PagingRequest, Guid? Id, int? TableNumber, TableStatus? TableStatus, Guid? RestaurantId, SortOrder? Sort) : IRequest<PagedResult<GetTableResponse>>;
+public record GetTableCommand(PagingRequest? PagingRequest, Guid? Id, int? TableNumber, TableStatus? TableStatus, Guid? RestaurantId, SortOrder? Sort, bool? IsLogin) : IRequest<PagedResult<GetTableResponse>>;
 
 public record GetTableResponse(Guid Id, int TableNumber, string TableStatus, Guid RestaurantId, DateTime CreatedDate, bool IsLogin);
 
@@ -23,8 +23,13 @@ public class GetTableQuery(IUnitOfWorks unitOfWorks, IClaimService claimService)
     {
         var tables = (await _unitOfWorks.TableRepository.GetAllAsync()).OrderByDescending(x => x.Created);
 
-        if (_claimService.UserRole != Role.Administrator) {
+        if (_claimService.UserRole != Role.Administrator)
+        {
             tables = tables.Where(t => !t.IsLogin).OrderByDescending(x => x.Created);
+        }
+        else if (command.IsLogin.HasValue)
+        {
+            tables = tables.Where(t => t.IsLogin == command.IsLogin.Value).OrderByDescending(x => x.Created);
         }
 
         var filterEntity = new Table
