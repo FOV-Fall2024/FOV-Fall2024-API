@@ -28,7 +28,6 @@ namespace FOV.Presentation.Controllers.V1
         /// <summary>
         /// Retrieves all combos.
         /// </summary>
-        [Authorize(Roles = Domain.Entities.UserAggregator.Enums.Role.Manager)]
         [HttpGet]
         [SwaggerOperation(Summary = "Retrieves all combos.")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -59,10 +58,10 @@ namespace FOV.Presentation.Controllers.V1
         [SwaggerOperation(Summary = "Adds a new combo.")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> AddCombo(CreateComboCommand command)
+        public async Task<IActionResult> AddCombo([FromBody] CreateComboCommand command)
         {
             var response = await _mediator.Send(command);
-            return Created("", new CREATED_Result("Tạo combo thành công"));
+            return Created("", new CREATED_Result("Tạo combo thành công", response));
         }
 
         /// <summary>

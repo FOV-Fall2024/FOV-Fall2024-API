@@ -23,8 +23,8 @@ public record OrderDetailDto(Guid? ComboId, Guid? ProductId, int Quantity)
     public OrderDetailsStatus Status = OrderDetailsStatus.Prepare;
 }
 public record CreateOrderWithTableIdCommand(
-    OrderType OrderType,
-    DateTime OrderTime,
+    //OrderType OrderType,
+    //DateTime OrderTime,
     List<OrderDetailDto> OrderDetails
 ) : IRequest<Guid>
 {
@@ -98,7 +98,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
 
             decimal totalPrice = 0;
 
-            var order = new Domain.Entities.OrderAggregator.Order(request.OrderType, request.OrderTime, 0)
+            var order = new Domain.Entities.OrderAggregator.Order(DateTime.UtcNow, 0)
             {
                 TableId = request.TableId,
                 OrderStatus = request.OrderStatus,

@@ -3,7 +3,7 @@
 namespace FOV.Domain.Entities.DishAggregator;
 public class RefundDishInventory : BaseAuditableEntity
 {
-    public int QuantityAvailable { get; set; }
+    public int? QuantityAvailable { get; set; }
 
     public Dish? Dish { get; set; }
 

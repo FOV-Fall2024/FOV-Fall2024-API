@@ -72,7 +72,7 @@ public class DishController : DefaultController
     /// </summary>
     /// <param name="command">The command containing query parameters for the menu.</param>
     /// <returns>A list of products in the menu.</returns>
-    [HttpGet("menu")]
+    [HttpGet("dish")]
     [SwaggerOperation(Summary = "Retrieves the menu of products.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

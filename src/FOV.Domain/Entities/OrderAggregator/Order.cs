@@ -24,16 +24,14 @@ public class Order : BaseAuditableEntity
     {
 
     }
-    public Order(OrderType orderType, DateTime orderTime, decimal totalPrice)
+    public Order(DateTime orderTime, decimal totalPrice)
     {
-        this.OrderType = orderType;
         this.OrderTime = orderTime;
         this.TotalPrice = totalPrice;
     }
-    public void Update(OrderStatus orderStatus, OrderType orderType, DateTime orderTime, decimal totalPrice, Guid tableId)
+    public void Update(OrderStatus orderStatus, DateTime orderTime, decimal totalPrice, Guid tableId)
     {
         this.OrderStatus = orderStatus;
-        this.OrderType = orderType;
         this.OrderTime = orderTime;
         this.TotalPrice = totalPrice;
         this.TableId = tableId;
