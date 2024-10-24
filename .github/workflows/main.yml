@@ -31,8 +31,8 @@ jobs:
               git clone https://github.com/FOV-Fall2024/FOV-Fall2024-API.git
               cd FOV-Fall2024-API
             fi
-            sleep 10s
-            docker stop fov_database
-            
             docker-compose build fov.presentation
             docker-compose --project-name fov up -d
+            
+            sleep 1m
+            docker stop fov_database
