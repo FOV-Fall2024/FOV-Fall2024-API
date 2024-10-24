@@ -17,10 +17,10 @@ using StackExchange.Redis;
 
 namespace FOV.Application.Features.Orders.Commands.CreateOrder;
 
-public record OrderDetailDto(Guid? ComboId, Guid? ProductId, int Quantity)
+public record OrderDetailDto(Guid? ComboId, Guid? ProductId, int Quantity, string? Note)
 {
     [JsonIgnore]
-    public OrderDetailsStatus Status = OrderDetailsStatus.Prepare;
+    public readonly OrderDetailsStatus Status = OrderDetailsStatus.Prepare;
 }
 public record CreateOrderWithTableIdCommand(
     //OrderType OrderType,
@@ -29,7 +29,7 @@ public record CreateOrderWithTableIdCommand(
 ) : IRequest<Guid>
 {
     [JsonIgnore]
-    public OrderStatus OrderStatus = OrderStatus.Prepare;
+    public readonly OrderStatus OrderStatus = OrderStatus.Prepare;
     [JsonIgnore]
     public Guid TableId { get; set; }
 }
@@ -118,7 +118,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
                     var comboPrice = combo.Price;
                     totalPrice += comboPrice * detail.Quantity;
 
-                    var comboOrderDetail = new OrderDetail(combo.Id, null, null, detail.Quantity, comboPrice)
+                    var comboOrderDetail = new OrderDetail(combo.Id, null, null, detail.Quantity, comboPrice, detail.Note)
                     {
                         Status = OrderDetailsStatus.Prepare
                     };
@@ -126,12 +126,12 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
 
                     foreach (var dishCombo in combo.DishCombos)
                     {
-                        totalPrice = await ProcessDish(dishCombo.DishId, detail.Quantity, lockService, order, totalPrice);
+                        totalPrice = await ProcessDish(dishCombo.DishId, detail.Quantity, detail.Note, lockService, order, totalPrice);
                     }
                 }
-                else if (detail.ProductId.HasValue)
+                else if (detail.ProductId.HasValue) 
                 {
-                    totalPrice = await ProcessDish(detail.ProductId.Value, detail.Quantity, lockService, order, totalPrice);
+                    totalPrice = await ProcessDish(detail.ProductId.Value, detail.Quantity, detail.Note, lockService, order, totalPrice);
                 }
             }
 
@@ -160,7 +160,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
         }
     }
 
-    private async Task<decimal> ProcessDish(Guid productId, int quantity, LockingHandler lockService, Domain.Entities.OrderAggregator.Order order, decimal totalPrice)
+    private async Task<decimal> ProcessDish(Guid productId, int quantity, string note, LockingHandler lockService, Domain.Entities.OrderAggregator.Order order, decimal totalPrice)
     {
         var dishes = await _unitOfWorks.DishRepository.GetAllAsync(x => x.DishIngredients);
         var dish = dishes.FirstOrDefault(x => x.Id == productId);
@@ -189,8 +189,8 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             }
 
             var requiredAmount = dishIngredient.Quantity * quantity;
-
             var maxServings = ingredient.IngredientAmount / dishIngredient.Quantity;
+
             if (maxServings < quantity)
             {
                 await lockService.ReleaseLockAsync();
@@ -212,7 +212,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
         var dishPrice = dish.Price ?? 0;
         totalPrice += dishPrice * quantity;
 
-        var orderDetail = new OrderDetail(null, productId, null, quantity, dishPrice)
+        var orderDetail = new OrderDetail(null, productId, null, quantity, dishPrice, note)
         {
             Status = OrderDetailsStatus.Prepare
         };

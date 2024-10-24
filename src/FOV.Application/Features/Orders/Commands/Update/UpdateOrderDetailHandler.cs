@@ -18,6 +18,7 @@ public class UpdateOrderDetailCommand : IRequest<Guid>
     public string? Status { get; set; }
     public int Quantity { get; set; }
     public decimal Price { get; set; }
+    public string? Note { get; set; }
 }
 public class UpdateOrderDetailHandler : IRequestHandler<UpdateOrderDetailCommand, Guid>
 {
@@ -29,7 +30,7 @@ public class UpdateOrderDetailHandler : IRequestHandler<UpdateOrderDetailCommand
     public async Task<Guid> Handle(UpdateOrderDetailCommand request, CancellationToken cancellationToken)
     {
         OrderDetail orderDetail = await _unitOfWorks.OrderDetailRepository.GetByIdAsync(request.Id) ?? throw new Exception();
-        orderDetail.Update(request.ComboId, request.ProductId, request.Quantity, request.Price);
+        orderDetail.Update(request.ComboId, request.ProductId, request.Quantity, request.Price, request.Note ?? string.Empty);
         _unitOfWorks.OrderDetailRepository.Update(orderDetail);
         await _unitOfWorks.SaveChangeAsync();
         return orderDetail.Id;

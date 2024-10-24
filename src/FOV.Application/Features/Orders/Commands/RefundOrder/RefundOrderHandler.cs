@@ -46,7 +46,8 @@ public class RefundOrderHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<Refu
                 orderDetail.ProductId,
                 orderDetail.OrderId,
                 request.RefundQuantity,
-                orderDetail.Price
+                orderDetail.Price,
+                orderDetail.Note ?? string.Empty
             )
             {
                 Status = OrderDetailsStatus.Refund

@@ -114,47 +114,6 @@ namespace FOV.Infrastructure.Migrations
                     b.HasIndex("RestaurantId");
 
                     b.ToTable("Combos");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("941bcca9-52a6-41f7-9403-06cc5fa703ea"),
-                            ComboName = "Combo 1",
-                            ComboStatus = (byte)0,
-                            Created = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
-                            PercentReduce = 10.0m,
-                            Price = 50.00m,
-                            RestaurantId = new Guid("9ffc9ec6-6b72-4467-aaeb-1e45dc0540b0"),
-                            Status = (byte)1,
-                            Thumbnail = "img1"
-                        },
-                        new
-                        {
-                            Id = new Guid("3907a193-c2ae-4f40-936b-9a2438595123"),
-                            ComboName = "Combo 2",
-                            ComboStatus = (byte)0,
-                            Created = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
-                            PercentReduce = 5.0m,
-                            Price = 30.00m,
-                            RestaurantId = new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"),
-                            Status = (byte)1,
-                            Thumbnail = "img2"
-                        },
-                        new
-                        {
-                            Id = new Guid("921b269a-db6e-4a1d-b285-70df523e010e"),
-                            ComboName = "Combo 3",
-                            ComboStatus = (byte)0,
-                            Created = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
-                            LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
-                            PercentReduce = 5.0m,
-                            Price = 30.00m,
-                            RestaurantId = new Guid("d42cf3c6-cbe4-4431-ac91-9eae870fa007"),
-                            Status = (byte)1,
-                            Thumbnail = "img3"
-                        });
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.ComboAggregator.DishCombo", b =>
@@ -354,7 +313,7 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
 
-                    b.Property<int>("QuantityAvailable")
+                    b.Property<int?>("QuantityAvailable")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -1057,6 +1016,9 @@ namespace FOV.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Note")
                         .HasColumnType("text");
 
                     b.Property<Guid?>("OrderId")

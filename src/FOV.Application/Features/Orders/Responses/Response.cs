@@ -3,5 +3,5 @@
 namespace FOV.Application.Features.Orders.Responses;
 
 public record GetOrderDetailsResponse(Guid OrderId, List<OrderDetailsDto> OrderDetails);
-public record OrderDetailsDto(Guid Id, Guid? ComboId, Guid? ProductId, OrderDetailsStatus? Status, int Quantity, decimal Price);
+public record OrderDetailsDto(Guid Id, Guid? ComboId, Guid? ProductId, OrderDetailsStatus? Status, int Quantity, decimal Price, string note);
 

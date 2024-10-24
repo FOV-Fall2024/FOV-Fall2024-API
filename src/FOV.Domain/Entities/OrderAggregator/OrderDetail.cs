@@ -17,6 +17,7 @@ public class OrderDetail : BaseAuditableEntity
     public OrderDetailsStatus? Status { get; set; } = OrderDetailsStatus.Prepare;
     public int Quantity { get; set; }
     public decimal Price { get; set; }
+    public string? Note { get; set; }
     public Combo? Combo { get; set; }
     public Dish? Dish { get; set; }
     public Order? Order { get; set; }
@@ -24,19 +25,21 @@ public class OrderDetail : BaseAuditableEntity
     {
 
     }
-    public OrderDetail(Guid? comboId, Guid? productId, Guid? orderId, int quantity, decimal price)
+    public OrderDetail(Guid? comboId, Guid? productId, Guid? orderId, int quantity, decimal price, string note)
     {
         this.ComboId = comboId;
         this.ProductId = productId;
         this.OrderId = orderId;
         this.Quantity = quantity;
         this.Price = price;
+        Note = note;
     }
-    public void Update(Guid? comboId, Guid? productId, int quantity, decimal price)
+    public void Update(Guid? comboId, Guid? productId, int quantity, decimal price, string note)
     {
         this.ComboId = comboId;
         this.ProductId = productId;
         this.Quantity = quantity;
         this.Price = price;
+        Note = note;
     }
 }

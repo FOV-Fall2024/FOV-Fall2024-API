@@ -17,10 +17,10 @@ public record AddProductsToOrdersCommand(List<GetOrderDetailDto> NewOrderDetails
     [JsonIgnore]
     public Guid OrderId { get; set; }
 }
-public record GetOrderDetailDto(Guid? ComboId, Guid? ProductId, int Quantity, decimal Price)
+public record GetOrderDetailDto(Guid? ComboId, Guid? ProductId, int Quantity, decimal Price, string Note)
 {
     [JsonIgnore]
-    public OrderDetailsStatus Status = OrderDetailsStatus.Prepare;
+    public readonly OrderDetailsStatus Status = OrderDetailsStatus.Prepare;
 }
 public class AddProductsToOrdersHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<AddProductsToOrdersCommand, Guid>
 {
@@ -37,7 +37,8 @@ public class AddProductsToOrdersHandler(IUnitOfWorks unitOfWorks) : IRequestHand
                     detail.ProductId,
                     null,
                     detail.Quantity,
-                    detail.Price
+                    detail.Price,
+                    detail.Note
                 )
             {
                 Status = detail.Status

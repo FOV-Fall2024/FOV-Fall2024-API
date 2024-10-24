@@ -17,7 +17,7 @@ public class GetOrderDetailsQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<Ge
                                              o.ProductId,
                                                         o.Status,
                                                                    o.Quantity,
-                                                                              o.Price
+                                                                              o.Price, o.Note
                                                                                      )).ToList());
     }
 }
