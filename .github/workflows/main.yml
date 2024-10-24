@@ -26,12 +26,13 @@ jobs:
               git pull origin main
               make build
               make commit
-              docker stop fov_database
             else
               echo "Cloning the repository..."
               git clone https://github.com/FOV-Fall2024/FOV-Fall2024-API.git
               cd FOV-Fall2024-API
             fi
+            sleep 10s
+            docker stop fov_database
             
             docker-compose build fov.presentation
             docker-compose --project-name fov up -d
