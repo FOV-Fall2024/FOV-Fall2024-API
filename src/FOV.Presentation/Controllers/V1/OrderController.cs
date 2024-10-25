@@ -1,4 +1,5 @@
-﻿using FOV.Application.Features.Orders.Commands.AddProduct;
+﻿using FOV.Application.Common.Exceptions;
+using FOV.Application.Features.Orders.Commands.AddProduct;
 using FOV.Application.Features.Orders.Commands.ChangeStateOrder;
 using FOV.Application.Features.Orders.Commands.CreateOrder;
 using FOV.Application.Features.Orders.Commands.RefundOrder;
@@ -6,6 +7,7 @@ using FOV.Application.Features.Orders.Queries.GetOrderDetails;
 using FOV.Application.Features.Orders.Queries.GetOrders;
 using FOV.Application.Features.Orders.Queries.SuggestDishesForHeadchef;
 using FOV.Infrastructure.Helpers.GetHelper;
+using FOV.Presentation.Infrastructure.Core;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,9 +20,16 @@ public class OrderController(ISender sender) : DefaultController
     [HttpPost("{tableId:guid}/table")]
     public async Task<IActionResult> Add(Guid tableId, [FromBody] CreateOrderWithTableIdCommand command)
     {
-        command.TableId = tableId;
-        var response = await _sender.Send(command);
-        return Ok(response);
+        try
+        {
+            command.TableId = tableId;
+            var response = await _sender.Send(command);
+            return Ok(new OK_Result<Guid>("Đặt hàng thành công", response));
+        }
+        catch (AppException ex)
+        {
+            return BadRequest(new Error<FieldError>("Đặt hàng thất bại", ErrorStatusCodeConfig.BAD_REQUEST, ex.FieldErrors));
+        }
     }
 
     [HttpGet]

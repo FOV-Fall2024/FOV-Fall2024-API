@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
+using FOV.Application.Common.Exceptions;
 using FOV.Domain.Entities.DishAggregator;
 using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.OrderAggregator.Enums;
@@ -53,6 +54,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
     {
         string lockKey = $"lock:table:{request.TableId}";
         LockingHandler lockService;
+        var fieldErrors = new List<FieldError>();
 
         if (!_lockHandlers.TryGetValue(lockKey, out lockService))
         {
@@ -62,39 +64,50 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
 
         if (!await lockService.AcquireLockAsync())
         {
-            throw new Exception("Không thể khóa bàn. Vui lòng thử lại sau.");
+            fieldErrors.Add(new FieldError { Field = "lock", Message = "Không thể khóa bàn. Vui lòng thử lại sau." });
         }
 
-        // Keep track of the original status of the table
-        TableStatus originalTableStatus = TableStatus.Unknown;
+        TableStatus originalTableStatus = TableStatus.Free;
 
         try
         {
             var table = await _unitOfWorks.TableRepository.GetByIdAsync(request.TableId);
             if (table == null)
             {
-                throw new Exception($"Không tìm thấy bàn có ID {request.TableId}.");
+                fieldErrors.Add(new FieldError { Field = "tableId", Message = $"Không tìm thấy bàn có ID {request.TableId}." });
+            }
+            else
+            {
+                if (!table.IsLogin)
+                {
+                    fieldErrors.Add(new FieldError { Field = "isLogin", Message = "Bàn chưa đăng nhập. Không thể đặt hàng." });
+                }
+
+                if (table.TableStatus == TableStatus.Working)
+                {
+                    fieldErrors.Add(new FieldError { Field = "tableStatus", Message = "Bàn hiện không khả dụng để đặt hàng." });
+                }
+
+                var tableOrders = (await _unitOfWorks.OrderRepository.GetAllAsync())
+                    .Where(o => o.TableId == request.TableId && o.OrderStatus != OrderStatus.Finish)
+                    .ToList();
+
+                if (tableOrders.Any())
+                {
+                    fieldErrors.Add(new FieldError { Field = "tableId", Message = "Hiện đang có đơn hàng hoạt động tại bàn này." });
+                }
+            }
+
+            if (fieldErrors.Any())
+            {
+                throw new AppException("Lỗi khi tạo đơn hàng mới", fieldErrors, 400);
             }
 
             originalTableStatus = table.TableStatus;
 
-            if (table.TableStatus == TableStatus.Working)
-            {
-                throw new Exception("Bàn hiện không khả dụng để đặt hàng.");
-            }
-
             table.TableStatus = TableStatus.Working;
             _unitOfWorks.TableRepository.Update(table);
             await _unitOfWorks.SaveChangeAsync();
-
-            var tableOrders = (await _unitOfWorks.OrderRepository.GetAllAsync())
-                .Where(o => o.TableId == request.TableId && o.OrderStatus != OrderStatus.Finish)
-                .ToList();
-
-            if (tableOrders.Any())
-            {
-                throw new Exception("Hiện đang có đơn hàng hoạt động tại bàn này.");
-            }
 
             decimal totalPrice = 0;
 
@@ -129,7 +142,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
                         totalPrice = await ProcessDish(dishCombo.DishId, detail.Quantity, detail.Note, lockService, order, totalPrice);
                     }
                 }
-                else if (detail.ProductId.HasValue) 
+                else if (detail.ProductId.HasValue)
                 {
                     totalPrice = await ProcessDish(detail.ProductId.Value, detail.Quantity, detail.Note, lockService, order, totalPrice);
                 }
@@ -140,8 +153,6 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             await _unitOfWorks.OrderRepository.AddAsync(order);
             await _unitOfWorks.SaveChangeAsync();
             await lockService.ReleaseLockAsync();
-            //await _hubContext.Clients.All.SendAsync("SendOrder", order.Id);
-            await _orderHub.SendOrder(order.Id);
 
             return order.Id;
         }
@@ -156,7 +167,15 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             }
 
             await lockService.ReleaseLockAsync();
-            throw new Exception($"Đã xảy ra lỗi khi đặt hàng: {ex.Message}");
+            if (ex is AppException appEx)
+            {
+                throw appEx;
+            }
+            else
+            {
+                throw new AppException("Đã xảy ra lỗi khi đặt hàng", new List<string> { ex.Message }, ex);
+            }
+
         }
     }
 
