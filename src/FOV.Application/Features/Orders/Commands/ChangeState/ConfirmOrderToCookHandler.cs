@@ -13,9 +13,11 @@ public record ConfirmOrderToCookCommand(Guid OrderId) : IRequest<Guid>;
 public class ConfirmOrderToCookHandler : IRequestHandler<ConfirmOrderToCookCommand, Guid>
 {
     private readonly IUnitOfWorks _unitOfWorks;
-    public ConfirmOrderToCookHandler(IUnitOfWorks unitOfWorks)
+    private readonly OrderHub _orderHub;
+    public ConfirmOrderToCookHandler(IUnitOfWorks unitOfWorks, OrderHub orderHub)
     {
         _unitOfWorks = unitOfWorks;
+        _orderHub = orderHub;
     }
     public async Task<Guid> Handle(ConfirmOrderToCookCommand request, CancellationToken cancellationToken)
     {
@@ -31,6 +33,7 @@ public class ConfirmOrderToCookHandler : IRequestHandler<ConfirmOrderToCookComma
 
         _unitOfWorks.OrderRepository.Update(order);
         await _unitOfWorks.SaveChangeAsync();
+        await _orderHub.UpdateOrderStatus(order.Id, order.OrderStatus.ToString());
 
         return order.Id;
     }
