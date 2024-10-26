@@ -13,7 +13,7 @@ namespace FOV.Application.Features.Tables.Commands.Create;
 public record CreateTableCommand(Guid RestaurantId, int Amount) : IRequest<List<Guid>>
 {
     [JsonIgnore]
-    public TableStatus Status { get; set; } = TableStatus.Free;
+    public TableStatus Status { get; set; } = TableStatus.Available;
 }
 public class CreateTableHandler(IUnitOfWorks unitOfWorks, StorageHandler storageHandler, QRCodeGeneratorHandler qrCodeGeneratorHandler) : IRequestHandler<CreateTableCommand, List<Guid>>
 {
@@ -32,7 +32,7 @@ public class CreateTableHandler(IUnitOfWorks unitOfWorks, StorageHandler storage
             {
                 RestaurantId = request.RestaurantId,
                 TableNumber = nextTableNumber + i,
-                TableStatus = TableStatus.Free
+                TableStatus = TableStatus.Available
             };
             await _unitOfWorks.TableRepository.AddAsync(table);
             tableIds.Add(table.Id);

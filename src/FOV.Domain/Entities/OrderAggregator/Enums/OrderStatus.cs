@@ -10,5 +10,6 @@ public enum OrderStatus : byte
     Prepare = 1,
     Cook = 2,
     Service = 3,
-    Finish = 4
+    Payment = 4,
+    Finish = 5,
 }

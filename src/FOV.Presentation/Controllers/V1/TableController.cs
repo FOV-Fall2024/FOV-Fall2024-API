@@ -53,7 +53,6 @@ public class TableController(ISender sender) : DefaultController
         var response = await _sender.Send(new TableLoginCommand(id));
         return Ok(new OK_Result<Guid>("Đăng nhập bàn thành công", response));
     }
-    [Authorize(Roles = Role.Manager)]
     [HttpPatch("{id:guid}/TableLogout")]
     public async Task<IActionResult> TableLogout(Guid id, [FromQuery] string employeeCode)
     {

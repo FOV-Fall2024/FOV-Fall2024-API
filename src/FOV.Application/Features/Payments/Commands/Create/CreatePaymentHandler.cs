@@ -34,6 +34,9 @@ public class CreatePaymentHandler(IUnitOfWorks unitOfWorks, OrderHub orderHub) :
             throw new Exception("No valid items for payment.");
         }
 
+        order.OrderStatus = OrderStatus.Payment;
+        _unitOfWorks.OrderRepository.Update(order);
+
         var payment = new Domain.Entities.PaymentAggregator.Payments
         {
             OrderId = request.OrderId,

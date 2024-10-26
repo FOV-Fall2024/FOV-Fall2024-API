@@ -33,7 +33,7 @@ public class Table : BaseAuditableEntity
     }
     public void UpdateState(bool state)
     {
-        TableStatus = state ? TableStatus.Free : TableStatus.Disable;
+        TableStatus = state ? TableStatus.Available : TableStatus.Disable;
         LastModified = DateTime.UtcNow.AddHours(7);
     }
     public void UpdateIsLogin(bool isLogin)

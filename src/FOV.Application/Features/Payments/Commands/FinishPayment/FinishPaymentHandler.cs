@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using FluentResults;
 using FOV.Domain.Entities.OrderAggregator.Enums;
 using FOV.Domain.Entities.PaymentAggregator.Enums;
+using FOV.Domain.Entities.TableAggregator.Enums;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
@@ -18,7 +19,7 @@ public class FinishPaymentHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<Fi
 
     public async Task<Guid> Handle(FinishPaymentCommand request, CancellationToken cancellationToken)
     {
-        var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.Payments)
+        var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.Payments, t => t.Table)
             ?? throw new Exception("Đơn hàng không tồn tại");
 
         var payment = order.Payments.FirstOrDefault();
@@ -37,6 +38,12 @@ public class FinishPaymentHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<Fi
         {
             order.OrderStatus = OrderStatus.Finish;
             _unitOfWorks.OrderRepository.Update(order);
+        }
+
+        if (order.Table != null)
+        {
+            order.Table.TableStatus = TableStatus.Available;
+            _unitOfWorks.TableRepository.Update(order.Table);
         }
 
         await _unitOfWorks.SaveChangeAsync();

@@ -67,7 +67,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             fieldErrors.Add(new FieldError { Field = "lock", Message = "Không thể khóa bàn. Vui lòng thử lại sau." });
         }
 
-        TableStatus originalTableStatus = TableStatus.Free;
+        TableStatus originalTableStatus = TableStatus.Available;
 
         try
         {
@@ -153,6 +153,9 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             await _unitOfWorks.OrderRepository.AddAsync(order);
             await _unitOfWorks.SaveChangeAsync();
             await lockService.ReleaseLockAsync();
+
+            //test, remove when deploy
+            //await _orderHub.SendOrder(order.Id);
 
             return order.Id;
         }

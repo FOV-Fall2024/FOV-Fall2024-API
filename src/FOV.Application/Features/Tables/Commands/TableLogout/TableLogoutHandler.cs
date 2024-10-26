@@ -21,7 +21,7 @@ public partial class TableLogoutHandler(IUnitOfWorks unitOfWorks) : IRequestHand
 
         var table = await _unitOfWorks.TableRepository.GetByIdAsync(request.TableId) ?? throw new Exception();
         if (table.IsLogin == false) throw new Exception("Table is not login.");
-        if (table.TableStatus != Domain.Entities.TableAggregator.Enums.TableStatus.Free) throw new Exception("Bàn này hiện đang có đơn đang thực hiện.");
+        if (table.TableStatus != Domain.Entities.TableAggregator.Enums.TableStatus.Available) throw new Exception("Bàn này hiện đang có đơn đang thực hiện.");
 
         var restaurantId = table.RestaurantId;
         var manager = await _unitOfWorks.EmployeeRepository.WhereAsync(x => x.RestaurantId == restaurantId && x.EmployeeCode == request.EmployeeCode);

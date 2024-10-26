@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using FOV.Domain.Entities.TableAggregator.Enums;
 using FOV.Infrastructure.Helpers.VNPayHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
@@ -65,6 +66,10 @@ namespace FOV.Application.Features.Payments.Commands
             payment.PaymentStatus = Domain.Entities.PaymentAggregator.Enums.PaymentStatus.Paid;
             order.OrderStatus = Domain.Entities.OrderAggregator.Enums.OrderStatus.Finish;
 
+            var table = await _unitOfWorks.TableRepository.GetByIdAsync(order.TableId);
+            table.TableStatus = TableStatus.Available;
+
+            _unitOfWorks.TableRepository.Update(table);
             _unitOfWorks.PaymentRepository.Update(payment);
             _unitOfWorks.OrderRepository.Update(order);
             await _unitOfWorks.SaveChangeAsync();
