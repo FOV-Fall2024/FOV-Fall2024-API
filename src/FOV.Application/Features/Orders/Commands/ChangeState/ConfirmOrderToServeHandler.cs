@@ -10,10 +10,10 @@ using MediatR;
 
 namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder;
 public record ConfirmOrderToServeCommand(Guid OrderId) : IRequest<Guid>;
-public class ConfirmOrderToServeHandler(IUnitOfWorks unitOfWorks, OrderHub orderHub) : IRequestHandler<ConfirmOrderToServeCommand, Guid>
+public class ConfirmOrderToServeHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<ConfirmOrderToServeCommand, Guid>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
-    private readonly OrderHub _orderHub = orderHub;
+    //private readonly OrderHub _orderHub = orderHub;
 
     public async Task<Guid> Handle(ConfirmOrderToServeCommand request, CancellationToken cancellationToken)
     {
@@ -29,7 +29,7 @@ public class ConfirmOrderToServeHandler(IUnitOfWorks unitOfWorks, OrderHub order
 
         _unitOfWorks.OrderRepository.Update(order);
         await _unitOfWorks.SaveChangeAsync();
-        await _orderHub.UpdateOrderStatus(order.Id, order.OrderStatus.ToString());
+        //await _orderHub.UpdateOrderStatus(order.Id, order.OrderStatus.ToString());
 
         return order.Id;
     }

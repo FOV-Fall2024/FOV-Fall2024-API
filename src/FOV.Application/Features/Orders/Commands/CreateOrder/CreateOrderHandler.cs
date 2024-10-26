@@ -125,7 +125,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
                     var combo = await _unitOfWorks.ComboRepository.GetByIdAsync(detail.ComboId.Value);
                     if (combo == null)
                     {
-                        throw new Exception($"Không tìm thấy combo có ID {detail.ComboId.Value}.");
+                        fieldErrors.Add(new FieldError { Field = "comboId", Message = "Không có combo này trong hệ thống." });
                     }
 
                     var comboPrice = combo.Price;
@@ -181,13 +181,14 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
 
     private async Task<decimal> ProcessDish(Guid productId, int quantity, string note, LockingHandler lockService, Domain.Entities.OrderAggregator.Order order, decimal totalPrice)
     {
+        var fieldErrors = new List<FieldError>();
         var dishes = await _unitOfWorks.DishRepository.GetAllAsync(x => x.DishIngredients);
         var dish = dishes.FirstOrDefault(x => x.Id == productId);
 
         if (dish == null)
         {
             await lockService.ReleaseLockAsync();
-            throw new Exception($"Không tìm thấy món ăn có ID {productId}.");
+            fieldErrors.Add(new FieldError { Field = "productId", Message = "Không tìm thấy món ăn" });
         }
 
         foreach (var dishIngredient in dish.DishIngredients)
@@ -204,7 +205,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             if (ingredient == null)
             {
                 await lockService.ReleaseLockAsync();
-                throw new Exception($"Không tìm thấy nguyên liệu có ID {dishIngredient.IngredientId}.");
+                fieldErrors.Add(new FieldError { Field = "ingredientId", Message = "Không tìm thấy nguyên liệu" });
             }
 
             var requiredAmount = dishIngredient.Quantity * quantity;
