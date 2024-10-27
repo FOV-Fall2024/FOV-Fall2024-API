@@ -31,4 +31,9 @@ public class OrderHub : Hub
         string connectionId = await _database.StringGetAsync(OrderId.ToString());
         await Clients.Client(connectionId).SendAsync("ReceiveOrderStatus", OrderId, status);
     }
+    public async Task UpdateOrderDetailsStatus(Guid OrderId, Guid ProductIdOrComboId, string status)
+    {
+        string connectionId = await _database.StringGetAsync(OrderId.ToString());
+        await Clients.Client(connectionId).SendAsync("ReceiveOrderDetailsStatus", ProductIdOrComboId, status);
+    }
 }
