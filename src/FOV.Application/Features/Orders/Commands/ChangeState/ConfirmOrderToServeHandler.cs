@@ -9,7 +9,7 @@ using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder;
-public record ConfirmOrderToServeCommand(Guid OrderId) : IRequest<Guid>;
+public record ConfirmOrderToServeCommand(Guid OrderId, Guid OrderDetails) : IRequest<Guid>;
 public class ConfirmOrderToServeHandler(IUnitOfWorks unitOfWorks, OrderHub orderHub) : IRequestHandler<ConfirmOrderToServeCommand, Guid>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
@@ -20,14 +20,21 @@ public class ConfirmOrderToServeHandler(IUnitOfWorks unitOfWorks, OrderHub order
         var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.OrderDetails)
             ?? throw new Exception("Không tìm thấy đơn hàng");
 
-        order.OrderStatus = OrderStatus.Service;
-
-        foreach (var detail in order.OrderDetails)
+        var orderDetail = order.OrderDetails.FirstOrDefault(d => d.Id == request.OrderDetails);
+        if (orderDetail == null)
         {
-            detail.Status = OrderDetailsStatus.Service;
+            throw new Exception("Không tìm thấy chi tiết đơn hàng");
         }
 
-        _unitOfWorks.OrderRepository.Update(order);
+        orderDetail.Status = OrderDetailsStatus.Service;
+        _unitOfWorks.OrderDetailRepository.Update(orderDetail);
+
+        if (order.OrderDetails.All(d => d.Status == OrderDetailsStatus.Service))
+        {
+            order.OrderStatus = OrderStatus.Service;
+            _unitOfWorks.OrderRepository.Update(order);
+        }
+
         await _unitOfWorks.SaveChangeAsync();
         await _orderHub.UpdateOrderStatus(order.Id, order.OrderStatus.ToString());
 

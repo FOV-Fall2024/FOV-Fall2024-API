@@ -48,9 +48,9 @@ public class OrderController(ISender sender) : DefaultController
     }
 
     [HttpPatch("{orderId:guid}/serve")]
-    public async Task<IActionResult> ConfirmOrderToServe(Guid orderId)
+    public async Task<IActionResult> ConfirmOrderToServe(Guid orderId, Guid OrderDetailsId)
     {
-        var command = new ConfirmOrderToServeCommand(orderId);
+        var command = new ConfirmOrderToServeCommand(orderId, OrderDetailsId);
         var response = await _sender.Send(command);
         return Ok(response);
     }
