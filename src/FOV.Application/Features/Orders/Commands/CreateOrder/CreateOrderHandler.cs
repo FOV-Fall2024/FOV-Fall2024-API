@@ -88,7 +88,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
                 }
 
                 var tableOrders = (await _unitOfWorks.OrderRepository.GetAllAsync())
-                    .Where(o => o.TableId == request.TableId && o.OrderStatus != OrderStatus.Finish || o.OrderStatus != OrderStatus.Canceled)
+                    .Where(o => o.TableId == request.TableId && o.OrderStatus != OrderStatus.Finish && o.OrderStatus != OrderStatus.Canceled)
                     .ToList();
 
                 if (tableOrders.Any())
