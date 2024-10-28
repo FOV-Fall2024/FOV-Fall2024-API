@@ -28,6 +28,8 @@ public class CancelOrderHandler : IRequestHandler<CancelOrderCommand, Guid>
     {
         var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.OrderDetails)
             ?? throw new Exception("Order not found");
+        var table = await _unitOfWorks.TableRepository.GetByIdAsync(order.TableId)
+            ?? throw new Exception("Table not found");
 
         foreach (var orderDetail in order.OrderDetails)
         {
@@ -50,6 +52,8 @@ public class CancelOrderHandler : IRequestHandler<CancelOrderCommand, Guid>
                 await ReleaseIngredientLocks(orderDetail.ProductId.Value, orderDetail.Quantity);
             }
         }
+        table.TableStatus = Domain.Entities.TableAggregator.Enums.TableStatus.Available;
+        _unitOfWorks.TableRepository.Update(table);
 
         order.OrderStatus = OrderStatus.Canceled;
         _unitOfWorks.OrderRepository.Update(order);
