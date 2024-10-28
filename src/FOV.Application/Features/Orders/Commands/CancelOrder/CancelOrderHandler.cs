@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using FOV.Domain.Entities.OrderAggregator.Enums;
+using FOV.Infrastructure.Order.Setup;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 using StackExchange.Redis;
@@ -14,11 +15,13 @@ public class CancelOrderHandler : IRequestHandler<CancelOrderCommand, Guid>
 {
     private readonly IUnitOfWorks _unitOfWorks;
     private readonly IDatabase _database;
+    private readonly OrderHub _orderHub;
 
-    public CancelOrderHandler(IUnitOfWorks unitOfWorks, IDatabase database)
+    public CancelOrderHandler(IUnitOfWorks unitOfWorks, IDatabase database, OrderHub orderHub)
     {
         _unitOfWorks = unitOfWorks;
         _database = database;
+        _orderHub = orderHub;
     }
 
     public async Task<Guid> Handle(CancelOrderCommand request, CancellationToken cancellationToken)
@@ -52,6 +55,7 @@ public class CancelOrderHandler : IRequestHandler<CancelOrderCommand, Guid>
         _unitOfWorks.OrderRepository.Update(order);
 
         await _unitOfWorks.SaveChangeAsync();
+        await _orderHub.UpdateOrderStatus(order.Id, order.OrderStatus.ToString());
 
         return order.Id;
     }
@@ -68,7 +72,15 @@ public class CancelOrderHandler : IRequestHandler<CancelOrderCommand, Guid>
 
             var lockedAmount = (int)(await _database.StringGetAsync(ingredientLockKey));
             var newLockedAmount = Math.Max(0, lockedAmount - releaseAmount);
-            await _database.StringSetAsync(ingredientLockKey, (long) newLockedAmount);
+
+            if (newLockedAmount > 0)
+            {
+                await _database.StringSetAsync(ingredientLockKey, (long)newLockedAmount);
+            }
+            else
+            {
+                await _database.KeyDeleteAsync(ingredientLockKey);
+            }
         }
     }
 }
