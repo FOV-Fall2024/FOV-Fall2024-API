@@ -16,6 +16,7 @@ public class OrderDetail : BaseAuditableEntity
     public Guid? OrderId { get; set; }
     public OrderDetailsStatus? Status { get; set; } = OrderDetailsStatus.Prepare;
     public int Quantity { get; set; }
+    public int RefundQuantity { get; set; } = 0;
     public decimal Price { get; set; }
     public string? Note { get; set; }
     public Combo? Combo { get; set; }

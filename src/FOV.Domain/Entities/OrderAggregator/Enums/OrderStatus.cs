@@ -12,4 +12,5 @@ public enum OrderStatus : byte
     Service = 3,
     Payment = 4,
     Finish = 5,
+    Canceled = 6
 }

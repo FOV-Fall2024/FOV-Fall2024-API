@@ -39,8 +39,8 @@ public class VNPayPaymentHandler : IRequestHandler<VNPayPaymentCommand, VNPayPay
             ?? throw new Exception("Không tìm thấy đơn hàng");
 
         var totalAmount = order.OrderDetails
-            .Where(od => od.Status != OrderDetailsStatus.Refund)
-            .Sum(od => od.Quantity * od.Price);
+            .Where(od => od.Quantity > od.RefundQuantity)
+            .Sum(od => (od.Quantity - od.RefundQuantity) * od.Price);
 
         if (totalAmount == 0)
         {

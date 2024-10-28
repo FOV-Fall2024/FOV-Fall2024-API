@@ -1033,6 +1033,9 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
+                    b.Property<int>("RefundQuantity")
+                        .HasColumnType("integer");
+
                     b.Property<byte?>("Status")
                         .HasColumnType("smallint");
 

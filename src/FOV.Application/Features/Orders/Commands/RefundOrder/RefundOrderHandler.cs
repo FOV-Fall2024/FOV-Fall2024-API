@@ -31,32 +31,9 @@ public class RefundOrderHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<Refu
             throw new Exception("Số lượng hoàn trả không hợp lệ");
         }
 
-        if (request.RefundQuantity == orderDetail.Quantity) //Refund all
-        {
-            orderDetail.Status = OrderDetailsStatus.Refund;
-        }
-        else
-        {
-            var remainingQuantity = orderDetail.Quantity - request.RefundQuantity;
+        orderDetail.RefundQuantity += request.RefundQuantity;
 
-            orderDetail.Quantity = remainingQuantity;
-
-            var refundedOrderDetail = new OrderDetail(
-                orderDetail.ComboId,
-                orderDetail.ProductId,
-                orderDetail.OrderId,
-                request.RefundQuantity,
-                orderDetail.Price,
-                orderDetail.Note ?? string.Empty
-            )
-            {
-                Status = OrderDetailsStatus.Refund
-            };
-
-            order.OrderDetails.Add(refundedOrderDetail);
-        }
-
-        _unitOfWorks.OrderRepository.Update(order);
+        _unitOfWorks.OrderDetailRepository.Update(orderDetail);
         await _unitOfWorks.SaveChangeAsync();
 
         return order.Id;

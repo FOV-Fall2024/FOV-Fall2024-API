@@ -23,9 +23,8 @@ public record OrderDetailDto(Guid? ComboId, Guid? ProductId, int Quantity, strin
     [JsonIgnore]
     public readonly OrderDetailsStatus Status = OrderDetailsStatus.Prepare;
 }
+
 public record CreateOrderWithTableIdCommand(
-    //OrderType OrderType,
-    //DateTime OrderTime,
     List<OrderDetailDto> OrderDetails
 ) : IRequest<Guid>
 {
@@ -104,8 +103,8 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             }
 
             originalTableStatus = table.TableStatus;
-
             table.TableStatus = TableStatus.Working;
+
             _unitOfWorks.TableRepository.Update(table);
             await _unitOfWorks.SaveChangeAsync();
 
@@ -155,7 +154,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             await lockService.ReleaseLockAsync();
 
             //test, remove when deploy
-            //await _orderHub.SendOrder(order.Id);
+            await _orderHub.SendOrder(order.Id);
 
             return order.Id;
         }
@@ -178,7 +177,6 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             {
                 throw new AppException("Đã xảy ra lỗi khi đặt hàng", new List<string> { ex.Message }, ex);
             }
-
         }
     }
 
@@ -197,39 +195,19 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
         foreach (var dishIngredient in dish.DishIngredients)
         {
             string ingredientLockKey = $"lock:ingredient:{dishIngredient.IngredientId}";
-
-            if (!await _database.LockTakeAsync(ingredientLockKey, order.TableId.ToString(), TimeSpan.FromSeconds(10)))
-            {
-                await lockService.ReleaseLockAsync();
-                throw new Exception($"Không thể khóa nguyên liệu có ID: {dishIngredient.IngredientId}");
-            }
-
-            var ingredient = await _unitOfWorks.IngredientRepository.GetByIdAsync(dishIngredient.IngredientId);
-            if (ingredient == null)
-            {
-                await lockService.ReleaseLockAsync();
-                fieldErrors.Add(new FieldError { Field = "ingredientId", Message = "Không tìm thấy nguyên liệu" });
-            }
-
             var requiredAmount = dishIngredient.Quantity * quantity;
-            var maxServings = ingredient.IngredientAmount / dishIngredient.Quantity;
 
-            if (maxServings < quantity)
+            var lockedAmount = (int)(await _database.StringGetAsync(ingredientLockKey));
+            var ingredient = await _unitOfWorks.IngredientRepository.GetByIdAsync(dishIngredient.IngredientId);
+            var availableAmount = ingredient.IngredientAmount - lockedAmount;
+
+            if (availableAmount < requiredAmount)
             {
                 await lockService.ReleaseLockAsync();
-                throw new Exception($"Chỉ có thể chuẩn bị {maxServings} phần {dish.DishGeneral.DishName} do không đủ nguyên liệu.");
+                throw new Exception($"Không đủ nguyên liệu {ingredient.IngredientName}. Có sẵn: {availableAmount}");
             }
 
-            if (ingredient.IngredientAmount < requiredAmount)
-            {
-                await lockService.ReleaseLockAsync();
-                throw new Exception($"Nguyên liệu {ingredient.IngredientName} không đủ. Yêu cầu: {requiredAmount}, Có sẵn: {ingredient.IngredientAmount}");
-            }
-
-            ingredient.IngredientAmount -= requiredAmount;
-            _unitOfWorks.IngredientRepository.Update(ingredient);
-
-            await _database.LockReleaseAsync(ingredientLockKey, order.TableId.ToString());
+            await _database.StringIncrementAsync(ingredientLockKey, Convert.ToInt64(totalPrice));
         }
 
         var dishPrice = dish.Price ?? 0;

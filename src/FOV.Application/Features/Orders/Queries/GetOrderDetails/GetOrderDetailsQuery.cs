@@ -21,6 +21,7 @@ public class GetOrderDetailsQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<Ge
             o.ProductId,
             o.Status.HasValue ? o.Status.Value.ToString() : null,
             o.Quantity,
+            o.RefundQuantity,
             o.Price,
             o.Note
         )).ToList();
