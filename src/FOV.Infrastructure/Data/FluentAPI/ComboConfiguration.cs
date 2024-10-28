@@ -27,8 +27,6 @@ public class ComboConfiguration : IEntityTypeConfiguration<Combo>
                 Thumbnail = "img1",
                 Created = DefaultDatetime.MinValue,
                 LastModified = DefaultDatetime.MinValue,
-                
-
             },
             new Combo
             {

@@ -37,7 +37,7 @@ internal class AddProductHandler : IRequestHandler<AddProductCommand, Result>
             }
             else
             {
-                var product = new Dish(productGeneral.Price, _claimService.RestaurantId, productGeneral.CategoryId, productGeneral.Id);
+                var product = new Dish(productGeneral.Price, _claimService.RestaurantId, productGeneral.Id);
                 await _unitOfWorks.DishRepository.AddAsync(product);
                 await AddIngredientsToProduct(product.Id, productId);
             }
@@ -54,7 +54,7 @@ internal class AddProductHandler : IRequestHandler<AddProductCommand, Result>
                            ?? throw new Exception($"Dish with ID {refundProduct} not found.");
         if (dish.IsRefund)
         {
-            Dish productAdding = new(dish.Price, restaurantId, dish.CategoryId, dish.Id);
+            Dish productAdding = new(dish.Price, restaurantId, dish.Id);
             await _unitOfWorks.DishRepository.AddAsync(productAdding);
             RefundDishInventory inventory = new(productAdding.Id);
             await _unitOfWorks.RefundDishInventoryRepository.AddAsync(inventory);
@@ -76,7 +76,7 @@ internal class AddProductHandler : IRequestHandler<AddProductCommand, Result>
             IngredientGeneral? ingredientGeneral = await _unitOfWorks.IngredientGeneralRepository.FirstOrDefaultAsync(x => x.IngredientName == item.IngredientName, x => x.DishIngredientGenerals);
             if (existingIngredient is null)
             {
-                var newIngredient = new Ingredient(item.IngredientTypeId, _claimService.RestaurantId,item.Id);
+                var newIngredient = new Ingredient(_claimService.RestaurantId, item.Id);
                 await _unitOfWorks.IngredientRepository.AddAsync(newIngredient);
                 await AddDishIngredientAndUnits(productId, newIngredient.Id, item.IngredientMeasure, item.DishIngredientGenerals.FirstOrDefault().Quantity);
             }

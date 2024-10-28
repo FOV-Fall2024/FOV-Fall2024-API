@@ -1,41 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FOV.Domain.Common;
+﻿using FOV.Domain.Common;
+using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.TableAggregator.Enums;
 
 namespace FOV.Domain.Entities.UserAggregator;
 public class Customer : BaseAuditableEntity, IsSoftDeleted
 {
-
-    public string Address { get; set; } = string.Empty;
-
-    public User? User { get; set; }
-    public string UserId { get; set; } = string.Empty;
+    public string CustomerName { get; set; }
+    public string PhoneNumber { get; set; }
     public Status Status { get; set; }
+    public virtual ICollection<Rating> Rating { get; set; }
 
+    public virtual ICollection<Order> Orders { get; set; } = [];
     public Customer()
     {
 
     }
 
-    public Customer(string address, string userId)
+    public Customer(string name,string phoneNumber)
     {
-        UserId = userId;
-        Address = address;
+        CustomerName = name;
+        PhoneNumber = phoneNumber;
     }
 
     public void UpdateState(bool state)
     {
         Status = state ? Status.Active : Status.Inactive;
         LastModified = DateTime.UtcNow.AddHours(7);
-    }
-
-    public void Update(string address)
-    {
-        Address = address;
     }
 
 }

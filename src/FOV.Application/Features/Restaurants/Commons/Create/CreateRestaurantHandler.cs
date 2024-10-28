@@ -78,7 +78,7 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
                                ?? throw new Exception($"Dish with ID {product} not found.");
             if (dishGeneral.IsRefund)
             {
-                Dish productAdding = new(dishGeneral.Price, restaurantId, dishGeneral.CategoryId, dishGeneral.Id);
+                Dish productAdding = new(dishGeneral.Price, restaurantId, dishGeneral.Id);
                 await _unitOfWorks.DishRepository.AddAsync(productAdding);
                 RefundDishInventory inventory = new(productAdding.Id);
                 await _unitOfWorks.RefundDishInventoryRepository.AddAsync(inventory);
@@ -114,7 +114,7 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
             if (productGeneral is not null)
             {
                 var ingredientGenerals = await _unitOfWorks.IngredientGeneralRepository.WhereAsync(x => x.DishIngredientGenerals.Any(pg => pg.DishGeneralId == productGeneral.Id));
-                Dish productAdding = new(productGeneral.Price, restaurantId, productGeneral.CategoryId, productGeneral.Id);
+                Dish productAdding = new(productGeneral.Price, restaurantId, productGeneral.Id);
                 await _unitOfWorks.DishRepository.AddAsync(productAdding);
                 await ProductIngredientAdd(ingredientGenerals.Select(x => x.Id).ToList(), restaurantId, productAdding.Id, productGeneral.Id);
             }
@@ -129,7 +129,7 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
             if (ingredient == null)
             {
                 IngredientGeneral ingredientGeneral = await _unitOfWorks.IngredientGeneralRepository.FirstOrDefaultAsync(x => x.Id == item, x => x.DishIngredientGenerals) ?? throw new Exception();
-                Ingredient ingredient1 = new(ingredientGeneral.IngredientTypeId, restaurantId,ingredientGeneral.Id);
+                Ingredient ingredient1 = new( restaurantId, ingredientGeneral.Id);
 
                 await _unitOfWorks.IngredientRepository.AddAsync(ingredient1);
                 await _unitOfWorks.DishIngredientRepository.AddAsync(new DishIngredient(productId, ingredient1.Id, ingredientGeneral.DishIngredientGenerals.FirstOrDefault(x => x.DishGeneralId == productGeneralId && x.IngredientGeneralId == ingredientGeneral.Id).Quantity));

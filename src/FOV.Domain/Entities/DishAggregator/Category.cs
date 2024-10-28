@@ -9,7 +9,6 @@ public class Category : BaseAuditableEntity, IsSoftDeleted
     public string CategoryName { get; set; } = string.Empty;
     public virtual ICollection<DishGeneral> DishGenerals { get; set; } = [];
 
-    public virtual ICollection<Dish> Dishes { get; set; } = [];
     public Status Status { get; set; }
 
     public Category()

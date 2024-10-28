@@ -30,7 +30,7 @@ public class OrderRepository : GenericRepository<Domain.Entities.OrderAggregator
         return await _context.Orders
             .Include(o => o.OrderDetails)
             .ThenInclude(od => od.Dish)
-            .ThenInclude(d => d.Category)
+            .ThenInclude(d => d.DishGeneral.Category)
             .Where(o => o.Table != null && o.Table.RestaurantId == restaurantId && o.OrderStatus != OrderStatus.Finish)
             .SelectMany(o => o.OrderDetails.Select(od => od.Dish))
             .ToListAsync();

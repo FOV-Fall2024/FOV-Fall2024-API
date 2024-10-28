@@ -101,14 +101,14 @@ public class ApplicationDbContextInitializer
     new Claim(nameof(administrator.UserName), administrator.UserName),
     new Claim(nameof(administrator.Email), administrator.Email)
 });
-            var employee = new Employee
-            {
-                EmployeeCode = "ADM_000",
-                UserId = administrator.Id,
-                HireDate = DateTime.UtcNow,
-                Status = Domain.Entities.TableAggregator.Enums.Status.Active
-            };
-            await _context.Employees.AddAsync(employee);
+            //var employee = new Employee
+            //{
+            //    EmployeeCode = "ADM_000",
+            //    UserId = administrator.Id,
+            //    HireDate = DateTime.UtcNow,
+            //    Status = Domain.Entities.TableAggregator.Enums.Status.Active
+            //};
+            //await _context.Employees.AddAsync(employee);
         }
 
 

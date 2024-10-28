@@ -3,9 +3,9 @@ using FOV.Infrastructure.Data;
 using FOV.Infrastructure.Repository.IRepositories;
 
 namespace FOV.Infrastructure.Repository.Repositories;
-public class IngrdientTransactionRepository : GenericRepository<IngredientTransaction>, IIngrdientTransactionRepository
+public class IngredientTransactionRepository : GenericRepository<IngredientTransaction>, IIngrdientTransactionRepository
 {
-    public IngrdientTransactionRepository(FOVContext context) : base(context)
+    public IngredientTransactionRepository(FOVContext context) : base(context)
     {
     }
 }

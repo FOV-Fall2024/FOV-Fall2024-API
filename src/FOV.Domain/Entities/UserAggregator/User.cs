@@ -1,6 +1,8 @@
-﻿using FOV.Domain.Entities.AttendanceAggregator;
-using FOV.Domain.Entities.GroupChatAggregator;
-using FOV.Domain.Entities.NewDishRecommendAggregator;
+﻿using FOV.Domain.Common;
+using FOV.Domain.Entities.AttendanceAggregator;
+using FOV.Domain.Entities.IngredientAggregator;
+using FOV.Domain.Entities.RestaurantAggregator;
+using FOV.Domain.Entities.TableAggregator.Enums;
 using FOV.Domain.Entities.WaiterSalaryAggregator;
 using FOV.Domain.Entities.WaiterScheduleAggregator;
 using Microsoft.AspNetCore.Identity;
@@ -8,15 +10,21 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FOV.Domain.Entities.UserAggregator;
 
-public class User : IdentityUser
+public class User : IdentityUser , IsSoftDeleted
 {
+    public Status Status { get; set; }
+    public string Address { get; set; } = string.Empty;
     public string FirstName { get; set; } = string.Empty;
-
+    public string EmployeeCode { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
+    public DateTime? HireDate { get; set; } = DateTime.UtcNow;
 
-    public Customer? Customer { get; set; }
-    public Employee? Employee { get; set; }
-
+    public ICollection<Attendance> Attendances { get; set; } = new List<Attendance>(); // Use List<Attendance>
+    public ICollection<WaiterSchedule> WaiterSchedules { get; set; } = new List<WaiterSchedule>(); // Use List<WaiterSchedule>
+    public Restaurant? Restaurant { get; set; }
+    public ICollection<WaiterSalary> WaiterSalaries { get; set; } = [];
+    public ICollection<IngredientRequest> IngredientRequests { get; set; } = [];
+    public Guid? RestaurantId { get; set; }
     public User()
     {
 
@@ -35,11 +43,4 @@ public class User : IdentityUser
         FirstName = firstName;
         LastName = lastName;
     }
-    public virtual ICollection<GroupUser> GroupUsers { get; set; } = [];
-    public ICollection<WaiterSalary> WaiterSalaries { get; set; } = [];
-    public ICollection<Attendance> Attendances { get; set; } = [];
-    public ICollection<WaiterSchedule> WaiterSchedules { get; set; } = [];
-    public virtual ICollection<GroupMessage> GroupMessages { get; set; } = [];
-
-    public virtual ICollection<NewDishRecommendLog> NewDishRecommendLogs { get; set; } = [];
 }

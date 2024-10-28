@@ -12,8 +12,6 @@ public class Ingredient : BaseAuditableEntity
     public Guid IngredientGeneralId { get; set; }
     public decimal IngredientAmount { get; set; }
     public decimal ExpiredQuantity { get; set; }
-    public IngredientType? IngredientType { get; set; }
-    public Guid? IngredientTypeId { get; set; }
     public Restaurant? Restaurant { get; set; }
     public Guid? RestaurantId { get; set; }
     public IngredientMeasure IngredientMeasure { get; set; }
@@ -24,11 +22,10 @@ public class Ingredient : BaseAuditableEntity
 
     }
 
-    public Ingredient(Guid ingredientTypeId, Guid restaurantId, Guid ingredientGeneralId)
+    public Ingredient(Guid restaurantId, Guid ingredientGeneralId)
     {
         RestaurantId = restaurantId;
         IngredientGeneralId = ingredientGeneralId;
-        IngredientTypeId = ingredientTypeId;
     }
 
     public void AddQuantity(decimal quantity) => IngredientAmount += quantity;

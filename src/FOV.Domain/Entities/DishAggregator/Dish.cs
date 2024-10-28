@@ -16,10 +16,7 @@ public class Dish : BaseAuditableEntity, IsSoftDeleted
     public virtual ICollection<DishCombo> DishCombos { get; set; } = [];
     public ICollection<OrderDetail> OrderDetails { get; set; } = [];
     public virtual ICollection<DishIngredient> DishIngredients { get; set; } = [];
-    public Category? Category { get; set; }
-    public Guid? CategoryId { get; set; }
     public Status Status { get; set; }
-
     public decimal? Price { get; set; }
     public Restaurant? Restaurant { get; set; }
 
@@ -35,10 +32,9 @@ public class Dish : BaseAuditableEntity, IsSoftDeleted
 
     }
 
-    public Dish(decimal price, Guid restaurantId, Guid? categoryId, Guid dishGeneralId)
+    public Dish(decimal price, Guid restaurantId, Guid dishGeneralId)
     {
         Price = price;
-        CategoryId = categoryId;
         Status = Status.Active;
         RestaurantId = restaurantId;
         DishGeneralId = dishGeneralId;

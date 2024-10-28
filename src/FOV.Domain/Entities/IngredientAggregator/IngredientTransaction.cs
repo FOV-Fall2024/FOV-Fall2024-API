@@ -1,4 +1,5 @@
 ﻿using FOV.Domain.Common;
+using FOV.Domain.Entities.DishAggregator;
 using FOV.Domain.Entities.IngredientAggregator.Enums;
 using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.TableAggregator.Enums;
@@ -13,7 +14,9 @@ public class IngredientTransaction : BaseAuditableEntity, IsSoftDeleted
     public IngredientTransactionType Type { get; set; }
 
     public Ingredient? Ingredient { get; set; }
+    public Guid DishId { get; set; }
 
+    public Dish? Dish { get; set; }  
     public Guid IngredientId { get; set; }
     public Status Status { get; set; }
     public Order? Order { get; set; }

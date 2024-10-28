@@ -3,7 +3,7 @@ using FOV.Application.Features.Dishes.Responses;
 using FOV.Application.Features.DishGenerals.Responses;
 using FOV.Domain.Entities.DishAggregator;
 using FOV.Domain.Entities.DishGeneralAggregator;
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 using FOV.Application.Features.Dishes.Responses;
 using FOV.Domain.Entities.TableAggregator.Enums;
 using FOV.Infrastructure.Helpers.GetHelper;
@@ -37,7 +37,7 @@ public class GetMenuHandler : IRequestHandler<GetMenuCommand, PagedResult<GetMen
             x => x.RestaurantId == request.RestaurantId && x.Status == Status.Active,
             d => d.DishGeneral,
             i => i.DishGeneral.DishGeneralImages,
-            c => c.Category
+            c => c.DishGeneral.Category
         );
         //var combos = await _unitOfWorks.ComboRepository.WhereAsync(x )
 
@@ -47,7 +47,7 @@ public class GetMenuHandler : IRequestHandler<GetMenuCommand, PagedResult<GetMen
         }
         if (!string.IsNullOrWhiteSpace(request.CategoryName))
         {
-            dishes = dishes.Where(x => x.Category.CategoryName.Contains(request.CategoryName, StringComparison.OrdinalIgnoreCase)).ToList();
+            dishes = dishes.Where(x => x.DishGeneral.Category.CategoryName.Contains(request.CategoryName, StringComparison.OrdinalIgnoreCase)).ToList();
         }
         if (request.Status.HasValue && request.Status != 0)
         {
@@ -62,7 +62,7 @@ public class GetMenuHandler : IRequestHandler<GetMenuCommand, PagedResult<GetMen
             dish.DishGeneral.DishDescription,
             dish.Created,
             dish.DishGeneral.DishGeneralImages.OrderBy(img => img.Order).Select(img => new GetAdditionalImage(img.Id, img.Url)).ToList(),
-            dish.Category.CategoryName,
+            dish.DishGeneral.Category.CategoryName,
             dish.GetType().Name,
             dish.Status
         )).ToList();

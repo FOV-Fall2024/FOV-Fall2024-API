@@ -29,21 +29,22 @@ public class CreateUserCommandHandler(UserManager<User> userManager,IUnitOfWorks
 
     public async Task<RegisterUserResponse> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        var existingUser = await FindExistingUserAsync(request.PhoneNumber, cancellationToken);
-        if (existingUser != null) return CreateResponse(existingUser,"Already in System");
+        //var existingUser = await FindExistingUserAsync(request.PhoneNumber, cancellationToken);
+        //if (existingUser != null) return CreateResponse(existingUser,"Already in System");
 
-        var user = CreateUser(request);
-        var creationResult = await _userManager.CreateAsync(user, "12345678!Fpt");
+        //var user = CreateUser(request);
+        //var creationResult = await _userManager.CreateAsync(user, "12345678!Fpt");
 
-        if (!creationResult.Succeeded) return new RegisterUserResponse("User creation failed.", null, null, null);
+        //if (!creationResult.Succeeded) return new RegisterUserResponse("User creation failed.", null, null, null);
         
 
-        var customer = new Customer(request.PhoneNumber+"address", user.Id);
-        await _userManager.AddToRolesAsync(user, [Role.User] );
-        await _unitOfWorks.CustomerRepository.AddAsync(customer);
-        await _unitOfWorks.SaveChangeAsync();
+        //var customer = new Customer(request.PhoneNumber+"address", user.Id);
+        //await _userManager.AddToRolesAsync(user, [Role.User] );
+        //await _unitOfWorks.CustomerRepository.AddAsync(customer);
+        //await _unitOfWorks.SaveChangeAsync();
 
-        return CreateResponse(user,"New Member");
+        //return CreateResponse(user,"New Member");
+        throw new NotImplementedException();
     }
 
     private async Task<User?> FindExistingUserAsync(string phoneNumber, CancellationToken cancellationToken)

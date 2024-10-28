@@ -1,10 +1,8 @@
 ﻿using FOV.Domain.Entities.ComboAggregator;
 using FOV.Domain.Entities.DishAggregator;
 using FOV.Domain.Entities.DishGeneralAggregator;
-using FOV.Domain.Entities.GroupChatAggregator;
 using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Domain.Entities.IngredientGeneralAggregator;
-using FOV.Domain.Entities.NewDishRecommendAggregator;
 using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.RestaurantAggregator;
 using FOV.Domain.Entities.UserAggregator;
@@ -30,38 +28,24 @@ public interface IApplicationDbContext
 
     DbSet<DishIngredientGeneral> DishIngredientGenerals { get; }
 
+    DbSet<IngredientTransaction> IngredientTransactions { get; }
     DbSet<DishGeneral> DishGenerals { get; }
 
     DbSet<DishIngredient> DishIngredients { get; }
 
     DbSet<Dish> Dishes { get; }
+    DbSet<IngredientRequest> IngredientRequests { get; }
 
-    DbSet<Customer> Customers { get; }
-
-    DbSet<Employee> Employees { get; }
-
-    DbSet<IngredientTransaction> IngredientTransactions { get; }
-
+    DbSet<IngredientRequestDetail> IngredientRequestDetails { get; }
     DbSet<Combo> Combos { get; }
 
     DbSet<DishCombo> DishCombos { get; }
-
-    DbSet<GroupChat> GroupChats { get; }
-
-    DbSet<GroupUser> GroupUsers { get; }
-
-    DbSet<GroupMessage> GroupMessages { get; }
-
-
-    DbSet<NewDishRecommend> NewDishRecommends { get; }
-
-    DbSet<NewDishRecommendLog> NewDishRecommendLogs { get; }
-
     DbSet<RefundDishInventory> RefundDishInventories { get; }
 
     DbSet<RefundDishInventoryTransaction> RefundDishInventoryTransactions { get; }
 
 
     DbSet<DishGeneralImage> DishGeneralImages { get; }
+
 
 }

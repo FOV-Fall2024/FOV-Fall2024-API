@@ -12,7 +12,6 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).ValueGeneratedOnAdd();
         builder.HasMany(x => x.DishGenerals).WithOne(x => x.Category).HasForeignKey(x => x.CategoryId);
-        builder.HasMany(x => x.Dishes).WithOne(x => x.Category).HasForeignKey(x => x.CategoryId);
         builder.HasData(
         new Category("Khai Vị")
         {

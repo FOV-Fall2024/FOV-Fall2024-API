@@ -3,10 +3,8 @@ using FOV.Domain.Entities.AttendanceAggregator;
 using FOV.Domain.Entities.ComboAggregator;
 using FOV.Domain.Entities.DishAggregator;
 using FOV.Domain.Entities.DishGeneralAggregator;
-using FOV.Domain.Entities.GroupChatAggregator;
 using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Domain.Entities.IngredientGeneralAggregator;
-using FOV.Domain.Entities.NewDishRecommendAggregator;
 using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.PaymentAggregator;
 using FOV.Domain.Entities.RestaurantAggregator;
@@ -48,30 +46,16 @@ public class FOVContext : IdentityDbContext<User>, IApplicationDbContext
     public DbSet<DishCombo> DishCombos => Set<DishCombo>();
     public DbSet<Table> Tables => Set<Table>();
 
-    public DbSet<Customer> Customers => Set<Customer>();
-
-    public DbSet<Employee> Employees => Set<Employee>();
-
     public DbSet<IngredientTransaction> IngredientTransactions => Set<IngredientTransaction>();
 
     public DbSet<Combo> Combos => Set<Combo>();
     public DbSet<Shift> Shifts => Set<Shift>();
     public DbSet<WaiterSchedule> WaiterSchedules => Set<WaiterSchedule>();
-
-    public DbSet<GroupChat> GroupChats => Set<GroupChat>();
-
-    public DbSet<GroupUser> GroupUsers => Set<GroupUser>();
-
-    public DbSet<GroupMessage> GroupMessages => Set<GroupMessage>();
-
     public DbSet<Restaurant> Restaurants => Set<Restaurant>();
 
     public DbSet<Payments> Payments => Set<Payments>();
     public DbSet<Rating> Ratings => Set<Rating>();
 
-    public DbSet<NewDishRecommend> NewDishRecommends => Set<NewDishRecommend>();
-
-    public DbSet<NewDishRecommendLog> NewDishRecommendLogs => Set<NewDishRecommendLog>();
 
     public DbSet<IngredientUnit> IngredientUnits => Set<IngredientUnit>();
 
@@ -80,6 +64,10 @@ public class FOVContext : IdentityDbContext<User>, IApplicationDbContext
     public DbSet<RefundDishInventoryTransaction> RefundDishInventoryTransactions => Set<RefundDishInventoryTransaction>();
 
     public DbSet<DishGeneralImage> DishGeneralImages => Set<DishGeneralImage>();
+
+    public DbSet<IngredientRequest> IngredientRequests => Set<IngredientRequest>();
+
+    public DbSet<IngredientRequestDetail> IngredientRequestDetails => Set<IngredientRequestDetail>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

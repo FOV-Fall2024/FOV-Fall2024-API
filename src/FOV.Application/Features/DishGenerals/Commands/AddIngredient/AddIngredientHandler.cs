@@ -16,7 +16,7 @@ public sealed record AddIngredientInProductCommand : IRequest<Guid>
     public List<IngredientAddCommand> IngredientAdds { get; set; } = [];
 }
 
-public sealed record IngredientAddCommand(Guid IngredientId,decimal Quantity);
+public sealed record IngredientAddCommand(Guid IngredientId, decimal Quantity);
 public class AddIngredientHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<AddIngredientInProductCommand, Guid>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
@@ -32,7 +32,7 @@ public class AddIngredientHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<Ad
             await _unitOfWorks.DishIngredientGeneralRepository.AddAsync(dishIngredientGeneral);
             await UpdateDishesWithIngredient(request.Id, ingredientGeneral.Id, ingredient.Quantity);
         }
-       
+
         await _unitOfWorks.SaveChangeAsync();
 
         return request.Id;
@@ -56,9 +56,9 @@ public class AddIngredientHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<Ad
     private async Task<Ingredient> AddIngredientToDish(Guid ingredientGeneralId, Guid restaurantId, Guid dishId, Guid dishGeneralId)
     {
         var ingredientGeneral = await _unitOfWorks.IngredientGeneralRepository
-            .FirstOrDefaultAsync(i => i.Id ==  ingredientGeneralId) ?? throw new Exception("Ingredient General not found");
+            .FirstOrDefaultAsync(i => i.Id == ingredientGeneralId) ?? throw new Exception("Ingredient General not found");
 
-        var newIngredient = new Ingredient( ingredientGeneral.IngredientTypeId, restaurantId,ingredientGeneralId);
+        var newIngredient = new Ingredient(restaurantId, ingredientGeneralId);
         await _unitOfWorks.IngredientRepository.AddAsync(newIngredient);
         await AddDefaultIngredientUnit(newIngredient.Id, ingredientGeneral.IngredientMeasure);
 

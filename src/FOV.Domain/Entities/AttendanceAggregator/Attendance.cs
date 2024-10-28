@@ -12,8 +12,8 @@ public class Attendance : BaseAuditableEntity
 {
     public DateTime? CheckInTime { get; set; } =  DateTime.UtcNow;
     public DateTime? CheckOutTime { get; set; }
-    public Guid EmployeeId { get; set; }
-    public Employee? Employee { get; set; }
+    public Guid UserId { get; set; }
+    public User? User { get; set; }
     public Guid WaiterScheduleId { get; set; }
     public WaiterSchedule? WaiterSchedule { get; set; }
 }

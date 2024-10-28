@@ -9,9 +9,6 @@ public class IngredientType : BaseAuditableEntity, IsSoftDeleted
 {
     public string IngredientName { get; set; }
     public string IngredientDescription { get; set; } = string.Empty;
-
-    public virtual ICollection<Ingredient>? Ingredients { get; set; } = [];
-
     public virtual ICollection<IngredientGeneral>? IngredientGenerals { get; set; } = [];
     public Status Status { get; set; }
 

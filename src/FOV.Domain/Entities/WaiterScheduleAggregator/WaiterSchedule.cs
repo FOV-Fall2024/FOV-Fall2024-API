@@ -15,7 +15,8 @@ public class WaiterSchedule : BaseAuditableEntity
     public Guid EmployeeId { get; set; }
     public Guid ShiftId { get; set; }
     public Shift? Shift { get; set; }
-    public Employee? Employee { get; set; }
+    public User? User { get; set; }
+    public string UserId { get; set; }
     public ICollection<Attendance> Attendances { get; set; } = [];
     public WaiterSchedule()
     {
