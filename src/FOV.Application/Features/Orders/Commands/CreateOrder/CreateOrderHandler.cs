@@ -88,7 +88,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
                 }
 
                 var tableOrders = (await _unitOfWorks.OrderRepository.GetAllAsync())
-                    .Where(o => o.TableId == request.TableId && o.OrderStatus != OrderStatus.Finish)
+                    .Where(o => o.TableId == request.TableId && o.OrderStatus != OrderStatus.Finish || o.OrderStatus != OrderStatus.Canceled)
                     .ToList();
 
                 if (tableOrders.Any())
@@ -121,7 +121,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             {
                 if (detail.ComboId.HasValue)
                 {
-                    var combo = await _unitOfWorks.ComboRepository.GetByIdAsync(detail.ComboId.Value);
+                    var combo = await _unitOfWorks.ComboRepository.GetByIdAsync(detail.ComboId.Value, x => x.DishCombos);
                     if (combo == null)
                     {
                         fieldErrors.Add(new FieldError { Field = "comboId", Message = "Không có combo này trong hệ thống." });
@@ -138,14 +138,15 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
 
                     foreach (var dishCombo in combo.DishCombos)
                     {
-                        totalPrice = await ProcessDish(dishCombo.DishId, detail.Quantity, detail.Note, lockService, order, totalPrice);
+                        totalPrice = await ProcessDish(dishCombo.DishId, detail.Quantity, detail.Note, lockService, order, totalPrice, isCombo: true);
                     }
                 }
                 else if (detail.ProductId.HasValue)
                 {
-                    totalPrice = await ProcessDish(detail.ProductId.Value, detail.Quantity, detail.Note, lockService, order, totalPrice);
+                    totalPrice = await ProcessDish(detail.ProductId.Value, detail.Quantity, detail.Note, lockService, order, totalPrice, isCombo: false);
                 }
             }
+
 
             order.TotalPrice = totalPrice;
 
@@ -179,11 +180,10 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             }
         }
     }
-
-    private async Task<decimal> ProcessDish(Guid productId, int quantity, string note, LockingHandler lockService, Domain.Entities.OrderAggregator.Order order, decimal totalPrice)
+    private async Task<decimal> ProcessDish(Guid productId, int quantity, string note, LockingHandler lockService, Domain.Entities.OrderAggregator.Order order, decimal totalPrice, bool isCombo)
     {
         var fieldErrors = new List<FieldError>();
-        var dishes = await _unitOfWorks.DishRepository.GetAllAsync(x => x.DishIngredients);
+        var dishes = await _unitOfWorks.DishRepository.GetAllAsync(x => x.DishIngredients, x => x.DishGeneral);
         var dish = dishes.FirstOrDefault(x => x.Id == productId);
 
         if (dish == null)
@@ -207,17 +207,24 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
                 throw new Exception($"Không đủ nguyên liệu {ingredient.IngredientName}. Có sẵn: {availableAmount}");
             }
 
-            await _database.StringIncrementAsync(ingredientLockKey, Convert.ToInt64(totalPrice));
+            await _database.StringSetAsync(ingredientLockKey, (long)(lockedAmount + requiredAmount));
         }
 
         var dishPrice = dish.Price ?? 0;
-        totalPrice += dishPrice * quantity;
-
-        var orderDetail = new OrderDetail(null, productId, null, quantity, dishPrice, note)
+        if (!isCombo)
         {
-            Status = OrderDetailsStatus.Prepare
-        };
-        order.OrderDetails.Add(orderDetail);
+            totalPrice += dishPrice * quantity;
+        }
+
+        if (!isCombo)
+        {
+            var orderDetail = new OrderDetail(null, productId, null, quantity, dishPrice, note)
+            {
+                Status = OrderDetailsStatus.Prepare,
+                IsRefund = dish.DishGeneral.IsRefund
+            };
+            order.OrderDetails.Add(orderDetail);
+        }
 
         return totalPrice;
     }

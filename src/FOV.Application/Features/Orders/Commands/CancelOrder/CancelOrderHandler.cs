@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using FOV.Domain.Entities.OrderAggregator.Enums;
@@ -15,11 +14,13 @@ public class CancelOrderHandler : IRequestHandler<CancelOrderCommand, Guid>
 {
     private readonly IUnitOfWorks _unitOfWorks;
     private readonly IDatabase _database;
+
     public CancelOrderHandler(IUnitOfWorks unitOfWorks, IDatabase database)
     {
         _unitOfWorks = unitOfWorks;
         _database = database;
     }
+
     public async Task<Guid> Handle(CancelOrderCommand request, CancellationToken cancellationToken)
     {
         var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.OrderDetails)
@@ -30,19 +31,20 @@ public class CancelOrderHandler : IRequestHandler<CancelOrderCommand, Guid>
             orderDetail.Status = OrderDetailsStatus.Canceled;
             _unitOfWorks.OrderDetailRepository.Update(orderDetail);
 
-            if (orderDetail.ProductId.HasValue)
+            if (orderDetail.ComboId.HasValue)
             {
-                var dish = await _unitOfWorks.DishRepository.GetByIdAsync(orderDetail.ProductId.Value, d => d.DishIngredients);
-                if (dish != null)
+                var combo = await _unitOfWorks.ComboRepository.GetByIdAsync(orderDetail.ComboId.Value, c => c.DishCombos);
+                if (combo != null)
                 {
-                    foreach (var dishIngredient in dish.DishIngredients)
+                    foreach (var dishCombo in combo.DishCombos)
                     {
-                        string ingredientLockKey = $"lock:ingredient:{dishIngredient.IngredientId}";
-                        int lockedAmount = (int) dishIngredient.Quantity * orderDetail.Quantity;
-
-                        await _database.StringDecrementAsync(ingredientLockKey, lockedAmount);
+                        await ReleaseIngredientLocks(dishCombo.DishId, orderDetail.Quantity);
                     }
                 }
+            }
+            else if (orderDetail.ProductId.HasValue)
+            {
+                await ReleaseIngredientLocks(orderDetail.ProductId.Value, orderDetail.Quantity);
             }
         }
 
@@ -52,5 +54,21 @@ public class CancelOrderHandler : IRequestHandler<CancelOrderCommand, Guid>
         await _unitOfWorks.SaveChangeAsync();
 
         return order.Id;
+    }
+
+    private async Task ReleaseIngredientLocks(Guid dishId, int quantity)
+    {
+        var dish = await _unitOfWorks.DishRepository.GetByIdAsync(dishId, d => d.DishIngredients);
+        if (dish == null) return;
+
+        foreach (var dishIngredient in dish.DishIngredients)
+        {
+            var releaseAmount = dishIngredient.Quantity * quantity;
+            string ingredientLockKey = $"lock:ingredient:{dishIngredient.IngredientId}";
+
+            var lockedAmount = (int)(await _database.StringGetAsync(ingredientLockKey));
+            var newLockedAmount = Math.Max(0, lockedAmount - releaseAmount);
+            await _database.StringSetAsync(ingredientLockKey, (long) newLockedAmount);
+        }
     }
 }

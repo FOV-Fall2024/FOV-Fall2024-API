@@ -1,5 +1,6 @@
 ﻿using FOV.Application.Common.Exceptions;
 using FOV.Application.Features.Orders.Commands.AddProduct;
+using FOV.Application.Features.Orders.Commands.CancelOrder;
 using FOV.Application.Features.Orders.Commands.ChangeStateOrder;
 using FOV.Application.Features.Orders.Commands.CreateOrder;
 using FOV.Application.Features.Orders.Commands.RefundOrder;
@@ -83,5 +84,19 @@ public class OrderController(ISender sender) : DefaultController
         var command = new SuggestDishesForHeadchefCommand(pagingRequest, restaurantId);
         var response = await _sender.Send(command);
         return Ok(response);
+    }
+    [HttpPatch("{orderId:guid}/cancel")]
+    public async Task<IActionResult> CancelOrder(Guid orderId)
+    {
+        try
+        {
+            var command = new CancelOrderCommand(orderId);
+            var response = await _sender.Send(command);
+            return Ok(new OK_Result<Guid>("Đơn hàng đã hủy thành công", response));
+        }
+        catch (AppException ex)
+        {
+            return BadRequest(new Error<FieldError>("Hủy đơn hàng thất bại", ErrorStatusCodeConfig.BAD_REQUEST, ex.FieldErrors));
+        }
     }
 }
