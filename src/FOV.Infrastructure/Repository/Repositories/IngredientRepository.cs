@@ -32,6 +32,12 @@ public class IngredientRepository : GenericRepository<Ingredient>, IIngredientRe
         return unit.ConversionFactor * parentConversionFactor;
     }
 
+    public async Task UpdateRangeAsync(IEnumerable<Ingredient> ingredients)
+    {
+        _context.UpdateRange(ingredients);
+        await _context.SaveChangesAsync();
+    }
+
     //public async Task HandleExpried()
     //{
     //    var ingredienttypes = _context.IngredientTypes.ToList();
