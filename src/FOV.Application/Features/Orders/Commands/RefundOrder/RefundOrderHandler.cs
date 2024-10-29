@@ -30,17 +30,25 @@ public class RefundOrderHandler(IUnitOfWorks unitOfWorks, OrderHub orderHub) : I
 
         var productIdOrComboId = orderDetail.ProductId ?? orderDetail.ComboId;
 
-        if (request.RefundQuantity > orderDetail.Quantity || request.RefundQuantity <= 0)
+        if (orderDetail.IsRefund)
         {
-            throw new Exception("Số lượng hoàn trả không hợp lệ");
+            var dish = await _unitOfWorks.DishRepository.GetByIdAsync(orderDetail.ProductId.Value, d => d.RefundDishInventory);
+            if (dish == null) throw new Exception("Không tìm thấy thông tin món ăn để hoàn tiền");
+
+            dish.RefundDishInventory.QuantityAvailable += request.RefundQuantity;
+            _unitOfWorks.DishRepository.Update(dish);
+
+            orderDetail.RefundQuantity += request.RefundQuantity;
+
+            _unitOfWorks.OrderRepository.Update(order);
+            await _unitOfWorks.SaveChangeAsync();
+        }
+        else
+        {
+            throw new Exception("Món ăn này không thể hoàn tiền");
         }
 
-        orderDetail.RefundQuantity += request.RefundQuantity;
-
-        _unitOfWorks.OrderDetailRepository.Update(orderDetail);
-        await _unitOfWorks.SaveChangeAsync();
-
-        await _orderHub.RefundOrderDetails(order.Id, productIdOrComboId.Value, request.RefundQuantity);
+        await _orderHub.RefundOrderDetails(order.Id, orderDetail.ProductId.Value, request.RefundQuantity);
         return order.Id;
     }
 }

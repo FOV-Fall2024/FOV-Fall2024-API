@@ -183,8 +183,15 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
     private async Task<decimal> ProcessDish(Guid productId, int quantity, string note, LockingHandler lockService, Domain.Entities.OrderAggregator.Order order, decimal totalPrice, bool isCombo)
     {
         var fieldErrors = new List<FieldError>();
-        var dishes = await _unitOfWorks.DishRepository.GetAllAsync(x => x.DishIngredients, x => x.DishGeneral);
+        var dishes = await _unitOfWorks.DishRepository.GetAllAsync(x => x.DishIngredients, x => x.DishGeneral, x => x.RefundDishInventory);
         var dish = dishes.FirstOrDefault(x => x.Id == productId);
+
+        if (dish.DishGeneral.IsRefund)
+        {
+            dish.RefundDishInventory.QuantityAvailable -= quantity;
+            _unitOfWorks.DishRepository.Update(dish);
+            await _unitOfWorks.SaveChangeAsync();
+        }
 
         if (dish == null)
         {

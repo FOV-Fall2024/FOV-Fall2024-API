@@ -72,7 +72,7 @@ public class OrderController(ISender sender) : DefaultController
         return Ok(response);
     }
     [HttpPatch("{orderId:guid}/refund")]
-    public async Task<IActionResult> RefundOrder(Guid orderId, [FromBody] RefundOrderCommand command)
+    public async Task<IActionResult> RefundOrder(Guid orderId, [FromQuery] RefundOrderCommand command)
     {
         command = command with { OrderId = orderId };
         var response = await _sender.Send(command);
