@@ -26,7 +26,7 @@ internal class GetExportFileQuery(IUnitOfWorks unitOfWorks, IClaimService claimS
         worksheet.Cells[1, 2].Value = "Quantity";   // Column B
 
         int rowIngredient = 2;
-        List<string> nameDishes = _unitOfWorks.DishRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId && x.DishGeneral.IsRefund == true && x.Status == Status.Active, x => x.DishGeneral).Result.Select(x => x.DishGeneral.DishName).ToList();
+        List<string> nameDishes = _unitOfWorks.DishRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId && x.DishGeneral.IsRefund == true && x.DishGeneral.Status == Status.Active, x => x.DishGeneral).Result.Select(x => x.DishGeneral.DishName).ToList();
         foreach (var item in nameDishes)
         {
             worksheet.Cells[rowIngredient, 1].Value = item;
@@ -43,7 +43,7 @@ internal class GetExportFileQuery(IUnitOfWorks unitOfWorks, IClaimService claimS
 
         // Apply number validation for the second column (B)
         int count = _unitOfWorks.DishRepository
-            .WhereAsync(x => x.RestaurantId == _claimService.RestaurantId && x.DishGeneral.IsRefund == true, x => x.DishGeneral)
+            .WhereAsync(x => x.RestaurantId == _claimService.RestaurantId && x.DishGeneral.IsRefund == true && x.DishGeneral.Status == Status.Active, x => x.DishGeneral)
            .Result.Count;
 
         var numberAndNotEmptyValidation = worksheet.DataValidations.AddCustomValidation($"B2:B{count + 1}");
