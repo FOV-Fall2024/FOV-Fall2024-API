@@ -12,7 +12,7 @@ public class SuggestDishesForHeadchefQuery(IUnitOfWorks unitOfWorks) : IRequestH
     public async Task<PagedResult<SuggestDishesForHeadchefResponse>> Handle(SuggestDishesForHeadchefCommand request, CancellationToken cancellationToken)
     {
         var orderDishes = await _unitOfWorks.OrderRepository.GetOrderDishes(request.RestaurantId);
-
+        //vut thang priorityDish
         var prioritizedDishes = orderDishes
             .OrderBy(d => d.PriorityDish)
             .ThenByDescending(d => d.Created)

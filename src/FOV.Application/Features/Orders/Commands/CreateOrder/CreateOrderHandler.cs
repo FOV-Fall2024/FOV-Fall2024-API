@@ -156,7 +156,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             await lockService.ReleaseLockAsync();
 
             //test, remove when deploy
-            //await _orderHub.SendOrder(order.Id);
+            await _orderHub.SendOrder(order.Id);
 
             return order.Id;
         }
@@ -184,65 +184,107 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
     private async Task<decimal> ProcessDish(Guid productId, int quantity, string note, LockingHandler lockService, Domain.Entities.OrderAggregator.Order order, decimal totalPrice, bool isCombo)
     {
         var fieldErrors = new List<FieldError>();
-        var dishes = await _unitOfWorks.DishRepository.GetAllAsync(x => x.DishIngredients, x => x.DishGeneral, x => x.RefundDishInventory);
-        var dish = dishes.FirstOrDefault(x => x.Id == productId);
+        var lockedIngredientKeys = new List<string>(); // Track locked ingredients for cleanup
 
-        if (dish.DishGeneral.IsRefund)
+        try
         {
-            if (dish.RefundDishInventory.QuantityAvailable < quantity)
+            var dishes = await _unitOfWorks.DishRepository.GetAllAsync(
+                x => x.DishIngredients,
+                x => x.DishGeneral,
+                x => x.RefundDishInventory,
+                x => x.DishCombos
+            );
+
+            var dish = dishes.FirstOrDefault(x => x.Id == productId);
+            if (dish == null)
             {
-                fieldErrors.Add(new FieldError { Field = "productId", Message = "Không đủ món ăn trong kho" });
-                throw new AppException("Không đủ món ăn trong kho", fieldErrors, 400);
-            } 
-            else
+                fieldErrors.Add(new FieldError { Field = "productId", Message = "Không tìm thấy món ăn" });
+                throw new AppException("Không tìm thấy món ăn", fieldErrors, 400);
+            }
+
+            if (dish.DishGeneral.IsRefund)
+            {
+                if (dish.RefundDishInventory.QuantityAvailable < quantity)
+                {
+                    fieldErrors.Add(new FieldError { Field = "productId", Message = "Không đủ món ăn trong kho" });
+                    throw new AppException("Không đủ món ăn trong kho", fieldErrors, 400);
+                }
+            }
+
+            foreach (var dishIngredient in dish.DishIngredients)
+            {
+                string ingredientLockKey = $"lock:ingredient:{dishIngredient.IngredientId}";
+                lockedIngredientKeys.Add(ingredientLockKey);
+
+                var requiredAmount = dishIngredient.Quantity * quantity;
+                var lockedAmount = (int)(await _database.StringGetAsync(ingredientLockKey));
+                var ingredient = await _unitOfWorks.IngredientRepository.GetByIdAsync(dishIngredient.IngredientId);
+                var availableAmount = ingredient.IngredientAmount - lockedAmount;
+
+                int maxDishes = (int)(availableAmount / dishIngredient.Quantity);
+
+                if (availableAmount < requiredAmount)
+                {
+                    if (isCombo)
+                    {
+                        var combo = dish.DishCombos.FirstOrDefault()?.Combo;
+                        fieldErrors.Add(new FieldError
+                        {
+                            Field = "comboId",
+                            Message = combo != null
+                                ? $"Combo '{combo.ComboName}' hiện tại chỉ có thể đặt tối đa {maxDishes} phần do hạn chế về nguyên liệu."
+                                : $"Món ăn này hiện tại chỉ có thể đặt tối đa {maxDishes} phần."
+                        });
+                    }
+                    else
+                    {
+                        fieldErrors.Add(new FieldError
+                        {
+                            Field = "productId",
+                            Message = $"Món ăn này hiện tại chỉ có thể đặt tối đa {maxDishes} phần."
+                        });
+                    }
+                    throw new AppException("Không đủ nguyên liệu", fieldErrors, 400);
+                }
+
+                await _database.StringSetAsync(ingredientLockKey, (long)(lockedAmount + requiredAmount));
+            }
+
+            if (dish.DishGeneral.IsRefund)
             {
                 dish.RefundDishInventory.QuantityAvailable -= quantity;
                 _unitOfWorks.DishRepository.Update(dish);
                 await _unitOfWorks.SaveChangeAsync();
             }
-        }
 
-        if (dish == null)
-        {
-            await lockService.ReleaseLockAsync();
-            fieldErrors.Add(new FieldError { Field = "productId", Message = "Không tìm thấy món ăn" });
-        }
-
-        foreach (var dishIngredient in dish.DishIngredients)
-        {
-            string ingredientLockKey = $"lock:ingredient:{dishIngredient.IngredientId}";
-            var requiredAmount = dishIngredient.Quantity * quantity;
-
-            var lockedAmount = (int)(await _database.StringGetAsync(ingredientLockKey));
-            var ingredient = await _unitOfWorks.IngredientRepository.GetByIdAsync(dishIngredient.IngredientId);
-            var availableAmount = ingredient.IngredientAmount - lockedAmount;
-
-            if (availableAmount < requiredAmount)
+            var dishPrice = dish.Price ?? 0;
+            if (!isCombo)
             {
-                await lockService.ReleaseLockAsync();
-                throw new Exception($"Không đủ nguyên liệu {ingredient.IngredientName}. Có sẵn: {availableAmount}");
+                totalPrice += dishPrice * quantity;
+
+                var orderDetail = new OrderDetail(null, productId, null, quantity, dishPrice, note)
+                {
+                    Status = OrderDetailsStatus.Prepare,
+                    IsRefund = dish.DishGeneral.IsRefund,
+                    IsAddMore = false
+                };
+                order.OrderDetails.Add(orderDetail);
             }
 
-            await _database.StringSetAsync(ingredientLockKey, (long)(lockedAmount + requiredAmount));
+            return totalPrice;
         }
-
-        var dishPrice = dish.Price ?? 0;
-        if (!isCombo)
+        catch (Exception)
         {
-            totalPrice += dishPrice * quantity;
-        }
-
-        if (!isCombo)
-        {
-            var orderDetail = new OrderDetail(null, productId, null, quantity, dishPrice, note)
+            foreach (var lockKey in lockedIngredientKeys)
             {
-                Status = OrderDetailsStatus.Prepare,
-                IsRefund = dish.DishGeneral.IsRefund,
-                IsAddMore = false
-            };
-            order.OrderDetails.Add(orderDetail);
+                var currentLock = await _database.StringGetAsync(lockKey);
+                if (currentLock.HasValue)
+                {
+                    await _database.StringSetAsync(lockKey, 0);
+                }
+            }
+            await lockService.ReleaseLockAsync();
+            throw;
         }
-
-        return totalPrice;
     }
 }

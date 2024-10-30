@@ -114,6 +114,7 @@ public class AddProductsToOrderHandler : IRequestHandler<AddProductsToOrdersComm
     public async Task<decimal> ProcessDish(Guid productId, int quantity, string note, LockingHandler lockService, Domain.Entities.OrderAggregator.Order order, decimal totalPrice, bool isCombo)
     {
         var fieldErrors = new List<FieldError>();
+        var lockedIngredientKeys = new List<string>(); // Track locked ingredients for cleanup
         var dish = await _unitOfWorks.DishRepository.GetByIdAsync(productId, x => x.DishIngredients, x => x.DishGeneral, x => x.RefundDishInventory);
 
         if (dish == null)
@@ -138,16 +139,37 @@ public class AddProductsToOrderHandler : IRequestHandler<AddProductsToOrdersComm
         foreach (var dishIngredient in dish.DishIngredients)
         {
             string ingredientLockKey = $"lock:ingredient:{dishIngredient.IngredientId}";
-            var requiredAmount = dishIngredient.Quantity * quantity;
+            lockedIngredientKeys.Add(ingredientLockKey);
 
+            var requiredAmount = dishIngredient.Quantity * quantity;
             var lockedAmount = (int)(await _database.StringGetAsync(ingredientLockKey));
             var ingredient = await _unitOfWorks.IngredientRepository.GetByIdAsync(dishIngredient.IngredientId);
             var availableAmount = ingredient.IngredientAmount - lockedAmount;
 
+            int maxDishes = (int)(availableAmount / dishIngredient.Quantity);
+
             if (availableAmount < requiredAmount)
             {
-                await lockService.ReleaseLockAsync();
-                throw new Exception($"Insufficient ingredient {ingredient.IngredientName}. Available: {availableAmount}");
+                if (isCombo)
+                {
+                    var combo = dish.DishCombos.FirstOrDefault()?.Combo;
+                    fieldErrors.Add(new FieldError
+                    {
+                        Field = "comboId",
+                        Message = combo != null
+                            ? $"Combo '{combo.ComboName}' hiện tại chỉ có thể đặt tối đa {maxDishes} phần do hạn chế về nguyên liệu."
+                            : $"Món ăn này hiện tại chỉ có thể đặt tối đa {maxDishes} phần."
+                    });
+                }
+                else
+                {
+                    fieldErrors.Add(new FieldError
+                    {
+                        Field = "productId",
+                        Message = $"Món ăn này hiện tại chỉ có thể đặt tối đa {maxDishes} phần."
+                    });
+                }
+                throw new AppException("Không đủ nguyên liệu", fieldErrors, 400);
             }
 
             await _database.StringSetAsync(ingredientLockKey, (long)(lockedAmount + requiredAmount));
