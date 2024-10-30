@@ -16,11 +16,12 @@ using StackExchange.Redis;
 
 namespace FOV.Application.Features.Orders.Commands.AddProduct;
 
-public record AddProductsToOrdersCommand(List<GetOrderDetailDto> AdditionalOrderDetails) : IRequest<Guid>
+public record AddProductsToOrdersCommand(List<GetOrderDetailDto> AdditionalOrderDetails) : IRequest<AddProductsToOrdersResult>
 {
     [JsonIgnore]
     public Guid OrderId { get; set; }
 }
+public record AddProductsToOrdersResult(Guid OrderId, string Message);
 
 public record GetOrderDetailDto(Guid? ComboId, Guid? ProductId, int Quantity, string Note)
 {
@@ -28,7 +29,7 @@ public record GetOrderDetailDto(Guid? ComboId, Guid? ProductId, int Quantity, st
     public readonly OrderDetailsStatus Status = OrderDetailsStatus.Prepare;
 }
 
-public class AddProductsToOrderHandler : IRequestHandler<AddProductsToOrdersCommand, Guid>
+public class AddProductsToOrderHandler : IRequestHandler<AddProductsToOrdersCommand, AddProductsToOrdersResult>
 {
     private readonly IUnitOfWorks _unitOfWorks;
     private readonly IDatabase _database;
@@ -43,7 +44,7 @@ public class AddProductsToOrderHandler : IRequestHandler<AddProductsToOrdersComm
         _lockHandlers = new ConcurrentDictionary<string, LockingHandler>();
     }
 
-    public async Task<Guid> Handle(AddProductsToOrdersCommand request, CancellationToken cancellationToken)
+    public async Task<AddProductsToOrdersResult> Handle(AddProductsToOrdersCommand request, CancellationToken cancellationToken)
     {
         var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.OrderDetails);
         if (order == null)
