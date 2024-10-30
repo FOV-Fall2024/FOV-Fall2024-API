@@ -1,4 +1,6 @@
 ﻿using FOV.Application.Common.Behaviours.Claim;
+using FOV.Domain.Entities.DishAggregator;
+using FOV.Domain.Entities.TableAggregator.Enums;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 using OfficeOpenXml;
@@ -25,10 +27,10 @@ internal class GetExportFileQuery(IUnitOfWorks unitOfWorks, IClaimService claimS
         worksheet.Cells[1, 2].Value = "Quantity";   // Column B
 
         int rowIngredient = 2;
-        List<string> nameDishes = _unitOfWorks.DishRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId && x.DishGeneral.IsRefund == true, x => x.DishGeneral).Result.Select(x => x.DishGeneral.DishName).ToList();
+        List<Dish> nameDishes = await _unitOfWorks.DishRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId && x.DishGeneral.IsRefund == true && x.DishGeneral.Status == Status.Active, x => x.DishGeneral);
         foreach (var item in nameDishes)
         {
-            worksheet.Cells[rowIngredient, 1].Value = item;
+            worksheet.Cells[rowIngredient, 1].Value = item.DishGeneral.DishName;
             //  var listValidation = worksheet.DataValidations.AddListValidation($"C{rowIngredient}");
             //worksheet.Cells[rowIngredient, 2].Value = 0;
             worksheet.Cells[$"B{rowIngredient}"].Value = 0;
@@ -42,7 +44,7 @@ internal class GetExportFileQuery(IUnitOfWorks unitOfWorks, IClaimService claimS
 
         // Apply number validation for the second column (B)
         int count = _unitOfWorks.DishRepository
-            .WhereAsync(x => x.RestaurantId == _claimService.RestaurantId && x.DishGeneral.IsRefund == true, x => x.DishGeneral)
+            .WhereAsync(x => x.RestaurantId == _claimService.RestaurantId && x.DishGeneral.IsRefund == true && x.DishGeneral.Status == Status.Active, x => x.DishGeneral)
            .Result.Count;
 
         var numberAndNotEmptyValidation = worksheet.DataValidations.AddCustomValidation($"B2:B{count + 1}");
