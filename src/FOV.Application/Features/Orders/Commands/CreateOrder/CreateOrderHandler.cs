@@ -188,7 +188,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
                 throw new Exception($"Không tìm thấy nguyên liệu có ID {dishIngredient.IngredientId}.");
             }
 
-            var requiredAmount = dishIngredient.Quantity * quantity;
+            var requiredAmount = dishIngredient.    Quantity * quantity;
 
             var maxServings = ingredient.IngredientAmount / dishIngredient.Quantity;
             if (maxServings < quantity)

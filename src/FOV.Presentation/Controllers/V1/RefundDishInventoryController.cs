@@ -3,7 +3,9 @@ using FOV.Application.Features.RefundDishInventories.Commands.AddMultiple;
 using FOV.Application.Features.RefundDishInventories.Commands.AddSingle;
 using FOV.Application.Features.RefundDishInventories.Commands.HandleImportFile;
 using FOV.Application.Features.RefundDishInventories.Queries.GetExportFile;
+using FOV.Domain.Entities.UserAggregator.Enums;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml.DataValidation;
 
@@ -35,6 +37,7 @@ namespace FOV.Presentation.Controllers.V1
             return Ok(response);
         }
 
+        [Authorize(Roles = Role.Manager)]
         [HttpGet("/export-file")]
         public async Task<IActionResult> ExportInventoryFile()
         {

@@ -25,14 +25,6 @@ public class CreateDishGeneralHandler(IUnitOfWorks unitOfWorks) : IRequestHandle
         await _unitOfWorks.SaveChangeAsync();
         return productGeneral.Id;
     }
-    //private async ValueTask AddImage(List<string> Images,Guid DishGeneralId)
-    //{
-
-    //    await _unitOfWorks.DishGeneralImageRepository.AddRangeAsync(Images
-    //        .Select(item => new DishGeneralImage(item, DishGeneralId))
-    //        .ToList());
-    //    // Update images in related branches (ensure this operation succeeds)
-    //}
     private async ValueTask AddImage(List<string> images, Guid dishGeneralId)
     {
         // Ensure you are passing the 'Order' parameter when creating each DishGeneralImage
