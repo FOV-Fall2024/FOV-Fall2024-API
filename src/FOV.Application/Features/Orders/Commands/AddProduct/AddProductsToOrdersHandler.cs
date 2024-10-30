@@ -101,7 +101,8 @@ public class AddProductsToOrderHandler : IRequestHandler<AddProductsToOrdersComm
 
             await _orderHub.SendOrder(order.Id);
 
-            return order.Id;
+            return new AddProductsToOrdersResult(order.Id, "ggwp");
+            //order.Id;
         }
         finally
         {

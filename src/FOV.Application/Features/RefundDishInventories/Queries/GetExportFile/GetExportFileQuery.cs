@@ -1,4 +1,5 @@
 ﻿using FOV.Application.Common.Behaviours.Claim;
+using FOV.Domain.Entities.DishAggregator;
 using FOV.Domain.Entities.TableAggregator.Enums;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
@@ -26,10 +27,10 @@ internal class GetExportFileQuery(IUnitOfWorks unitOfWorks, IClaimService claimS
         worksheet.Cells[1, 2].Value = "Quantity";   // Column B
 
         int rowIngredient = 2;
-        List<string> nameDishes = _unitOfWorks.DishRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId && x.DishGeneral.IsRefund == true && x.DishGeneral.Status == Status.Active, x => x.DishGeneral).Result.Select(x => x.DishGeneral.DishName).ToList();
+        List<Dish> nameDishes = await _unitOfWorks.DishRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId && x.DishGeneral.IsRefund == true && x.DishGeneral.Status == Status.Active, x => x.DishGeneral);
         foreach (var item in nameDishes)
         {
-            worksheet.Cells[rowIngredient, 1].Value = item;
+            worksheet.Cells[rowIngredient, 1].Value = item.DishGeneral.DishName;
             //  var listValidation = worksheet.DataValidations.AddListValidation($"C{rowIngredient}");
             //worksheet.Cells[rowIngredient, 2].Value = 0;
             worksheet.Cells[$"B{rowIngredient}"].Value = 0;
