@@ -73,9 +73,9 @@ public class OrderController(ISender sender) : DefaultController
         return Ok(response);
     }
     [HttpPatch("{orderId:guid}/refund")]
-    public async Task<IActionResult> RefundOrder(Guid orderId, [FromQuery] RefundOrderCommand command)
+    public async Task<IActionResult> RefundOrder(Guid orderId, [FromQuery] Guid orderDetailId, [FromQuery] int refundQuantity)
     {
-        command = command with { OrderId = orderId };
+        var command = new RefundOrderCommand(orderId, orderDetailId, refundQuantity);
         var response = await _sender.Send(command);
         return Ok(response);
     }
@@ -106,5 +106,12 @@ public class OrderController(ISender sender) : DefaultController
         var command = new AddFeedBackToOrderCommand(orderId, feedback);
         var response = await _sender.Send(command);
         return Ok(new OK_Result<Guid>("Thêm phản hồi thành công", response));
+    }
+    [HttpPatch("{orderId:guid}/order-details/{orderDetailId:guid}/cancel")]
+    public async Task<IActionResult> CancelOrderDetail(Guid orderId, Guid orderDetailId)
+    {
+        var command = new CancelOrderDetailCommand(orderId, orderDetailId);
+        var response = await _sender.Send(command);
+        return Ok(new OK_Result<Guid>("Hủy món ăn thành công", response));
     }
 }

@@ -1012,6 +1012,9 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
+                    b.Property<bool?>("IsAddMore")
+                        .HasColumnType("boolean");
+
                     b.Property<bool>("IsRefund")
                         .HasColumnType("boolean");
 

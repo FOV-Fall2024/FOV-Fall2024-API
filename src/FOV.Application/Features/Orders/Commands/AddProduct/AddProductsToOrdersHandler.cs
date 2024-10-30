@@ -27,6 +27,8 @@ public record GetOrderDetailDto(Guid? ComboId, Guid? ProductId, int Quantity, st
 {
     [JsonIgnore]
     public readonly OrderDetailsStatus Status = OrderDetailsStatus.Prepare;
+    [JsonIgnore]
+    public bool IsAddMore = false;
 }
 
 public class AddProductsToOrderHandler : IRequestHandler<AddProductsToOrdersCommand, AddProductsToOrdersResult>
@@ -101,7 +103,7 @@ public class AddProductsToOrderHandler : IRequestHandler<AddProductsToOrdersComm
 
             await _orderHub.SendOrder(order.Id);
 
-            return order.Id;
+            return new AddProductsToOrdersResult(order.Id, "Đặt thêm món thành công!");
         }
         finally
         {
@@ -158,7 +160,8 @@ public class AddProductsToOrderHandler : IRequestHandler<AddProductsToOrdersComm
             var orderDetail = new OrderDetail(null, productId, null, quantity, dishPrice, note)
             {
                 Status = OrderDetailsStatus.Prepare,
-                IsRefund = dish.DishGeneral.IsRefund
+                IsRefund = dish.DishGeneral.IsRefund,
+                IsAddMore = true
             };
             order.OrderDetails.Add(orderDetail);
         }

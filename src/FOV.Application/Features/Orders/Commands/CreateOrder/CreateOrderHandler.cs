@@ -22,6 +22,7 @@ public record OrderDetailDto(Guid? ComboId, Guid? ProductId, int Quantity, strin
 {
     [JsonIgnore]
     public readonly OrderDetailsStatus Status = OrderDetailsStatus.Prepare;
+    public bool IsAddMore = false;
 }
 
 public record CreateOrderWithTableIdCommand(
@@ -105,7 +106,6 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             originalTableStatus = table.TableStatus;
             table.TableStatus = TableStatus.Working;
 
-            _unitOfWorks.TableRepository.Update(table);
             await _unitOfWorks.SaveChangeAsync();
 
             decimal totalPrice = 0;
@@ -150,6 +150,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
 
             order.TotalPrice = totalPrice;
 
+            _unitOfWorks.TableRepository.Update(table);
             await _unitOfWorks.OrderRepository.AddAsync(order);
             await _unitOfWorks.SaveChangeAsync();
             await lockService.ReleaseLockAsync();
@@ -188,9 +189,17 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
 
         if (dish.DishGeneral.IsRefund)
         {
-            dish.RefundDishInventory.QuantityAvailable -= quantity;
-            _unitOfWorks.DishRepository.Update(dish);
-            await _unitOfWorks.SaveChangeAsync();
+            if (dish.RefundDishInventory.QuantityAvailable < quantity)
+            {
+                fieldErrors.Add(new FieldError { Field = "productId", Message = "Không đủ món ăn trong kho" });
+                throw new AppException("Không đủ món ăn trong kho", fieldErrors, 400);
+            } 
+            else
+            {
+                dish.RefundDishInventory.QuantityAvailable -= quantity;
+                _unitOfWorks.DishRepository.Update(dish);
+                await _unitOfWorks.SaveChangeAsync();
+            }
         }
 
         if (dish == null)
@@ -228,7 +237,8 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             var orderDetail = new OrderDetail(null, productId, null, quantity, dishPrice, note)
             {
                 Status = OrderDetailsStatus.Prepare,
-                IsRefund = dish.DishGeneral.IsRefund
+                IsRefund = dish.DishGeneral.IsRefund,
+                IsAddMore = false
             };
             order.OrderDetails.Add(orderDetail);
         }

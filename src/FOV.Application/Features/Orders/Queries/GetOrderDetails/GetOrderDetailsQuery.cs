@@ -7,7 +7,7 @@ namespace FOV.Application.Features.Orders.Queries.GetOrderDetails;
 
 public record GetOrderDetailsCommand(Guid OrderId) : IRequest<GetOrderDetailsResponse>;
 public record GetOrderDetailsResponse(Guid OrderId, string OrderStatus, decimal TotalPrice, DateTime? OrderTime, List<OrderDetailsDto> OrderDetails);
-public record OrderDetailsDto(Guid Id, Guid? ComboId, Guid? ProductId, string? ComboName, string? ProductName, string? Thumbnail, string? Image, string Status, int Quantity, bool IsRefund, int RefundQuantity, decimal Price, string Note);
+public record OrderDetailsDto(Guid Id, Guid? ComboId, Guid? ProductId, string? ComboName, string? ProductName, string? Thumbnail, string? Image, string Status, int Quantity, bool IsRefund, int RefundQuantity, decimal Price, string Note, bool? IsAddMore);
 
 public class GetOrderDetailsQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetOrderDetailsCommand, GetOrderDetailsResponse>
 {
@@ -38,7 +38,8 @@ public class GetOrderDetailsQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<Ge
             od.IsRefund,
             od.RefundQuantity,
             od.Price,
-            od.Note
+            od.Note,
+            od.IsAddMore
         )).ToList();
 
         return new GetOrderDetailsResponse(

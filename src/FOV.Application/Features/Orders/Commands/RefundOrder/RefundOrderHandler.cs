@@ -11,11 +11,7 @@ using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Orders.Commands.RefundOrder;
-public record RefundOrderCommand(Guid OrderDetailId, int RefundQuantity) : IRequest<Guid>
-{
-    [JsonIgnore]
-    public Guid OrderId { get; set; }
-}
+public record RefundOrderCommand(Guid OrderId, Guid OrderDetailId, int RefundQuantity) : IRequest<Guid>;
 public class RefundOrderHandler(IUnitOfWorks unitOfWorks, OrderHub orderHub) : IRequestHandler<RefundOrderCommand, Guid>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
