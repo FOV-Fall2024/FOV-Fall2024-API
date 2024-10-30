@@ -1,4 +1,5 @@
 ﻿using FOV.Application.Common.Exceptions;
+using FOV.Application.Features.Orders.Commands.AddFeedback;
 using FOV.Application.Features.Orders.Commands.AddProduct;
 using FOV.Application.Features.Orders.Commands.CancelOrder;
 using FOV.Application.Features.Orders.Commands.ChangeStateOrder;
@@ -98,5 +99,12 @@ public class OrderController(ISender sender) : DefaultController
         {
             return BadRequest(new Error<FieldError>("Hủy đơn hàng thất bại", ErrorStatusCodeConfig.BAD_REQUEST, ex.FieldErrors));
         }
+    }
+    [HttpPatch("{orderId:guid}/feedback")]
+    public async Task<IActionResult> AddFeedbackToOrder(Guid orderId, [FromBody] string feedback)
+    {
+        var command = new AddFeedBackToOrderCommand(orderId, feedback);
+        var response = await _sender.Send(command);
+        return Ok(new OK_Result<Guid>("Thêm phản hồi thành công", response));
     }
 }

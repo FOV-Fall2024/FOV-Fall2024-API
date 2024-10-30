@@ -38,6 +38,11 @@ namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder
 
             foreach (var detail in order.OrderDetails)
             {
+                if (detail.Status == OrderDetailsStatus.Service)
+                {
+                    continue;
+                }
+
                 detail.Status = OrderDetailsStatus.Cook;
 
                 if (detail.ProductId != null)

@@ -28,27 +28,50 @@ public class RefundOrderHandler(IUnitOfWorks unitOfWorks, OrderHub orderHub) : I
         var orderDetail = order.OrderDetails.FirstOrDefault(od => od.Id == request.OrderDetailId)
             ?? throw new Exception("Không tìm thấy món ăn này trong đơn hàng");
 
-        var productIdOrComboId = orderDetail.ProductId ?? orderDetail.ComboId;
+        if (!orderDetail.IsRefund)
+        {
+            throw new Exception("Món ăn này không thể hoàn tiền");
+        }
 
-        if (orderDetail.IsRefund)
+        if (request.RefundQuantity > (orderDetail.Quantity - orderDetail.RefundQuantity))
+        {
+            throw new Exception("Số lượng hoàn tiền vượt quá số lượng đã đặt");
+        }
+
+        var productIdOrComboId = orderDetail.ProductId ?? orderDetail.ComboId;
+        if (orderDetail.ProductId != null)
         {
             var dish = await _unitOfWorks.DishRepository.GetByIdAsync(orderDetail.ProductId.Value, d => d.RefundDishInventory);
             if (dish == null) throw new Exception("Không tìm thấy thông tin món ăn để hoàn tiền");
 
             dish.RefundDishInventory.QuantityAvailable += request.RefundQuantity;
             _unitOfWorks.DishRepository.Update(dish);
-
-            orderDetail.RefundQuantity += request.RefundQuantity;
-
-            _unitOfWorks.OrderRepository.Update(order);
-            await _unitOfWorks.SaveChangeAsync();
         }
-        else
+        else if (orderDetail.ComboId != null)
         {
-            throw new Exception("Món ăn này không thể hoàn tiền");
+            var combo = await _unitOfWorks.ComboRepository.GetByIdAsync(orderDetail.ComboId.Value, c => c.DishCombos);
+            if (combo == null) throw new Exception("Không tìm thấy thông tin combo để hoàn tiền");
+
+            foreach (var dishCombo in combo.DishCombos)
+            {
+                var dish = await _unitOfWorks.DishRepository.GetByIdAsync(dishCombo.DishId, d => d.RefundDishInventory);
+                if (dish != null)
+                {
+                    dish.RefundDishInventory.QuantityAvailable += request.RefundQuantity * dishCombo.Quantity;
+                    _unitOfWorks.DishRepository.Update(dish);
+                }
+            }
         }
 
-        await _orderHub.RefundOrderDetails(order.Id, orderDetail.ProductId.Value, request.RefundQuantity);
+        var refundAmount = orderDetail.Price * request.RefundQuantity;
+        order.TotalPrice -= refundAmount;
+        orderDetail.RefundQuantity += request.RefundQuantity;
+
+        _unitOfWorks.OrderRepository.Update(order);
+        await _unitOfWorks.SaveChangeAsync();
+
+        await _orderHub.RefundOrderDetails(order.Id, productIdOrComboId.Value, request.RefundQuantity);
+
         return order.Id;
     }
 }
