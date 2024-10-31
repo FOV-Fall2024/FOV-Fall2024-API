@@ -1012,7 +1012,7 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
-                    b.Property<bool?>("IsAddMore")
+                    b.Property<bool>("IsAddMore")
                         .HasColumnType("boolean");
 
                     b.Property<bool>("IsRefund")
@@ -1315,6 +1315,9 @@ namespace FOV.Infrastructure.Migrations
 
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
+
+                    b.Property<int>("Point")
+                        .HasColumnType("integer");
 
                     b.Property<byte>("Status")
                         .HasColumnType("smallint");

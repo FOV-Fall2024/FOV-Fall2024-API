@@ -1,25 +1,39 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
+using System.Threading;
 using System.Threading.Tasks;
 using FOV.Domain.Entities.OrderAggregator.Enums;
 using FOV.Domain.Entities.PaymentAggregator.Enums;
+using FOV.Domain.Entities.UserAggregator;
 using FOV.Infrastructure.Order.Setup;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 namespace FOV.Application.Features.Payments.Commands.Create;
-public record CreatePaymentCommands(PaymentMethods PaymentMethods) : IRequest<Guid>
+
+public record CreatePaymentCommands(PaymentMethods PaymentMethods, string? PhoneNumber) : IRequest<Guid>
 {
     [JsonIgnore]
     public Guid OrderId { get; set; }
 }
-public class CreatePaymentHandler(IUnitOfWorks unitOfWorks, OrderHub orderHub) : IRequestHandler<CreatePaymentCommands, Guid>
+
+public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
 {
-    private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
-    private readonly OrderHub _orderHub = orderHub;
+    private readonly IUnitOfWorks _unitOfWorks;
+    private readonly UserManager<User> _userManager;
+    private readonly OrderHub _orderHub;
+    private const int ConversePoint = 1000;
+
+    public CreatePaymentHandler(IUnitOfWorks unitOfWorks, OrderHub orderHub, UserManager<User> userManager)
+    {
+        _unitOfWorks = unitOfWorks;
+        _orderHub = orderHub;
+        _userManager = userManager;
+    }
+
     public async Task<Guid> Handle(CreatePaymentCommands request, CancellationToken cancellationToken)
     {
         var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.OrderDetails)
@@ -34,6 +48,34 @@ public class CreatePaymentHandler(IUnitOfWorks unitOfWorks, OrderHub orderHub) :
             throw new Exception("No valid items for payment.");
         }
 
+        var totalReduceMoney = 0;
+        User? user = null;
+
+        if (!string.IsNullOrEmpty(request.PhoneNumber))
+        {
+            user = await _userManager.Users.Include(x => x.Customer).FirstOrDefaultAsync(u => u.PhoneNumber == request.PhoneNumber);
+            if (user != null)
+            {
+                var availablePoint = user.Customer.Point;
+                totalReduceMoney = availablePoint * ConversePoint;
+                if (totalReduceMoney > totalAmount)
+                {
+                    totalReduceMoney = (int)totalAmount;
+                }
+                user.Customer.Point -= (totalReduceMoney / ConversePoint);
+                _unitOfWorks.CustomerRepository.Update(user.Customer);
+            }
+        }
+
+        var finalAmount = totalAmount - totalReduceMoney;
+
+        if (finalAmount > 0 && user != null)
+        {
+            var pointsAwarded = (int)(finalAmount / ConversePoint);
+            user.Customer.Point += pointsAwarded;
+            _unitOfWorks.CustomerRepository.Update(user.Customer);
+        }
+
         order.OrderStatus = OrderStatus.Payment;
         _unitOfWorks.OrderRepository.Update(order);
 
@@ -42,7 +84,7 @@ public class CreatePaymentHandler(IUnitOfWorks unitOfWorks, OrderHub orderHub) :
             OrderId = request.OrderId,
             PaymentMethods = request.PaymentMethods,
             PaymentDate = DateTime.UtcNow,
-            Amount = totalAmount,
+            Amount = finalAmount > 0 ? finalAmount : 0,
             PaymentStatus = PaymentStatus.Pending
         };
 

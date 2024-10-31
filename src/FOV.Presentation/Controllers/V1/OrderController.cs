@@ -36,14 +36,12 @@ public class OrderController(ISender sender) : DefaultController
             throw new Exception(ex.Message);
         }
     }
-
     [HttpGet]
     public async Task<IActionResult> Get([FromQuery] GetOrdersRequest command)
     {
         var response = await _sender.Send(command);
         return Ok(response);
     }
-
     [HttpPatch("{orderId:guid}/cook")]
     public async Task<IActionResult> ConfirmOrderToCook(Guid orderId)
     {
@@ -51,7 +49,6 @@ public class OrderController(ISender sender) : DefaultController
         var response = await _sender.Send(command);
         return Ok(response);
     }
-
     [HttpPatch("{orderId:guid}/serve")]
     public async Task<IActionResult> ConfirmOrderToServe(Guid orderId, Guid OrderDetailsId)
     {
@@ -59,7 +56,6 @@ public class OrderController(ISender sender) : DefaultController
         var response = await _sender.Send(command);
         return Ok(response);
     }
-        
     [HttpGet("{orderId:guid}/details")]
     public async Task<IActionResult> GetOrderDetails(Guid orderId)
     {
@@ -67,7 +63,6 @@ public class OrderController(ISender sender) : DefaultController
         var response = await _sender.Send(command);
         return Ok(response);
     }
-
     [HttpPost("{orderId:guid}/add-products")]
     public async Task<IActionResult> AddProductsToOrder(Guid orderId, [FromBody] AddProductsToOrdersCommand command)
     {
