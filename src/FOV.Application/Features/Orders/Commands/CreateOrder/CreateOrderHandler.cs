@@ -156,7 +156,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             await lockService.ReleaseLockAsync();
 
             //test, remove when deploy
-            await _orderHub.SendOrder(order.Id);
+            //await _orderHub.SendOrder(order.Id);
 
             return order.Id;
         }
