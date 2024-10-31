@@ -38,7 +38,7 @@ namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder
 
             foreach (var detail in order.OrderDetails)
             {
-                if (detail.Status == OrderDetailsStatus.Service && detail.Status == OrderDetailsStatus.Canceled)
+                if (detail.Status != OrderDetailsStatus.Prepare)
                 {
                     continue;
                 }
