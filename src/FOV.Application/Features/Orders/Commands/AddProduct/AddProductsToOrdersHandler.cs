@@ -16,12 +16,12 @@ using StackExchange.Redis;
 
 namespace FOV.Application.Features.Orders.Commands.AddProduct;
 
-public record AddProductsToOrdersCommand(List<GetOrderDetailDto> AdditionalOrderDetails) : IRequest<AddProductsToOrdersResult>
+public record AddProductsToOrdersCommand(List<GetOrderDetailDto> AdditionalOrderDetails) : IRequest<Guid>
 {
     [JsonIgnore]
     public Guid OrderId { get; set; }
 }
-public record AddProductsToOrdersResult(Guid OrderId, string Message);
+public record AddProductsToOrdersResult(Guid OrderId);
 
 public record GetOrderDetailDto(Guid? ComboId, Guid? ProductId, int Quantity, string Note)
 {
@@ -31,7 +31,7 @@ public record GetOrderDetailDto(Guid? ComboId, Guid? ProductId, int Quantity, st
     public bool IsAddMore = false;
 }
 
-public class AddProductsToOrderHandler : IRequestHandler<AddProductsToOrdersCommand, AddProductsToOrdersResult>
+public class AddProductsToOrderHandler : IRequestHandler<AddProductsToOrdersCommand, Guid>
 {
     private readonly IUnitOfWorks _unitOfWorks;
     private readonly IDatabase _database;
@@ -46,7 +46,7 @@ public class AddProductsToOrderHandler : IRequestHandler<AddProductsToOrdersComm
         _lockHandlers = new ConcurrentDictionary<string, LockingHandler>();
     }
 
-    public async Task<AddProductsToOrdersResult> Handle(AddProductsToOrdersCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(AddProductsToOrdersCommand request, CancellationToken cancellationToken)
     {
         var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.OrderDetails);
         if (order == null)
@@ -103,7 +103,7 @@ public class AddProductsToOrderHandler : IRequestHandler<AddProductsToOrdersComm
 
             await _orderHub.SendOrder(order.Id);
 
-            return new AddProductsToOrdersResult(order.Id, "Đặt thêm món thành công!");
+            return order.Id;
         }
         finally
         {
@@ -129,7 +129,7 @@ public class AddProductsToOrderHandler : IRequestHandler<AddProductsToOrdersComm
             if (quantity > dish.RefundDishInventory.QuantityAvailable)
             {
                 await lockService.ReleaseLockAsync();
-                throw new Exception($"Insufficient quantity in refund inventory for {dish.DishGeneral.DishName}. Available: {dish.RefundDishInventory.QuantityAvailable}");
+                throw new Exception($"Không đủ món {dish.DishGeneral.DishName}. Tối đa còn: {dish.RefundDishInventory.QuantityAvailable} phần");
             }
 
             dish.RefundDishInventory.QuantityAvailable -= quantity;

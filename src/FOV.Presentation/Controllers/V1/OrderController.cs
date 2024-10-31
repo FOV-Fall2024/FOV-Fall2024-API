@@ -70,7 +70,7 @@ public class OrderController(ISender sender) : DefaultController
     {
         command.OrderId = orderId;
         var response = await _sender.Send(command);
-        return Ok(response);
+        return Ok(new OK_Result<Guid>("Đặt thêm món thành công", response));
     }
     [HttpPatch("{orderId:guid}/refund")]
     public async Task<IActionResult> RefundOrder(Guid orderId, [FromQuery] Guid orderDetailId, [FromQuery] int refundQuantity)
