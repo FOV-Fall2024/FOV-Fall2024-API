@@ -2,12 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Orders.Commands.AddFeedback;
-public record AddFeedBackToOrderCommand(Guid OrderId, string Feedback) : IRequest<Guid>;
+public record AddFeedBackToOrderCommand(string Feedback) : IRequest<Guid>
+{
+    [JsonIgnore]
+    public Guid OrderId { get; set; }
+}
 public class AddFeedbackToOrderHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<AddFeedBackToOrderCommand, Guid>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;

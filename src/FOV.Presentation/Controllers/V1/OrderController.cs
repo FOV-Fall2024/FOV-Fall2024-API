@@ -99,9 +99,12 @@ public class OrderController(ISender sender) : DefaultController
         }
     }
     [HttpPatch("{orderId:guid}/feedback")]
-    public async Task<IActionResult> AddFeedbackToOrder(Guid orderId, [FromBody] string feedback)
+    public async Task<IActionResult> AddFeedbackToOrder(Guid orderId, [FromBody] AddFeedBackToOrderCommand command)
     {
-        var command = new AddFeedBackToOrderCommand(orderId, feedback);
+        command = new AddFeedBackToOrderCommand(command.Feedback)
+        {
+            OrderId = orderId
+        };
         var response = await _sender.Send(command);
         return Ok(new OK_Result<Guid>("Thêm phản hồi thành công", response));
     }
