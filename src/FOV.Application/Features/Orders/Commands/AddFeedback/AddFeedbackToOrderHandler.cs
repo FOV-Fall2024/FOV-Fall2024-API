@@ -14,7 +14,7 @@ public class AddFeedbackToOrderHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
     public async Task<Guid> Handle(AddFeedBackToOrderCommand request, CancellationToken cancellationToken)
     {
         var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId) ?? throw new Exception("Không có Order");
-        //order.Feedback = request.Feedback;
+        order.Feedback = request.Feedback;
         _unitOfWorks.OrderRepository.Update(order);
         await _unitOfWorks.SaveChangeAsync();
         return order.Id;

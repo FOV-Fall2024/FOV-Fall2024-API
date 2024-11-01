@@ -25,13 +25,13 @@ public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
 {
     private readonly IUnitOfWorks _unitOfWorks;
     private readonly UserManager<User> _userManager;
-    private readonly OrderHub _orderHub;
+    //private readonly OrderHub _orderHub;, OrderHub orderHub
     private const int ConversePoint = 1000;
 
-    public CreatePaymentHandler(IUnitOfWorks unitOfWorks, OrderHub orderHub, UserManager<User> userManager)
+    public CreatePaymentHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager)
     {
         _unitOfWorks = unitOfWorks;
-        _orderHub = orderHub;
+        //_orderHub = orderHub;
         _userManager = userManager;
     }
 
@@ -105,7 +105,7 @@ public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
 
         await _unitOfWorks.PaymentRepository.AddAsync(payment);
         await _unitOfWorks.SaveChangeAsync();
-        await _orderHub.UpdateOrderStatus(order.Id, order.OrderStatus.ToString());
+        //await _orderHub.UpdateOrderStatus(order.Id, order.OrderStatus.ToString());
 
         return payment.Id;
     }
