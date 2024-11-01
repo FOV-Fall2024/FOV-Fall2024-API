@@ -11,10 +11,11 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
+using FOV.Application.Common.Exceptions;
 
 namespace FOV.Application.Features.Payments.Commands.Create;
 
-public record CreatePaymentCommands(PaymentMethods PaymentMethods, string? PhoneNumber) : IRequest<Guid>
+public record CreatePaymentCommands(string? PhoneNumber, bool UsePoints, int? PointsToApply) : IRequest<Guid>
 {
     [JsonIgnore]
     public Guid OrderId { get; set; }
@@ -36,8 +37,18 @@ public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
 
     public async Task<Guid> Handle(CreatePaymentCommands request, CancellationToken cancellationToken)
     {
-        var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.OrderDetails)
+        var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.OrderDetails, o => o.Payments)
             ?? throw new Exception("Không tìm thấy đơn hàng nào");
+
+        if (order.Payments.Any(p => p.PaymentStatus == PaymentStatus.Paid))
+        {
+            throw new AppException("Đơn hàng đã được thanh toán.");
+        }
+
+        if (order.OrderStatus == OrderStatus.Payment)
+        {
+            throw new Exception("Đơn hàng đang được thanh toán");
+        }
 
         var totalAmount = order.OrderDetails
             .Where(od => od.Quantity > od.RefundQuantity)
@@ -53,17 +64,21 @@ public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
 
         if (!string.IsNullOrEmpty(request.PhoneNumber))
         {
-            user = await _userManager.Users.Include(x => x.Customer).FirstOrDefaultAsync(u => u.PhoneNumber == request.PhoneNumber);
-            if (user != null)
+            user = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == request.PhoneNumber);
+            if (user != null && request.UsePoints && request.PointsToApply.HasValue)
             {
-                var availablePoint = user.Customer.Point;
-                totalReduceMoney = availablePoint * ConversePoint;
+                var availablePoints = user.Point;
+                var pointsToUse = Math.Min(request.PointsToApply.Value, availablePoints);
+                totalReduceMoney = pointsToUse;
+
                 if (totalReduceMoney > totalAmount)
                 {
                     totalReduceMoney = (int)totalAmount;
+                    pointsToUse = totalReduceMoney / ConversePoint;
                 }
-                user.Customer.Point -= (totalReduceMoney / ConversePoint);
-                _unitOfWorks.CustomerRepository.Update(user.Customer);
+
+                user.Point -= pointsToUse;
+                await _userManager.UpdateAsync(user);
             }
         }
 
@@ -72,8 +87,8 @@ public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
         if (finalAmount > 0 && user != null)
         {
             var pointsAwarded = (int)(finalAmount / ConversePoint);
-            user.Customer.Point += pointsAwarded;
-            _unitOfWorks.CustomerRepository.Update(user.Customer);
+            user.Point += pointsAwarded;
+            await _userManager.UpdateAsync(user);
         }
 
         order.OrderStatus = OrderStatus.Payment;
@@ -82,7 +97,7 @@ public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
         var payment = new Domain.Entities.PaymentAggregator.Payments
         {
             OrderId = request.OrderId,
-            PaymentMethods = request.PaymentMethods,
+            PaymentMethods = PaymentMethods.Cash,
             PaymentDate = DateTime.UtcNow,
             Amount = finalAmount > 0 ? finalAmount : 0,
             PaymentStatus = PaymentStatus.Pending

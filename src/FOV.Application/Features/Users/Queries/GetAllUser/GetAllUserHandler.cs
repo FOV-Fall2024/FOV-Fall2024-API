@@ -27,7 +27,7 @@ namespace FOV.Application.Features.Users.Queries.GetAllUser
                 x.User.Id,
                 $"{x.User.FirstName} {x.User.LastName}",
                 x.User.PhoneNumber ?? string.Empty,
-                x.Point,
+                x.User.Point,
                 x.Created)).ToList();
 
             var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);

@@ -1316,9 +1316,6 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
 
-                    b.Property<int>("Point")
-                        .HasColumnType("integer");
-
                     b.Property<byte>("Status")
                         .HasColumnType("smallint");
 
@@ -1428,6 +1425,9 @@ namespace FOV.Infrastructure.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
+
+                    b.Property<int>("Point")
+                        .HasColumnType("integer");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");

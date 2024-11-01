@@ -38,7 +38,7 @@ public class CreateUserCommandHandler(UserManager<User> userManager,IUnitOfWorks
         if (!creationResult.Succeeded) return new RegisterUserResponse("User creation failed.", null, null, null);
         
 
-        var customer = new Customer(request.PhoneNumber+"address", user.Id, 0);
+        var customer = new Customer(request.PhoneNumber+"address", user.Id);
         await _userManager.AddToRolesAsync(user, [Role.User] );
         await _unitOfWorks.CustomerRepository.AddAsync(customer);
         await _unitOfWorks.SaveChangeAsync();

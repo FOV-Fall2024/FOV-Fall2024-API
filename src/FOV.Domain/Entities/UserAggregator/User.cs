@@ -11,7 +11,7 @@ namespace FOV.Domain.Entities.UserAggregator;
 public class User : IdentityUser
 {
     public string FirstName { get; set; } = string.Empty;
-
+    public int Point { get; set; } = 0;
     public string LastName { get; set; } = string.Empty;
 
     public Customer? Customer { get; set; }

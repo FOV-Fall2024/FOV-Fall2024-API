@@ -5,14 +5,17 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using FOV.Domain.Entities.OrderAggregator.Enums;
+using FOV.Domain.Entities.UserAggregator;
 using FOV.Infrastructure.Helpers.VNPayHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace FOV.Application.Features.Payments.Commands.CreateVNPayPayment;
-public record VNPayPaymentCommand : IRequest<VNPayPaymentResponse>
+public record VNPayPaymentCommand(string? PhoneNumber, bool UsePoints, int? PointsToApply) : IRequest<VNPayPaymentResponse>
 {
     [JsonIgnore]
     public Guid OrderId { get; set; }
@@ -22,10 +25,13 @@ public class VNPayPaymentHandler : IRequestHandler<VNPayPaymentCommand, VNPayPay
 {
     private readonly IUnitOfWorks _unitOfWorks;
     private readonly IConfiguration _configuration;
-    public VNPayPaymentHandler(IUnitOfWorks unitOfWorks, IConfiguration configuration)
+    private readonly UserManager<User> _userManager;
+    private const int ConversePoint = 1000;
+    public VNPayPaymentHandler(IUnitOfWorks unitOfWorks, IConfiguration configuration, UserManager<User> userManager)
     {
         _unitOfWorks = unitOfWorks;
         _configuration = configuration;
+        _userManager = userManager;
     }
 
     public async Task<VNPayPaymentResponse> Handle(VNPayPaymentCommand request, CancellationToken cancellationToken)
@@ -41,6 +47,30 @@ public class VNPayPaymentHandler : IRequestHandler<VNPayPaymentCommand, VNPayPay
         var totalAmount = order.OrderDetails
             .Where(od => od.Quantity > od.RefundQuantity)
             .Sum(od => (od.Quantity - od.RefundQuantity) * od.Price);
+
+        User? user = null;
+
+        if (!string.IsNullOrEmpty(request.PhoneNumber))
+        {
+            user = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == request.PhoneNumber);
+            if (user != null && request.UsePoints && request.PointsToApply.HasValue)
+            {
+                var availablePoints = user.Point;
+                var pointsToUse = Math.Min(request.PointsToApply.Value, availablePoints);
+                var totalReduceMoney = pointsToUse;
+
+                if (totalReduceMoney > totalAmount)
+                {
+                    totalReduceMoney = (int)totalAmount;
+                    pointsToUse = totalReduceMoney / ConversePoint;
+                }
+
+                user.Point -= pointsToUse;
+                await _userManager.UpdateAsync(user);
+
+                totalAmount -= totalReduceMoney;
+            }
+        }
 
         if (totalAmount == 0)
         {
@@ -62,6 +92,13 @@ public class VNPayPaymentHandler : IRequestHandler<VNPayPaymentCommand, VNPayPay
 
         await _unitOfWorks.PaymentRepository.AddAsync(payment);
         await _unitOfWorks.SaveChangeAsync();
+
+        if (user != null)
+        {
+            var pointsAwarded = (int)(totalAmount / ConversePoint);
+            user.Point += pointsAwarded;
+            await _userManager.UpdateAsync(user);
+        }
 
         string formatDate = $"{DateTime.UtcNow:yyyyMMddHHmmss}";
         #region VNPay Request

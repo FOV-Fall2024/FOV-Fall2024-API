@@ -11,7 +11,6 @@ public class Customer : BaseAuditableEntity, IsSoftDeleted
 {
 
     public string Address { get; set; } = string.Empty;
-    public int Point { get; set; } = 0;
     public User? User { get; set; }
     public string UserId { get; set; } = string.Empty;
     public Status Status { get; set; }
@@ -21,11 +20,10 @@ public class Customer : BaseAuditableEntity, IsSoftDeleted
 
     }
 
-    public Customer(string address, string userId, int point)
+    public Customer(string address, string userId)
     {
         UserId = userId;
         Address = address;
-        Point = point;
     }
 
     public void UpdateState(bool state)

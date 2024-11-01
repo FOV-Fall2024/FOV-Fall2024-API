@@ -78,7 +78,7 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
 
     public void Update(TEntity entity)
     {
-        entity.LastModified = DateTime.UtcNow   ;
+        entity.LastModified = DateTime.UtcNow;
         _dbSet.Update(entity);
     }
 

@@ -22,15 +22,16 @@ public class PaymentController(ISender sender) : DefaultController
         return Ok(response);
     }
     [HttpPost("{orderId:guid}/vn-pay")]
-    public async Task<IActionResult> CreateVNPayPayment(Guid orderId)
+    public async Task<IActionResult> CreateVNPayPayment(Guid orderId, [FromQuery] string? PhoneNumber, [FromQuery] bool UsePoints, [FromQuery] int? PointsToApply)
     {
-        var command = new VNPayPaymentCommand
+        var command = new VNPayPaymentCommand(PhoneNumber, UsePoints, PointsToApply)
         {
             OrderId = orderId
         };
         var response = await _sender.Send(command);
         return Ok(response);
     }
+
     [HttpPatch("{orderId:guid}/confirm")]
     public async Task<IActionResult> ConfirmPayment(Guid orderId)
     {

@@ -2,6 +2,6 @@
 
 namespace FOV.Application.Features.Payments.Responses;
 
-public record PaymentResponse(Guid PaymentId, decimal Amount, PaymentStatus PaymentStatus, PaymentMethods PaymentMethods, DateTime CreatedDate);
+public record PaymentResponse(Guid PaymentId, decimal Amount, string PaymentStatus, string PaymentMethods, DateTime CreatedDate);
 
 

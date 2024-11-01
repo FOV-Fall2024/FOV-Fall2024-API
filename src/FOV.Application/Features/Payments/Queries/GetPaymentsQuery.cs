@@ -26,7 +26,7 @@ public class GetPaymentsQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetPay
         return filteredPayment.Select(p => new PaymentResponse(
                        p.Id,
                                   p.Amount,
-                                             p.PaymentStatus,
-                                                        p.PaymentMethods, p.Created)).ToList();
+                                             p.PaymentStatus.ToString(),
+                                                        p.PaymentMethods.ToString(), p.Created)).ToList();
     }
 }
