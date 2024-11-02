@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 
-namespace FOV.Infrastructure.Menu.Setup;
+namespace FOV.Infrastructure.Notifications.Web.SignalR.Menu.Setup;
 public class MenuHub : Hub
 {
     public async Task NotifyDishAvailability(Guid dishId, bool isAvailable)

@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Domain.Entities.OrderAggregator.Enums;
-using FOV.Infrastructure.Order.Setup;
+using FOV.Infrastructure.Notifications.Web.SignalR.Order.Setup;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 using StackExchange.Redis;

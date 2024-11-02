@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using FOV.Domain.Entities.OrderAggregator.Enums;
 using FOV.Domain.Entities.PaymentAggregator.Enums;
 using FOV.Domain.Entities.UserAggregator;
-using FOV.Infrastructure.Order.Setup;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 using Microsoft.AspNetCore.Identity;

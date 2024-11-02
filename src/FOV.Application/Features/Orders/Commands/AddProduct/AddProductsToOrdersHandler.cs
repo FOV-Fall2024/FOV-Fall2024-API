@@ -9,7 +9,7 @@ using FOV.Application.Common.Exceptions;
 using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.OrderAggregator.Enums;
 using FOV.Infrastructure.Caching.CachingService;
-using FOV.Infrastructure.Order.Setup;
+using FOV.Infrastructure.Notifications.Web.SignalR.Order.Setup;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 using StackExchange.Redis;

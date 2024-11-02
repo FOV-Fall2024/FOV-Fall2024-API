@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 
-namespace FOV.Infrastructure.Order.Setup;
+namespace FOV.Infrastructure.Notifications.Web.SignalR.Order.Setup;
 public class OrderHub : Hub
 {
     private readonly IDatabase _database;
@@ -40,5 +40,10 @@ public class OrderHub : Hub
     {
         string connectionId = await _database.StringGetAsync(OrderId.ToString());
         await Clients.Client(connectionId).SendAsync("ReceiveRefundOrderDetails", ProductIdOrComboId, Quantity);
+    }
+    public async Task CancelAddMoreOrder(Guid OrderId, string status)
+    {
+        string connectionId = await _database.StringGetAsync(OrderId.ToString());
+        await Clients.Client(connectionId).SendAsync("ReceiveCancelAddMoreOrder", OrderId, status);
     }
 }

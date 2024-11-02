@@ -7,12 +7,12 @@ using System.Text.Json.Serialization;
 using FOV.Application.Features.Dishes.Responses;
 using FOV.Domain.Entities.TableAggregator.Enums;
 using FOV.Infrastructure.Helpers.GetHelper;
-using FOV.Infrastructure.Menu.Setup;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using FOV.Application.Common.Behaviours.Claim;
 using FOV.Domain.Entities.UserAggregator.Enums;
+using FOV.Infrastructure.Notifications.Web.SignalR.Menu.Setup;
 
 namespace FOV.Application.Features.Dishes.Queries.GetMenu;
 

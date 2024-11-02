@@ -10,7 +10,7 @@ using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.OrderAggregator.Enums;
 using FOV.Domain.Entities.TableAggregator.Enums;
 using FOV.Infrastructure.Caching.CachingService;
-using FOV.Infrastructure.Order.Setup;
+using FOV.Infrastructure.Notifications.Web.SignalR.Order.Setup;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
@@ -156,7 +156,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             await lockService.ReleaseLockAsync();
 
             //test, remove when deploy
-            await _orderHub.SendOrder(order.Id);
+            //await _orderHub.SendOrder(order.Id);
 
             return order.Id;
         }

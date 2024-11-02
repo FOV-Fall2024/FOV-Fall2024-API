@@ -1,7 +1,7 @@
 ﻿using FOV.Application;
 using FOV.Domain.Entities.UserAggregator;
 using FOV.Infrastructure;
-using FOV.Infrastructure.Order.Setup;
+using FOV.Infrastructure.Notifications.Web.SignalR.Order.Setup;
 using FOV.Presentation.Infrastructure;
 using FOV.Presentation.Infrastructure.Middleware;
 using OpenTelemetry.Metrics;

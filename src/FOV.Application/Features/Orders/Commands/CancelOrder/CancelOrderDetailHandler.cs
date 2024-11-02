@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using FOV.Application.Common.Exceptions;
 using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.OrderAggregator.Enums;
-using FOV.Infrastructure.Order.Setup;
+using FOV.Infrastructure.Notifications.Web.SignalR.Order.Setup;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 using StackExchange.Redis;
@@ -76,6 +76,7 @@ public class CancelOrderDetailHandler : IRequestHandler<CancelOrderDetailCommand
         }
 
         await _unitOfWorks.SaveChangeAsync();
+        await _orderHub.CancelAddMoreOrder(order.Id, "Canceled");
         return order.Id;
     }
 
