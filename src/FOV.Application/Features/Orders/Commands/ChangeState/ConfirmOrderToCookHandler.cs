@@ -75,7 +75,9 @@ namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder
 
             _unitOfWorks.OrderRepository.Update(order);
             await _unitOfWorks.SaveChangeAsync();
+
             await _orderHub.UpdateOrderStatus(order.Id, order.OrderStatus.ToString());
+            await _orderHub.SendOrderToHeadChef(order.Id, order.OrderDetails);
 
             return order.Id;
         }

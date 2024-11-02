@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FOV.Domain.Entities.OrderAggregator;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
@@ -44,5 +45,10 @@ public class OrderHub : Hub
     {
         string connectionId = await _database.StringGetAsync(OrderId.ToString());
         await Clients.Client(connectionId).SendAsync("ReceiveCancelAddMoreOrder", OrderId, status);
+    }
+    public async Task SendOrderToHeadChef(Guid OrderId, IEnumerable<OrderDetail> orderDetails)
+    {
+        string connectionId = await _database.StringGetAsync(OrderId.ToString());
+        await Clients.Client(connectionId).SendAsync("ReceiveOrderDetails", OrderId, orderDetails);
     }
 }
