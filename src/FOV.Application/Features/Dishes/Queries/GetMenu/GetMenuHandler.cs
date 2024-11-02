@@ -82,7 +82,8 @@ public class GetMenuHandler : IRequestHandler<GetMenuCommand, PagedResult<GetMen
             dish.DishGeneral.DishGeneralImages.OrderBy(img => img.Order).Select(img => new GetAdditionalImage(img.Id, img.Url)).ToList(),
             dish.Category.CategoryName,
             dish.GetType().Name,
-            dish.Status
+            dish.Status,
+            dish.DishGeneral.IsRefund
         )).ToList();
 
         var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
