@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using FOV.Application.Common.Behaviours.Claim;
+using FOV.Application.Common.Exceptions;
 using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Domain.Entities.OrderAggregator.Enums;
+using FOV.Domain.Entities.UserAggregator.Enums;
 using FOV.Infrastructure.Notifications.Web.SignalR.Order.Setup;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
@@ -19,19 +22,32 @@ namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder
         private readonly IUnitOfWorks _unitOfWorks;
         private readonly OrderHub _orderHub;
         private readonly IDatabase _database;
+        private readonly IClaimService _claimService;
 
-        public ConfirmOrderToCookHandler(IUnitOfWorks unitOfWorks, OrderHub orderHub, IConnectionMultiplexer redis)
+        public ConfirmOrderToCookHandler(IUnitOfWorks unitOfWorks, OrderHub orderHub, IConnectionMultiplexer redis, IClaimService claimService)
         {
             _unitOfWorks = unitOfWorks;
             _orderHub = orderHub;
             _database = redis.GetDatabase();
+            _claimService = claimService;
         }
 
         public async Task<Guid> Handle(ConfirmOrderToCookCommand request, CancellationToken cancellationToken)
         {
+            var UserId = _claimService.UserId ?? throw new AppException("Employee not found.");
+            var employee = await _unitOfWorks.EmployeeRepository.FirstOrDefaultAsync(x => x.UserId == UserId);
+
+            var EmployeeRole = _claimService.UserRole;
+
+            if (EmployeeRole != Domain.Entities.UserAggregator.Enums.Role.Waiter)
+            {
+                throw new AppException("You are not allowed to connfirm order");
+            }
+
             var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.OrderDetails)
                 ?? throw new Exception("Order not found");
 
+            order.EmployeeId = employee.Id;
             order.OrderStatus = OrderStatus.Cook;
 
             var ingredientUpdates = new Dictionary<Guid, int>();

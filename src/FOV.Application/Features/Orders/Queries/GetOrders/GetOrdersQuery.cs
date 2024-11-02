@@ -11,7 +11,7 @@ using MediatR;
 namespace FOV.Application.Features.Orders.Queries.GetOrders;
 
 public record GetOrdersRequest(Guid? Id, OrderStatus? OrderStatus, DateTime? OrderTime, Guid? TableId) : IRequest<List<GetOrdersResponse>>;
-public record GetOrdersResponse(Guid Id, string OrderStatus, decimal TotalPrice, DateTime OrderTime, Guid TableId);
+public record GetOrdersResponse(Guid Id, string OrderStatus, decimal TotalPrice, DateTime OrderTime, Guid TableId, int TableNumber);
 
 public class GetOrdersQuery : IRequestHandler<GetOrdersRequest, List<GetOrdersResponse>>
 {
@@ -24,13 +24,13 @@ public class GetOrdersQuery : IRequestHandler<GetOrdersRequest, List<GetOrdersRe
 
     public async Task<List<GetOrdersResponse>> Handle(GetOrdersRequest request, CancellationToken cancellationToken)
     {
-        var orders = await _unitOfWorks.OrderRepository.GetAllAsync();
+        var orders = await _unitOfWorks.OrderRepository.GetAllAsync(x => x.Table);
         var filterEntity = new Domain.Entities.OrderAggregator.Order
         {
             Id = request.Id ?? Guid.Empty,
             OrderStatus = request.OrderStatus ?? OrderStatus.Finish,
             OrderTime = request.OrderTime ?? DateTime.MinValue,
-            TableId = request.TableId ?? Guid.Empty
+            TableId = request.TableId ?? Guid.Empty,
         };
 
         var filteredOrder = orders.AsQueryable().CustomFilterV1(filterEntity);
@@ -40,6 +40,7 @@ public class GetOrdersQuery : IRequestHandler<GetOrdersRequest, List<GetOrdersRe
             o.OrderStatus != null ? o.OrderStatus.ToString() : OrderStatus.Finish.ToString(),
             o.TotalPrice,
             o.OrderTime ?? DateTime.MinValue,
-            o.TableId)).ToList();
+            o.TableId,
+            o.Table.TableNumber)).ToList();
     }
 }

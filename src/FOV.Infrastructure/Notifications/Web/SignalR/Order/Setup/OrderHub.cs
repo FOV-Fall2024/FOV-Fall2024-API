@@ -14,8 +14,7 @@ public class OrderHub : Hub
     public OrderHub(IConnectionMultiplexer connectionMultiplexer)
     {
         _database = connectionMultiplexer.GetDatabase();
-    }
-
+    }   
     public override async Task OnConnectedAsync()
     {
         await Clients.All.SendAsync("ReceiveMessage", "System", $"{Context.ConnectionId} has connected");

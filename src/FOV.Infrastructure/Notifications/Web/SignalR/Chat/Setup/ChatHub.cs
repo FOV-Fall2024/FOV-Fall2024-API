@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 
-namespace FOV.Infrastructure.Chat.Setup;
+namespace FOV.Infrastructure.Notifications.Web.SignalR.Chat.Setup;
 public class ChatHub : Hub
 {
     public async Task SendMessageToGroup(string groupName, string user, string message)

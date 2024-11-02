@@ -63,6 +63,12 @@ public class RefundOrderHandler(IUnitOfWorks unitOfWorks, OrderHub orderHub) : I
         order.TotalPrice -= refundAmount;
         orderDetail.RefundQuantity += request.RefundQuantity;
 
+        if (order.OrderDetails.All(od => !od.IsAddMore || od.Status == OrderDetailsStatus.Canceled))
+        {
+            order.OrderStatus = OrderStatus.Service;
+            _unitOfWorks.OrderRepository.Update(order);
+        }
+
         _unitOfWorks.OrderRepository.Update(order);
         await _unitOfWorks.SaveChangeAsync();
 

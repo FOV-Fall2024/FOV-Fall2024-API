@@ -4,6 +4,7 @@ using System.Text;
 using FOV.Application.Common.Exceptions;
 using FOV.Application.Features.Authorize.Commands.UserLogin;
 using FOV.Domain.Entities.UserAggregator;
+using FOV.Infrastructure.Notifications.Web.SignalR.Login;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -20,6 +21,7 @@ public class EmployeeLoginHandler(IUnitOfWorks unitOfWorks, UserManager<User> us
     private readonly UserManager<User> _userManager = userManager;
     private readonly IConfiguration _configuration = configuration;
     private readonly SignInManager<User> _signInManager = signInManager;
+    //private readonly LoginHub _loginHub = loginHub; , LoginHub loginHub
     public async Task<EmployeeLoginResponse> Handle(EmployeeLoginCommand request, CancellationToken cancellationToken)
     {
         var fieldErrors = new List<FieldError>();
@@ -52,6 +54,9 @@ public class EmployeeLoginHandler(IUnitOfWorks unitOfWorks, UserManager<User> us
             string validAudience = _configuration["JWTSecretKey:ValidAudience"] ?? throw new Exception("ValidAudience not configured");
 
             string token = GenerateJWT(user, roles, secretKey, validIssuer, validAudience, employee.RestaurantId ?? Guid.Empty);
+
+            //await _loginHub.SendEmployeeId(user.Id, roles.FirstOrDefault());
+
             return new EmployeeLoginResponse(user.Id, user.Employee.RestaurantId ?? Guid.Empty, user.FirstName +" "+user.LastName,user.PhoneNumber,roles.FirstOrDefault(),token, "not");
         }
 

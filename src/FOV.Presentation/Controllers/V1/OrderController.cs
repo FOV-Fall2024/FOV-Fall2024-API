@@ -8,9 +8,11 @@ using FOV.Application.Features.Orders.Commands.RefundOrder;
 using FOV.Application.Features.Orders.Queries.GetOrderDetails;
 using FOV.Application.Features.Orders.Queries.GetOrders;
 using FOV.Application.Features.Orders.Queries.SuggestDishesForHeadchef;
+using FOV.Domain.Entities.UserAggregator.Enums;
 using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Presentation.Infrastructure.Core;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FOV.Presentation.Controllers.V1;
@@ -42,6 +44,7 @@ public class OrderController(ISender sender) : DefaultController
         var response = await _sender.Send(command);
         return Ok(response);
     }
+    [Authorize(Roles = Role.Waiter)]
     [HttpPatch("{orderId:guid}/cook")]
     public async Task<IActionResult> ConfirmOrderToCook(Guid orderId)
     {

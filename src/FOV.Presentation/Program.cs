@@ -1,6 +1,7 @@
 ﻿using FOV.Application;
 using FOV.Domain.Entities.UserAggregator;
 using FOV.Infrastructure;
+using FOV.Infrastructure.Notifications.Web.SignalR.Login;
 using FOV.Infrastructure.Notifications.Web.SignalR.Order.Setup;
 using FOV.Presentation.Infrastructure;
 using FOV.Presentation.Infrastructure.Middleware;
@@ -73,6 +74,7 @@ await app.InitializeDatabaseAsync();
 app.UseHttpsRedirection();
 // Map the default Identity API endpoints except for registration
 app.MapHub<OrderHub>("order-hub").RequireCors("CorsPolicy");
+app.MapHub<LoginHub>("login-hub").RequireCors("CorsPolicy");
 app.MapIdentityApi<User>();
 app.UseMiddleware<ExceptionMiddleware>();
 

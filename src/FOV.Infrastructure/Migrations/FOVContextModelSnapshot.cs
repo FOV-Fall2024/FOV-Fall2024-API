@@ -969,6 +969,9 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("EmployeeId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Feedback")
                         .HasColumnType("text");
 
@@ -994,6 +997,8 @@ namespace FOV.Infrastructure.Migrations
                         .HasColumnType("numeric");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
 
                     b.HasIndex("TableId");
 
@@ -1973,11 +1978,17 @@ namespace FOV.Infrastructure.Migrations
 
             modelBuilder.Entity("FOV.Domain.Entities.OrderAggregator.Order", b =>
                 {
+                    b.HasOne("FOV.Domain.Entities.UserAggregator.Employee", "Employee")
+                        .WithMany("Orders")
+                        .HasForeignKey("EmployeeId");
+
                     b.HasOne("FOV.Domain.Entities.TableAggregator.Table", "Table")
                         .WithMany("Orders")
                         .HasForeignKey("TableId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Employee");
 
                     b.Navigation("Table");
                 });
@@ -2263,6 +2274,8 @@ namespace FOV.Infrastructure.Migrations
             modelBuilder.Entity("FOV.Domain.Entities.UserAggregator.Employee", b =>
                 {
                     b.Navigation("Attendances");
+
+                    b.Navigation("Orders");
 
                     b.Navigation("WaiterSchedules");
                 });

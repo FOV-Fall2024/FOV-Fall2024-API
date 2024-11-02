@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using FOV.Domain.Common;
 using FOV.Domain.Entities.AttendanceAggregator;
+using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.RestaurantAggregator;
 using FOV.Domain.Entities.TableAggregator.Enums;
 using FOV.Domain.Entities.WaiterScheduleAggregator;
@@ -16,6 +17,7 @@ public class Employee : BaseAuditableEntity, IsSoftDeleted
     public Status Status { get; set; } = Status.Active;
     public ICollection<Attendance> Attendances { get; set; } = new List<Attendance>(); // Use List<Attendance>
     public ICollection<WaiterSchedule> WaiterSchedules { get; set; } = new List<WaiterSchedule>(); // Use List<WaiterSchedule>
+    public ICollection<Order> Orders { get; set; } = new List<Order>();
     public Restaurant? Restaurant { get; set; }
     public Guid? RestaurantId { get; set; }
 
