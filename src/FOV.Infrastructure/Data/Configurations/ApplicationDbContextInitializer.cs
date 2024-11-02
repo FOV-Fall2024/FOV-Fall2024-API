@@ -75,6 +75,10 @@ public class ApplicationDbContextInitializer
         {
             await _roleManager.CreateAsync(new IdentityRole(Role.Cook));
         }
+        if (!await _roleManager.RoleExistsAsync(Role.Headchef))
+        {
+            await _roleManager.CreateAsync(new IdentityRole(Role.Headchef));
+        }
         if (!await _roleManager.RoleExistsAsync(administratorsRole.Name))
         {
             await _roleManager.CreateAsync(administratorsRole);

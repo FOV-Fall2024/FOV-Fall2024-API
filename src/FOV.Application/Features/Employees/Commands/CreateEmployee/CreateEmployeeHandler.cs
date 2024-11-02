@@ -107,6 +107,8 @@ public partial class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager
         {
             1 => "Tạo tài khoản quản lý thành công",
             2 => "Tạo tài khoản nhân viên thành công",
+            3 => "Tạo tài khoản phụ bếp thành công",
+            4 => "Tạo tài khoản bếp trưởng thành công",
             _ => "Tạo tài khoản thành công"
         };
 
@@ -114,13 +116,14 @@ public partial class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager
     }
 
 
-    // 1. Manager 2.Waiter 3.Cook
+    // 1. Manager 2.Waiter 3.Cook 4.Headchef
 
     public static string UserRole(int role) => role switch
     {
         1 => Role.Manager,
         2 => Role.Waiter,
         3 => Role.Cook,
+        4 => Role.Headchef,
         _ => throw new NotImplementedException(),
     };
 
@@ -129,6 +132,7 @@ public partial class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager
         1 => "MNG_001",
         2 => "WTR_001",
         3 => "CKR_001",
+        4 => "HCF_001",
         _ => throw new NotImplementedException(),
     };
 

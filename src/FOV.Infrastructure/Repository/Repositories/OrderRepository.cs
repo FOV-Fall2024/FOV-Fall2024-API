@@ -25,16 +25,18 @@ public class OrderRepository : GenericRepository<Domain.Entities.OrderAggregator
                              .FirstOrDefaultAsync(o => o.TableId == tableId);
     }
 
-    public async Task<List<Dish>> GetOrderDishes(Guid restaurantId)
+    public async Task<List<OrderDetail>> GetOrderDishesAndCombo(Guid restaurantId)
     {
         return await _context.Orders
             .Include(o => o.OrderDetails)
-            .ThenInclude(od => od.Dish)
-            .ThenInclude(d => d.Category)
-            .Where(o => o.Table != null && o.Table.RestaurantId == restaurantId && o.OrderStatus != OrderStatus.Finish)
-            .SelectMany(o => o.OrderDetails.Select(od => od.Dish))
+                .ThenInclude(od => od.Dish)
+                    .ThenInclude(dg => dg.DishGeneral)
+                        .ThenInclude(c => c.Category)
+            .Include(o => o.OrderDetails)
+                .ThenInclude(od => od.Combo)
+            .Where(o => o.Table != null && o.Table.RestaurantId == restaurantId && o.OrderStatus == OrderStatus.Cook)
+            .SelectMany(o => o.OrderDetails)
+            .Where(od => (od.Dish != null || od.Combo != null) && od.Status == OrderDetailsStatus.Cook)
             .ToListAsync();
     }
-
 }
-

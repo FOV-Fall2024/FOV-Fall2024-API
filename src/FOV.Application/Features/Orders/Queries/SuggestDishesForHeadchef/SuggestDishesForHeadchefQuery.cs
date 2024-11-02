@@ -5,18 +5,23 @@ using MediatR;
 
 namespace FOV.Application.Features.Orders.Queries.SuggestDishesForHeadchef;
 public record SuggestDishesForHeadchefCommand(PagingRequest? PagingRequest, Guid RestaurantId) : IRequest<PagedResult<SuggestDishesForHeadchefResponse>>;
-public record SuggestDishesForHeadchefResponse(Guid Id, string DishName, PriorityDish PriorityDish, DateTime CreatedDate);
+public record SuggestDishesForHeadchefResponse(Guid? OrderId, Guid Id, string? DishName, string? ComboName, string? Note, DateTime CreatedDate);
 public class SuggestDishesForHeadchefQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<SuggestDishesForHeadchefCommand, PagedResult<SuggestDishesForHeadchefResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     public async Task<PagedResult<SuggestDishesForHeadchefResponse>> Handle(SuggestDishesForHeadchefCommand request, CancellationToken cancellationToken)
     {
-        var orderDishes = await _unitOfWorks.OrderRepository.GetOrderDishes(request.RestaurantId);
-        //vut thang priorityDish
+        var orderDishes = await _unitOfWorks.OrderRepository.GetOrderDishesAndCombo(request.RestaurantId);
+
         var prioritizedDishes = orderDishes
-            .OrderBy(d => d.PriorityDish)
-            .ThenByDescending(d => d.Created)
-            .Select(d => new SuggestDishesForHeadchefResponse(d.Id, d.DishGeneral.DishName, d.PriorityDish, d.Created))
+            .OrderBy(d => d.Created)
+            .Select(d => new SuggestDishesForHeadchefResponse(
+                d.OrderId,
+                d.Id,
+                d.Dish?.DishGeneral?.DishName,
+                d.Combo?.ComboName,
+                d.Note,
+                d.Created))
             .ToList();
 
         var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);

@@ -48,6 +48,10 @@ namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder
                 ?? throw new Exception("Order not found");
 
             order.EmployeeId = employee.Id;
+            if (order.OrderStatus != OrderStatus.Prepare)
+            {
+                throw new AppException("Hiện đơn hàng này không có món nào để chế biến");
+            }
             order.OrderStatus = OrderStatus.Cook;
 
             var ingredientUpdates = new Dictionary<Guid, int>();
@@ -77,7 +81,7 @@ namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder
             await _unitOfWorks.SaveChangeAsync();
 
             await _orderHub.UpdateOrderStatus(order.Id, order.OrderStatus.ToString());
-            await _orderHub.SendOrderToHeadChef(order.Id, order.OrderDetails);
+            await _orderHub.SendOrderToHeadChef(order.Id);
 
             return order.Id;
         }

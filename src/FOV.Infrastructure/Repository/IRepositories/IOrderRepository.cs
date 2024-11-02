@@ -10,5 +10,5 @@ namespace FOV.Infrastructure.Repository.IRepositories;
 public interface IOrderRepository : IGenericRepository<Domain.Entities.OrderAggregator.Order>
 {
     Task<Domain.Entities.OrderAggregator.Order> GetByTableIdAsync(Guid tableId);
-    Task<List<Dish>> GetOrderDishes(Guid restaurantId);
+    Task<List<OrderDetail>> GetOrderDishesAndCombo(Guid restaurantId);
 }
