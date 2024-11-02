@@ -108,10 +108,10 @@ public class OrderController(ISender sender) : DefaultController
         var response = await _sender.Send(command);
         return Ok(new OK_Result<Guid>("Thêm phản hồi thành công", response));
     }
-    [HttpPatch("{orderId:guid}/order-details/{orderDetailId:guid}/cancel")]
-    public async Task<IActionResult> CancelOrderDetail(Guid orderId, Guid orderDetailId)
+    [HttpPatch("{orderId:guid}/cancel-add-more")]
+    public async Task<IActionResult> CancelOrderDetail(Guid orderId)
     {
-        var command = new CancelOrderDetailCommand(orderId, orderDetailId);
+        var command = new CancelOrderDetailCommand(orderId);
         var response = await _sender.Send(command);
         return Ok(new OK_Result<Guid>("Hủy món ăn thành công", response));
     }

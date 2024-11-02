@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FOV.Application.Common.Exceptions;
 using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.OrderAggregator.Enums;
 using FOV.Infrastructure.Order.Setup;
@@ -11,7 +12,7 @@ using MediatR;
 using StackExchange.Redis;
 
 namespace FOV.Application.Features.Orders.Commands.CancelOrder;
-public record CancelOrderDetailCommand(Guid OrderId, Guid OrderDetailId) : IRequest<Guid>;
+public record CancelOrderDetailCommand(Guid OrderId) : IRequest<Guid>;
 public class CancelOrderDetailHandler : IRequestHandler<CancelOrderDetailCommand, Guid>
 {
     private readonly IUnitOfWorks _unitOfWorks;
@@ -33,43 +34,39 @@ public class CancelOrderDetailHandler : IRequestHandler<CancelOrderDetailCommand
             throw new Exception("Order not found.");
         }
 
-        var orderDetail = order.OrderDetails.FirstOrDefault(od => od.Id == request.OrderDetailId);
-        if (orderDetail == null)
+        var addMoreOrderDetails = order.OrderDetails
+            .Where(od => od.IsAddMore && od.Status == OrderDetailsStatus.Prepare)
+            .ToList();
+
+        if (!addMoreOrderDetails.Any())
         {
-            throw new Exception("Order detail not found.");
+            throw new AppException("Không có món nào được đặt thêm mà m đòi xóa, nhót.");
         }
 
-        if (orderDetail.Status == OrderDetailsStatus.Canceled)
+        foreach (var orderDetail in addMoreOrderDetails)
         {
-            throw new Exception("Order detail has already been canceled.");
-        }
+            orderDetail.Status = OrderDetailsStatus.Canceled;
+            _unitOfWorks.OrderDetailRepository.Update(orderDetail);
 
-        if (orderDetail.Status != OrderDetailsStatus.Prepare || !orderDetail.IsAddMore)
-        {
-            throw new Exception("Order detail can only be canceled if its status is Prepare and IsAddMore is true.");
-        }
+            var refundAmount = orderDetail.Quantity * orderDetail.Price;
+            order.TotalPrice -= refundAmount;
 
-        var refundAmount = orderDetail.Quantity * orderDetail.Price;
-        order.TotalPrice -= refundAmount;
-        orderDetail.Status = OrderDetailsStatus.Canceled;
-
-        _unitOfWorks.OrderRepository.Update(order);
-        _unitOfWorks.OrderDetailRepository.Update(orderDetail);
-
-        if (orderDetail.ProductId.HasValue)
-        {
-            await ReleaseIngredientLocks(orderDetail.ProductId.Value, orderDetail.Quantity);
-        }
-        else if (orderDetail.ComboId.HasValue)
-        {
-            var combo = await _unitOfWorks.ComboRepository.GetByIdAsync(orderDetail.ComboId.Value, c => c.DishCombos);
-            if (combo != null)
+            if (orderDetail.ProductId.HasValue)
             {
-                foreach (var dishCombo in combo.DishCombos)
+                await ReleaseIngredientLocks(orderDetail.ProductId.Value, orderDetail.Quantity);
+            }
+            else if (orderDetail.ComboId.HasValue)
+            {
+                var combo = await _unitOfWorks.ComboRepository.GetByIdAsync(orderDetail.ComboId.Value, c => c.DishCombos);
+                if (combo != null)
                 {
-                    await ReleaseIngredientLocks(dishCombo.DishId, orderDetail.Quantity);
+                    foreach (var dishCombo in combo.DishCombos)
+                    {
+                        await ReleaseIngredientLocks(dishCombo.DishId, orderDetail.Quantity);
+                    }
                 }
             }
+            _unitOfWorks.OrderDetailRepository.Update(orderDetail);
         }
 
         if (order.OrderDetails.All(od => !od.IsAddMore || od.Status == OrderDetailsStatus.Canceled))
@@ -79,10 +76,7 @@ public class CancelOrderDetailHandler : IRequestHandler<CancelOrderDetailCommand
         }
 
         await _unitOfWorks.SaveChangeAsync();
-
-        await _orderHub.UpdateOrderDetailsStatus(orderDetail.OrderId.Value, orderDetail.ProductId ?? orderDetail.ComboId.Value, "CancelAddMore");
-
-        return orderDetail.Id;
+        return order.Id;
     }
 
     private async Task ReleaseIngredientLocks(Guid dishId, int quantity)

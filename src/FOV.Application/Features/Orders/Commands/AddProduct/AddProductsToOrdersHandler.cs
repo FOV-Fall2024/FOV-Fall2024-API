@@ -23,7 +23,7 @@ public record AddProductsToOrdersCommand(List<GetOrderDetailDto> AdditionalOrder
 }
 public record AddProductsToOrdersResult(Guid OrderId);
 
-public record GetOrderDetailDto(Guid? ComboId, Guid? ProductId, int Quantity, string Note)
+public record GetOrderDetailDto(Guid? ComboId, Guid? ProductId, int Quantity, string? Note)
 {
     [JsonIgnore]
     public readonly OrderDetailsStatus Status = OrderDetailsStatus.Prepare;
@@ -82,7 +82,8 @@ public class AddProductsToOrderHandler : IRequestHandler<AddProductsToOrdersComm
                     totalPrice += comboPrice * detail.Quantity;
                     order.OrderDetails.Add(new OrderDetail(combo.Id, null, null, detail.Quantity, comboPrice, detail.Note)
                     {
-                        Status = OrderDetailsStatus.Prepare
+                        Status = OrderDetailsStatus.Prepare,
+                        IsAddMore = true
                     });
 
                     foreach (var dishCombo in combo.DishCombos)
