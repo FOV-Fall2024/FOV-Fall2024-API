@@ -8,6 +8,7 @@ using FOV.Application.Common.Exceptions;
 using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Domain.Entities.OrderAggregator.Enums;
 using FOV.Domain.Entities.UserAggregator.Enums;
+using FOV.Infrastructure.Notifications.Web.SignalR.Notification.Setup;
 using FOV.Infrastructure.Notifications.Web.SignalR.Order.Setup;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
@@ -21,21 +22,23 @@ namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder
     {
         private readonly IUnitOfWorks _unitOfWorks;
         private readonly OrderHub _orderHub;
+        private readonly NotificationHub _notificationHub;
         private readonly IDatabase _database;
         private readonly IClaimService _claimService;
 
-        public ConfirmOrderToCookHandler(IUnitOfWorks unitOfWorks, OrderHub orderHub, IConnectionMultiplexer redis, IClaimService claimService)
+        public ConfirmOrderToCookHandler(IUnitOfWorks unitOfWorks, OrderHub orderHub, IConnectionMultiplexer redis, IClaimService claimService, NotificationHub notificationHub)
         {
             _unitOfWorks = unitOfWorks;
             _orderHub = orderHub;
             _database = redis.GetDatabase();
             _claimService = claimService;
+            _notificationHub = notificationHub;
         }
 
         public async Task<Guid> Handle(ConfirmOrderToCookCommand request, CancellationToken cancellationToken)
         {
-            var UserId = _claimService.UserId ?? throw new AppException("Employee not found.");
-            var employee = await _unitOfWorks.EmployeeRepository.FirstOrDefaultAsync(x => x.UserId == UserId);
+            var userId = _claimService.UserId ?? throw new AppException("Employee not found.");
+            var employee = await _unitOfWorks.EmployeeRepository.FirstOrDefaultAsync(x => x.UserId == userId);
 
             var EmployeeRole = _claimService.UserRole;
 
@@ -44,7 +47,7 @@ namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder
                 throw new AppException("You are not allowed to connfirm order");
             }
 
-            var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.OrderDetails)
+            var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.OrderDetails, o => o.Table)
                 ?? throw new Exception("Order not found");
 
             order.EmployeeId = employee.Id;
@@ -54,6 +57,12 @@ namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder
             }
             order.OrderStatus = OrderStatus.Cook;
 
+            var headChef = await _unitOfWorks.EmployeeRepository.FirstOrDefaultAsync(e => e.RestaurantId == order.Table.RestaurantId && e.EmployeeCode.StartsWith("HCF_"));
+
+            if (headChef == null)
+            {
+                throw new AppException("Head chef not found for this restaurant");
+            }
             var ingredientUpdates = new Dictionary<Guid, int>();
 
             foreach (var detail in order.OrderDetails)
@@ -81,7 +90,7 @@ namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder
             await _unitOfWorks.SaveChangeAsync();
 
             await _orderHub.UpdateOrderStatus(order.Id, order.OrderStatus.ToString());
-            //await _orderHub.SendOrderToHeadChef(order.Id);
+            await _notificationHub.SendOrderToHeadChef(headChef.UserId);
 
             return order.Id;
         }

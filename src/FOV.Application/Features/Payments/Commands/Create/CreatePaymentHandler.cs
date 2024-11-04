@@ -13,6 +13,7 @@ using FOV.Application.Common.Exceptions;
 using FOV.Infrastructure.Notifications.Web.SignalR.Order.Setup;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json.Serialization;
+using FOV.Infrastructure.Notifications.Web.SignalR.Notification.Setup;
 
 namespace FOV.Application.Features.Payments.Commands.Create;
 
@@ -37,13 +38,15 @@ public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
     private readonly IUnitOfWorks _unitOfWorks;
     private readonly UserManager<User> _userManager;
     private readonly OrderHub _orderHub;
+    private readonly NotificationHub _notificationHub;
     private const int ConversePoint = 1000;
 
-    public CreatePaymentHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager, OrderHub orderHub)
+    public CreatePaymentHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager, OrderHub orderHub, NotificationHub notificationHub)
     {
         _unitOfWorks = unitOfWorks;
         _orderHub = orderHub;
         _userManager = userManager;
+        _notificationHub = notificationHub;
     }
 
     public async Task<Guid> Handle(CreatePaymentCommands request, CancellationToken cancellationToken)
@@ -110,6 +113,9 @@ public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
         order.OrderStatus = OrderStatus.Payment;
         _unitOfWorks.OrderRepository.Update(order);
 
+        var employee = order.Employee ?? throw new AppException("Không có nhân viên hợp lệ");
+        var userId = employee.UserId ?? throw new AppException("User ID not found for the employee.");
+
         var payment = new Domain.Entities.PaymentAggregator.Payments
         {
             OrderId = request.OrderId,
@@ -121,7 +127,9 @@ public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
 
         await _unitOfWorks.PaymentRepository.AddAsync(payment);
         await _unitOfWorks.SaveChangeAsync();
+
         await _orderHub.UpdateOrderStatus(order.Id, order.OrderStatus.ToString());
+        await _notificationHub.SendPaymentNotificationToWaiter(userId, order.Id);
 
         return payment.Id;
     }

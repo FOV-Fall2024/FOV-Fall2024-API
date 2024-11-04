@@ -7,15 +7,17 @@ using FluentResults;
 using FOV.Domain.Entities.OrderAggregator.Enums;
 using FOV.Domain.Entities.PaymentAggregator.Enums;
 using FOV.Domain.Entities.TableAggregator.Enums;
+using FOV.Infrastructure.Notifications.Web.SignalR.Order.Setup;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Payments.Commands.FinishPayment;
 public sealed record FinishPaymentCommand(Guid OrderId) : IRequest<Guid>;
 
-public class FinishPaymentHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<FinishPaymentCommand, Guid>
+public class FinishPaymentHandler(IUnitOfWorks unitOfWorks, OrderHub orderHub) : IRequestHandler<FinishPaymentCommand, Guid>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
+    private readonly OrderHub _orderHub = orderHub;
 
     public async Task<Guid> Handle(FinishPaymentCommand request, CancellationToken cancellationToken)
     {
@@ -47,6 +49,7 @@ public class FinishPaymentHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<Fi
         }
 
         await _unitOfWorks.SaveChangeAsync();
+        await _orderHub.UpdateOrderStatus(order.Id, order.OrderStatus.ToString());
 
         return payment.Id;
     }

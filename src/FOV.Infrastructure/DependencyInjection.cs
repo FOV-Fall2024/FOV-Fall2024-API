@@ -5,7 +5,7 @@ using FOV.Infrastructure.Elastic.IService;
 using FOV.Infrastructure.Elastic.Service;
 using FOV.Infrastructure.Helpers.FirebaseHandler;
 using FOV.Infrastructure.Helpers.QRCodeGeneratorHelper;
-using FOV.Infrastructure.Notifications.Web.SignalR.Login;
+using FOV.Infrastructure.Notifications.Web.SignalR.Notification.Setup;
 using FOV.Infrastructure.Notifications.Web.SignalR.Order.Setup;
 using FOV.Infrastructure.Repository.IRepositories;
 using FOV.Infrastructure.Repository.Repositories;
@@ -62,7 +62,7 @@ public static class DependencyInjection
         services.AddScoped<IRefundDishInventoryTransactionRepository, RefundDishInventoryTransactionRepository>();
         services.AddScoped<IDishGeneralImageRepository, DishGeneralImageRepository>();
         services.AddSingleton<OrderHub>();
-        services.AddSingleton<LoginHub>();
+        services.AddSingleton<NotificationHub>();
         return services;
 
     }

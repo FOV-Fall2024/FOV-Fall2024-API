@@ -4,7 +4,7 @@ using System.Text;
 using FOV.Application.Common.Exceptions;
 using FOV.Application.Features.Authorize.Commands.UserLogin;
 using FOV.Domain.Entities.UserAggregator;
-using FOV.Infrastructure.Notifications.Web.SignalR.Login;
+using FOV.Infrastructure.Notifications.Web.SignalR.Notification.Setup;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -15,13 +15,13 @@ namespace FOV.Application.Features.Authorize.Commands.EmployeeLogin;
 
 public sealed record EmployeeLoginCommand(string Code, string Password) : IRequest<EmployeeLoginResponse>;
 public sealed record EmployeeLoginResponse(string Id, Guid RestaurantId, string FullName, string PhoneNumber, string Role, string AccessToken, string RefreshToken);
-public class EmployeeLoginHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration configuration, LoginHub loginHub) : IRequestHandler<EmployeeLoginCommand, EmployeeLoginResponse>
+public class EmployeeLoginHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration configuration, NotificationHub notificationHub) : IRequestHandler<EmployeeLoginCommand, EmployeeLoginResponse>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     private readonly UserManager<User> _userManager = userManager;
     private readonly IConfiguration _configuration = configuration;
     private readonly SignInManager<User> _signInManager = signInManager;
-    private readonly LoginHub _loginHub = loginHub;
+    private readonly NotificationHub _notificationHub = notificationHub;
     public async Task<EmployeeLoginResponse> Handle(EmployeeLoginCommand request, CancellationToken cancellationToken)
     {
         var fieldErrors = new List<FieldError>();
@@ -56,7 +56,7 @@ public class EmployeeLoginHandler(IUnitOfWorks unitOfWorks, UserManager<User> us
             string token = GenerateJWT(user, roles, secretKey, validIssuer, validAudience, employee.RestaurantId ?? Guid.Empty);
 
             //Remember to remove this line when deploy
-            //await _loginHub.SendEmployeeId(user.Id, roles.FirstOrDefault());
+            //await _notificationHub.SendEmployeeId(user.Id, roles.FirstOrDefault());
 
             return new EmployeeLoginResponse(user.Id, user.Employee.RestaurantId ?? Guid.Empty, user.FirstName +" "+user.LastName,user.PhoneNumber,roles.FirstOrDefault(),token, "not");
         }

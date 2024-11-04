@@ -17,8 +17,8 @@ public class Restaurant : BaseAuditableEntity, IsSoftDeleted
 
     public Status Status { get; set; }
     public string RestaurantPhone { get; set; }
-    public long Latitude { get; set; }
-    public long Longitude { get; set; }
+    //public long Latitude { get; set; }
+    //public long Longitude { get; set; }
     public string RestaurantCode { get; set; }
 
     public DateTime? ReleaseDate { get; set; } = DateTime.UtcNow;
