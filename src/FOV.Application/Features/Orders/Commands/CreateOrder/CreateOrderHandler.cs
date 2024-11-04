@@ -98,6 +98,14 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
                 }
             }
 
+            foreach (var detail in request.OrderDetails)
+            {
+                if (detail.Quantity < 0)
+                {
+                    fieldErrors.Add(new FieldError { Field = "quantity", Message = "Số lượng phải lớn hơn hoặc bằng 0." });
+                }
+            }
+
             if (fieldErrors.Any())
             {
                 throw new AppException("Lỗi khi tạo đơn hàng mới", fieldErrors, 400);

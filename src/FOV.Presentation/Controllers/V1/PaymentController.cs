@@ -15,18 +15,24 @@ public class PaymentController(ISender sender) : DefaultController
     private readonly ISender _sender = sender;
 
     [HttpPost("{orderId:guid}/cash")]
-    public async Task<IActionResult> CreatePayment(Guid orderId, [FromQuery] CreatePaymentCommands command)
+    public async Task<IActionResult> CreatePayment(Guid orderId, [FromQuery] string? PhoneNumber, [FromQuery] bool UsePoints, [FromQuery] int? PointsToApply, [FromBody] FeedbackRequest? feedback)
     {
-        command = command with { OrderId = orderId };
+        var command = new CreatePaymentCommands(PhoneNumber, UsePoints, PointsToApply)
+        {
+            OrderId = orderId,
+            Feedback = feedback?.Feedback
+        };
         var response = await _sender.Send(command);
         return Ok(response);
     }
+
     [HttpPost("{orderId:guid}/vn-pay")]
-    public async Task<IActionResult> CreateVNPayPayment(Guid orderId, [FromQuery] string? PhoneNumber, [FromQuery] bool UsePoints, [FromQuery] int? PointsToApply)
+    public async Task<IActionResult> CreateVNPayPayment(Guid orderId, [FromQuery] string? PhoneNumber, [FromQuery] bool UsePoints, [FromQuery] int? PointsToApply, [FromBody] FeedbackRequest? feedback)
     {
         var command = new VNPayPaymentCommand(PhoneNumber, UsePoints, PointsToApply)
         {
-            OrderId = orderId
+            OrderId = orderId,
+            Feedback = feedback?.Feedback
         };
         var response = await _sender.Send(command);
         return Ok(response);

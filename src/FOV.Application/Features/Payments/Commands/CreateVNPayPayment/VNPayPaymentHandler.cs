@@ -19,6 +19,8 @@ public record VNPayPaymentCommand(string? PhoneNumber, bool UsePoints, int? Poin
 {
     [JsonIgnore]
     public Guid OrderId { get; set; }
+    [JsonIgnore]
+    public string? Feedback { get; set; }
 }
 public record VNPayPaymentResponse(string PaymentUrl, Guid PaymentId);
 public class VNPayPaymentHandler : IRequestHandler<VNPayPaymentCommand, VNPayPaymentResponse>
@@ -99,6 +101,14 @@ public class VNPayPaymentHandler : IRequestHandler<VNPayPaymentCommand, VNPayPay
             user.Point += pointsAwarded;
             await _userManager.UpdateAsync(user);
         }
+
+        if (!string.IsNullOrEmpty(request.Feedback))
+        {
+            order.Feedback = request.Feedback;
+        }
+
+        order.OrderStatus = OrderStatus.Payment;
+        _unitOfWorks.OrderRepository.Update(order);
 
         string formatDate = $"{DateTime.UtcNow:yyyyMMddHHmmss}";
         #region VNPay Request

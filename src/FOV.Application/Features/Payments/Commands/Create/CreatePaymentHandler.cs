@@ -9,28 +9,40 @@ using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json.Serialization;
 using FOV.Application.Common.Exceptions;
+using FOV.Infrastructure.Notifications.Web.SignalR.Order.Setup;
+using Microsoft.AspNetCore.Mvc;
+using System.Text.Json.Serialization;
 
 namespace FOV.Application.Features.Payments.Commands.Create;
 
-public record CreatePaymentCommands(string? PhoneNumber, bool UsePoints, int? PointsToApply) : IRequest<Guid>
+public sealed record CreatePaymentCommands(
+    string? PhoneNumber, 
+    bool UsePoints, 
+    int? PointsToApply) : IRequest<Guid> 
 {
     [JsonIgnore]
-    public Guid OrderId { get; set; }
+    public Guid OrderId { get; init; }
+    [JsonIgnore]
+    public string? Feedback { get; init; }
+}
+
+public record FeedbackRequest
+{
+    public string? Feedback { get; init; }
 }
 
 public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
 {
     private readonly IUnitOfWorks _unitOfWorks;
     private readonly UserManager<User> _userManager;
-    //private readonly OrderHub _orderHub;, OrderHub orderHub
+    private readonly OrderHub _orderHub;
     private const int ConversePoint = 1000;
 
-    public CreatePaymentHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager)
+    public CreatePaymentHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager, OrderHub orderHub)
     {
         _unitOfWorks = unitOfWorks;
-        //_orderHub = orderHub;
+        _orderHub = orderHub;
         _userManager = userManager;
     }
 
@@ -90,6 +102,11 @@ public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
             await _userManager.UpdateAsync(user);
         }
 
+        if (!string.IsNullOrEmpty(request.Feedback))
+        {
+            order.Feedback = request.Feedback;
+        }
+
         order.OrderStatus = OrderStatus.Payment;
         _unitOfWorks.OrderRepository.Update(order);
 
@@ -104,7 +121,7 @@ public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
 
         await _unitOfWorks.PaymentRepository.AddAsync(payment);
         await _unitOfWorks.SaveChangeAsync();
-        //await _orderHub.UpdateOrderStatus(order.Id, order.OrderStatus.ToString());
+        await _orderHub.UpdateOrderStatus(order.Id, order.OrderStatus.ToString());
 
         return payment.Id;
     }
