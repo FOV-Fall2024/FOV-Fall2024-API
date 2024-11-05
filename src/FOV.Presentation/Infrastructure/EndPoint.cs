@@ -26,10 +26,7 @@ public class CustomRegisterRequest
     public string Password { get; set; }
 
     [Required]
-    public string FirstName { get; set; }
-
-    [Required]
-    public string LastName { get; set; }
+    public string FullName { get; set; }
 }
 
 public static class EndPoint
@@ -56,8 +53,7 @@ public static class EndPoint
             {
                 UserName = registerRequest.Username,
                 Email = registerRequest.Email,
-                FirstName = registerRequest.FirstName,
-                LastName = registerRequest.LastName
+                FullName = registerRequest.FullName,
             };
             var result = await userManager.CreateAsync(user, registerRequest.Password);
             if (result.Succeeded)

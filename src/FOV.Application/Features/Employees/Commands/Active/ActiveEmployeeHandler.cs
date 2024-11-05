@@ -8,54 +8,49 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FOV.Application.Features.Employees.Commands.Active;
 
-public sealed record ActiveEmployeeCommand(string Id) : IRequest<Result<Guid>>;
+public sealed record ActiveEmployeeCommand(Guid Id) : IRequest<Result<Guid>>;
 
-public class ActiveEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager) : IRequestHandler<ActiveEmployeeCommand, Result<Guid>>
+public class ActiveEmployeeHandler(UserManager<User> userManager) : IRequestHandler<ActiveEmployeeCommand, Result<Guid>>
 {
-    private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     private readonly UserManager<User> _userManager = userManager;
 
     public async Task<Result<Guid>> Handle(ActiveEmployeeCommand request, CancellationToken cancellationToken)
     {
-        //var fieldErrors = new List<FieldError>();
+        var fieldErrors = new List<FieldError>();
 
-        //var user = await _userManager.Users
-        //    .Include(u => u.Employee)
-        //    .FirstOrDefaultAsync(u => u.Id == request.Id);
+        var user = await _userManager.Users
+            .FirstOrDefaultAsync(u => u.Id == request.Id);
 
-        //if (user == null)
-        //{
-        //    fieldErrors.Add(new FieldError
-        //    {
-        //        Field = "userId",
-        //        Message = "Không tìm thấy người dùng."
-        //    });
-        //}
+        if (user == null)
+        {
+            fieldErrors.Add(new FieldError
+            {
+                Field = "userId",
+                Message = "Không tìm thấy người dùng."
+            });
+        }
 
-        //if (user?.Employee == null)
-        //{
-        //    fieldErrors.Add(new FieldError
-        //    {
-        //        Field = "employee",
-        //        Message = "Người dùng không có nhân viên liên quan."
-        //    });
-        //}
+        if (fieldErrors.Any())
+        {
+            throw new AppException("Không thể kích hoạt nhân viên", fieldErrors);
+        }
 
-        //if (fieldErrors.Any())
-        //{
-        //    throw new AppException("Không thể kích hoạt nhân viên", fieldErrors);
-        //}
+        user.UpdateState(true);
 
-        //user.Employee.UpdateState(true); // Activate the employee
+        var updateResult = await _userManager.UpdateAsync(user);
+        if (!updateResult.Succeeded)
+        {
+            fieldErrors.AddRange(updateResult.Errors.Select(e => new FieldError
+            {
+                Field = "Update",
+                Message = e.Description
+            }));
+            throw new AppException("Cập nhật trạng thái người dùng thất bại", fieldErrors);
+        }
 
-        //_unitOfWorks.EmployeeRepository.Update(user.Employee);
+        await _userManager.SetLockoutEnabledAsync(user, false);
+        await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.MinValue);
 
-        //await _userManager.SetLockoutEnabledAsync(user, false);
-        //await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.MinValue); // Remove lockout
-
-        //await _unitOfWorks.SaveChangeAsync();
-
-        //return Result.Ok(user.Employee.Id);
-        throw new NotImplementedException();
+        return Result.Ok(user.Id);
     }
 }

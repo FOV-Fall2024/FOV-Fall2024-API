@@ -7,11 +7,13 @@ using FOV.Application.Common.Behaviours.Claim;
 using FOV.Application.Common.Exceptions;
 using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Domain.Entities.OrderAggregator.Enums;
+using FOV.Domain.Entities.UserAggregator;
 using FOV.Domain.Entities.UserAggregator.Enums;
 using FOV.Infrastructure.Notifications.Web.SignalR.Notification.Setup;
 using FOV.Infrastructure.Notifications.Web.SignalR.Order.Setup;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using StackExchange.Redis;
 
 namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder
@@ -25,69 +27,76 @@ namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder
         private readonly NotificationHub _notificationHub;
         private readonly IDatabase _database;
         private readonly IClaimService _claimService;
+        private readonly UserManager<User> _userManager;
 
-        public ConfirmOrderToCookHandler(IUnitOfWorks unitOfWorks, OrderHub orderHub, IConnectionMultiplexer redis, IClaimService claimService, NotificationHub notificationHub)
+        public ConfirmOrderToCookHandler(IUnitOfWorks unitOfWorks, OrderHub orderHub, IConnectionMultiplexer redis, IClaimService claimService, NotificationHub notificationHub, UserManager<User> userManager)
         {
             _unitOfWorks = unitOfWorks;
             _orderHub = orderHub;
             _database = redis.GetDatabase();
             _claimService = claimService;
             _notificationHub = notificationHub;
+            _userManager = userManager;
         }
 
         public async Task<Guid> Handle(ConfirmOrderToCookCommand request, CancellationToken cancellationToken)
         {
-            //var UserId = _claimService.UserId ?? throw new AppException("Employee not found.");
-            //var employee = await _unitOfWorks.EmployeeRepository.FirstOrDefaultAsync(x => x.UserId == UserId);
+            var userId = _claimService.UserId;
+            var employee = await _userManager.FindByIdAsync(userId.ToString())
+                ?? throw new AppException("Employee not found");
 
-            //var EmployeeRole = _claimService.UserRole;
+            var employeeRole = await _userManager.GetRolesAsync(employee);
+            if (!employeeRole.Contains(Domain.Entities.UserAggregator.Enums.Role.Waiter.ToString()))
+            {
+                throw new AppException("You are not allowed to confirm the order");
+            }
 
-            //if (EmployeeRole != Domain.Entities.UserAggregator.Enums.Role.Waiter)
-            //{
-            //    throw new AppException("You are not allowed to connfirm order");
-            //}
+            var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.OrderDetails, o => o.Table)
+                ?? throw new Exception("Order not found");
 
-            //var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.OrderDetails)
-            //    ?? throw new Exception("Order not found");
+            if (order.OrderStatus != OrderStatus.Prepare)
+            {
+                throw new AppException("Hiện đơn hàng này không có món nào để chế biến");
+            }
+            order.UserId = employee.Id;
+            order.OrderStatus = OrderStatus.Cook;
 
-            //order.EmployeeId = employee.Id;
-            //if (order.OrderStatus != OrderStatus.Prepare)
-            //{
-            //    throw new AppException("Hiện đơn hàng này không có món nào để chế biến");
-            //}
-            //order.OrderStatus = OrderStatus.Cook;
+            var headChefs = await _userManager.GetUsersInRoleAsync(Domain.Entities.UserAggregator.Enums.Role.HeadChef.ToString());
+            var headChef = headChefs.FirstOrDefault(hc => hc.RestaurantId == order.Table.RestaurantId);
+            if (headChef == null)
+            {
+                throw new AppException("Head chef not found for this restaurant");
+            }
+            var ingredientUpdates = new Dictionary<Guid, int>();
 
-            //var ingredientUpdates = new Dictionary<Guid, int>();
+            foreach (var detail in order.OrderDetails)
+            {
+                if (detail.Status != OrderDetailsStatus.Prepare)
+                {
+                    continue;
+                }
 
-            //foreach (var detail in order.OrderDetails)
-            //{
-            //    if (detail.Status != OrderDetailsStatus.Prepare)
-            //    {
-            //        continue;
-            //    }
+                detail.Status = OrderDetailsStatus.Cook;
 
-            //    detail.Status = OrderDetailsStatus.Cook;
+                if (detail.ProductId != null)
+                {
+                    await ReduceDishIngredients((Guid)detail.ProductId, detail.Quantity, ingredientUpdates);
+                }
+                else if (detail.ComboId != null)
+                {
+                    await ReduceComboIngredients((Guid)detail.ComboId, detail.Quantity, ingredientUpdates);
+                }
+            }
 
-            //    if (detail.ProductId != null)
-            //    {
-            //        await ReduceDishIngredients((Guid)detail.ProductId, detail.Quantity, ingredientUpdates);
-            //    }
-            //    else if (detail.ComboId != null)
-            //    {
-            //        await ReduceComboIngredients((Guid)detail.ComboId, detail.Quantity, ingredientUpdates);
-            //    }
-            //}
+            await UpdateIngredients(ingredientUpdates);
 
-            //await UpdateIngredients(ingredientUpdates);
+            _unitOfWorks.OrderRepository.Update(order);
+            await _unitOfWorks.SaveChangeAsync();
 
-            //_unitOfWorks.OrderRepository.Update(order);
-            //await _unitOfWorks.SaveChangeAsync();
+            await _orderHub.UpdateOrderStatus(order.Id, order.OrderStatus.ToString());
+            await _notificationHub.SendOrderToHeadChef(headChef.Id);
 
-            //await _orderHub.UpdateOrderStatus(order.Id, order.OrderStatus.ToString());
-            ////await _orderHub.SendOrderToHeadChef(order.Id);
-
-            //return order.Id;
-            throw new NotImplementedException();
+            return order.Id;
         }
 
         private async Task ReduceDishIngredients(Guid dishId, int quantity, Dictionary<Guid, int> ingredientUpdates)

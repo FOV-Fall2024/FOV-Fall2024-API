@@ -12,7 +12,7 @@ namespace FOV.Application.Features.Authorize.Commands.UserLogin;
 
 public sealed record UserLoginCommand(string Email, string Password) : IRequest<UserResponse>;
 public sealed record UserToken(string AccessToken, string RefreshToken);
-public sealed record UserResponse(Guid Id, string FirstName, string LastName, string Email, string Role, string AccessToken, string RefreshToken);
+public sealed record UserResponse(Guid Id, string FullName, string Email, string Role, string AccessToken, string RefreshToken);
 public class UserLoginHandler(UserManager<User> userManager, IConfiguration configuration) : IRequestHandler<UserLoginCommand, UserResponse>
 {
     private readonly UserManager<User> _userManager = userManager;
@@ -41,7 +41,7 @@ public class UserLoginHandler(UserManager<User> userManager, IConfiguration conf
 
 
         string token = GenerateJWT(user, roles, _configuration["JWTSecretKey:SecretKey"] ?? throw new AppException(), _configuration["JWTSecretKey:ValidIssuer"] ?? throw new AppException(), _configuration["JWTSecretKey:ValidAudience"] ?? throw new AppException());
-        return new UserResponse(user.Id, user.FirstName, user.LastName, user.Email, roles.FirstOrDefault(), token, "not");
+        return new UserResponse(user.Id, user.FullName, user.Email, roles.FirstOrDefault(), token, "not");
     }
 
 

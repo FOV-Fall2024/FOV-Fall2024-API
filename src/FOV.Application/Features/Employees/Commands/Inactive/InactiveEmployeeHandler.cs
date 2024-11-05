@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FOV.Application.Features.Employees.Commands.Inactive;
 
-public sealed record InactvieEmployeeCommand(string Id) : IRequest<Result<Guid>>;
+public sealed record InactvieEmployeeCommand(Guid Id) : IRequest<Result<Guid>>;
 
 public class InactiveEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager) : IRequestHandler<InactvieEmployeeCommand, Result<Guid>>
 {
@@ -17,45 +17,43 @@ public class InactiveEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User>
 
     public async Task<Result<Guid>> Handle(InactvieEmployeeCommand request, CancellationToken cancellationToken)
     {
-        //var fieldErrors = new List<FieldError>();
+        var fieldErrors = new List<FieldError>();
 
-        //var user = await _userManager.Users
-        //    .Include(u => u.Employee)
-        //    .FirstOrDefaultAsync(u => u.Id == request.Id);
+        var user = await _userManager.Users
+            .FirstOrDefaultAsync(u => u.Id == request.Id);
 
-        //if (user == null)
-        //{
-        //    fieldErrors.Add(new FieldError
-        //    {
-        //        Field = "userId",
-        //        Message = "Không tìm thấy người dùng."
-        //    });
-        //}
+        if (user == null)
+        {
+            fieldErrors.Add(new FieldError
+            {
+                Field = "userId",
+                Message = "Không tìm thấy người dùng."
+            });
+        }
 
-        //if (user?.Employee == null)
-        //{
-        //    fieldErrors.Add(new FieldError
-        //    {
-        //        Field = "employee",
-        //        Message = "Người dùng không có nhân viên liên quan."
-        //    });
-        //}
+        if (fieldErrors.Any())
+        {
+            throw new AppException("Không thể vô hiệu hóa nhân viên", fieldErrors);
+        }
 
-        //if (fieldErrors.Any())
-        //{
-        //    throw new AppException("Không thể vô hiệu hóa nhân viên", fieldErrors);
-        //}
+        user.UpdateState(false);
 
-        //user.Employee.UpdateState(false);
+        var updateResult = await _userManager.UpdateAsync(user);
+        if (!updateResult.Succeeded)
+        {
+            fieldErrors.AddRange(updateResult.Errors.Select(e => new FieldError
+            {
+                Field = "Update",
+                Message = e.Description
+            }));
+            throw new AppException("Cập nhật trạng thái người dùng thất bại", fieldErrors);
+        }
 
-        //_unitOfWorks.EmployeeRepository.Update(user.Employee);
+        await _userManager.SetLockoutEnabledAsync(user, true);
+        await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.UtcNow.AddYears(10));
 
-        //await _userManager.SetLockoutEnabledAsync(user, true);
-        //await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.UtcNow.AddYears(10));
+        await _unitOfWorks.SaveChangeAsync();
 
-        //await _unitOfWorks.SaveChangeAsync();
-
-        //return Result.Ok(user.Employee.Id);
-        throw new NotImplementedException();
+        return Result.Ok(user.Id);
     }
 }

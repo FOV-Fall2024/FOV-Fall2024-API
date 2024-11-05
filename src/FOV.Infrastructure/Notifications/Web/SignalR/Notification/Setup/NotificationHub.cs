@@ -24,17 +24,17 @@ public class NotificationHub : Hub
         await _database.StringSetAsync(EmployeeId.ToString(), ConnectionId);
         await Clients.Client(ConnectionId).SendAsync("ReceiveEmployeeId", EmployeeId, Role);
     }
-    public async Task SendOrderToHeadChef(string HeadchefId)
+    public async Task SendOrderToHeadChef(Guid HeadchefId)
     {
         string connectionId = await _database.StringGetAsync(HeadchefId.ToString());
         await Clients.Client(connectionId).SendAsync("ReceiveNewOrder", HeadchefId);
     }
-    public async Task SendNotificationToWaiter(string WaiterId, Guid OrderId, Guid OrderDetailId)
+    public async Task SendNotificationToWaiter(Guid WaiterId, Guid OrderId, Guid OrderDetailId)
     {
         string connectionId = await _database.StringGetAsync(WaiterId.ToString());
         await Clients.Client(connectionId).SendAsync("ReceiveNotificationToWaiter", OrderId, OrderDetailId);
     }
-    public async Task SendPaymentNotificationToWaiter(string WaiterId, Guid OrderId)
+    public async Task SendPaymentNotificationToWaiter(Guid WaiterId, Guid OrderId)
     {
         string connectionId = await _database.StringGetAsync(WaiterId.ToString());
         await Clients.Client(connectionId).SendAsync("ReceivePaymentNotificationToWaiter", OrderId);

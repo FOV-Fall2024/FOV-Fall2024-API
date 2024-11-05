@@ -36,16 +36,14 @@ public record FeedbackRequest
 public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
 {
     private readonly IUnitOfWorks _unitOfWorks;
-    private readonly UserManager<User> _userManager;
     private readonly OrderHub _orderHub;
     private readonly NotificationHub _notificationHub;
     private const int ConversePoint = 1000;
 
-    public CreatePaymentHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager, OrderHub orderHub, NotificationHub notificationHub)
+    public CreatePaymentHandler(IUnitOfWorks unitOfWorks, OrderHub orderHub, NotificationHub notificationHub)
     {
         _unitOfWorks = unitOfWorks;
         _orderHub = orderHub;
-        _userManager = userManager;
         _notificationHub = notificationHub;
     }
 
@@ -74,14 +72,14 @@ public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
         }
 
         var totalReduceMoney = 0;
-        User? user = null;
+        Customer? customer = null;
 
         if (!string.IsNullOrEmpty(request.PhoneNumber))
         {
-            user = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == request.PhoneNumber);
-            if (user != null && request.UsePoints && request.PointsToApply.HasValue)
+            customer = await _unitOfWorks.CustomerRepository.FirstOrDefaultAsync(c => c.PhoneNumber == request.PhoneNumber);
+            if (customer != null && request.UsePoints && request.PointsToApply.HasValue)
             {
-                var availablePoints = user.Point;
+                var availablePoints = customer.Point;
                 var pointsToUse = Math.Min(request.PointsToApply.Value, availablePoints);
                 totalReduceMoney = pointsToUse;
 
@@ -91,18 +89,18 @@ public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
                     pointsToUse = totalReduceMoney / ConversePoint;
                 }
 
-                user.Point -= pointsToUse;
-                await _userManager.UpdateAsync(user);
+                customer.Point -= pointsToUse;
+                _unitOfWorks.CustomerRepository.Update(customer);
             }
         }
 
         var finalAmount = totalAmount - totalReduceMoney;
 
-        if (finalAmount > 0 && user != null)
+        if (finalAmount > 0 && customer != null)
         {
             var pointsAwarded = (int)(finalAmount / ConversePoint);
-            user.Point += pointsAwarded;
-            await _userManager.UpdateAsync(user);
+            customer.Point += pointsAwarded;
+            _unitOfWorks.CustomerRepository.Update(customer);
         }
 
         if (!string.IsNullOrEmpty(request.Feedback))
@@ -113,8 +111,8 @@ public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
         order.OrderStatus = OrderStatus.Payment;
         _unitOfWorks.OrderRepository.Update(order);
 
-        var employee = order.Employee ?? throw new AppException("Không có nhân viên hợp lệ");
-        var userId = employee.UserId ?? throw new AppException("User ID not found for the employee.");
+        var employee = order.Users ?? throw new AppException("Không có nhân viên hợp lệ");
+        var userId = employee.Id;
 
         var payment = new Domain.Entities.PaymentAggregator.Payments
         {

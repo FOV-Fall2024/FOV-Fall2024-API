@@ -35,7 +35,7 @@ public class EmployeeController(IMediator mediator) : DefaultController
     }
 
     [HttpPost("activate/{id}")]
-    public async Task<IActionResult> ActivateEmployee(string id)
+    public async Task<IActionResult> ActivateEmployee(Guid id)
     {
         try
         {
@@ -59,7 +59,7 @@ public class EmployeeController(IMediator mediator) : DefaultController
     }
 
     [HttpPost("inactivate/{id}")]
-    public async Task<IActionResult> InactivateEmployee(string id)
+    public async Task<IActionResult> InactivateEmployee(Guid id)
     {
         try
         {

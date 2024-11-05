@@ -15,10 +15,10 @@ public class ApplicationDbContextInitializer
     private readonly ILogger<ApplicationDbContextInitializer> _logger;
     private readonly FOVContext _context;
     private readonly UserManager<User> _userManager;
-    private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly RoleManager<IdentityRole<Guid>> _roleManager;
 
 
-    public ApplicationDbContextInitializer(ILogger<ApplicationDbContextInitializer> logger, FOVContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+    public ApplicationDbContextInitializer(ILogger<ApplicationDbContextInitializer> logger, FOVContext context, UserManager<User> userManager, RoleManager<IdentityRole<Guid>> roleManager)
     {
         _logger = logger;
         _context = context;
@@ -60,24 +60,31 @@ public class ApplicationDbContextInitializer
 
     public async Task TrySeedAsync()
     {
-        var administratorsRole = new IdentityRole(Role.Administrator);
+        var administratorsRole = new IdentityRole<Guid>(Role.Administrator);
 
-        if (!await _roleManager.RoleExistsAsync(Role.Waiter))
+        if (!await _roleManager.RoleExistsAsync(Role.Waiter.ToString()))
         {
-            await _roleManager.CreateAsync(new IdentityRole(Role.Waiter));
+            var role = new IdentityRole<Guid>(Role.Waiter);
+            await _roleManager.CreateAsync(role);
         }
         if (!await _roleManager.RoleExistsAsync(Role.Manager))
         {
-            await _roleManager.CreateAsync(new IdentityRole(Role.Manager));
+            var managerRole = new IdentityRole<Guid>(Role.Manager);
+            await _roleManager.CreateAsync(managerRole);
         }
+
         if (!await _roleManager.RoleExistsAsync(Role.Chef))
         {
-            await _roleManager.CreateAsync(new IdentityRole(Role.Chef));
+            var chefRole = new IdentityRole<Guid>(Role.Chef);
+            await _roleManager.CreateAsync(chefRole);
         }
+
         if (!await _roleManager.RoleExistsAsync(Role.HeadChef))
         {
-            await _roleManager.CreateAsync(new IdentityRole(Role.HeadChef));
+            var headChefRole = new IdentityRole<Guid>(Role.HeadChef);
+            await _roleManager.CreateAsync(headChefRole);
         }
+
         if (!await _roleManager.RoleExistsAsync(administratorsRole.Name))
         {
             await _roleManager.CreateAsync(administratorsRole);
@@ -86,7 +93,7 @@ public class ApplicationDbContextInitializer
         var administrator = await _userManager.FindByEmailAsync("administrator@localhost");
         if (administrator == null)
         {
-            administrator = new User { UserName = "administrator@localhost", Email = "administrator@localhost", FirstName = "Admin", LastName = "Admin", PhoneNumber = "0867960120"};
+            administrator = new User { UserName = "administrator@localhost", Email = "administrator@localhost", FullName = "Admin", PhoneNumber = "0867960120"};
             await _userManager.CreateAsync(administrator, "Administrator1!");
 
             if (!string.IsNullOrWhiteSpace(administratorsRole.Name))

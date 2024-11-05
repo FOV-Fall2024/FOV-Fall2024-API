@@ -9,12 +9,12 @@ public class WaiterSalary : BaseAuditableEntity
     public string? Status { get; set; }
     public DateTime? PayDate { get; set; } = DateTime.UtcNow;
     public User? User { get; set; }
-    public string? UserId { get; set; }
+    public Guid? UserId { get; set; }
     public WaiterSalary()
     {
 
     }
-    public WaiterSalary(string? userId, decimal totalHours, decimal totalSalary, string? status, DateTime payDate)
+    public WaiterSalary(Guid? userId, decimal totalHours, decimal totalSalary, string? status, DateTime payDate)
     {
         this.UserId = userId;
         this.TotalHours = totalHours;

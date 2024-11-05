@@ -27,13 +27,11 @@ public class VNPayPaymentHandler : IRequestHandler<VNPayPaymentCommand, VNPayPay
 {
     private readonly IUnitOfWorks _unitOfWorks;
     private readonly IConfiguration _configuration;
-    private readonly UserManager<User> _userManager;
     private const int ConversePoint = 1000;
-    public VNPayPaymentHandler(IUnitOfWorks unitOfWorks, IConfiguration configuration, UserManager<User> userManager)
+    public VNPayPaymentHandler(IUnitOfWorks unitOfWorks, IConfiguration configuration)
     {
         _unitOfWorks = unitOfWorks;
         _configuration = configuration;
-        _userManager = userManager;
     }
 
     public async Task<VNPayPaymentResponse> Handle(VNPayPaymentCommand request, CancellationToken cancellationToken)
@@ -50,14 +48,14 @@ public class VNPayPaymentHandler : IRequestHandler<VNPayPaymentCommand, VNPayPay
             .Where(od => od.Quantity > od.RefundQuantity)
             .Sum(od => (od.Quantity - od.RefundQuantity) * od.Price);
 
-        User? user = null;
+        Customer? customer = null;
 
         if (!string.IsNullOrEmpty(request.PhoneNumber))
         {
-            user = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == request.PhoneNumber);
-            if (user != null && request.UsePoints && request.PointsToApply.HasValue)
+            customer = await _unitOfWorks.CustomerRepository.FirstOrDefaultAsync(c => c.PhoneNumber == request.PhoneNumber);
+            if (customer != null && request.UsePoints && request.PointsToApply.HasValue)
             {
-                var availablePoints = user.Point;
+                var availablePoints = customer.Point;
                 var pointsToUse = Math.Min(request.PointsToApply.Value, availablePoints);
                 var totalReduceMoney = pointsToUse;
 
@@ -67,8 +65,8 @@ public class VNPayPaymentHandler : IRequestHandler<VNPayPaymentCommand, VNPayPay
                     pointsToUse = totalReduceMoney / ConversePoint;
                 }
 
-                user.Point -= pointsToUse;
-                await _userManager.UpdateAsync(user);
+                customer.Point -= pointsToUse;
+                _unitOfWorks.CustomerRepository.Update(customer);
 
                 totalAmount -= totalReduceMoney;
             }
@@ -95,11 +93,11 @@ public class VNPayPaymentHandler : IRequestHandler<VNPayPaymentCommand, VNPayPay
         await _unitOfWorks.PaymentRepository.AddAsync(payment);
         await _unitOfWorks.SaveChangeAsync();
 
-        if (user != null)
+        if (customer != null)
         {
             var pointsAwarded = (int)(totalAmount / ConversePoint);
-            user.Point += pointsAwarded;
-            await _userManager.UpdateAsync(user);
+            customer.Point += pointsAwarded;
+            _unitOfWorks.CustomerRepository.Update(customer);
         }
 
         if (!string.IsNullOrEmpty(request.Feedback))

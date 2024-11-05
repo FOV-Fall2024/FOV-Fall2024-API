@@ -10,11 +10,11 @@ namespace FOV.Application.Features.Authorize.Commands.UserRegister;
 
 public sealed record UserRegisterCommand(string Email, string LastName, string FirstName, string Password, string Address) : IRequest<Result>;
 
-public class UserRegisterHandler(UserManager<User> userManager, IUnitOfWorks unitOfWorks, RoleManager<IdentityRole> roleManager) : IRequestHandler<UserRegisterCommand, Result>
+public class UserRegisterHandler(UserManager<User> userManager, IUnitOfWorks unitOfWorks, RoleManager<IdentityRole<Guid>> roleManager) : IRequestHandler<UserRegisterCommand, Result>
 {
     private readonly UserManager<User> _userManager = userManager;
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
-    private readonly RoleManager<IdentityRole> _roleManager = roleManager;
+    private readonly RoleManager<IdentityRole<Guid>> _roleManager = roleManager;
     public async Task<Result> Handle(UserRegisterCommand request, CancellationToken cancellationToken)
     {
         //User user = new()

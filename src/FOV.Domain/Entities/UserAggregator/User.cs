@@ -1,6 +1,7 @@
 ﻿using FOV.Domain.Entities.AttendanceAggregator;
 using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.RestaurantAggregator;
+using FOV.Domain.Entities.TableAggregator.Enums;
 using FOV.Domain.Entities.WaiterSalaryAggregator;
 using FOV.Domain.Entities.WaiterScheduleAggregator;
 using Microsoft.AspNetCore.Identity;
@@ -10,9 +11,7 @@ namespace FOV.Domain.Entities.UserAggregator;
 
 public class User : IdentityUser<Guid>
 {
-    public string FirstName { get; set; } = string.Empty;
-    public int Point { get; set; } = 0;
-    public string LastName { get; set; } = string.Empty;
+    public string FullName { get; set; } = string.Empty;
     public DateTime? HireDate { get; set; } = DateTime.UtcNow;
     public string EmployeeCode { get; set; } = string.Empty;
     public ICollection<Attendance> Attendances { get; set; } = []; // Use List<Attendance>
@@ -20,25 +19,28 @@ public class User : IdentityUser<Guid>
     public ICollection<Order> Orders { get; set; } = [];
     public Restaurant? Restaurant { get; set; }
     public Guid? RestaurantId { get; set; }
+    public Status Status { get; set; }
     public User()
     {
 
     }
-
-    public User(string firstName, string lastName, string email)
+    public User(string employeeCode, string fullName, Guid restaurantId)
     {
-        FirstName = firstName;
-        LastName = lastName;
-        Email = email;
-        UserName = firstName + " " + lastName;
+        EmployeeCode = employeeCode;
+        FullName = fullName;
+        RestaurantId = restaurantId;
+        HireDate = DateTime.UtcNow;
     }
 
-    public void Update(string firstName, string lastName)
+    public void Update(string phoneNumber, string fullName)
     {
-        FirstName = firstName;
-        LastName = lastName;
+        PhoneNumber = phoneNumber;
+        FullName = fullName;
+    }
+    public void UpdateState(bool state)
+    {
+        Status = state ? Status.Active : Status.Inactive;
+        //LastModified = DateTime.UtcNow.AddHours(7);
     }
     public ICollection<WaiterSalary> WaiterSalaries { get; set; } = [];
-   // public ICollection<Attendance> Attendances { get; set; } = [];
-
 }
