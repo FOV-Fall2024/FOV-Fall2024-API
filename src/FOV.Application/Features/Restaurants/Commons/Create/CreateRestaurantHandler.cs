@@ -125,7 +125,7 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
     {
         foreach (var item in ingredientNames)
         {
-            Ingredient? ingredient = _unitOfWorks.IngredientRepository.FirstOrDefaultAsync(x => x.IngredientName == item && x.RestaurantId == restaurantId).Result;
+            Ingredient? ingredient = _unitOfWorks.IngredientRepository.FirstOrDefaultAsync(x => x.IngredientGeneral.IngredientName == item && x.RestaurantId == restaurantId,x => x.IngredientGeneral).Result;
             if (ingredient == null)
             {
                 IngredientGeneral ingredientGeneral = await _unitOfWorks.IngredientGeneralRepository.FirstOrDefaultAsync(x => x.IngredientName == item, x => x.DishIngredientGenerals) ?? throw new Exception();

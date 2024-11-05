@@ -21,98 +21,99 @@ public partial class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager
 
     public async Task<Result<string>> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
     {
-        var fieldErrors = new List<FieldError>();
-        if (request.RoleId == 1)
-        {
-            var existingManager = await _unitOfWorks.EmployeeRepository.FirstOrDefaultAsync(
-                e => e.RestaurantId == request.RestaurantId,
-                e => e.User
-            );
+        //var fieldErrors = new List<FieldError>();
+        //if (request.RoleId == 1)
+        //{
+        //    var existingManager = await _unitOfWorks.EmployeeRepository.FirstOrDefaultAsync(
+        //        e => e.RestaurantId == request.RestaurantId,
+        //        e => e.User
+        //    );
 
-            if (existingManager != null && await _userManager.IsInRoleAsync(existingManager.User, Role.Manager))
-            {
-                fieldErrors.Add(new FieldError
-                {
-                    Field = "restaurantId",
-                    Message = $"Nhà hàng này đã tồn tại manager rồi"
-                });
-            }
-        }
+        //    if (existingManager != null && await _userManager.IsInRoleAsync(existingManager.User, Role.Manager))
+        //    {
+        //        fieldErrors.Add(new FieldError
+        //        {
+        //            Field = "restaurantId",
+        //            Message = $"Nhà hàng này đã tồn tại manager rồi"
+        //        });
+        //    }
+        //}
 
-        var existingUser = await _userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber);
-        if (existingUser != null)
-        {
-            fieldErrors.Add(new FieldError
-            {
-                Field = "phoneNumber",
-                Message = "Số điện thoại này đã được đăng kí"
-            });
-        }
+        //var existingUser = await _userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber);
+        //if (existingUser != null)
+        //{
+        //    fieldErrors.Add(new FieldError
+        //    {
+        //        Field = "phoneNumber",
+        //        Message = "Số điện thoại này đã được đăng kí"
+        //    });
+        //}
 
-        var roleName = UserRole(request.RoleId);
-        if (!await _roleManager.RoleExistsAsync(roleName))
-        {
-            fieldErrors.Add(new FieldError
-            {
-                Field = "roleId",
-                Message = "Vai trò không tồn tại trong hệ thống"
-            });
-        }
+        //var roleName = UserRole(request.RoleId);
+        //if (!await _roleManager.RoleExistsAsync(roleName))
+        //{
+        //    fieldErrors.Add(new FieldError
+        //    {
+        //        Field = "roleId",
+        //        Message = "Vai trò không tồn tại trong hệ thống"
+        //    });
+        //}
 
-        if (fieldErrors.Any())
-        {
-            throw new AppException("Lỗi khi tạo tài khoản nhân viên", fieldErrors);
-        }
+        //if (fieldErrors.Any())
+        //{
+        //    throw new AppException("Lỗi khi tạo tài khoản nhân viên", fieldErrors);
+        //}
 
-        var generate = await GenerateCode(request.RoleId);
+        //var generate = await GenerateCode(request.RoleId);
 
-        User user = new()
-        {
-            FirstName = request.FirstName,
-            LastName = request.LastName,
-            PhoneNumber = request.PhoneNumber,
-            UserName = request.PhoneNumber,
-        };
+        //User user = new()
+        //{
+        //    FirstName = request.FirstName,
+        //    LastName = request.LastName,
+        //    PhoneNumber = request.PhoneNumber,
+        //    UserName = request.PhoneNumber,
+        //};
 
-        var result = await _userManager.CreateAsync(user, "12345678!Fpt");
-        if (!result.Succeeded)
-        {
-            var userErrors = result.Errors.Select(e => new FieldError
-            {
-                Field = "userCreation",
-                Message = e.Description
-            }).ToList();
+        //var result = await _userManager.CreateAsync(user, "12345678!Fpt");
+        //if (!result.Succeeded)
+        //{
+        //    var userErrors = result.Errors.Select(e => new FieldError
+        //    {
+        //        Field = "userCreation",
+        //        Message = e.Description
+        //    }).ToList();
 
-            throw new AppException("Lỗi khi tạo tài khoản nhân viên", userErrors);
-        }
+        //    throw new AppException("Lỗi khi tạo tài khoản nhân viên", userErrors);
+        //}
 
-        var roleAssignResult = await _userManager.AddToRoleAsync(user, roleName);
-        if (!roleAssignResult.Succeeded)
-        {
-            var roleAssignErrors = roleAssignResult.Errors.Select(e => new FieldError
-            {
-                Field = "RoleAssignment",
-                Message = e.Description
-            }).ToList();
+        //var roleAssignResult = await _userManager.AddToRoleAsync(user, roleName);
+        //if (!roleAssignResult.Succeeded)
+        //{
+        //    var roleAssignErrors = roleAssignResult.Errors.Select(e => new FieldError
+        //    {
+        //        Field = "RoleAssignment",
+        //        Message = e.Description
+        //    }).ToList();
 
-            throw new AppException("Lỗi khi gán vai trò", roleAssignErrors);
-        }
+        //    throw new AppException("Lỗi khi gán vai trò", roleAssignErrors);
+        //}
 
-        Employee employee = new(generate.Code, user.Id, request.RestaurantId);
-        await _unitOfWorks.EmployeeRepository.AddAsync(employee);
-        await _unitOfWorks.SaveChangeAsync();
+        //Employee employee = new(generate.Code, user.Id, request.RestaurantId);
+        //await _unitOfWorks.EmployeeRepository.AddAsync(employee);
+        //await _unitOfWorks.SaveChangeAsync();
 
-        // Return success message
-        string message = request.RoleId switch
-        {
-            1 => "Tạo tài khoản quản lý thành công",
-            2 => "Tạo tài khoản nhân viên thành công",
-            3 => "Tạo tài khoản phụ bếp thành công",
-            4 => "Tạo tài khoản bếp trưởng thành công",
-            _ => "Tạo tài khoản thành công"
-        };
+        //// Return success message
+        //string message = request.RoleId switch
+        //{
+        //    1 => "Tạo tài khoản quản lý thành công",
+        //    2 => "Tạo tài khoản nhân viên thành công",
+        //    3 => "Tạo tài khoản phụ bếp thành công",
+        //    4 => "Tạo tài khoản bếp trưởng thành công",
+        //    _ => "Tạo tài khoản thành công"
+        //};
 
-        return Result.Ok(message);
+        //return Result.Ok(message);
+        throw new NotImplementedException();
     }
 
 
@@ -122,8 +123,8 @@ public partial class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager
     {
         1 => Role.Manager,
         2 => Role.Waiter,
-        3 => Role.Cook,
-        4 => Role.Headchef,
+        3 => Role.Chef,
+        4 => Role.HeadChef,
         _ => throw new NotImplementedException(),
     };
 

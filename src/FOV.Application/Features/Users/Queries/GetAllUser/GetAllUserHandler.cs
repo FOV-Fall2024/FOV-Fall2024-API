@@ -16,26 +16,27 @@ namespace FOV.Application.Features.Users.Queries.GetAllUser
 
         public async Task<PagedResult<GetUsersResponse>> Handle(GetUsersCommand request, CancellationToken cancellationToken)
         {
-            var users = await _unitOfWorks.CustomerRepository.GetAllAsync(x => x.User);
-            var filteredUsers = users.Where(x =>
-                                            (string.IsNullOrEmpty(request.UserName) || x.User.UserName.Contains(request.UserName, StringComparison.OrdinalIgnoreCase)) &&
-                                            //(string.IsNullOrEmpty(request.FirstName) || x.FirstName.Contains(request.FirstName, StringComparison.OrdinalIgnoreCase)) &&
-                                            //(string.IsNullOrEmpty(request.LastName) || x.LastName.Contains(request.LastName, StringComparison.OrdinalIgnoreCase)) &&
-                                            (string.IsNullOrEmpty(request.PhoneNumber) || x.User.Email.Contains(request.PhoneNumber, StringComparison.OrdinalIgnoreCase)));
+            //var users = await _unitOfWorks.CustomerRepository.GetAllAsync(x => x.User);
+            //var filteredUsers = users.Where(x =>
+            //                                (string.IsNullOrEmpty(request.UserName) || x.User.UserName.Contains(request.UserName, StringComparison.OrdinalIgnoreCase)) &&
+            //                                //(string.IsNullOrEmpty(request.FirstName) || x.FirstName.Contains(request.FirstName, StringComparison.OrdinalIgnoreCase)) &&
+            //                                //(string.IsNullOrEmpty(request.LastName) || x.LastName.Contains(request.LastName, StringComparison.OrdinalIgnoreCase)) &&
+            //                                (string.IsNullOrEmpty(request.PhoneNumber) || x.User.Email.Contains(request.PhoneNumber, StringComparison.OrdinalIgnoreCase)));
             
-            var mappedUsers = filteredUsers.Select(x => new GetUsersResponse(
-                x.User.Id,
-                $"{x.User.FirstName} {x.User.LastName}",
-                x.User.PhoneNumber ?? string.Empty,
-                x.User.Point,
-                x.Created)).ToList();
+            //var mappedUsers = filteredUsers.Select(x => new GetUsersResponse(
+            //    x.User.Id,
+            //    $"{x.User.FirstName} {x.User.LastName}",
+            //    x.User.PhoneNumber ?? string.Empty,
+            //    x.User.Point,
+            //    x.Created)).ToList();
 
-            var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
+            //var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
 
-            var sortedResults = PaginationHelper<GetUsersResponse>.Sorting(sortType, mappedUsers, sortField);
-            var result = PaginationHelper<GetUsersResponse>.Paging(sortedResults, page, pageSize);
+            //var sortedResults = PaginationHelper<GetUsersResponse>.Sorting(sortType, mappedUsers, sortField);
+            //var result = PaginationHelper<GetUsersResponse>.Paging(sortedResults, page, pageSize);
 
-            return result;
+            //return result;
+            throw new NotImplementedException();
         }
     }
 }

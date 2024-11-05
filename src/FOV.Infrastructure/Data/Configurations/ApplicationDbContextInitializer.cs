@@ -61,7 +61,6 @@ public class ApplicationDbContextInitializer
     public async Task TrySeedAsync()
     {
         var administratorsRole = new IdentityRole(Role.Administrator);
-        var userRole = new IdentityRole(Role.User);
 
         if (!await _roleManager.RoleExistsAsync(Role.Waiter))
         {
@@ -71,21 +70,17 @@ public class ApplicationDbContextInitializer
         {
             await _roleManager.CreateAsync(new IdentityRole(Role.Manager));
         }
-        if (!await _roleManager.RoleExistsAsync(Role.Cook))
+        if (!await _roleManager.RoleExistsAsync(Role.Chef))
         {
-            await _roleManager.CreateAsync(new IdentityRole(Role.Cook));
+            await _roleManager.CreateAsync(new IdentityRole(Role.Chef));
         }
-        if (!await _roleManager.RoleExistsAsync(Role.Headchef))
+        if (!await _roleManager.RoleExistsAsync(Role.HeadChef))
         {
-            await _roleManager.CreateAsync(new IdentityRole(Role.Headchef));
+            await _roleManager.CreateAsync(new IdentityRole(Role.HeadChef));
         }
         if (!await _roleManager.RoleExistsAsync(administratorsRole.Name))
         {
             await _roleManager.CreateAsync(administratorsRole);
-        }
-        if (!await _roleManager.RoleExistsAsync(userRole.Name))
-        {
-            await _roleManager.CreateAsync(userRole);
         }
 
         var administrator = await _userManager.FindByEmailAsync("administrator@localhost");
@@ -105,14 +100,14 @@ public class ApplicationDbContextInitializer
     new Claim(nameof(administrator.UserName), administrator.UserName),
     new Claim(nameof(administrator.Email), administrator.Email)
 });
-            var employee = new Employee
-            {
-                EmployeeCode = "ADM_000",
-                UserId = administrator.Id,
-                HireDate = DateTime.UtcNow,
-                Status = Domain.Entities.TableAggregator.Enums.Status.Active
-            };
-            await _context.Employees.AddAsync(employee);
+            //var employee = new Employee
+            //{
+            //    EmployeeCode = "ADM_000",
+            //    UserId = administrator.Id,
+            //    HireDate = DateTime.UtcNow,
+            //    Status = Domain.Entities.TableAggregator.Enums.Status.Active
+            //};
+            //await _context.Employees.AddAsync(employee);
         }
 
 

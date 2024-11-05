@@ -15,6 +15,7 @@ public class IngredientGeneral : BaseAuditableEntity, IsSoftDeleted
     public Status Status { get; set; } = Status.Active;
     public IngredientMeasure IngredientMeasure { get; set; }
 
+    public virtual ICollection<Ingredient> Ingredients { get; set; }
     public virtual ICollection<DishIngredientGeneral>? DishIngredientGenerals { get; set; }
 
     public IngredientGeneral()

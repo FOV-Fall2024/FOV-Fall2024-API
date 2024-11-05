@@ -37,7 +37,7 @@ public class RemoveIngredientHandler(IUnitOfWorks unitOfWorks) : IRequestHandler
         foreach (var dish in dishes)
         {
             var ingredient = await _unitOfWorks.IngredientRepository
-                .FirstOrDefaultAsync(i => i.IngredientName == ingredientName && i.RestaurantId == dish.RestaurantId);
+                .FirstOrDefaultAsync(i => i.IngredientGeneral.IngredientName == ingredientName && i.RestaurantId == dish.RestaurantId);
             await UpdateDishIngredient(dish.Id, ingredient.Id);
         }
     }

@@ -68,11 +68,11 @@ internal class AddProductHandler : IRequestHandler<AddProductCommand, Result>
 
         var ingredientNames = ingredients.Select(i => i.IngredientName).ToList();
         var existingIngredients = await _unitOfWorks.IngredientRepository
-            .WhereAsync(x => ingredientNames.Contains(x.IngredientName) && x.RestaurantId == _claimService.RestaurantId);
+            .WhereAsync(x => ingredientNames.Contains(x.IngredientGeneral.IngredientName) && x.RestaurantId == _claimService.RestaurantId);
 
         foreach (var item in ingredients)
         {
-            var existingIngredient = existingIngredients.FirstOrDefault(e => e.IngredientName == item.IngredientName);
+            var existingIngredient = existingIngredients.FirstOrDefault(e => e.IngredientGeneral.IngredientName == item.IngredientName);
             IngredientGeneral? ingredientGeneral = await _unitOfWorks.IngredientGeneralRepository.FirstOrDefaultAsync(x => x.IngredientName == item.IngredientName, x => x.DishIngredientGenerals);
             if (existingIngredient is null)
             {

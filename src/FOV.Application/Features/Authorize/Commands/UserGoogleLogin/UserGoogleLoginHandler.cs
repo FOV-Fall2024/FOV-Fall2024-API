@@ -24,34 +24,35 @@ public class UserGoogleLoginHandler(UserManager<User> userManager, IUnitOfWorks 
 
     public async Task<Result<UserToken>> Handle(UserGoogleLoginCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userManager.FindByEmailAsync(request.UserName);
-        if (user == null)
-        {
+        //var user = await _userManager.FindByEmailAsync(request.UserName);
+        //if (user == null)
+        //{
 
-            // If user doesn't exist, create a new one
-            user = new User
-            {
-                UserName = request.UserName,
-                Email = request.Email,
-            };
+        //    // If user doesn't exist, create a new one
+        //    user = new User
+        //    {
+        //        UserName = request.UserName,
+        //        Email = request.Email,
+        //    };
 
-            var createResult = await _userManager.CreateAsync(user);
-            var roleAssignResult = await _userManager.AddToRoleAsync(user, Role.User);
-            var loginInfo = new UserLoginInfo(
-                GoogleDefaults.AuthenticationScheme,
-                request.GoogleId,
-                GoogleDefaults.DisplayName);
+        //    var createResult = await _userManager.CreateAsync(user);
+        //    var roleAssignResult = await _userManager.AddToRoleAsync(user, Role.User);
+        //    var loginInfo = new UserLoginInfo(
+        //        GoogleDefaults.AuthenticationScheme,
+        //        request.GoogleId,
+        //        GoogleDefaults.DisplayName);
 
-            var loginResult = await _userManager.AddLoginAsync(user, loginInfo);
-
-
-        }
+        //    var loginResult = await _userManager.AddLoginAsync(user, loginInfo);
 
 
-        string token = GenerateJWT(user, Role.User, _configuration["JWT:SecretKey"] ?? throw new AppException(), _configuration["JWT:ValidIssuer"] ?? throw new AppException(), _configuration["JWT:ValidAudience"] ?? throw new AppException());
-        await _unitOfWorks.SaveChangeAsync();
-        return Result.Ok(new UserToken(token, ""))
-           .WithSuccess(new Success("Google login successful"));
+        //}
+
+
+        //string token = GenerateJWT(user, Role.User, _configuration["JWT:SecretKey"] ?? throw new AppException(), _configuration["JWT:ValidIssuer"] ?? throw new AppException(), _configuration["JWT:ValidAudience"] ?? throw new AppException());
+        //await _unitOfWorks.SaveChangeAsync();
+        //return Result.Ok(new UserToken(token, ""))
+        //   .WithSuccess(new Success("Google login successful"));
+        throw new NotImplementedException();
     }
 
     public static string GenerateJWT(User user, string userRoles, string secretKey, string issuer, string audience)

@@ -12,7 +12,7 @@ namespace FOV.Application.Features.Authorize.Commands.UserLogin;
 
 public sealed record UserLoginCommand(string Email, string Password) : IRequest<UserResponse>;
 public sealed record UserToken(string AccessToken, string RefreshToken);
-public sealed record UserResponse(string Id, string FirstName, string LastName, string Email, string Role, string AccessToken, string RefreshToken);
+public sealed record UserResponse(Guid Id, string FirstName, string LastName, string Email, string Role, string AccessToken, string RefreshToken);
 public class UserLoginHandler(UserManager<User> userManager, IConfiguration configuration) : IRequestHandler<UserLoginCommand, UserResponse>
 {
     private readonly UserManager<User> _userManager = userManager;

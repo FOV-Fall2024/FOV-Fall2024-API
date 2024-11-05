@@ -33,7 +33,7 @@ namespace FOV.Application.Features.Authorize.Commands.ChangePassword
             }
 
             // Find the user by ID
-            User? user = await _userManager.FindByIdAsync(_claimService.UserId);
+            User? user = await _userManager.FindByIdAsync(_claimService.UserId.ToString());
             if (user == null)
             {
                 return Result.Fail("Không tìm thấy người dùng");

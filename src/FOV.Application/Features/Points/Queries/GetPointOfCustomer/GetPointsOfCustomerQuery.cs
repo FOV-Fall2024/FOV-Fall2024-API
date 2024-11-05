@@ -21,9 +21,10 @@ public class GetPointsOfCustomerQuery : IRequestHandler<GetPointsForCustomerComm
     }
     public async Task<int> Handle(GetPointsForCustomerCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userManager.Users.Include(x => x.Customer).FirstOrDefaultAsync(u => u.PhoneNumber == request.PhoneNumber);
-        if (user == null) throw new AppException("Bạn không phải là thành viên của nhà hàng. Xin để lại thông tin để tích điểm");
+        //var user = await _userManager.Users.Include(x => x.Customer).FirstOrDefaultAsync(u => u.PhoneNumber == request.PhoneNumber);
+        //if (user == null) throw new AppException("Bạn không phải là thành viên của nhà hàng. Xin để lại thông tin để tích điểm");
 
-        return user.Point;
+        //return user.Point;
+        throw new NotImplementedException();
     }
 }

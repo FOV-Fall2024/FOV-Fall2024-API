@@ -68,7 +68,7 @@ public static class DependencyInjection
 
         //? Database Configuration
         services.AddIdentityCore<User>(opt => opt.Lockout.AllowedForNewUsers = false)
-                  .AddRoles<IdentityRole>()
+                  .AddRoles<IdentityRole<Guid>>()
                   .AddEntityFrameworkStores<FOVContext>()
                   .AddApiEndpoints();
 
@@ -86,7 +86,8 @@ public static class DependencyInjection
          options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
          options.CallbackPath = "/signin-google";
      })
-     .AddJwtBearer(options => {
+     .AddJwtBearer(options =>
+     {
          options.TokenValidationParameters = new TokenValidationParameters
          {
              ValidateIssuer = true,

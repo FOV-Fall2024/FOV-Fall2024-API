@@ -59,7 +59,7 @@ public class UpdateIngredientQuantityHandler : IRequestHandler<UpdateIngredientQ
         foreach (var dish in dishes)
         {
             var ingredient = await _unitOfWorks.IngredientRepository
-                .FirstOrDefaultAsync(i => i.IngredientName == ingredientName && i.RestaurantId == dish.RestaurantId)
+                .FirstOrDefaultAsync(i => i.IngredientGeneral.IngredientName == ingredientName && i.RestaurantId == dish.RestaurantId,x => x.IngredientGeneral)
                 ?? throw new InvalidOperationException("Ingredient not found in the restaurant");
 
             await UpdateDishIngredient(dish.Id, ingredient.Id);

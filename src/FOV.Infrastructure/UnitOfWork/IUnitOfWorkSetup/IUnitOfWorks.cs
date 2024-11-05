@@ -17,8 +17,6 @@ public interface IUnitOfWorks
     public IDishIngredientRepository DishIngredientRepository { get; }
     public IDishRepository DishRepository { get; }
 
-    public IEmployeeRepository EmployeeRepository { get; }
-
     public ICustomerRepository CustomerRepository { get; }
     public IIngredientRepository IngredientRepository { get; }
 
@@ -32,22 +30,11 @@ public interface IUnitOfWorks
 
     public IDishComboRepository DishComboRepository { get; }
 
-    public IGroupChatRepository GroupChatRepository { get; }
-
-    public IGroupMessageRepository GroupMessageRepository { get; }
-
-
-    public IGroupUserRepository GroupUserRepository { get; }
     public IComboRepository ComboRepository { get; }
     public IPaymentRepository PaymentRepository { get; }
     public IAttendanceRepository AttendanceRepository { get; }
 
     public IIngredientUnitRepository IngredientUnitRepository { get; }
-
-
-    public INewDishRecommendLogRepository NewDishRecommendLogRepository { get; }
-
-    public INewDishRecommendRepository NewDishRecommendRepository { get; }
 
     public IRefundDishInventoryRepository RefundDishInventoryRepository { get; }
 

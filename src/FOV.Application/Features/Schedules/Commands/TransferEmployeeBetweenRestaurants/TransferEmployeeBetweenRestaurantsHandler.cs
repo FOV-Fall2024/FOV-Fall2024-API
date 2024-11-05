@@ -20,50 +20,51 @@ namespace FOV.Application.Features.Schedules.Commands.TransferEmployeeBetweenRes
 
         public async Task<Guid> Handle(TransferEmployeeBetweenRestaurantsCommand request, CancellationToken cancellationToken)
         {
-            var employee = await _unitOfWorks.EmployeeRepository.GetByIdAsync(request.EmployeeId);
-            var fieldErrors = new List<FieldError>();
+            //var employee = await _unitOfWorks.EmployeeRepository.GetByIdAsync(request.EmployeeId);
+            //var fieldErrors = new List<FieldError>();
 
-            #region Validation
-            if (employee == null)
-            {
-                fieldErrors.Add(new FieldError
-                {
-                    Field = "employeeId",
-                    Message = $"Employee with ID {request.EmployeeId} not found."
-                });
-            }
+            //#region Validation
+            //if (employee == null)
+            //{
+            //    fieldErrors.Add(new FieldError
+            //    {
+            //        Field = "employeeId",
+            //        Message = $"Employee with ID {request.EmployeeId} not found."
+            //    });
+            //}
 
-            var sourceRestaurant = await _unitOfWorks.RestaurantRepository.GetByIdAsync(request.SourceRestaurantId);
-            if (sourceRestaurant == null)
-            {
-                fieldErrors.Add(new FieldError
-                {
-                    Field = "sourceRestaurantId",
-                    Message = $"Source restaurant with ID {request.SourceRestaurantId} not found."
-                });
-            }
+            //var sourceRestaurant = await _unitOfWorks.RestaurantRepository.GetByIdAsync(request.SourceRestaurantId);
+            //if (sourceRestaurant == null)
+            //{
+            //    fieldErrors.Add(new FieldError
+            //    {
+            //        Field = "sourceRestaurantId",
+            //        Message = $"Source restaurant with ID {request.SourceRestaurantId} not found."
+            //    });
+            //}
 
-            var destinationRestaurant = await _unitOfWorks.RestaurantRepository.GetByIdAsync(request.DestinationRestaurantId);
-            if (destinationRestaurant == null)
-            {
-                fieldErrors.Add(new FieldError
-                {
-                    Field = "destinationRestaurantId",
-                    Message = $"Destination restaurant with ID {request.DestinationRestaurantId} not found."
-                });
-            }
+            //var destinationRestaurant = await _unitOfWorks.RestaurantRepository.GetByIdAsync(request.DestinationRestaurantId);
+            //if (destinationRestaurant == null)
+            //{
+            //    fieldErrors.Add(new FieldError
+            //    {
+            //        Field = "destinationRestaurantId",
+            //        Message = $"Destination restaurant with ID {request.DestinationRestaurantId} not found."
+            //    });
+            //}
 
-            if (employee.RestaurantId != request.SourceRestaurantId)
-            {
-                throw new InvalidOperationException($"Employee is not assigned to the source restaurant with ID {request.SourceRestaurantId}.");
-            }
-            #endregion
-            employee.RestaurantId = request.DestinationRestaurantId;
-            _unitOfWorks.EmployeeRepository.Update(employee);
+            //if (employee.RestaurantId != request.SourceRestaurantId)
+            //{
+            //    throw new InvalidOperationException($"Employee is not assigned to the source restaurant with ID {request.SourceRestaurantId}.");
+            //}
+            //#endregion
+            //employee.RestaurantId = request.DestinationRestaurantId;
+            //_unitOfWorks.EmployeeRepository.Update(employee);
 
-            await _unitOfWorks.SaveChangeAsync();
+            //await _unitOfWorks.SaveChangeAsync();
 
-            return employee.Id;
+            //return employee.Id;
+            throw new NotImplementedException();
         }
     }
 }

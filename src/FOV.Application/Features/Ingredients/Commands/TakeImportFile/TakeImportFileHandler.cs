@@ -8,11 +8,11 @@ using FOV.Application.Common.Behaviours.Claim;
 namespace FOV.Application.Features.Ingredients.Commands.TakeImportFile;
 public sealed record TakeImportFileCommand : IRequest<TakeImportFileResponse>;
 public sealed record TakeImportFileResponse(MemoryStream ExcelFile, string ExcelName);
-public class TakeImportFileHandler(IUnitOfWorks unitOfWorks,IClaimService claimService) : IRequestHandler<TakeImportFileCommand, TakeImportFileResponse>
+public class TakeImportFileHandler(IUnitOfWorks unitOfWorks, IClaimService claimService) : IRequestHandler<TakeImportFileCommand, TakeImportFileResponse>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     private readonly IClaimService _claimService = claimService;
-    public  async Task<TakeImportFileResponse> Handle(TakeImportFileCommand request, CancellationToken cancellationToken)
+    public async Task<TakeImportFileResponse> Handle(TakeImportFileCommand request, CancellationToken cancellationToken)
     {
         ExcelPackage.LicenseContext = LicenseContext.Commercial;
 
@@ -28,11 +28,12 @@ public class TakeImportFileHandler(IUnitOfWorks unitOfWorks,IClaimService claimS
         int rowIngredient = 2;
         var ingredients = await _unitOfWorks.IngredientRepository.WhereAsync(
             x => x.RestaurantId == _claimService.RestaurantId,
-            x => x.IngredientUnits);
+            x => x.IngredientUnits,
+            x => x.IngredientGeneral);
 
         foreach (var item in ingredients)
         {
-            worksheet.Cells[rowIngredient, 1].Value = item.IngredientName;
+            worksheet.Cells[rowIngredient, 1].Value = item.IngredientGeneral.IngredientName;
             worksheet.Cells[$"B{rowIngredient}"].Value = 0;
 
             // Add list validation for column C (Measurement)

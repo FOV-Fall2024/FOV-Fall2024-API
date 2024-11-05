@@ -49,15 +49,9 @@ public static class DependencyInjection
         services.AddScoped<IIngrdientTransactionRepository, IngrdientTransactionRepository>();
         services.AddScoped<IRatingRepository, RatingRepository>();
         services.AddScoped<ICustomerRepository, CustomerRepository>();
-        services.AddScoped<IEmployeeRepository, EmployeeRepository>();
         services.AddScoped<IPaymentRepository, PaymentRepository>();
-        services.AddScoped<IGroupUserRepository, GroupUserRepository>();
-        services.AddScoped<IGroupMessageRepository, GroupMessageRepository>();
-        services.AddScoped<IGroupChatRepository, GroupChatRepository>();
         services.AddScoped<IAttendanceRepository, AttendanceRepository>();
         services.AddScoped<IIngredientUnitRepository, IngredientUnitRepository>();
-        services.AddScoped<INewDishRecommendLogRepository, NewDishRecommendLogRepository>();
-        services.AddScoped<INewDishRecommendRepository, NewDishRecommendRepository>();
         services.AddScoped<IRefundDishInventoryRepository, RefundDishInventoryRepository>();
         services.AddScoped<IRefundDishInventoryTransactionRepository, RefundDishInventoryTransactionRepository>();
         services.AddScoped<IDishGeneralImageRepository, DishGeneralImageRepository>();

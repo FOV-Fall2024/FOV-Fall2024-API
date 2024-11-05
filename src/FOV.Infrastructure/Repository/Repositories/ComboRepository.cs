@@ -33,7 +33,7 @@ public class ComboRepository : GenericRepository<Combo>, IComboRepository
                 d.Dish.DishGeneral.DishGeneralImages.Select(x => x.Url).ToList(),
                 d.Dish.DishIngredients.Select(i => new GetIngredientInDishResponse(
                     i.Id,
-                    i.Ingredient.IngredientName,
+                    i.Ingredient.IngredientGeneral.IngredientName,
                     i.Quantity,
                     i.Ingredient.IngredientMeasure.ToString(),
                     i.Ingredient.IngredientType.IngredientName

@@ -34,7 +34,7 @@ public class HandleImportFileHandler(IUnitOfWorks unitOfWorks, IClaimService cla
             var measurement = worksheet.Cells[row, 3].Text;  // Column C
 
             Ingredient? ingredient = await _unitOfWorks.IngredientRepository.FirstOrDefaultAsync(
-                x => x.IngredientName == ingredientName && x.RestaurantId == _claimService.RestaurantId);
+                x => x.IngredientGeneral.IngredientName == ingredientName && x.RestaurantId == _claimService.RestaurantId,x => x.IngredientGeneral);
 
             // Skip this row if the ingredient is not found
             if (ingredient == null) continue;

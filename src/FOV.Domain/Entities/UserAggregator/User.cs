@@ -1,6 +1,6 @@
 ﻿using FOV.Domain.Entities.AttendanceAggregator;
-using FOV.Domain.Entities.GroupChatAggregator;
-using FOV.Domain.Entities.NewDishRecommendAggregator;
+using FOV.Domain.Entities.OrderAggregator;
+using FOV.Domain.Entities.RestaurantAggregator;
 using FOV.Domain.Entities.WaiterSalaryAggregator;
 using FOV.Domain.Entities.WaiterScheduleAggregator;
 using Microsoft.AspNetCore.Identity;
@@ -8,15 +8,18 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FOV.Domain.Entities.UserAggregator;
 
-public class User : IdentityUser
+public class User : IdentityUser<Guid>
 {
     public string FirstName { get; set; } = string.Empty;
     public int Point { get; set; } = 0;
     public string LastName { get; set; } = string.Empty;
-
-    public Customer? Customer { get; set; }
-    public Employee? Employee { get; set; }
-
+    public DateTime? HireDate { get; set; } = DateTime.UtcNow;
+    public string EmployeeCode { get; set; } = string.Empty;
+    public ICollection<Attendance> Attendances { get; set; } = []; // Use List<Attendance>
+    public ICollection<WaiterSchedule> WaiterSchedules { get; set; } = [];
+    public ICollection<Order> Orders { get; set; } = [];
+    public Restaurant? Restaurant { get; set; }
+    public Guid? RestaurantId { get; set; }
     public User()
     {
 
@@ -35,11 +38,7 @@ public class User : IdentityUser
         FirstName = firstName;
         LastName = lastName;
     }
-    public virtual ICollection<GroupUser> GroupUsers { get; set; } = [];
     public ICollection<WaiterSalary> WaiterSalaries { get; set; } = [];
-    public ICollection<Attendance> Attendances { get; set; } = [];
-    public ICollection<WaiterSchedule> WaiterSchedules { get; set; } = [];
-    public virtual ICollection<GroupMessage> GroupMessages { get; set; } = [];
+   // public ICollection<Attendance> Attendances { get; set; } = [];
 
-    public virtual ICollection<NewDishRecommendLog> NewDishRecommendLogs { get; set; } = [];
 }
