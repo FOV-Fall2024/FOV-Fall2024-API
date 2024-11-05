@@ -35,7 +35,7 @@ public class AddSingleQuantityHandler(IUnitOfWorks unitOfWorks) : IRequestHandle
 
         ingredient.AddQuantity(request.Quantity);
 
-        IngredientTransaction ingredientTransaction = new(request.Quantity,
+        IngredientUsage ingredientTransaction = new(request.Quantity,
                                                            Domain.Entities.IngredientAggregator.Enums.IngredientTransactionType.Add,
                                                            ingredient.Id);
 

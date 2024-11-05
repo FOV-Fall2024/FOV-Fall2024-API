@@ -18,7 +18,7 @@ public class NotificationHub : Hub
     {
         await Clients.All.SendAsync("ReceiveMessage", "System", $"{Context.ConnectionId} has connected");
     }
-    public async Task SendEmployeeId(string EmployeeId, string Role)
+    public async Task SendEmployeeId(Guid EmployeeId, string Role)
     {
         string ConnectionId = Context.ConnectionId;
         await _database.StringSetAsync(EmployeeId.ToString(), ConnectionId);

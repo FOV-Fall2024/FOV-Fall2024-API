@@ -4,7 +4,6 @@ using FOV.Application.Features.Payments.Commands.Create;
 using FOV.Application.Features.Payments.Commands.CreateVNPayPayment;
 using FOV.Application.Features.Payments.Commands.FinishPayment;
 using FOV.Application.Features.Payments.Queries;
-using FOV.Infrastructure.Helpers.VNPayHelper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

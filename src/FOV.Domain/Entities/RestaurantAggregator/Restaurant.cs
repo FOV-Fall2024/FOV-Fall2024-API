@@ -2,6 +2,7 @@
 using FOV.Domain.Entities.ComboAggregator;
 using FOV.Domain.Entities.DishAggregator;
 using FOV.Domain.Entities.IngredientAggregator;
+using FOV.Domain.Entities.IngredientSupplyRequestAggregator;
 using FOV.Domain.Entities.TableAggregator;
 using FOV.Domain.Entities.TableAggregator.Enums;
 
@@ -27,6 +28,7 @@ public class Restaurant : BaseAuditableEntity, IsSoftDeleted
     public virtual ICollection<Table> Tables { get; set; } = [];
     public virtual ICollection<Combo> Combos { get; set; } = [];
 
+    public virtual ICollection<IngredientSupplyRequest> IngredientSupplyRequests { get; set; } = [];
 
     public Restaurant()
     {

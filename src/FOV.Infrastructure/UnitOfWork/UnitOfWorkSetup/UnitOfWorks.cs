@@ -24,16 +24,17 @@ public class UnitOfWorks : IUnitOfWorks
     private readonly IOrderDetailRepository _orderDetailRepository;
     private readonly IShiftRepository _shiftRepository;
     private readonly IWaiterScheduleRepository _waiterScheduleRepository;
-    private readonly IRatingRepository _ratingRepository;
     private readonly IPaymentRepository _paymentRepository;
     private readonly IAttendanceRepository _attendanceRepository;
     private readonly IIngredientUnitRepository _ingredientUnitRepository;
     private readonly IRefundDishInventoryRepository _refundDishInventoryRepository;
     private readonly IRefundDishInventoryTransactionRepository _refundDishInventoryTransactionRepository;
     private readonly IDishGeneralImageRepository _dishGeneralImageRepository;
+    private readonly IIngredientSupplyRequestDetailRepository _ingredientSupplyRequestDetailRepository;
+    private readonly IIngredientSupplyRequestRepository _ingredientSupplyRequestRepository;
 
     public UnitOfWorks(FOVContext context, IIngredientTypeRepository ingredientTypeRepository, IIngredientGeneralRepository ingredientGeneralRepository, IDishGeneralRepository productGeneralRepository, IDishIngredientGeneralRepository productIngredientGeneralRepository, ITableRepository tableRepository, IRestaurantRepository restaurantRepository, ICategoryRepository categoryRepository, IDishRepository productRepository, IIngredientRepository ingredientRepository, IDishIngredientRepository productIngredientRepository, ICustomerRepository customerRepository, IIngrdientTransactionRepository ingrdientTransactionRepository, IDishComboRepository productComboRepository, IComboRepository comboRepository, IOrderRepository orderRepository, IOrderDetailRepository orderDetailRepository, IShiftRepository shiftRepository, IWaiterScheduleRepository waiterScheduleRepository,
-        IRatingRepository ratingRepository, IPaymentRepository paymentRepository, IAttendanceRepository attendanceRepository, IIngredientUnitRepository ingredientUnitRepository, IRefundDishInventoryRepository refundDishInventoryRepository, IRefundDishInventoryTransactionRepository refundDishInventoryTransactionRepository, IDishGeneralImageRepository dishGeneralImageRepository)
+         IPaymentRepository paymentRepository, IAttendanceRepository attendanceRepository, IIngredientUnitRepository ingredientUnitRepository, IRefundDishInventoryRepository refundDishInventoryRepository, IRefundDishInventoryTransactionRepository refundDishInventoryTransactionRepository, IDishGeneralImageRepository dishGeneralImageRepository, IIngredientSupplyRequestDetailRepository ingredientSupplyRequestDetailRepository, IIngredientSupplyRequestRepository ingredientSupplyRequestRepository)
     {
         _context = context;
         _ingredientTypeRepository = ingredientTypeRepository;
@@ -54,7 +55,6 @@ public class UnitOfWorks : IUnitOfWorks
         _orderDetailRepository = orderDetailRepository;
         _shiftRepository = shiftRepository;
         _waiterScheduleRepository = waiterScheduleRepository;
-        _ratingRepository = ratingRepository;
         _paymentRepository = paymentRepository;
         _attendanceRepository = attendanceRepository;
         _ingredientUnitRepository = ingredientUnitRepository;
@@ -62,6 +62,8 @@ public class UnitOfWorks : IUnitOfWorks
         _refundDishInventoryRepository = refundDishInventoryRepository;
         _refundDishInventoryTransactionRepository = refundDishInventoryTransactionRepository;
         _dishGeneralImageRepository = dishGeneralImageRepository;
+        _ingredientSupplyRequestDetailRepository = ingredientSupplyRequestDetailRepository;
+        _ingredientSupplyRequestRepository = ingredientSupplyRequestRepository;
     }
     public IIngredientTypeRepository IngredientTypeRepository => _ingredientTypeRepository;
     public IIngredientGeneralRepository IngredientGeneralRepository => _ingredientGeneralRepository;
@@ -108,6 +110,10 @@ public class UnitOfWorks : IUnitOfWorks
     public IRefundDishInventoryTransactionRepository RefundDishInventoryTransactionRepository => _refundDishInventoryTransactionRepository;
 
     public IDishGeneralImageRepository DishGeneralImageRepository => _dishGeneralImageRepository;
+
+    public IIngredientSupplyRequestRepository IngredientSupplyRequestRepository => _ingredientSupplyRequestRepository;
+
+    public IIngredientSupplyRequestDetailRepository IngredientSupplyRequestDetailRepository => _ingredientSupplyRequestDetailRepository;
 
     public async Task<int> SaveChangeAsync()
     {

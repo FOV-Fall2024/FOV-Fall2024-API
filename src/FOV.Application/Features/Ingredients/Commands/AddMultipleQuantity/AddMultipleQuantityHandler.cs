@@ -30,7 +30,7 @@ public class AddMultipleQuantityHandler : IRequestHandler<AddMultipleQuantityCom
                 continue;
             }
 
-            var ingredientTransaction = new IngredientTransaction(item.Quantity, Domain.Entities.IngredientAggregator.Enums.IngredientTransactionType.Add, ingredient.Id);
+            var ingredientTransaction = new IngredientUsage(item.Quantity, Domain.Entities.IngredientAggregator.Enums.IngredientTransactionType.Add, ingredient.Id);
             ingredient.AddQuantity(item.Quantity);
 
             await _unitOfWorks.IngredientTransactionRepository.AddAsync(ingredientTransaction);

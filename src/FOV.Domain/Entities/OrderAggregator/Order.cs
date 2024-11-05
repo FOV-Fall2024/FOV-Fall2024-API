@@ -20,9 +20,14 @@ public class Order : BaseAuditableEntity
     public ICollection<OrderDetail> OrderDetails { get; set; } = [];
     public ICollection<Payments> Payments { get; set; } = [];
     public string? Feedback { get; set; }
-    public Rating? Rating { get; set; }
+    public Customer? Customer { get; set; }
+    public string CustomerId { get; set; }
 
-    public virtual ICollection<IngredientTransaction> IngredientTransactions { get; set; } = [];
+    public User? User { get; set; }
+
+    public Guid UserId { get; set; }
+
+    public virtual ICollection<IngredientUsage> IngredientTransactions { get; set; } = [];
     public Order()
     {
 

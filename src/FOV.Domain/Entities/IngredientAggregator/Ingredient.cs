@@ -19,7 +19,7 @@ public class Ingredient : BaseAuditableEntity
     public Restaurant? Restaurant { get; set; }
     public Guid? RestaurantId { get; set; }
     public IngredientMeasure IngredientMeasure { get; set; }
-    public virtual ICollection<IngredientTransaction> IngredientTransactions { get; set; } = [];
+    public virtual ICollection<IngredientUsage> IngredientTransactions { get; set; } = [];
     public virtual ICollection<IngredientUnit> IngredientUnits { get; set; } = [];
     public Ingredient()
     {
