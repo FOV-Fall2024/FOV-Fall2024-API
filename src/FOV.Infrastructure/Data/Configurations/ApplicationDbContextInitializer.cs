@@ -64,9 +64,10 @@ public class ApplicationDbContextInitializer
 
         if (!await _roleManager.RoleExistsAsync(Role.Waiter.ToString()))
         {
-            var role = new IdentityRole<Guid>(Role.Waiter);
+            var role = new IdentityRole<Guid>(Role.Waiter.ToString()); // Ensure this matches the type expected
             await _roleManager.CreateAsync(role);
         }
+
         if (!await _roleManager.RoleExistsAsync(Role.Manager))
         {
             var managerRole = new IdentityRole<Guid>(Role.Manager);

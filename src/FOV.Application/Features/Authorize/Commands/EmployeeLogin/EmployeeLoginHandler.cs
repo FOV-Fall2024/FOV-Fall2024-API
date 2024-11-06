@@ -8,13 +8,14 @@ using FOV.Infrastructure.Notifications.Web.SignalR.Notification.Setup;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace FOV.Application.Features.Authorize.Commands.EmployeeLogin;
 
 public sealed record EmployeeLoginCommand(string Code, string Password) : IRequest<EmployeeLoginResponse>;
-public sealed record EmployeeLoginResponse(string Id, Guid RestaurantId, string FullName, string PhoneNumber, string Role, string AccessToken, string RefreshToken);
+public sealed record EmployeeLoginResponse(Guid Id, Guid RestaurantId, string FullName, string PhoneNumber, string Role, string AccessToken, string RefreshToken);
 public class EmployeeLoginHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration configuration, NotificationHub notificationHub) : IRequestHandler<EmployeeLoginCommand, EmployeeLoginResponse>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
@@ -24,50 +25,42 @@ public class EmployeeLoginHandler(IUnitOfWorks unitOfWorks, UserManager<User> us
     private readonly NotificationHub _notificationHub = notificationHub;
     public async Task<EmployeeLoginResponse> Handle(EmployeeLoginCommand request, CancellationToken cancellationToken)
     {
-        //var fieldErrors = new List<FieldError>();
+        var fieldErrors = new List<FieldError>();
 
-        //var employee = await _unitOfWorks.EmployeeRepository
-        //    .FirstOrDefaultAsync(x => x.EmployeeCode == request.Code, x => x.User);
+        var user = await _userManager.Users.FirstOrDefaultAsync(x => x.EmployeeCode == request.Code);
 
-        //if (employee == null || employee.User == null)
-        //{
-        //    fieldErrors.Add(new FieldError { Field = "code", Message = "Mã nhân viên không đúng" });
-        //    throw new AppException("Đăng nhập thất bại", fieldErrors);
-        //}
+        if (user == null)
+        {
+            fieldErrors.Add(new FieldError { Field = "code", Message = "Mã nhân viên không đúng" });
+            throw new AppException("Đăng nhập thất bại", fieldErrors);
+        }
+        var roles = await _userManager.GetRolesAsync(user);
 
-        //var user = employee.User;
-        //var roles = await _userManager.GetRolesAsync(user);
+        var signIn = await _userManager.CheckPasswordAsync(user, request.Password);
 
-        //var signIn = await _userManager.CheckPasswordAsync(user, request.Password);
+        if (!signIn)
+        {
+            fieldErrors.Add(new FieldError { Field = "password", Message = "Mật khẩu không chính xác" });
+            throw new AppException("Đăng nhập thất bại", fieldErrors);
+        }
 
-        //if (!signIn)
-        //{
-        //    fieldErrors.Add(new FieldError { Field = "password", Message = "Mật khẩu không chính xác" });
-        //    throw new AppException("Đăng nhập thất bại", fieldErrors);
-        //}
+        if (signIn)
+        {
+            // Using ?? operator for safe access to configuration values
+            string secretKey = _configuration["JWTSecretKey:SecretKey"] ?? throw new Exception("SecretKey not configured");
+            string validIssuer = _configuration["JWTSecretKey:ValidIssuer"] ?? throw new Exception("ValidIssuer not configured");
+            string validAudience = _configuration["JWTSecretKey:ValidAudience"] ?? throw new Exception("ValidAudience not configured");
 
-        //if (signIn)
-        //{
-        //    // Using ?? operator for safe access to configuration values
-        //    string secretKey = _configuration["JWTSecretKey:SecretKey"] ?? throw new Exception("SecretKey not configured");
-        //    string validIssuer = _configuration["JWTSecretKey:ValidIssuer"] ?? throw new Exception("ValidIssuer not configured");
-        //    string validAudience = _configuration["JWTSecretKey:ValidAudience"] ?? throw new Exception("ValidAudience not configured");
-
-        //    string token = GenerateJWT(user, roles, secretKey, validIssuer, validAudience, employee.RestaurantId ?? Guid.Empty);
+            string token = GenerateJWT(user, roles, secretKey, validIssuer, validAudience, user.RestaurantId ?? Guid.Empty);
 
             //Remember to remove this line when deploy
-            //await _notificationHub.SendEmployeeId(user.Id, roles.FirstOrDefault());
+            await _notificationHub.SendEmployeeId(user.Id, roles.FirstOrDefault());
 
-        //    return new EmployeeLoginResponse(user.Id, user.Employee.RestaurantId ?? Guid.Empty, user.FirstName +" "+user.LastName,user.PhoneNumber,roles.FirstOrDefault(),token, "not");
-        //}
+            return new EmployeeLoginResponse(user.Id, user.RestaurantId ?? Guid.Empty, user.FullName, user.PhoneNumber, roles.FirstOrDefault(), token, "not");
+        }
 
-        //return null;
-        throw new NotImplementedException();
-
+        return null;
     }
-
-
-
     private static string GenerateJWT(User user, IList<string> userRoles, string secretKey, string issuer, string audience, Guid restaurantId)
     {
 
