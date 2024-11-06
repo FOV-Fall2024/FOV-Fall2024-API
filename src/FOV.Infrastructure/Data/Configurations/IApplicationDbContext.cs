@@ -16,7 +16,6 @@ public interface IApplicationDbContext
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 
 
-    DbSet<Rating> Ratings { get; }
     DbSet<Restaurant> Restaurants { get; }
     DbSet<Ingredient> Ingredients { get; }
 
@@ -38,7 +37,7 @@ public interface IApplicationDbContext
     DbSet<Customer> Customers { get; }
 
 
-    DbSet<IngredientTransaction> IngredientTransactions { get; }
+    DbSet<IngredientUsage> IngredientTransactions { get; }
 
     DbSet<Combo> Combos { get; }
 

@@ -51,7 +51,7 @@ public class FOVContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>, IAp
     public DbSet<Customer> Customers => Set<Customer>();
 
 
-    public DbSet<IngredientTransaction> IngredientTransactions => Set<IngredientTransaction>();
+    public DbSet<IngredientUsage> IngredientTransactions => Set<IngredientUsage>();
 
     public DbSet<Combo> Combos => Set<Combo>();
     public DbSet<Shift> Shifts => Set<Shift>();
@@ -62,7 +62,6 @@ public class FOVContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>, IAp
     public DbSet<Restaurant> Restaurants => Set<Restaurant>();
 
     public DbSet<Payments> Payments => Set<Payments>();
-    public DbSet<Rating> Ratings => Set<Rating>();
 
 
     public DbSet<IngredientUnit> IngredientUnits => Set<IngredientUnit>();

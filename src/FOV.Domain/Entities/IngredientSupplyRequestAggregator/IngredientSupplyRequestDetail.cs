@@ -14,4 +14,9 @@ public class IngredientSupplyRequestDetail : BaseAuditableEntity
         
     }
 
+    public IngredientSupplyRequestDetail(Guid ingredientId,Guid ingredientSupplyRequestId)
+    {
+        IngredientId = ingredientId;
+        IngredientSupplyRequestId = ingredientSupplyRequestId;  
+    }
 }

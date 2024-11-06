@@ -6,11 +6,13 @@ using FOV.Infrastructure.Configuration;
 using FOV.Infrastructure.Data;
 using FOV.Infrastructure.Data.Configurations;
 using FOV.Presentation.Infrastructure.BackgroundServer;
+using Google;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
@@ -67,10 +69,23 @@ public static class DependencyInjection
 
 
         //? Database Configuration
-        services.AddIdentityCore<User>(opt => opt.Lockout.AllowedForNewUsers = false)
-                  .AddRoles<IdentityRole<Guid>>()
-                  .AddEntityFrameworkStores<FOVContext>()
-                  .AddApiEndpoints();
+        builder.Services.AddIdentity<User, IdentityRole<Guid>>()
+ .AddEntityFrameworkStores<FOVContext>()
+ .AddDefaultTokenProviders();
+        //        builder.Services.AddIdentity<User1, IdentityRole>()
+        //.AddEntityFrameworkStores<ApplicationDbContext, Guid>()
+        //.AddDefaultTokenProviders();
+        //services.AddIdentity<User, IdentityRole<Guid>>()
+        //        .AddEntityFrameworkStores<FOVContext>()
+
+
+
+        //services.AddIdentity<User, IdentityRole>()
+        // .AddEntityFrameworkStores<FOVContext>()
+        // .AddDefaultTokenProviders();
+
+        // Register RoleManager
+        services.AddScoped<RoleManager<IdentityRole>>();
 
 
 
@@ -79,13 +94,6 @@ public static class DependencyInjection
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         })
-     .AddCookie("Cookies")  // Use this scheme explicitly where needed
-     .AddGoogle(options =>
-     {
-         options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-         options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-         options.CallbackPath = "/signin-google";
-     })
      .AddJwtBearer(options =>
      {
          options.TokenValidationParameters = new TokenValidationParameters

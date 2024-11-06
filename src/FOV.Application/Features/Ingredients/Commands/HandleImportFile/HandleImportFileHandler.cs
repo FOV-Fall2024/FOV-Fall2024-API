@@ -59,7 +59,7 @@ public class HandleImportFileHandler(IUnitOfWorks unitOfWorks, IClaimService cla
             ingredient.AddQuantity(quantityCalculate);
 
             // Create a new ingredient transaction
-            IngredientTransaction ingredientTransaction = new(quantityCalculate, IngredientTransactionType.Add, ingredient.Id);
+            IngredientUsage ingredientTransaction = new(quantityCalculate, IngredientTransactionType.Add, ingredient.Id);
             await _unitOfWorks.IngredientTransactionRepository.AddAsync(ingredientTransaction);
 
             // Update the ingredient and save changes

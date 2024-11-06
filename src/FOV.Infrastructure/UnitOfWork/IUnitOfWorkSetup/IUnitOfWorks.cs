@@ -41,7 +41,12 @@ public interface IUnitOfWorks
 
     public IRefundDishInventoryTransactionRepository RefundDishInventoryTransactionRepository { get; }
 
+
     public IDishGeneralImageRepository DishGeneralImageRepository { get; }
+    public IIngredientSupplyRequestRepository IngredientSupplyRequestRepository { get; }
+
+    public IIngredientSupplyRequestDetailRepository IngredientSupplyRequestDetailRepository { get; }
+
 
     public Task<int> SaveChangeAsync();
 }

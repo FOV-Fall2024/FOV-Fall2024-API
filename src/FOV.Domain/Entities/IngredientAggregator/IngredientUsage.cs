@@ -5,7 +5,7 @@ using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.TableAggregator.Enums;
 
 namespace FOV.Domain.Entities.IngredientAggregator;
-public class IngredientTransaction : BaseAuditableEntity, IsSoftDeleted
+public class IngredientUsage : BaseAuditableEntity, IsSoftDeleted
 {
     public decimal Quantity { get; set; }
 
@@ -27,12 +27,12 @@ public class IngredientTransaction : BaseAuditableEntity, IsSoftDeleted
     public Guid? OrderdDetailId { get; set; }
 
 
-    public IngredientTransaction()
+    public IngredientUsage()
     {
 
     }
 
-    public IngredientTransaction(decimal quantity, IngredientTransactionType type, Guid ingredientId)
+    public IngredientUsage(decimal quantity, IngredientTransactionType type, Guid ingredientId)
     {
         Quantity = quantity;
         Type = type;

@@ -10,6 +10,5 @@ public class IngredientSupplyRequestConfiguration : IEntityTypeConfiguration<Ing
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).ValueGeneratedOnAdd();
         builder.HasMany(x => x.IngredientSupplyRequestDetails).WithOne(x => x.IngredientSupplyRequest).HasForeignKey(x => x.IngredientSupplyRequestId);
-
     }
 }
