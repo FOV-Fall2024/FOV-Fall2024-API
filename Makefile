@@ -28,3 +28,11 @@ run:
 commit:
 	@echo "Add New code update...."
 	docker-compose up -d --build
+
+reset:
+	@echo "Stopping and removing containers and volumes..."
+	docker-compose down -v
+	@echo "Building Docker image..."
+	docker build -t $(DOCKER_IMAGE) -f $(DOCKERFILE_PATH) .
+	@echo "Add New code update...."
+	docker-compose up -d --build

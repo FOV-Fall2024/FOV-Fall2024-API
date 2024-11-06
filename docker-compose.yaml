@@ -141,6 +141,7 @@ services:
       - elasticsearch
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - NODE_OPTIONS=--max-old-space-size=4096 # Allocate 4GB of memory
     networks:
       - fov_network
     deploy:
@@ -193,7 +194,19 @@ services:
           memory: 512M
         reservations:
           memory: 256M
-
+  caddy:
+    image: caddy:latest
+    container_name: caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"       # HTTP
+      - "443:443"     # HTTPS
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile      # Mount the Caddyfile
+      - caddy_data:/data                      # Caddy data for certificates
+      - caddy_config:/config                  # Caddy config
+    networks:
+      - fov_network
 
 networks:
   fov_network:
@@ -208,3 +221,5 @@ volumes:
   sonarqube_extensions: {}  # SonarQube plugins
   sonarqube_logs: {}  # SonarQube logs
   sonarqube_db_data: {}  # PostgreSQL data for SonarQube
+  caddy_data: {}
+  caddy_config: {}
