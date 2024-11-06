@@ -28,7 +28,7 @@ public class UserRegisterHandler(UserManager<User> userManager, IUnitOfWorks uni
         //var result = await _userManager.CreateAsync(user, request.Password);
         //if (!result.Succeeded) throw new AppException(result.Errors.First().Description);
 
-        //if (!await _roleManager.RoleExistsAsync(Role.User))
+        //if (!await _roleManager.RoleExistsAsync(Role.U))
         //{
         //    var roleResult = await _roleManager.CreateAsync(new IdentityRole(Role.User));
         //    if (!roleResult.Succeeded) throw new AppException(roleResult.Errors.First().Description);
@@ -43,7 +43,6 @@ public class UserRegisterHandler(UserManager<User> userManager, IUnitOfWorks uni
         //Customer customer = new()
         //{
         //    Address = request.Address,
-        //    UserId = user.Id
         //};
 
         //await _unitOfWorks.CustomerRepository.AddAsync(customer);
