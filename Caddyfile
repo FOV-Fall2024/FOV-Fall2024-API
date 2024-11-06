@@ -1,0 +1,5 @@
+vktrng.ddns.net {
+    reverse_proxy app:80
+    encode gzip
+    tls mandayngu@gmail.com
+}
