@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Reflection.Emit;
 using FOV.Domain.Entities.AttendanceAggregator;
 using FOV.Domain.Entities.ComboAggregator;
 using FOV.Domain.Entities.DishAggregator;
@@ -20,7 +21,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FOV.Infrastructure.Data;
 
-public class FOVContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>, IApplicationDbContext
+public class FOVContext : IdentityDbContext<User, ApplicationRole, Guid>, IApplicationDbContext
 {
     public FOVContext(DbContextOptions<FOVContext> options) : base(options)
     {
@@ -83,6 +84,9 @@ public class FOVContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>, IAp
         //    builder.Entity<Payments>()
         //.Property(p => p.VnpTxnRef)
         //.HasColumnType("varchar(max)"); // or "text"
+        builder.Entity<ApplicationRole>()
+            .Property(r => r.Id)
+            .HasColumnType("uuid"); //
 
     }
 }

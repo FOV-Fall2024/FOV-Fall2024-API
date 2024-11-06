@@ -15,10 +15,10 @@ public class ApplicationDbContextInitializer
     private readonly ILogger<ApplicationDbContextInitializer> _logger;
     private readonly FOVContext _context;
     private readonly UserManager<User> _userManager;
-    private readonly RoleManager<IdentityRole<Guid>> _roleManager;
+    private readonly RoleManager<ApplicationRole> _roleManager;
 
 
-    public ApplicationDbContextInitializer(ILogger<ApplicationDbContextInitializer> logger, FOVContext context, UserManager<User> userManager, RoleManager<IdentityRole<Guid>> roleManager)
+    public ApplicationDbContextInitializer(ILogger<ApplicationDbContextInitializer> logger, FOVContext context, UserManager<User> userManager, RoleManager<ApplicationRole> roleManager)
     {
         _logger = logger;
         _context = context;
@@ -60,29 +60,29 @@ public class ApplicationDbContextInitializer
 
     public async Task TrySeedAsync()
     {
-        var administratorsRole = new IdentityRole<Guid>(Role.Administrator);
+        var administratorsRole = new ApplicationRole(Role.Administrator);
 
         if (!await _roleManager.RoleExistsAsync(Role.Waiter.ToString()))
         {
-            var role = new IdentityRole<Guid>(Role.Waiter.ToString()); // Ensure this matches the type expected
+            var role = new ApplicationRole(Role.Waiter.ToString());
             await _roleManager.CreateAsync(role);
         }
 
         if (!await _roleManager.RoleExistsAsync(Role.Manager))
         {
-            var managerRole = new IdentityRole<Guid>(Role.Manager);
+            var managerRole = new ApplicationRole(Role.Manager);
             await _roleManager.CreateAsync(managerRole);
         }
 
         if (!await _roleManager.RoleExistsAsync(Role.Chef))
         {
-            var chefRole = new IdentityRole<Guid>(Role.Chef);
+            var chefRole = new ApplicationRole(Role.Chef);
             await _roleManager.CreateAsync(chefRole);
         }
 
         if (!await _roleManager.RoleExistsAsync(Role.HeadChef))
         {
-            var headChefRole = new IdentityRole<Guid>(Role.HeadChef);
+            var headChefRole = new ApplicationRole(Role.HeadChef);
             await _roleManager.CreateAsync(headChefRole);
         }
 

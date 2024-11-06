@@ -78,7 +78,7 @@ app.UseHttpsRedirection();
 // Map the default Identity API endpoints except for registration
 app.MapHub<OrderHub>("order-hub").RequireCors("CorsPolicy");
 app.MapHub<NotificationHub>("notification-hub").RequireCors("CorsPolicy");
-app.MapIdentityApi<User>();
+//app.MapIdentityApi<User>();
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapPrometheusScrapingEndpoint();

@@ -13,11 +13,11 @@ namespace FOV.Application.Features.Authorize.Commands.CreateEmployee;
 public sealed record CreateEmployeeCommand(string FullName, string PhoneNumber, int RoleId, Guid RestaurantId) : IRequest<Result<string>>;
 public sealed record GenerateRole(string RoleName, string Code);
 
-public partial class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager, RoleManager<IdentityRole<Guid>> roleManager) : IRequestHandler<CreateEmployeeCommand, Result<string>>
+public partial class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager, RoleManager<ApplicationRole> roleManager) : IRequestHandler<CreateEmployeeCommand, Result<string>>
 {
     private readonly UserManager<User> _userManager = userManager;
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
-    private readonly RoleManager<IdentityRole<Guid>> _roleManager = roleManager;
+    private readonly RoleManager<ApplicationRole> _roleManager = roleManager;
 
     public async Task<Result<string>> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
     {
@@ -136,7 +136,7 @@ public partial class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager
         // Ensure the role exists
         if (!await _roleManager.RoleExistsAsync(UserRole(roleId)))
         {
-            var roleResult = await _roleManager.CreateAsync(new IdentityRole<Guid>(roleId.ToString()));
+            var roleResult = await _roleManager.CreateAsync(new ApplicationRole(roleId.ToString()));
             if (!roleResult.Succeeded)
             {
                 throw new Exception("Error creating role.");

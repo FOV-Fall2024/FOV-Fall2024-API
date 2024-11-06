@@ -69,7 +69,7 @@ public static class DependencyInjection
 
 
         //? Database Configuration
-        builder.Services.AddIdentity<User, IdentityRole<Guid>>()
+        builder.Services.AddIdentity<User, ApplicationRole>()
  .AddEntityFrameworkStores<FOVContext>()
  .AddDefaultTokenProviders();
         //        builder.Services.AddIdentity<User1, IdentityRole>()
@@ -85,7 +85,7 @@ public static class DependencyInjection
         // .AddDefaultTokenProviders();
 
         // Register RoleManager
-        services.AddScoped<RoleManager<IdentityRole<Guid>>>();
+        services.AddScoped<RoleManager<ApplicationRole>>();
 
 
 
