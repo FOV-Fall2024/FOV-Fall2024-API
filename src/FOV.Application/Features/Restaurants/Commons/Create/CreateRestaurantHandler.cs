@@ -18,6 +18,8 @@ public sealed record CreateRestaurantCommand : IRequest<Guid>
     public required string Address { get; set; }
 
     public required string RestaurantPhone { get; set; }
+    public required double Latitude { get; set; }
+    public required double Longitude { get; set; }
 
     public ICollection<Guid> Products { get; set; } = [];
 }
@@ -60,7 +62,7 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
         }
         #endregion
 
-        Restaurant restaurant = new(request.RestaurantName, request.Address, request.RestaurantPhone, await GeneratedCode());
+        Restaurant restaurant = new(request.RestaurantName, request.Address, request.RestaurantPhone, await GeneratedCode(), request.Latitude, request.Longitude);
         await _unitOfWorks.RestaurantRepository.AddAsync(restaurant);
         await AddNewProduct(request.Products, restaurant.Id);
         await AddRefundProductInventory(request.Products, restaurant.Id);

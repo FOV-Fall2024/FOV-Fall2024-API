@@ -85,7 +85,7 @@ public static class DependencyInjection
         // .AddDefaultTokenProviders();
 
         // Register RoleManager
-        services.AddScoped<RoleManager<IdentityRole>>();
+        services.AddScoped<RoleManager<IdentityRole<Guid>>>();
 
 
 

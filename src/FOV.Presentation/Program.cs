@@ -1,10 +1,13 @@
 ﻿using FOV.Application;
 using FOV.Domain.Entities.UserAggregator;
 using FOV.Infrastructure;
+using FOV.Infrastructure.Data;
 using FOV.Infrastructure.Notifications.Web.SignalR.Notification.Setup;
 using FOV.Infrastructure.Notifications.Web.SignalR.Order.Setup;
 using FOV.Presentation.Infrastructure;
 using FOV.Presentation.Infrastructure.Middleware;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using OpenTelemetry.Metrics;
 using Swashbuckle.AspNetCore.SwaggerUI;
 

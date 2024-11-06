@@ -21,12 +21,7 @@ public class Order : BaseAuditableEntity
     public ICollection<Payments> Payments { get; set; } = [];
     public string? Feedback { get; set; }
     public Customer? Customer { get; set; }
-    public string CustomerId { get; set; }
-
-    public User? User { get; set; }
-
-    public Guid UserId { get; set; }
-
+    public Guid CustomerId { get; set; }
     public virtual ICollection<IngredientUsage> IngredientTransactions { get; set; } = [];
     public Order()
     {

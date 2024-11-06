@@ -15,8 +15,8 @@ public class Restaurant : BaseAuditableEntity, IsSoftDeleted
 
     public Status Status { get; set; }
     public string RestaurantPhone { get; set; }
-    //public long Latitude { get; set; }
-    //public long Longitude { get; set; }
+    public double Latitude { get; set; }
+    public double Longitude { get; set; }
     public string RestaurantCode { get; set; }
 
     public DateTime? ReleaseDate { get; set; } = DateTime.UtcNow;
@@ -35,7 +35,7 @@ public class Restaurant : BaseAuditableEntity, IsSoftDeleted
 
     }
 
-    public Restaurant(string name, string address, string phone, string code)
+    public Restaurant(string name, string address, string phone, string code, double latitude, double longitude)
     {
         RestaurantName = name;
         Address = address;
@@ -43,6 +43,8 @@ public class Restaurant : BaseAuditableEntity, IsSoftDeleted
         RestaurantCode = code;
         Created = DateTime.UtcNow.AddHours(7);
         Status = Status.Inactive;
+        Latitude = latitude;
+        Longitude = longitude;
     }
     public void Update(string name, string address, string phone)
     {

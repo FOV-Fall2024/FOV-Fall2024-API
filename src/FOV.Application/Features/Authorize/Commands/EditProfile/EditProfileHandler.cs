@@ -9,10 +9,8 @@ namespace FOV.Application.Features.Authorize.Commands.EditProfile;
 
 public sealed record EditProfileCommand : IRequest<Result>
 {
-    public string Address { get; set; }
-    public string LastName { get; set; }
-
-    public string FirstName { get; set; }
+    public string PhoneNumber { get; set; }
+    public string FullName { get; set; }
 };
 public class EditProfileHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager, IClaimService claimService) : IRequestHandler<EditProfileCommand, Result>
 {
@@ -21,16 +19,13 @@ public class EditProfileHandler(IUnitOfWorks unitOfWorks, UserManager<User> user
     private readonly IClaimService _claimService = claimService;
     public async Task<Result> Handle(EditProfileCommand request, CancellationToken cancellationToken)
     {
-        //string userId = _claimService.UserId;
-        //User user = await _userManager.FindByIdAsync(userId) ?? throw new Exception();
-        //user.Update(request.FirstName, request.LastName);
-        //Customer customer = await _unitOfWorks.CustomerRepository.FirstOrDefaultAsync(x => x.UserId == userId) ?? throw new Exception();
-        //customer.Update(request.Address);
-        //_unitOfWorks.CustomerRepository.Update(customer);
-        //await _unitOfWorks.SaveChangeAsync();
-        //return Result.Ok();
-        throw new NotImplementedException();
-
-
+        Guid userId = _claimService.UserId;
+        User user = await _userManager.FindByIdAsync(userId.ToString()) ?? throw new Exception();
+        user.Update(request.FullName, request.PhoneNumber);
+        Customer customer = await _unitOfWorks.CustomerRepository.FirstOrDefaultAsync(x => x.Id == userId) ?? throw new Exception();
+        customer.Update(request.FullName, request.PhoneNumber);
+        _unitOfWorks.CustomerRepository.Update(customer);
+        await _unitOfWorks.SaveChangeAsync();
+        return Result.Ok();
     }
 }

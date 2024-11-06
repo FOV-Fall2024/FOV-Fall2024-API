@@ -7,7 +7,7 @@ using MediatR;
 
 namespace FOV.Application.Features.Restaurants.Queries.Get;
 public record GetRestaurantCommand(PagingRequest? PagingRequest, Guid? RestaurantId, string? RestaurantName, string? Address, string? RestaurantPhone, string? RestaurantCode, Status? RestaurantStatus) : IRequest<PagedResult<GetRestaurantResponse>>;
-public record GetRestaurantResponse(Guid Id, string RestaurantName, string Address, string RestaurantPhone, string RestaurantCode, Status RestaurantStatus, DateTime CreatedDate);
+public record GetRestaurantResponse(Guid Id, string RestaurantName, string Address, string RestaurantPhone, string RestaurantCode, Status RestaurantStatus, DateTime CreatedDate, double Latitude, double Longitude);
 public class GetRestaurantQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetRestaurantCommand, PagedResult<GetRestaurantResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
@@ -36,7 +36,9 @@ public class GetRestaurantQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetR
             restaurant.RestaurantPhone ?? string.Empty,
             restaurant.RestaurantCode ?? string.Empty,
             restaurant.Status,
-            restaurant.Created  
+            restaurant.Created,
+            restaurant.Latitude,
+            restaurant.Longitude
         )).ToList();
 
         var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);

@@ -20,78 +20,72 @@ public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> u
 
     public async Task<PagedResult<GetAllEmployeeResponse>> Handle(GetAllEmployeeCommand request, CancellationToken cancellationToken)
     {
-        //var userRoles = _claimService.UserRole;
-        //var restaurantId = _claimService.RestaurantId;
+        var userRoles = _claimService.UserRole;
+        var restaurantId = _claimService.RestaurantId;
 
-        //var employees = await _unitOfWorks.EmployeeRepository.GetAllAsync(x => x.User, x => x.Restaurant);
-        //var employeesQuery = employees.AsQueryable();
+        var users = _userManager.Users;
+        var usersQuery = users.AsQueryable();
 
-        //if (userRoles.Contains(Role.Manager))
-        //{
-        //    employeesQuery = employeesQuery.Where(x => x.RestaurantId == restaurantId);
-        //}
+        if (userRoles.Contains(Role.Manager))
+        {
+            usersQuery = usersQuery.Where(x => x.RestaurantId == restaurantId);
+        }
 
-        //if (request.RestaurantId.HasValue)
-        //{
-        //    employeesQuery = employeesQuery.Where(x => x.RestaurantId == request.RestaurantId);
-        //}
+        if (request.RestaurantId.HasValue)
+        {
+            usersQuery = usersQuery.Where(x => x.RestaurantId == request.RestaurantId);
+        }
 
-        //if (!string.IsNullOrEmpty(request.FullName))
-        //{
-        //    // Concatenate FirstName and LastName to form FullName and make it case-insensitive
-        //    var fullName = request.FullName.ToLower();
-        //    employeesQuery = employeesQuery.Where(x =>
-        //        (x.User.FirstName + " " + x.User.LastName).ToLower().Contains(fullName));
-        //}
+        if (!string.IsNullOrEmpty(request.FullName))
+        {
+            // Concatenate FirstName and LastName to form FullName and make it case-insensitive
+            var fullName = request.FullName.ToLower();
+            usersQuery = usersQuery.Where(x =>
+                (x.FullName).ToLower().Contains(fullName));
+        }
 
-        //var filterEntity = employeesQuery.CustomFilterV1(new Employee
-        //{
-        //    User = new User
-        //    {
-        //        PhoneNumber = request.PhoneNumber,
-        //    },
-        //    EmployeeCode = request.EmployeeCode ?? string.Empty,
-        //    Status = request.Status ?? Status.Unknown
-        //});
+        var filterEntity = usersQuery.CustomFilterV1(new User
+        {
+            PhoneNumber = request.PhoneNumber,
+            EmployeeCode = request.EmployeeCode ?? string.Empty,
+            Status = request.Status ?? Status.Unknown
+        });
 
-        //var result = new List<GetAllEmployeeResponse>();
+        var result = new List<GetAllEmployeeResponse>();
 
-        //foreach (var employee in filterEntity)
-        //{
-        //    var roles = await _userManager.GetRolesAsync(employee.User);
-        //    var roleName = roles.FirstOrDefault() ?? string.Empty;
+        foreach (var user in filterEntity)
+        {
+            var roles = await _userManager.GetRolesAsync(user);
+            var roleName = roles.FirstOrDefault() ?? string.Empty;
 
-        //    if (roleName == Role.Administrator)
-        //    {
-        //        continue;
-        //    }
+            if (roleName == Role.Administrator)
+            {
+                continue;
+            }
 
-        //    // Only include if the role matches or no specific role is requested
-        //    if (string.IsNullOrEmpty(request.Role) || roles.Contains(request.Role))
-        //    {
-        //        result.Add(new GetAllEmployeeResponse(
-        //            employee.User.Id,
-        //            employee.User.FirstName + " " + employee.User.LastName,
-        //            employee.User.PhoneNumber,
-        //            employee.EmployeeCode,
-        //            employee.HireDate ?? DateTime.Now,
-        //            roleName,
-        //            employee.Restaurant.RestaurantName,
-        //            employee.Status,
-        //            employee.Created
-        //        ));
-        //    }
-        //}
+            // Only include if the role matches or no specific role is requested
+            if (string.IsNullOrEmpty(request.Role) || roles.Contains(request.Role))
+            {
+                result.Add(new GetAllEmployeeResponse(
+                    user.Id,
+                    user.FullName,
+                    user.PhoneNumber,
+                    user.EmployeeCode,
+                    user.HireDate ?? DateTime.Now,
+                    roleName,
+                    user.Restaurant?.RestaurantName ?? string.Empty,
+                    user.Status
+                ));
+            }
+        }
 
-        //var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
-        //sortType = Domain.Common.SortOrder.Descending;
+        var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
+        sortType = Domain.Common.SortOrder.Descending;
 
-        //var sortedResults = PaginationHelper<GetAllEmployeeResponse>.Sorting(sortType, result, sortField = "HireDate");
-        //var pagedResult = PaginationHelper<GetAllEmployeeResponse>.Paging(sortedResults, page, pageSize);
+        var sortedResults = PaginationHelper<GetAllEmployeeResponse>.Sorting(sortType, result, sortField = "HireDate");
+        var pagedResult = PaginationHelper<GetAllEmployeeResponse>.Paging(sortedResults, page, pageSize);
 
-        //return pagedResult;
-        throw new NotImplementedException();
-
+        return pagedResult;
     }
 
 }

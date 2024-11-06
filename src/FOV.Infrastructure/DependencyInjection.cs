@@ -1,3 +1,4 @@
+using FOV.Domain.Entities.UserAggregator;
 using FOV.Infrastructure.Caching.CachingService;
 using FOV.Infrastructure.Caching.ICachingService;
 using FOV.Infrastructure.Data.FluentAPI;
