@@ -16,26 +16,26 @@ namespace FOV.Application.Features.Users.Queries.GetAllUser
 
         public async Task<PagedResult<GetUsersResponse>> Handle(GetUsersCommand request, CancellationToken cancellationToken)
         {
-            //var users = await _unitOfWorks.CustomerRepository.GetAllAsync(x => x.User);
-            //var filteredUsers = users.Where(x =>
-            //                                (string.IsNullOrEmpty(request.UserName) || x.User.UserName.Contains(request.UserName, StringComparison.OrdinalIgnoreCase)) &&
-            //                                //(string.IsNullOrEmpty(request.FirstName) || x.FirstName.Contains(request.FirstName, StringComparison.OrdinalIgnoreCase)) &&
-            //                                //(string.IsNullOrEmpty(request.LastName) || x.LastName.Contains(request.LastName, StringComparison.OrdinalIgnoreCase)) &&
-            //                                (string.IsNullOrEmpty(request.PhoneNumber) || x.User.Email.Contains(request.PhoneNumber, StringComparison.OrdinalIgnoreCase)));
-            
-            //var mappedUsers = filteredUsers.Select(x => new GetUsersResponse(
-            //    x.User.Id,
-            //    $"{x.User.FirstName} {x.User.LastName}",
-            //    x.User.PhoneNumber ?? string.Empty,
-            //    x.User.Point,
-            //    x.Created)).ToList();
+            var users = await _unitOfWorks.CustomerRepository.GetAllAsync();
+            var filteredUsers = users.Where(x =>
+                                            (string.IsNullOrEmpty(request.UserName) || x.FullName.Contains(request.UserName, StringComparison.OrdinalIgnoreCase)) &&
+                                            //(string.IsNullOrEmpty(request.FirstName) || x.FirstName.Contains(request.FirstName, StringComparison.OrdinalIgnoreCase)) &&
+                                            //(string.IsNullOrEmpty(request.LastName) || x.LastName.Contains(request.LastName, StringComparison.OrdinalIgnoreCase)) &&
+                                            (string.IsNullOrEmpty(request.PhoneNumber) || x.PhoneNumber.Contains(request.PhoneNumber, StringComparison.OrdinalIgnoreCase)));
 
-            //var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
+            var mappedUsers = filteredUsers.Select(x => new GetUsersResponse(
+                x.Id,
+                x.FullName,
+                x.PhoneNumber ?? string.Empty,
+                x.Point,
+                x.Created)).ToList();
 
-            //var sortedResults = PaginationHelper<GetUsersResponse>.Sorting(sortType, mappedUsers, sortField);
-            //var result = PaginationHelper<GetUsersResponse>.Paging(sortedResults, page, pageSize);
+            var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
 
-            //return result;
+            var sortedResults = PaginationHelper<GetUsersResponse>.Sorting(sortType, mappedUsers, sortField);
+            var result = PaginationHelper<GetUsersResponse>.Paging(sortedResults, page, pageSize);
+
+            return result;
             throw new NotImplementedException();
         }
     }

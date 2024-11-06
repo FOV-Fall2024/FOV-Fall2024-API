@@ -13,14 +13,13 @@ public class UnregisterScheduleHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     public async Task<bool> Handle(UnregisterScheduleCommand request, CancellationToken cancellationToken)
     {
-        //var schedule = await _unitOfWorks.WaiterScheduleRepository.GetByIdAsync(request.ScheduleId);
-        //if (schedule.EmployeeId != request.EmployeeId)
-        //{
-        //    throw new Exception("Bạn không có quyền để xem thông tin của người này");
-        //}
-        //_unitOfWorks.WaiterScheduleRepository.Remove(schedule);
-        //await _unitOfWorks.SaveChangeAsync();
-        //return true;
-        throw new NotImplementedException();
+        var schedule = await _unitOfWorks.WaiterScheduleRepository.GetByIdAsync(request.ScheduleId);
+        if (schedule.UserId != request.EmployeeId)
+        {
+            throw new Exception("Bạn không có quyền để xem thông tin của người này");
+        }
+        _unitOfWorks.WaiterScheduleRepository.Remove(schedule);
+        await _unitOfWorks.SaveChangeAsync();
+        return true;
     }
 }

@@ -18,33 +18,32 @@ public class GetDailySchedulesQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     public async Task<PagedResult<GetDailyScheduleResponse>> Handle(GetDailyScheduleCommand request, CancellationToken cancellationToken)
     {
-        //DateOnly today = DateOnly.FromDateTime(DateTime.Today);
-        //var schedules = await _unitOfWorks.WaiterScheduleRepository.GetAllAsync(x => x.Employee, x => x.Shift);
+        DateOnly today = DateOnly.FromDateTime(DateTime.Today);
+        var schedules = await _unitOfWorks.WaiterScheduleRepository.GetAllAsync(x => x.User, x => x.Shift);
 
-        //var filterEntity = new WaiterSchedule
-        //{
-        //    Id = request.ShiftId.HasValue ? request.ShiftId.Value : Guid.Empty,
-        //};
+        var filterEntity = new WaiterSchedule
+        {
+            Id = request.ShiftId.HasValue ? request.ShiftId.Value : Guid.Empty,
+        };
 
-        //var filteredSchedules = schedules.AsQueryable().CustomFilterV1(filterEntity).Where(schedules => schedules.DateTime == today);
+        var filteredSchedules = schedules.AsQueryable().CustomFilterV1(filterEntity).Where(schedules => schedules.DateTime == today);
 
-        //if (request.RestaurantId.HasValue)
-        //{
-        //    filteredSchedules = filteredSchedules.Where(schedule => schedule.Employee.RestaurantId == request.RestaurantId.Value);
-        //}
+        if (request.RestaurantId.HasValue)
+        {
+            filteredSchedules = filteredSchedules.Where(schedule => schedule.User.RestaurantId == request.RestaurantId.Value);
+        }
 
-        //var mappedSchedules = filteredSchedules.Select(schedule => new GetDailyScheduleResponse(
-        //               schedule.Id,
-        //                          new EmployeeDto(schedule.EmployeeId, schedule.Employee.EmployeeCode),
-        //                                     new ShiftDto(schedule.ShiftId, schedule.Shift.ShiftName)
-        //                                            )).ToList();
+        var mappedSchedules = filteredSchedules.Select(schedule => new GetDailyScheduleResponse(
+                       schedule.Id,
+                                  new EmployeeDto(schedule.Id, schedule.User.EmployeeCode),
+                                             new ShiftDto(schedule.ShiftId, schedule.Shift.ShiftName)
+                                                    )).ToList();
 
-        //var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
+        var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
 
-        //var sortedResults = PaginationHelper<GetDailyScheduleResponse>.Sorting(sortType, mappedSchedules, sortField);
-        //var result = PaginationHelper<GetDailyScheduleResponse>.Paging(sortedResults, page, pageSize);
+        var sortedResults = PaginationHelper<GetDailyScheduleResponse>.Sorting(sortType, mappedSchedules, sortField);
+        var result = PaginationHelper<GetDailyScheduleResponse>.Paging(sortedResults, page, pageSize);
 
-        //return result;
-        throw new NotImplementedException();
+        return result;
     }
 }

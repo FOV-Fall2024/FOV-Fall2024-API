@@ -19,39 +19,38 @@ public class GetDailyAttendancesHandler(IUnitOfWorks unitOfWorks) : IRequestHand
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     public async Task<PagedResult<GetDailyAttendanceResponse>> Handle(GetDailyAttendanceCommand request, CancellationToken cancellationToken)
     {
-        //DateOnly today = DateOnly.FromDateTime(DateTime.Today);
+        DateOnly today = DateOnly.FromDateTime(DateTime.Today);
 
-        //var schedules = (await _unitOfWorks.WaiterScheduleRepository
-        //    .GetAllAsync(s => s.Attendances, s => s.Employee, s => s.Shift))
-        //    .Where(s => s.DateTime == today);
+        var schedules = (await _unitOfWorks.WaiterScheduleRepository
+            .GetAllAsync(s => s.Attendances, s => s.User, s => s.Shift))
+            .Where(s => s.DateTime == today);
 
-        //if (request.IsCheckIn.HasValue)
-        //{
-        //    if (request.IsCheckIn.Value)
-        //    {
-        //        schedules = schedules.Where(s => s.Attendances.Any(a => a.CheckInTime != null));
-        //    }
-        //    else
-        //    {
-        //        schedules = schedules.Where(s => s.Attendances.All(a => a.CheckInTime == null));
-        //    }
-        //}
-        //var attendanceList = schedules.Select(s => new GetDailyAttendanceResponse(
-        //    s.Id,
-        //    s.Attendances.FirstOrDefault()?.CheckInTime,
-        //    new WaiterScheduleDto(
-        //        s.Id,
-        //        new EmployeeDto(s.EmployeeId, s.Employee.EmployeeCode),
-        //        new ShiftDto(s.ShiftId, s.Shift.ShiftName)
-        //    )
-        //)).ToList();
+        if (request.IsCheckIn.HasValue)
+        {
+            if (request.IsCheckIn.Value)
+            {
+                schedules = schedules.Where(s => s.Attendances.Any(a => a.CheckInTime != null));
+            }
+            else
+            {
+                schedules = schedules.Where(s => s.Attendances.All(a => a.CheckInTime == null));
+            }
+        }
+        var attendanceList = schedules.Select(s => new GetDailyAttendanceResponse(
+            s.Id,
+            s.Attendances.FirstOrDefault()?.CheckInTime,
+            new WaiterScheduleDto(
+                s.Id,
+                new EmployeeDto(s.Id, s.User.EmployeeCode),
+                new ShiftDto(s.ShiftId, s.Shift.ShiftName)
+            )
+        )).ToList();
 
-        //var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
-        //var sortedResults = PaginationHelper<GetDailyAttendanceResponse>.Sorting(sortType, attendanceList, sortField);
-        //var result = PaginationHelper<GetDailyAttendanceResponse>.Paging(sortedResults, page, pageSize);
+        var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
+        var sortedResults = PaginationHelper<GetDailyAttendanceResponse>.Sorting(sortType, attendanceList, sortField);
+        var result = PaginationHelper<GetDailyAttendanceResponse>.Paging(sortedResults, page, pageSize);
 
-        //return result;
-        throw new NotImplementedException();
+        return result;
     }
 }
 
