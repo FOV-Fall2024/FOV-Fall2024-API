@@ -16,6 +16,8 @@ public record GenerateCheckInQRCodeCommand : IRequest<string>
     public Guid RestaurantId { get; set; }
     public Guid WaiterScheduleId { get; set; }
     public DateOnly Date { get; set; }
+    public double Latitude { get; set; }
+    public double Longitude { get; set; }
 }
 public class GenerateCheckinQRCodeHandler(IUnitOfWorks unitOfWorks, QRCodeGeneratorHandler qRCodeGeneratorHandler, StorageHandler storage) : IRequestHandler<GenerateCheckInQRCodeCommand, string>
 {
@@ -25,9 +27,9 @@ public class GenerateCheckinQRCodeHandler(IUnitOfWorks unitOfWorks, QRCodeGenera
 
     public async Task<string> Handle(GenerateCheckInQRCodeCommand request, CancellationToken cancellationToken)
     {
-        return await GenerateAndUploadQRCodeAsync(request.Date, request.RestaurantId, request.WaiterScheduleId);
+        return await GenerateAndUploadQRCodeAsync(request.Date, request.RestaurantId, request.WaiterScheduleId, request.Longitude, request.Latitude);
     }
-    private async Task<string> GenerateAndUploadQRCodeAsync(DateOnly date, Guid restaurantId, Guid waiterScheduleId)
+    private async Task<string> GenerateAndUploadQRCodeAsync(DateOnly date, Guid restaurantId, Guid waiterScheduleId, double latitude, double longitude)
     {
         var restaurant = _unitOfWorks.RestaurantRepository.GetByIdAsync(restaurantId);
         if (restaurant == null)
@@ -37,7 +39,7 @@ public class GenerateCheckinQRCodeHandler(IUnitOfWorks unitOfWorks, QRCodeGenera
         var waiterSchedule = _unitOfWorks.WaiterScheduleRepository.GetByIdAsync(waiterScheduleId) ?? throw new Exception("Không tìm thấy lịch nhân viên");
 
         var fileName = $"Restaurant_{restaurant}_Date_{date}";
-        var qrUrl = $"https://localhost:7107/api/Attendance?restaurant={restaurantId}&date={date}&schedule={waiterScheduleId}";
+        var qrUrl = $"https://localhost:7107/api/Attendance?restaurant={restaurantId}&date={date}&schedule={waiterScheduleId}&latitude={latitude}&longitude={longitude}";
 
         Bitmap qrCodeImage = _qRCodeGeneratorHandler.GenerateQRCode(qrUrl);
         using (var memoryStream = new MemoryStream())

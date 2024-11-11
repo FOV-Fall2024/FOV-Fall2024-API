@@ -39,4 +39,9 @@ public class NotificationHub : Hub
         string connectionId = await _database.StringGetAsync(WaiterId.ToString());
         await Clients.Client(connectionId).SendAsync("ReceivePaymentNotificationToWaiter", OrderId);
     }
+    //public async Task SendNotificationToWaiter(Guid WaiterId, Guid OrderId, Guid OrderDetailId)
+    //{
+    //    string connectionId = await _database.StringGetAsync(WaiterId.ToString());
+    //    await Clients.Client(connectionId).SendAsync("ReceiveNotificationToWaiter", OrderId, OrderDetailId);
+    //}
 }

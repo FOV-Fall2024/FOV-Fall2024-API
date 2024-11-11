@@ -107,10 +107,7 @@ public partial class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager
         };
 
         return Result.Ok(message);
-        throw new NotImplementedException();
     }
-
-
     // 1. Manager 2.Waiter 3.Cook 4.Headchef
 
     public static string UserRole(int role) => role switch
@@ -130,7 +127,6 @@ public partial class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager
         4 => "HCF_001",
         _ => throw new NotImplementedException(),
     };
-
     public async Task<GenerateRole> GenerateCode(int roleId)
     {
         // Ensure the role exists
@@ -157,7 +153,6 @@ public partial class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager
 
         return new GenerateRole(UserRole(roleId), nextEmployeeCode);
     }
-
     public static string IncrementRoleCode(string roleCode, int newCount)
     {
         var match = MyRegex().Match(roleCode);
@@ -169,8 +164,6 @@ public partial class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager
         }
         return roleCode;
     }
-
-
     [GeneratedRegex(@"^(.*?)(\d+)$")]
     private static partial Regex MyRegex();
 }

@@ -7,6 +7,7 @@ public record RegisterScheduleCommand(
     Dictionary<DateOnly, List<Guid>> DateShift,
     Guid EmployeeId
     ) : IRequest<List<Guid>>;
+//Nems ddau bon employee vao schedule
 public class RegisterScheduleHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<RegisterScheduleCommand, List<Guid>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
@@ -28,6 +29,5 @@ public class RegisterScheduleHandler(IUnitOfWorks unitOfWorks) : IRequestHandler
 
         await _unitOfWorks.SaveChangeAsync();
         return scheduleIds;
-        //throw new NotImplementedException();
     }
 }

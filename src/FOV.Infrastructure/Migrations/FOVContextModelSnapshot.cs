@@ -263,9 +263,6 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<Guid>("DishId")
                         .HasColumnType("uuid");
 
-                    b.Property<byte>("DishIngredientStatus")
-                        .HasColumnType("smallint");
-
                     b.Property<Guid>("IngredientId")
                         .HasColumnType("uuid");
 
@@ -380,6 +377,9 @@ namespace FOV.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("DishGeneralParentId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("DishImageDefault")
                         .IsRequired()
                         .HasColumnType("text");
@@ -387,9 +387,6 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("DishName")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<bool>("IsDraft")
-                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsRefund")
                         .HasColumnType("boolean");
@@ -412,6 +409,8 @@ namespace FOV.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("DishGeneralParentId");
 
                     b.ToTable("DishGenerals");
                 });
@@ -511,8 +510,8 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<Guid>("IngredientGeneralId")
                         .HasColumnType("uuid");
 
-                    b.Property<byte>("IngredientMeasure")
-                        .HasColumnType("smallint");
+                    b.Property<Guid>("IngredientMeasureId")
+                        .HasColumnType("uuid");
 
                     b.Property<Guid?>("IngredientTypeId")
                         .HasColumnType("uuid");
@@ -529,6 +528,8 @@ namespace FOV.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("IngredientGeneralId");
+
+                    b.HasIndex("IngredientMeasureId");
 
                     b.HasIndex("IngredientTypeId");
 
@@ -705,8 +706,8 @@ namespace FOV.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<byte>("IngredientMeasure")
-                        .HasColumnType("smallint");
+                    b.Property<Guid>("IngredientMeasureId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("IngredientName")
                         .IsRequired()
@@ -726,6 +727,8 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("IngredientMeasureId");
+
                     b.HasIndex("IngredientTypeId");
 
                     b.ToTable("IngredientGenerals");
@@ -736,7 +739,7 @@ namespace FOV.Infrastructure.Migrations
                             Id = new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a8"),
                             Created = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             IngredientDescription = "Can last 6 months to a year or more if kept in a cool, dry place.",
-                            IngredientMeasure = (byte)0,
+                            IngredientMeasureId = new Guid("6531296e-a86a-4fcc-97e7-7e6182a5c011"),
                             IngredientName = "Rice",
                             IngredientTypeId = new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a7"),
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -747,7 +750,7 @@ namespace FOV.Infrastructure.Migrations
                             Id = new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a0"),
                             Created = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             IngredientDescription = "Typically lasts 1-2 years when stored in an airtight container..",
-                            IngredientMeasure = (byte)0,
+                            IngredientMeasureId = new Guid("6531296e-a86a-4fcc-97e7-7e6182a5c011"),
                             IngredientName = "Pasta",
                             IngredientTypeId = new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540a7"),
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -758,11 +761,54 @@ namespace FOV.Infrastructure.Migrations
                             Id = new Guid("9ccc9ec6-6b72-4467-aaeb-1e45dc0540b0"),
                             Created = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             IngredientDescription = "Typically lasts 1-2 years when stored in an airtight container..",
-                            IngredientMeasure = (byte)0,
+                            IngredientMeasureId = new Guid("6531296e-a86a-4fcc-97e7-7e6182a5c011"),
                             IngredientName = "Spinach",
                             IngredientTypeId = new Guid("b8f66bab-13c9-4390-8582-545ddc7d2ec8"),
                             LastModified = new DateTime(2002, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             Status = (byte)1
+                        });
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.IngredientGeneralAggregator.IngredientMeasure", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("IngredientMeasureName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IngredientMeasures");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("6531296e-a86a-4fcc-97e7-7e6182a5c011"),
+                            Created = new DateTime(2024, 11, 11, 10, 51, 44, 9, DateTimeKind.Utc).AddTicks(4214),
+                            IngredientMeasureName = "gam",
+                            LastModified = new DateTime(2024, 11, 11, 10, 51, 44, 9, DateTimeKind.Utc).AddTicks(4216)
+                        },
+                        new
+                        {
+                            Id = new Guid("6531296e-a86a-4fcc-97e7-7e6192a5c011"),
+                            Created = new DateTime(2024, 11, 11, 10, 51, 44, 9, DateTimeKind.Utc).AddTicks(4224),
+                            IngredientMeasureName = "ml",
+                            LastModified = new DateTime(2024, 11, 11, 10, 51, 44, 9, DateTimeKind.Utc).AddTicks(4224)
                         });
                 });
 
@@ -1601,7 +1647,14 @@ namespace FOV.Infrastructure.Migrations
                         .WithMany("DishGenerals")
                         .HasForeignKey("CategoryId");
 
+                    b.HasOne("FOV.Domain.Entities.DishGeneralAggregator.DishGeneral", "DishGeneralParent")
+                        .WithMany("ChildDishGenerals")
+                        .HasForeignKey("DishGeneralParentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("Category");
+
+                    b.Navigation("DishGeneralParent");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.DishGeneralAggregator.DishGeneralImage", b =>
@@ -1640,6 +1693,12 @@ namespace FOV.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("FOV.Domain.Entities.IngredientGeneralAggregator.IngredientMeasure", "IngredientMeasure")
+                        .WithMany()
+                        .HasForeignKey("IngredientMeasureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("FOV.Domain.Entities.IngredientAggregator.IngredientType", "IngredientType")
                         .WithMany("Ingredients")
                         .HasForeignKey("IngredientTypeId");
@@ -1649,6 +1708,8 @@ namespace FOV.Infrastructure.Migrations
                         .HasForeignKey("RestaurantId");
 
                     b.Navigation("IngredientGeneral");
+
+                    b.Navigation("IngredientMeasure");
 
                     b.Navigation("IngredientType");
 
@@ -1704,11 +1765,19 @@ namespace FOV.Infrastructure.Migrations
 
             modelBuilder.Entity("FOV.Domain.Entities.IngredientGeneralAggregator.IngredientGeneral", b =>
                 {
+                    b.HasOne("FOV.Domain.Entities.IngredientGeneralAggregator.IngredientMeasure", "IngredientMeasure")
+                        .WithMany("IngredientGenerals")
+                        .HasForeignKey("IngredientMeasureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("FOV.Domain.Entities.IngredientAggregator.IngredientType", "IngredientType")
                         .WithMany("IngredientGenerals")
                         .HasForeignKey("IngredientTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("IngredientMeasure");
 
                     b.Navigation("IngredientType");
                 });
@@ -1941,6 +2010,8 @@ namespace FOV.Infrastructure.Migrations
 
             modelBuilder.Entity("FOV.Domain.Entities.DishGeneralAggregator.DishGeneral", b =>
                 {
+                    b.Navigation("ChildDishGenerals");
+
                     b.Navigation("DishGeneralImages");
 
                     b.Navigation("Dishes");
@@ -1972,6 +2043,11 @@ namespace FOV.Infrastructure.Migrations
                     b.Navigation("DishIngredientGenerals");
 
                     b.Navigation("Ingredients");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.IngredientGeneralAggregator.IngredientMeasure", b =>
+                {
+                    b.Navigation("IngredientGenerals");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.IngredientSupplyRequestAggregator.IngredientSupplyRequest", b =>
