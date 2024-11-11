@@ -799,16 +799,16 @@ namespace FOV.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("6531296e-a86a-4fcc-97e7-7e6182a5c011"),
-                            Created = new DateTime(2024, 11, 11, 10, 51, 44, 9, DateTimeKind.Utc).AddTicks(4214),
+                            Created = new DateTime(2024, 11, 11, 12, 23, 6, 122, DateTimeKind.Utc).AddTicks(5913),
                             IngredientMeasureName = "gam",
-                            LastModified = new DateTime(2024, 11, 11, 10, 51, 44, 9, DateTimeKind.Utc).AddTicks(4216)
+                            LastModified = new DateTime(2024, 11, 11, 12, 23, 6, 122, DateTimeKind.Utc).AddTicks(5915)
                         },
                         new
                         {
                             Id = new Guid("6531296e-a86a-4fcc-97e7-7e6192a5c011"),
-                            Created = new DateTime(2024, 11, 11, 10, 51, 44, 9, DateTimeKind.Utc).AddTicks(4224),
+                            Created = new DateTime(2024, 11, 11, 12, 23, 6, 122, DateTimeKind.Utc).AddTicks(5924),
                             IngredientMeasureName = "ml",
-                            LastModified = new DateTime(2024, 11, 11, 10, 51, 44, 9, DateTimeKind.Utc).AddTicks(4224)
+                            LastModified = new DateTime(2024, 11, 11, 12, 23, 6, 122, DateTimeKind.Utc).AddTicks(5924)
                         });
                 });
 

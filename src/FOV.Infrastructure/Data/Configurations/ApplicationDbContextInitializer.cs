@@ -94,7 +94,7 @@ public class ApplicationDbContextInitializer
         var administrator = await _userManager.FindByEmailAsync("administrator@localhost");
         if (administrator == null)
         {
-            administrator = new User { UserName = "administrator@localhost", Email = "administrator@localhost", FullName = "Admin", PhoneNumber = "0867960120"};
+            administrator = new User { UserName = "administrator@localhost", Email = "administrator@localhost", FullName = "Admin", PhoneNumber = "0867960120", EmployeeCode = "ADM_000", HireDate = DateTime.UtcNow, Status = Domain.Entities.TableAggregator.Enums.Status.Active };
             await _userManager.CreateAsync(administrator, "Administrator1!");
 
             if (!string.IsNullOrWhiteSpace(administratorsRole.Name))
@@ -108,18 +108,7 @@ public class ApplicationDbContextInitializer
     new Claim(nameof(administrator.UserName), administrator.UserName),
     new Claim(nameof(administrator.Email), administrator.Email)
 });
-            //var employee = new Employee
-            //{
-            //    EmployeeCode = "ADM_000",
-            //    UserId = administrator.Id,
-            //    HireDate = DateTime.UtcNow,
-            //    Status = Domain.Entities.TableAggregator.Enums.Status.Active
-            //};
-            //await _context.Employees.AddAsync(employee);
         }
-
-
-
         await _context.SaveChangesAsync();
     }
 }

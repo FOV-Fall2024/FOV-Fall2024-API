@@ -54,7 +54,7 @@ public class EmployeeLoginHandler(IUnitOfWorks unitOfWorks, UserManager<User> us
             string token = GenerateJWT(user, roles, secretKey, validIssuer, validAudience, user.RestaurantId ?? Guid.Empty);
 
             //Remember to remove this line when deploy
-            await _notificationHub.SendEmployeeId(user.Id, roles.FirstOrDefault());
+            //await _notificationHub.SendEmployeeId(user.Id, roles.FirstOrDefault());
 
             return new EmployeeLoginResponse(user.Id, user.RestaurantId ?? Guid.Empty, user.FullName, user.PhoneNumber, roles.FirstOrDefault(), token, "not");
         }

@@ -13,7 +13,7 @@ public class User : IdentityUser<Guid>
 {
     public string FullName { get; set; } = string.Empty;
     public DateTime? HireDate { get; set; } = DateTime.UtcNow;
-    public string EmployeeCode { get; set; } = string.Empty;
+    public string EmployeeCode { get; set; }
     public ICollection<Attendance> Attendances { get; set; } = []; // Use List<Attendance>
     public ICollection<WaiterSchedule> WaiterSchedules { get; set; } = [];
     public virtual ICollection<Order> Orders { get; set; } = [];
