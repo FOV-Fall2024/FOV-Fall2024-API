@@ -12,9 +12,8 @@ namespace FOV.Application.Features.Employees.Queries.GetAllEmployee;
 
 public sealed record GetAllEmployeeCommand(PagingRequest? PagingRequest, string? Role, Guid? RestaurantId, string? FullName, string? PhoneNumber, string? EmployeeCode, Status? Status = Status.Unknown) : IRequest<PagedResult<GetAllEmployeeResponse>>;
 
-public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager, IClaimService claimService) : IRequestHandler<GetAllEmployeeCommand, PagedResult<GetAllEmployeeResponse>>
+public class GetAllEmployeeHandler(UserManager<User> userManager, IClaimService claimService) : IRequestHandler<GetAllEmployeeCommand, PagedResult<GetAllEmployeeResponse>>
 {
-    private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     private readonly UserManager<User> _userManager = userManager;
     private readonly IClaimService _claimService = claimService;
 
@@ -23,7 +22,7 @@ public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> u
         var userRoles = _claimService.UserRole;
         var restaurantId = _claimService.RestaurantId;
 
-        var users = _userManager.Users;
+        var users = _userManager.Users.ToList();
         var usersQuery = users.AsQueryable();
 
         if (userRoles.Contains(Role.Manager))
@@ -44,16 +43,22 @@ public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> u
                 (x.FullName).ToLower().Contains(fullName));
         }
 
-        var filterEntity = usersQuery.CustomFilterV1(new User
+        if (!string.IsNullOrEmpty(request.PhoneNumber))
         {
-            PhoneNumber = request.PhoneNumber,
-            EmployeeCode = request.EmployeeCode ?? string.Empty,
-            Status = request.Status ?? Status.Unknown
-        });
+            usersQuery = usersQuery.Where(x => x.PhoneNumber == request.PhoneNumber);
+        }
+        if (!string.IsNullOrEmpty(request.EmployeeCode))
+        {
+            usersQuery = usersQuery.Where(x => x.EmployeeCode == request.EmployeeCode);
+        }
+        if (request.Status != Status.Unknown)
+        {
+            usersQuery = usersQuery.Where(x => x.Status == request.Status);
+        }
 
         var result = new List<GetAllEmployeeResponse>();
 
-        foreach (var user in filterEntity)
+        foreach (var user in usersQuery)
         {
             var roles = await _userManager.GetRolesAsync(user);
             var roleName = roles.FirstOrDefault() ?? string.Empty;
@@ -63,7 +68,6 @@ public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> u
                 continue;
             }
 
-            // Only include if the role matches or no specific role is requested
             if (string.IsNullOrEmpty(request.Role) || roles.Contains(request.Role))
             {
                 result.Add(new GetAllEmployeeResponse(
