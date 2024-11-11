@@ -10,6 +10,8 @@ namespace FOV.Domain.Entities.TableAggregator.Enums
     {
         Unknown = 0,
         Active = 1,
-        Inactive = 2
+        Inactive = 2,
+        New = 3,
+
     }
 }

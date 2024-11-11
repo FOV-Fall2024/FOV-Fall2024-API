@@ -78,7 +78,7 @@ internal class AddProductHandler : IRequestHandler<AddProductCommand, Result>
             {
                 var newIngredient = new Ingredient(item.IngredientName, item.IngredientTypeId, _claimService.RestaurantId);
                 await _unitOfWorks.IngredientRepository.AddAsync(newIngredient);
-                await AddDishIngredientAndUnits(productId, newIngredient.Id, item.IngredientMeasure, item.DishIngredientGenerals.FirstOrDefault().Quantity);
+                await AddDishIngredientAndUnits(productId, newIngredient.Id, item.IngredientMeasureId, item.DishIngredientGenerals.FirstOrDefault().Quantity);
             }
             else
             {
@@ -88,20 +88,21 @@ internal class AddProductHandler : IRequestHandler<AddProductCommand, Result>
         await _unitOfWorks.SaveChangeAsync();
     }
 
-    private async Task AddDishIngredientAndUnits(Guid productId, Guid ingredientId, IngredientMeasure measure, decimal quantity)
+    private async Task AddDishIngredientAndUnits(Guid productId, Guid ingredientId, Guid ingredientMeasureId, decimal quantity)
     {
+        IngredientMeasure ingredientMeasure = await _unitOfWorks.IngredientMeasureRepository.GetByIdAsync(ingredientMeasureId) ?? throw new Exception();
         await _unitOfWorks.DishIngredientRepository.AddAsync(new DishIngredient(productId, ingredientId, quantity));
-        await AddDefaultIngredientUnit(ingredientId, measure);
+        await AddDefaultIngredientUnit(ingredientId, ingredientMeasure.IngredientMeasureName);
     }
 
-    private async Task AddDefaultIngredientUnit(Guid ingredientId, IngredientMeasure measure)
+    private async Task AddDefaultIngredientUnit(Guid ingredientId, string ingredientMeasureName)
     {
-        var smallUnit = new IngredientUnit(MeasureTransfer.ToSmallUnit(measure), ingredientId);
+        var smallUnit = new IngredientUnit(ingredientMeasureName, ingredientId);
         await _unitOfWorks.IngredientUnitRepository.AddAsync(smallUnit);
 
-        if (measure == IngredientMeasure.gam || measure == IngredientMeasure.ml)
+        if (ingredientMeasureName == IngredientMeasureType.Gam || ingredientMeasureName == IngredientMeasureType.Ml)
         {
-            var largeUnit = new IngredientUnit(MeasureTransfer.ToLargeUnit(measure), ingredientId, smallUnit.Id, 1000);
+            var largeUnit = new IngredientUnit(MeasureTransfer.ToLargeUnit(ingredientMeasureName), ingredientId, smallUnit.Id, 1000);
             await _unitOfWorks.IngredientUnitRepository.AddAsync(largeUnit);
         }
     }

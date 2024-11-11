@@ -14,7 +14,7 @@ public class DishIngredient : BaseAuditableEntity
 
     public Guid IngredientId { get; set; }
 
-    public DishIngredientStatus DishIngredientStatus { get; set; }
+//    public DishIngredientStatus DishIngredientStatus { get; set; }
 
     public DishIngredient()
     {
@@ -26,17 +26,6 @@ public class DishIngredient : BaseAuditableEntity
         IngredientId = ingredientId;
         DishId = dishId;
         Quantity = quantity;
-        DishIngredientStatus = DishIngredientStatus.Normal;
 
     }
-
-    public DishIngredient(Guid dishId, Guid ingredientId, decimal quantity,DishIngredientStatus type)
-    {
-        IngredientId = ingredientId;
-        DishId = dishId;
-        Quantity = quantity;
-        DishIngredientStatus = type;
-    }
-
-    public void ChangeState(DishIngredientStatus status) => DishIngredientStatus = status;
 }

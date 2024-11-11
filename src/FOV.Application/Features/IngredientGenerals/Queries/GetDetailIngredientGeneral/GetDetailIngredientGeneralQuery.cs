@@ -16,8 +16,8 @@ public class GetDetailIngredientGeneralQuery(IUnitOfWorks unitOfWorks) : IReques
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     public async Task<GetDetailIngredientGeneralResponse> Handle(GetDetailIngredientGeneralCommand request, CancellationToken cancellationToken)
     {
-        var allIngredients = await _unitOfWorks.IngredientGeneralRepository.GetAllAsync(x => x.IngredientType);
+        var allIngredients = await _unitOfWorks.IngredientGeneralRepository.GetAllAsync(x => x.IngredientType,x => x.IngredientMeasure);
         var ingredientGeneral = allIngredients.FirstOrDefault(x => x.Id == request.Id);
-        return new GetDetailIngredientGeneralResponse(ingredientGeneral.Id, ingredientGeneral.IngredientName, ingredientGeneral.IngredientTypeId, ingredientGeneral.IngredientType.IngredientName, ingredientGeneral.IngredientMeasure + 1, ingredientGeneral.IngredientDescription, ingredientGeneral.Status, ingredientGeneral.Created);
+        return new GetDetailIngredientGeneralResponse(ingredientGeneral.Id, ingredientGeneral.IngredientName, ingredientGeneral.IngredientTypeId, ingredientGeneral.IngredientType.IngredientName, ingredientGeneral.IngredientMeasure.IngredientMeasureName, ingredientGeneral.IngredientDescription, ingredientGeneral.Status, ingredientGeneral.Created);
     }
 }

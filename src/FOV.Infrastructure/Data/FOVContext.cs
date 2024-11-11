@@ -77,6 +77,8 @@ public class FOVContext : IdentityDbContext<User, ApplicationRole, Guid>, IAppli
 
     public DbSet<IngredientSupplyRequestDetail> IngredientSupplyRequestDetails => Set<IngredientSupplyRequestDetail>();
 
+    public DbSet<IngredientMeasure> IngredientMeasures => Set<IngredientMeasure>();
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

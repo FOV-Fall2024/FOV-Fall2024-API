@@ -53,5 +53,6 @@ public interface IApplicationDbContext
     DbSet<IngredientSupplyRequestDetail> IngredientSupplyRequestDetails { get; }
 
     DbSet<DishGeneralImage> DishGeneralImages { get; }
+    DbSet<IngredientMeasure> IngredientMeasures { get; }
 
 }

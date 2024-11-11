@@ -130,19 +130,19 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
             Ingredient? ingredient = _unitOfWorks.IngredientRepository.FirstOrDefaultAsync(x => x.IngredientGeneral.IngredientName == item && x.RestaurantId == restaurantId,x => x.IngredientGeneral).Result;
             if (ingredient == null)
             {
-                IngredientGeneral ingredientGeneral = await _unitOfWorks.IngredientGeneralRepository.FirstOrDefaultAsync(x => x.IngredientName == item, x => x.DishIngredientGenerals) ?? throw new Exception();
+                IngredientGeneral ingredientGeneral = await _unitOfWorks.IngredientGeneralRepository.FirstOrDefaultAsync(x => x.IngredientName == item, x => x.DishIngredientGenerals,x => x.IngredientMeasure) ?? throw new Exception();
                 Ingredient ingredient1 = new(ingredientGeneral.IngredientName, ingredientGeneral.IngredientTypeId, restaurantId);
 
                 await _unitOfWorks.IngredientRepository.AddAsync(ingredient1);
                 await _unitOfWorks.DishIngredientRepository.AddAsync(new DishIngredient(productId, ingredient1.Id, ingredientGeneral.DishIngredientGenerals.FirstOrDefault(x => x.DishGeneralId == productGeneralId && x.IngredientGeneralId == ingredientGeneral.Id).Quantity));
-                await AddDefaultIngredientUnit(ingredient1.Id, ingredientGeneral.IngredientMeasure);
+                await AddDefaultIngredientUnit(ingredient1.Id, ingredientGeneral.IngredientMeasure.IngredientMeasureName);
             }
         }
 
 
     }
 
-    private async Task AddDefaultIngredientUnit(Guid ingredientId, IngredientMeasure minMeasure)
+    private async Task AddDefaultIngredientUnit(Guid ingredientId, string minMeasure)
     {
         IngredientUnit ingredientUnit = new(MeasureTransfer.ToSmallUnit(minMeasure), ingredientId);
 
@@ -154,7 +154,7 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
         await _unitOfWorks.IngredientUnitRepository.AddAsync(ingredientUnit);
         await _unitOfWorks.SaveChangeAsync();
 
-        if (minMeasure == IngredientMeasure.gam || minMeasure == IngredientMeasure.ml)
+        if (minMeasure == IngredientMeasureType.Gam || minMeasure == IngredientMeasureType.Ml)
         {
             IngredientUnit ingredientUnit2 = new(MeasureTransfer.ToLargeUnit(minMeasure), ingredientId, ingredientUnit.Id, 1000);
 

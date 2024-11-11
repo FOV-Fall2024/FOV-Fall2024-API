@@ -12,7 +12,6 @@ public class CreateIngredientGeneralValidator : AbstractValidator<CreateIngredie
         RuleFor(x => x.IngredientGeneralName).NotEmpty().NotNull().SetValidator(name);
         RuleFor(x => x.IngredientGeneralDescription).NotNull();
         RuleFor(x => x.IngredientType).NotNull().SetValidator(ingredientTypeId);
-        RuleFor(x => x.IngredientMeasureType).NotNull().InclusiveBetween(1, 4).WithMessage("Nằm trong khoảng 1-4");
     }
 }
 

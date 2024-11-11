@@ -72,7 +72,6 @@ public class UpdateIngredientQuantityHandler : IRequestHandler<UpdateIngredientQ
             .FirstOrDefaultAsync(x => x.IngredientId == ingredientId && x.DishId == dishId)
             ?? throw new InvalidOperationException("Dish ingredient not found");
 
-        dishIngredient.ChangeState(Domain.Entities.DishAggregator.Enums.DishIngredientStatus.UpdateQuantity);
         _unitOfWorks.DishIngredientRepository.Update(dishIngredient);
 
         await _unitOfWorks.SaveChangeAsync();

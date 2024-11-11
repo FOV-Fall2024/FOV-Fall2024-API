@@ -47,7 +47,6 @@ public class RemoveIngredientHandler(IUnitOfWorks unitOfWorks) : IRequestHandler
     private async Task UpdateDishIngredient(Guid dishId, Guid ingredientId)
     {
         DishIngredient dishIngredient = await _unitOfWorks.DishIngredientRepository.FirstOrDefaultAsync(x => x.IngredientId == ingredientId && x.DishId == dishId) ?? throw new Exception();
-        dishIngredient.ChangeState(Domain.Entities.DishAggregator.Enums.DishIngredientStatus.RecentRemove);
         _unitOfWorks.DishIngredientRepository.Update(dishIngredient);
         await _unitOfWorks.SaveChangeAsync();
     }

@@ -13,8 +13,9 @@ public class IngredientGeneral : BaseAuditableEntity, IsSoftDeleted
     public IngredientType? IngredientType { get; set; }
     public Guid IngredientTypeId { get; set; }
     public Status Status { get; set; } = Status.Active;
-    public IngredientMeasure IngredientMeasure { get; set; }
-
+    public IngredientMeasure? IngredientMeasure  { get; set; }
+    public Guid IngredientMeasureId { get; set; }
+    
     public virtual ICollection<Ingredient> Ingredients { get; set; }
     public virtual ICollection<DishIngredientGeneral>? DishIngredientGenerals { get; set; }
 
@@ -23,10 +24,10 @@ public class IngredientGeneral : BaseAuditableEntity, IsSoftDeleted
 
     }
 
-    public IngredientGeneral(string name, string description, Guid ingredientType, IngredientMeasure ingredientMeasure)
+    public IngredientGeneral(string name, string description, Guid ingredientType, Guid ingredientMeasureId)
     {
         IngredientName = name;
-        IngredientMeasure = ingredientMeasure;
+        IngredientMeasureId = ingredientMeasureId;
         IngredientDescription = description;
         IngredientTypeId = ingredientType;
         Created = DateTime.Now;
