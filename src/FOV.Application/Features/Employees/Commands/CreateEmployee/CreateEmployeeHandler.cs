@@ -69,6 +69,7 @@ public partial class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager
             FullName = request.FullName,
             PhoneNumber = request.PhoneNumber,
             UserName = request.PhoneNumber,
+            EmployeeCode = generate.Code,
         };
 
         var result = await _userManager.CreateAsync(user, "12345678!Fpt");
