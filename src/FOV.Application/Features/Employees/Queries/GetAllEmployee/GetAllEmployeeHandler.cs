@@ -7,22 +7,24 @@ using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace FOV.Application.Features.Employees.Queries.GetAllEmployee;
 
 public sealed record GetAllEmployeeCommand(PagingRequest? PagingRequest, string? Role, Guid? RestaurantId, string? FullName, string? PhoneNumber, string? EmployeeCode, Status? Status = Status.Unknown) : IRequest<PagedResult<GetAllEmployeeResponse>>;
 
-public class GetAllEmployeeHandler(UserManager<User> userManager, IClaimService claimService) : IRequestHandler<GetAllEmployeeCommand, PagedResult<GetAllEmployeeResponse>>
+public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager, IClaimService claimService) : IRequestHandler<GetAllEmployeeCommand, PagedResult<GetAllEmployeeResponse>>
 {
     private readonly UserManager<User> _userManager = userManager;
     private readonly IClaimService _claimService = claimService;
+    private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
 
     public async Task<PagedResult<GetAllEmployeeResponse>> Handle(GetAllEmployeeCommand request, CancellationToken cancellationToken)
     {
         var userRoles = _claimService.UserRole;
         var restaurantId = _claimService.RestaurantId;
 
-        var users = _userManager.Users.ToList();
+        var users = await _userManager.Users.Include(x => x.Restaurant).ToListAsync();
         var usersQuery = users.AsQueryable();
 
         if (userRoles.Contains(Role.Manager))
