@@ -58,7 +58,7 @@ public class AddIngredientHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<Ad
         var ingredientGeneral = await _unitOfWorks.IngredientGeneralRepository
             .FirstOrDefaultAsync(i => i.IngredientName == ingredientName,x => x.IngredientMeasure) ?? throw new Exception("Ingredient General not found");
 
-        var newIngredient = new Ingredient(ingredientGeneral.IngredientName, ingredientGeneral.IngredientTypeId, restaurantId);
+        var newIngredient = new Ingredient(ingredientGeneral.IngredientName, ingredientGeneral.IngredientTypeId, restaurantId, ingredientGeneral.Id, ingredientGeneral.IngredientMeasureId);
         await _unitOfWorks.IngredientRepository.AddAsync(newIngredient);
         await AddDefaultIngredientUnit(newIngredient.Id, ingredientGeneral.IngredientMeasure.IngredientMeasureName);
 
@@ -77,7 +77,7 @@ public class AddIngredientHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<Ad
         var baseUnit = new IngredientUnit(MeasureTransfer.ToSmallUnit(measure), ingredientId);
         await _unitOfWorks.IngredientUnitRepository.AddAsync(baseUnit);
 
-        if (measure == IngredientMeasureType.Gam || measure == IngredientMeasureType.Ml)
+        if (measure == IngredientMeasureType.gam || measure == IngredientMeasureType.ml)
         {
             var largerUnit = new IngredientUnit(MeasureTransfer.ToLargeUnit(measure), ingredientId, baseUnit.Id, 1000);
             await _unitOfWorks.IngredientUnitRepository.AddAsync(largerUnit);

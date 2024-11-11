@@ -131,7 +131,7 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
             if (ingredient == null)
             {
                 IngredientGeneral ingredientGeneral = await _unitOfWorks.IngredientGeneralRepository.FirstOrDefaultAsync(x => x.IngredientName == item, x => x.DishIngredientGenerals,x => x.IngredientMeasure) ?? throw new Exception();
-                Ingredient ingredient1 = new(ingredientGeneral.IngredientName, ingredientGeneral.IngredientTypeId, restaurantId);
+                Ingredient ingredient1 = new(ingredientGeneral.IngredientName, ingredientGeneral.IngredientTypeId, restaurantId, ingredientGeneral.Id, ingredient.IngredientMeasureId);
 
                 await _unitOfWorks.IngredientRepository.AddAsync(ingredient1);
                 await _unitOfWorks.DishIngredientRepository.AddAsync(new DishIngredient(productId, ingredient1.Id, ingredientGeneral.DishIngredientGenerals.FirstOrDefault(x => x.DishGeneralId == productGeneralId && x.IngredientGeneralId == ingredientGeneral.Id).Quantity));
@@ -154,7 +154,7 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
         await _unitOfWorks.IngredientUnitRepository.AddAsync(ingredientUnit);
         await _unitOfWorks.SaveChangeAsync();
 
-        if (minMeasure == IngredientMeasureType.Gam || minMeasure == IngredientMeasureType.Ml)
+        if (minMeasure == IngredientMeasureType.gam || minMeasure == IngredientMeasureType.ml)
         {
             IngredientUnit ingredientUnit2 = new(MeasureTransfer.ToLargeUnit(minMeasure), ingredientId, ingredientUnit.Id, 1000);
 

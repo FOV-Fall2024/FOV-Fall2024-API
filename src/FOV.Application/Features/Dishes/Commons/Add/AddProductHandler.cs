@@ -73,10 +73,10 @@ internal class AddProductHandler : IRequestHandler<AddProductCommand, Result>
         foreach (var item in ingredients)
         {
             var existingIngredient = existingIngredients.FirstOrDefault(e => e.IngredientGeneral.IngredientName == item.IngredientName);
-            IngredientGeneral? ingredientGeneral = await _unitOfWorks.IngredientGeneralRepository.FirstOrDefaultAsync(x => x.IngredientName == item.IngredientName, x => x.DishIngredientGenerals);
+            IngredientGeneral? ingredientGeneral = await _unitOfWorks.IngredientGeneralRepository.FirstOrDefaultAsync(x => x.IngredientName == item.IngredientName, x => x.DishIngredientGenerals, x => x.IngredientMeasure);
             if (existingIngredient is null)
             {
-                var newIngredient = new Ingredient(item.IngredientName, item.IngredientTypeId, _claimService.RestaurantId);
+                var newIngredient = new Ingredient(item.IngredientName, item.IngredientTypeId, _claimService.RestaurantId, ingredientGeneral.Id, ingredientGeneral.IngredientMeasureId);
                 await _unitOfWorks.IngredientRepository.AddAsync(newIngredient);
                 await AddDishIngredientAndUnits(productId, newIngredient.Id, item.IngredientMeasureId, item.DishIngredientGenerals.FirstOrDefault().Quantity);
             }
@@ -100,7 +100,7 @@ internal class AddProductHandler : IRequestHandler<AddProductCommand, Result>
         var smallUnit = new IngredientUnit(ingredientMeasureName, ingredientId);
         await _unitOfWorks.IngredientUnitRepository.AddAsync(smallUnit);
 
-        if (ingredientMeasureName == IngredientMeasureType.Gam || ingredientMeasureName == IngredientMeasureType.Ml)
+        if (ingredientMeasureName == IngredientMeasureType.gam || ingredientMeasureName == IngredientMeasureType.ml)
         {
             var largeUnit = new IngredientUnit(MeasureTransfer.ToLargeUnit(ingredientMeasureName), ingredientId, smallUnit.Id, 1000);
             await _unitOfWorks.IngredientUnitRepository.AddAsync(largeUnit);

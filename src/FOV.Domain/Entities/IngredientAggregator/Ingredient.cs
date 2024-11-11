@@ -18,6 +18,7 @@ public class Ingredient : BaseAuditableEntity
     public Guid? IngredientTypeId { get; set; }
     public Restaurant? Restaurant { get; set; }
     public Guid? RestaurantId { get; set; }
+    public Guid? IngredientMeasureId { get; set; }
     public IngredientMeasure IngredientMeasure { get; set; }
     public virtual ICollection<IngredientUsage> IngredientTransactions { get; set; } = [];
     public virtual ICollection<IngredientUnit> IngredientUnits { get; set; } = [];
@@ -26,10 +27,12 @@ public class Ingredient : BaseAuditableEntity
 
     }
 
-    public Ingredient(string name, Guid ingredientTypeId, Guid restaurantId)
+    public Ingredient(string name, Guid ingredientTypeId, Guid restaurantId, Guid ingredientGeneralId, Guid? ingredientMeasureId)
     {
         RestaurantId = restaurantId;
         IngredientTypeId = ingredientTypeId;
+        IngredientGeneralId = ingredientGeneralId;
+        IngredientMeasureId = ingredientMeasureId;
     }
 
     public void AddQuantity(decimal quantity) => IngredientAmount += quantity;

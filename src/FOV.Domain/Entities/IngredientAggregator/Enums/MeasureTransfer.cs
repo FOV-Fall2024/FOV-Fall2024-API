@@ -12,8 +12,8 @@ namespace FOV.Domain.Entities.IngredientAggregator.Enums
         /// <returns>A string representing the base unit (e.g., "g(gram)", "mL(milliliter)").</returns>
         public static string ToSmallUnit(this string measure) => measure switch
         {
-            nameof(IngredientMeasureType.Gam) => "g",
-            nameof(IngredientMeasureType.Ml) => "mL",
+            nameof(IngredientMeasureType.gam) => "gam",
+            nameof(IngredientMeasureType.ml) => "ml",
             _ => "Unknown small unit"
         };
 
@@ -24,8 +24,8 @@ namespace FOV.Domain.Entities.IngredientAggregator.Enums
         /// <returns>A string representing the larger unit (e.g., "kg(kilogram)", "L(liter)").</returns>
         public static string ToLargeUnit(this string measure) => measure switch
         {
-            nameof(IngredientMeasureType.Gam) => "Kg",
-            nameof(IngredientMeasureType.Ml) => "L",
+            nameof(IngredientMeasureType.gam) => "kg",
+            nameof(IngredientMeasureType.ml) => "l",
             _ => "Unknown Large Unit"
         };
 

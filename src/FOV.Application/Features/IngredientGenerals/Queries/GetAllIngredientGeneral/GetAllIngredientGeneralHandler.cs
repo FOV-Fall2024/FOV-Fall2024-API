@@ -18,7 +18,7 @@ namespace FOV.Application.Features.IngredientGenerals.Queries.GetAllIngredientGe
         public async Task<PagedResult<GetAllIngredientResponse>> Handle(GetAllIngredientCommand request, CancellationToken cancellationToken)
         {
             // Fetch all ingredients from the repository
-            var allIngredients = await _unitOfWorks.IngredientGeneralRepository.GetAllAsync(x => x.IngredientType);
+            var allIngredients = await _unitOfWorks.IngredientGeneralRepository.GetAllAsync(x => x.IngredientType, x => x.IngredientMeasure);
 
             // Filter ingredients based on the request parameters
             var filteredIngredients = allIngredients.AsQueryable()
@@ -37,7 +37,7 @@ namespace FOV.Application.Features.IngredientGenerals.Queries.GetAllIngredientGe
                 x.Id,
                 x.IngredientName ?? string.Empty,
                 x.IngredientType.IngredientName,
-                x.IngredientMeasure.ToString(),
+                x.IngredientMeasure.IngredientMeasureName,
                 x.IngredientDescription ?? string.Empty,
                 x.Status,
                 x.Created)).ToList();
