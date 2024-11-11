@@ -510,7 +510,7 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<Guid>("IngredientGeneralId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("IngredientMeasureId")
+                    b.Property<Guid?>("IngredientMeasureId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("IngredientTypeId")
@@ -644,9 +644,6 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("DishId")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("IngredientId")
                         .HasColumnType("uuid");
 
@@ -678,8 +675,6 @@ namespace FOV.Infrastructure.Migrations
                         .HasColumnType("smallint");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DishId");
 
                     b.HasIndex("IngredientId");
 
@@ -799,16 +794,16 @@ namespace FOV.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("6531296e-a86a-4fcc-97e7-7e6182a5c011"),
-                            Created = new DateTime(2024, 11, 11, 12, 23, 6, 122, DateTimeKind.Utc).AddTicks(5913),
+                            Created = new DateTime(2024, 11, 11, 14, 57, 34, 14, DateTimeKind.Utc).AddTicks(218),
                             IngredientMeasureName = "gam",
-                            LastModified = new DateTime(2024, 11, 11, 12, 23, 6, 122, DateTimeKind.Utc).AddTicks(5915)
+                            LastModified = new DateTime(2024, 11, 11, 14, 57, 34, 14, DateTimeKind.Utc).AddTicks(219)
                         },
                         new
                         {
                             Id = new Guid("6531296e-a86a-4fcc-97e7-7e6192a5c011"),
-                            Created = new DateTime(2024, 11, 11, 12, 23, 6, 122, DateTimeKind.Utc).AddTicks(5924),
+                            Created = new DateTime(2024, 11, 11, 14, 57, 34, 14, DateTimeKind.Utc).AddTicks(228),
                             IngredientMeasureName = "ml",
-                            LastModified = new DateTime(2024, 11, 11, 12, 23, 6, 122, DateTimeKind.Utc).AddTicks(5924)
+                            LastModified = new DateTime(2024, 11, 11, 14, 57, 34, 14, DateTimeKind.Utc).AddTicks(228)
                         });
                 });
 
@@ -1695,9 +1690,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasOne("FOV.Domain.Entities.IngredientGeneralAggregator.IngredientMeasure", "IngredientMeasure")
                         .WithMany()
-                        .HasForeignKey("IngredientMeasureId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IngredientMeasureId");
 
                     b.HasOne("FOV.Domain.Entities.IngredientAggregator.IngredientType", "IngredientType")
                         .WithMany("Ingredients")
@@ -1736,12 +1729,6 @@ namespace FOV.Infrastructure.Migrations
 
             modelBuilder.Entity("FOV.Domain.Entities.IngredientAggregator.IngredientUsage", b =>
                 {
-                    b.HasOne("FOV.Domain.Entities.DishAggregator.Dish", "Dish")
-                        .WithMany()
-                        .HasForeignKey("DishId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("FOV.Domain.Entities.IngredientAggregator.Ingredient", "Ingredient")
                         .WithMany("IngredientTransactions")
                         .HasForeignKey("IngredientId")
@@ -1755,8 +1742,6 @@ namespace FOV.Infrastructure.Migrations
                     b.HasOne("FOV.Domain.Entities.OrderAggregator.Order", null)
                         .WithMany("IngredientTransactions")
                         .HasForeignKey("OrderId");
-
-                    b.Navigation("Dish");
 
                     b.Navigation("Ingredient");
 
