@@ -1,4 +1,5 @@
 ﻿using FOV.Application.Features.Attendances.Commands.CheckAttendance;
+using FOV.Application.Features.Attendances.Commands.CheckIn;
 using FOV.Application.Features.Attendances.Commands.GenerateCheckInQRCode;
 using FOV.Application.Features.Attendances.Queries.GetDailyAttendances;
 using MediatR;
@@ -21,10 +22,16 @@ public class AttendanceController(ISender sender) : DefaultController
         var result = await _sender.Send(command);
         return Ok(new { message = result });
     }
-    [HttpGet]
+    [HttpGet("daily")]
     public async Task<IActionResult> GetDailyAttendance([FromQuery] GetDailyAttendanceCommand command)
     {
         var result = await _sender.Send(command);
         return Ok(result);
+    }
+    [HttpPost("checkin")]
+    public async Task<IActionResult> CheckIn([FromQuery] CheckInCommand command)
+    {
+        var attendanceId = await _sender.Send(command);
+        return Ok(new { attendanceId });
     }
 }

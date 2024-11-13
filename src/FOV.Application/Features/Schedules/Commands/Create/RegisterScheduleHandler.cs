@@ -1,32 +1,30 @@
-﻿using FOV.Domain.Entities.WaiterScheduleAggregator;
+﻿using FOV.Application.Common.Exceptions;
+using FOV.Domain.Entities.WaiterScheduleAggregator;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Schedules.Commands.Create;
-public record RegisterScheduleCommand(
-    Dictionary<DateOnly, List<Guid>> DateShift,
-    Guid EmployeeId
-    ) : IRequest<List<Guid>>;
-//Nems ddau bon employee vao schedule
+public record RegisterScheduleCommand(DateOnly Date, Guid ShiftId, List<Guid> EmployeeIds) : IRequest<List<Guid>>;
 public class RegisterScheduleHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<RegisterScheduleCommand, List<Guid>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     public async Task<List<Guid>> Handle(RegisterScheduleCommand request, CancellationToken cancellationToken)
     {
         List<Guid> scheduleIds = new();
-        foreach (var entry in request.DateShift)
+        foreach (var employeeId in request.EmployeeIds)
         {
-            var date = entry.Key;
-            var shiftIds = entry.Value;
+            var existingSchedule = await _unitOfWorks.WaiterScheduleRepository.FirstOrDefaultAsync(
+                ws => ws.DateTime == request.Date && ws.ShiftId == request.ShiftId && ws.UserId == employeeId);
 
-            foreach (var shiftId in shiftIds)
+            if (existingSchedule != null) throw new AppException("Nhân viên này đã có lịch làm");
+
+            if (existingSchedule == null)
             {
-                var schedule = new WaiterSchedule(date, shiftId, request.EmployeeId);
-                await _unitOfWorks.WaiterScheduleRepository.AddAsync(schedule);
-                scheduleIds.Add(schedule.Id);
+                var newSchedule = new WaiterSchedule(request.Date, request.ShiftId, employeeId);
+                await _unitOfWorks.WaiterScheduleRepository.AddAsync(newSchedule);
+                scheduleIds.Add(newSchedule.Id);
             }
         }
-
         await _unitOfWorks.SaveChangeAsync();
         return scheduleIds;
     }

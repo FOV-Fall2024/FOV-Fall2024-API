@@ -71,6 +71,7 @@ public partial class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager
             UserName = request.PhoneNumber,
             EmployeeCode = generate.Code,
             RestaurantId = request.RestaurantId,
+            Status = Domain.Entities.TableAggregator.Enums.Status.Active
         };
 
         var result = await _userManager.CreateAsync(user, "12345678!Fpt");

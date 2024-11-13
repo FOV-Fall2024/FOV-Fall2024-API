@@ -12,7 +12,7 @@ using MediatR;
 
 namespace FOV.Application.Features.Attendances.Queries.GetDailyAttendances;
 public sealed record GetDailyAttendanceCommand(PagingRequest? PagingRequest, bool? IsCheckIn) : IRequest<PagedResult<GetDailyAttendanceResponse>>;
-public sealed record GetDailyAttendanceResponse(Guid Id, DateTimeOffset? CheckInTime, WaiterScheduleDto WaiterSchedule);
+public sealed record GetDailyAttendanceResponse(Guid Id, DateTimeOffset? CheckInTime, WaiterScheduleDto WaiterSchedule, DateTime CreatedDate);
 public record WaiterScheduleDto(Guid Id, EmployeeDto Employee, ShiftDto Shift);
 public class GetDailyAttendancesHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<GetDailyAttendanceCommand, PagedResult<GetDailyAttendanceResponse>>
 {
@@ -43,7 +43,8 @@ public class GetDailyAttendancesHandler(IUnitOfWorks unitOfWorks) : IRequestHand
                 s.Id,
                 new EmployeeDto(s.Id, s.User.EmployeeCode),
                 new ShiftDto(s.ShiftId, s.Shift.ShiftName)
-            )
+            ),
+            s.Created
         )).ToList();
 
         var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);

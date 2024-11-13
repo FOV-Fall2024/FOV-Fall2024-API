@@ -35,8 +35,9 @@ public class GetDailySchedulesQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<
 
         var mappedSchedules = filteredSchedules.Select(schedule => new GetDailyScheduleResponse(
                        schedule.Id,
-                                  new EmployeeDto(schedule.Id, schedule.User.EmployeeCode),
-                                             new ShiftDto(schedule.ShiftId, schedule.Shift.ShiftName)
+                                  new EmployeeDto(schedule.User.Id, schedule.User.EmployeeCode),
+                                             new ShiftDto(schedule.ShiftId, schedule.Shift.ShiftName),
+                                             schedule.Created
                                                     )).ToList();
 
         var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);

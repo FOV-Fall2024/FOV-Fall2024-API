@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FOV.Application.Common.Exceptions;
 using FOV.Infrastructure.Helpers.FirebaseHandler;
 using FOV.Infrastructure.Helpers.QRCodeGeneratorHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
@@ -27,19 +28,28 @@ public class GenerateCheckinQRCodeHandler(IUnitOfWorks unitOfWorks, QRCodeGenera
 
     public async Task<string> Handle(GenerateCheckInQRCodeCommand request, CancellationToken cancellationToken)
     {
-        return await GenerateAndUploadQRCodeAsync(request.Date, request.RestaurantId, request.WaiterScheduleId, request.Longitude, request.Latitude);
+        return await GenerateAndUploadQRCodeAsync(request.RestaurantId, request.WaiterScheduleId, request.Longitude, request.Latitude);
     }
-    private async Task<string> GenerateAndUploadQRCodeAsync(DateOnly date, Guid restaurantId, Guid waiterScheduleId, double latitude, double longitude)
+    private async Task<string> GenerateAndUploadQRCodeAsync(Guid restaurantId, Guid waiterScheduleId, double latitude, double longitude)
     {
-        var restaurant = _unitOfWorks.RestaurantRepository.GetByIdAsync(restaurantId);
+        var restaurant = await _unitOfWorks.RestaurantRepository.GetByIdAsync(restaurantId);
         if (restaurant == null)
         {
-            throw new Exception("Không tìm thấy nhà hàng");
+            throw new AppException("Không tìm thấy nhà hàng");
         }
-        var waiterSchedule = _unitOfWorks.WaiterScheduleRepository.GetByIdAsync(waiterScheduleId) ?? throw new Exception("Không tìm thấy lịch nhân viên");
+        var waiterSchedule = await _unitOfWorks.WaiterScheduleRepository.GetByIdAsync(waiterScheduleId, x => x.Shift);
+        if (waiterSchedule == null)
+        {
+            throw new AppException("Không tìm thấy lịch làm việc");
+        }
 
-        var fileName = $"Restaurant_{restaurant}_Date_{date}";
-        var qrUrl = $"https://localhost:7107/api/Attendance?restaurant={restaurantId}&date={date}&schedule={waiterScheduleId}&latitude={latitude}&longitude={longitude}";
+        if (waiterSchedule.Shift == null)
+        {
+            throw new AppException("Không tìm thấy thông tin ca làm việc");
+        }
+
+        var fileName = $"Restaurant_{restaurant.Id}_Date_{waiterSchedule.DateTime}_Shift_{waiterSchedule.Shift.ShiftName}";
+        var qrUrl = $"https://localhost:7107/api/Attendance/CheckIn?restaurant={restaurantId}&schedule={waiterScheduleId}&latitude={latitude}&longitude={longitude}";
 
         Bitmap qrCodeImage = _qRCodeGeneratorHandler.GenerateQRCode(qrUrl);
         using (var memoryStream = new MemoryStream())
