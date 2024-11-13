@@ -29,9 +29,11 @@ public class AttendanceController(ISender sender) : DefaultController
         return Ok(result);
     }
     [HttpPost("checkin")]
-    public async Task<IActionResult> CheckIn([FromQuery] CheckInCommand command)
+    public async Task<IActionResult> CheckIn([FromQuery] Guid restaurantId, [FromQuery] Guid shiftId, [FromQuery] Guid userId, [FromQuery] DateOnly date, [FromQuery] double latitude, [FromQuery] double longitude)
     {
-        var attendanceId = await _sender.Send(command);
+        var checkInCommand = new CheckInCommand(restaurantId, shiftId, userId, date, DateTime.Now, latitude, longitude);
+
+        var attendanceId = await _sender.Send(checkInCommand);
         return Ok(new { attendanceId });
     }
 }
