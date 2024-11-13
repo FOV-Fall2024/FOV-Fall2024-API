@@ -47,12 +47,12 @@ public class CheckInHandler(IUnitOfWorks unitOfWorks, UserManager<User> userMana
         var attendance = waiterSchedule.Attendances?.FirstOrDefault() ?? new Attendance
         {
             WaiterScheduleId = waiterSchedule.Id,
-            CheckInTime = request.CheckInTime
+            CheckInTime = request.CheckInTime.ToUniversalTime()
         };
 
         if (attendance.Id != Guid.Empty && attendance.CheckInTime == null)
         {
-            attendance.CheckInTime = request.CheckInTime;
+            attendance.CheckInTime = request.CheckInTime.ToUniversalTime();
             _unitOfWorks.AttendanceRepository.Update(attendance);
         }
         else
