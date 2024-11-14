@@ -794,16 +794,16 @@ namespace FOV.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("6531296e-a86a-4fcc-97e7-7e6182a5c011"),
-                            Created = new DateTime(2024, 11, 11, 14, 57, 34, 14, DateTimeKind.Utc).AddTicks(218),
+                            Created = new DateTime(2024, 11, 14, 13, 32, 15, 646, DateTimeKind.Utc).AddTicks(866),
                             IngredientMeasureName = "gam",
-                            LastModified = new DateTime(2024, 11, 11, 14, 57, 34, 14, DateTimeKind.Utc).AddTicks(219)
+                            LastModified = new DateTime(2024, 11, 14, 13, 32, 15, 646, DateTimeKind.Utc).AddTicks(867)
                         },
                         new
                         {
                             Id = new Guid("6531296e-a86a-4fcc-97e7-7e6192a5c011"),
-                            Created = new DateTime(2024, 11, 11, 14, 57, 34, 14, DateTimeKind.Utc).AddTicks(228),
+                            Created = new DateTime(2024, 11, 14, 13, 32, 15, 646, DateTimeKind.Utc).AddTicks(874),
                             IngredientMeasureName = "ml",
-                            LastModified = new DateTime(2024, 11, 11, 14, 57, 34, 14, DateTimeKind.Utc).AddTicks(228)
+                            LastModified = new DateTime(2024, 11, 14, 13, 32, 15, 646, DateTimeKind.Utc).AddTicks(874)
                         });
                 });
 
@@ -892,7 +892,7 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("CustomerId")
+                    b.Property<Guid?>("CustomerId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Feedback")
@@ -919,7 +919,7 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("numeric");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
@@ -1809,9 +1809,7 @@ namespace FOV.Infrastructure.Migrations
                 {
                     b.HasOne("FOV.Domain.Entities.UserAggregator.Customer", "Customer")
                         .WithMany("Orders")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CustomerId");
 
                     b.HasOne("FOV.Domain.Entities.TableAggregator.Table", "Table")
                         .WithMany("Orders")
@@ -1821,9 +1819,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasOne("FOV.Domain.Entities.UserAggregator.User", "Users")
                         .WithMany("Orders")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Customer");
 

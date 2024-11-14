@@ -16,7 +16,7 @@ public class User : IdentityUser<Guid>
     public string EmployeeCode { get; set; }
     public ICollection<Attendance> Attendances { get; set; } = []; // Use List<Attendance>
     public ICollection<WaiterSchedule> WaiterSchedules { get; set; } = [];
-    public virtual ICollection<Order> Orders { get; set; } = [];
+    public virtual ICollection<Order>? Orders { get; set; } = [];
     public Restaurant? Restaurant { get; set; }
     public Guid? RestaurantId { get; set; }
     public Status Status { get; set; }

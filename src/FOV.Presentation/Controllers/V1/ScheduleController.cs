@@ -26,7 +26,8 @@ public class ScheduleController(ISender sender) : DefaultController
             message = "Xóa lịch làm thành công"
         }) : BadRequest();
     }
-    [HttpGet]
+    [SwaggerOperation(Summary = "Lấy lịch làm của 1 nhân viên trong tuần")]
+    [HttpGet("employee")]
     public async Task<IActionResult> GetSchedule([FromQuery] GetEmployeeScheduleRequest request)
     {
         var result = await _sender.Send(request);

@@ -114,8 +114,6 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             originalTableStatus = table.TableStatus;
             table.TableStatus = TableStatus.Working;
 
-            await _unitOfWorks.SaveChangeAsync();
-
             decimal totalPrice = 0;
 
             var order = new Domain.Entities.OrderAggregator.Order(DateTime.UtcNow, 0)
@@ -155,7 +153,6 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
                 }
             }
 
-
             order.TotalPrice = totalPrice;
 
             _unitOfWorks.TableRepository.Update(table);
@@ -164,7 +161,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             await lockService.ReleaseLockAsync();
 
             //test, remove when deploy
-            //await _orderHub.SendOrder(order.Id);
+            await _orderHub.SendOrder(order.Id);
 
             return order.Id;
         }

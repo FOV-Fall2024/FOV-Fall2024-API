@@ -12,7 +12,7 @@ public class Order : BaseAuditableEntity
     public OrderStatus? OrderStatus { get; set; }
     public OrderType? OrderType { get; set; }
     public User? Users { get; set; }
-    public Guid UserId { get; set; }
+    public Guid? UserId { get; set; }
     public DateTime? OrderTime { get; set; }
     public decimal TotalPrice { get; set; }
     public Table? Table { get; set; }
@@ -21,7 +21,7 @@ public class Order : BaseAuditableEntity
     public ICollection<Payments> Payments { get; set; } = [];
     public string? Feedback { get; set; }
     public Customer? Customer { get; set; }
-    public Guid CustomerId { get; set; }
+    public Guid? CustomerId { get; set; }
     public virtual ICollection<IngredientUsage> IngredientTransactions { get; set; } = [];
     public Order()
     {

@@ -1,4 +1,5 @@
-﻿using FOV.Application.Features.Schedules.Responses;
+﻿using FOV.Application.Common.Exceptions;
+using FOV.Application.Features.Schedules.Responses;
 using FOV.Domain.Entities.WaiterScheduleAggregator;
 using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
@@ -11,9 +12,14 @@ public class GetEmployeeScheduleQuery(IUnitOfWorks unitOfWorks) : IRequestHandle
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     public async Task<PagedResult<GetEmployeeScheduleResponse>> Handle(GetEmployeeScheduleRequest request, CancellationToken cancellationToken)
     {
+        if (request.EmployeeId == Guid.Empty)
+        {
+            throw new AppException("Không đúng Id Nhân viên");
+        }
+
         var today = DateOnly.FromDateTime(DateTime.Today);
-        int daysToSunday = (int)DayOfWeek.Sunday - (int)today.DayOfWeek;
-        DateOnly startOfWeek = today.AddDays(daysToSunday);
+        int daysToMonday = (int)DayOfWeek.Monday - (int)today.DayOfWeek;
+        DateOnly startOfWeek = today.AddDays(daysToMonday);
         DateOnly endOfWeek = startOfWeek.AddDays(6);
 
         var schedules = await _unitOfWorks.WaiterScheduleRepository

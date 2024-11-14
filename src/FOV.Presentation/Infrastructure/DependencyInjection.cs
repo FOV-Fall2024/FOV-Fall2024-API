@@ -49,7 +49,11 @@ public static class DependencyInjection
         //? Background Servie
 
         services.AddOutputCache();
-        services.AddDbContextPool<FOVContext>(options => options.UseNpgsql(connectionString));
+        services.AddDbContextPool<FOVContext>(options =>
+        {
+            options.UseNpgsql(connectionString);
+            options.EnableSensitiveDataLogging();
+        });
         services.AddScoped<ApplicationDbContextInitializer>();
         services.AddSingleton(TimeProvider.System);
 

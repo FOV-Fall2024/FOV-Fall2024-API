@@ -7,7 +7,6 @@ using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Dishes.Queries.GetProduct;
-
 public sealed record GetProductCommand(PagingRequest? PagingRequest, string? ProductName, string? ProductDescription, bool? IsRefundDish) : IRequest<PagedResult<GetProductResponse>>;
 
 public class GetProductHandler(IUnitOfWorks unitOfWorks, IClaimService claimService) : IRequestHandler<GetProductCommand, PagedResult<GetProductResponse>>
