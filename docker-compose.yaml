@@ -221,6 +221,10 @@ services:
       - GID=0 #optional
     restart: unless-stopped
 
+networks:
+  fov_network:
+    driver: bridge
+
 volumes:
   postgres_data: {}  # PostgreSQL data persistence
   redis_data: {}  # Redis data persistence (optional)
