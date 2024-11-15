@@ -2,6 +2,7 @@
 using FOV.Application.Features.Dishes.Commons.Active;
 using FOV.Application.Features.Dishes.Commons.Add;
 using FOV.Application.Features.Dishes.Commons.Inactive;
+using FOV.Application.Features.Dishes.Commons.Update;
 using FOV.Application.Features.Dishes.Queries.GetDetail;
 using FOV.Application.Features.Dishes.Queries.GetMenu;
 using FOV.Application.Features.Dishes.Queries.GetProduct;
@@ -118,18 +119,18 @@ public class DishController : DefaultController
     /// <summary>
     /// Updates an existing product.
     /// </summary>
-    /// <param name="id">The ID of the product to update.</param>
-    /// <param name="command">The command containing updated product details.</param>
+    /// <param name = "id" > The ID of the product to update.</param>
+    /// <param name = "command" > The command containing updated product details.</param>
     /// <returns>The result of the update operation.</returns>
-    //[Authorize(Roles = Role.Manager)]
-    //[HttpPut("{id}")]
-    //[SwaggerOperation(Summary = "Updates an existing product.")]
-    //[ProducesResponseType(StatusCodes.Status200OK)]
-    //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-    //public async Task<IActionResult> Update(Guid id, UpdateProductCommand command)
-    //{
-    //    command.ProductId = id;
-    //    var response = await _mediator.Send(command);
-    //    return Ok(new UPDATED_Result("Cập nhật món ăn thành công", response));
-    //}
+    [Authorize(Roles = Role.Manager)]
+    [HttpPut("{id}")]
+    [SwaggerOperation(Summary = "Updates an existing product.")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Update(Guid id, UpdateProductCommand command)
+    {
+        command.ProductId = id;
+        var response = await _mediator.Send(command);
+        return Ok(new UPDATED_Result("Cập nhật món ăn thành công", response));
+    }
 }
