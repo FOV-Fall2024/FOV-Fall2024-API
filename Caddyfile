@@ -1,5 +1,0 @@
-vktrng.ddns.net {
-    reverse_proxy portainer:9443
-    encode gzip
-    tls mandayngu@gmail.com
-}
