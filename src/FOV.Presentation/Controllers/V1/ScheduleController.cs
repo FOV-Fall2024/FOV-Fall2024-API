@@ -17,7 +17,7 @@ public class ScheduleController(ISender sender) : DefaultController
 {
     private readonly ISender _sender = sender;
     [HttpPost("register")]
-    public async Task<IActionResult> RegisterSchedule(RegisterScheduleCommand command)
+    public async Task<IActionResult> RegisterSchedule([FromBody] RegisterScheduleCommand command)
     {
         var result = await _sender.Send(command);
         return Ok(result);

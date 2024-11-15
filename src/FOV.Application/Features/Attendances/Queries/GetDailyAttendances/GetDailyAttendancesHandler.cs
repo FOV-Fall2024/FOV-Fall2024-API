@@ -41,7 +41,7 @@ public class GetDailyAttendancesHandler(IUnitOfWorks unitOfWorks) : IRequestHand
             s.Attendances.FirstOrDefault()?.CheckInTime,
             new WaiterScheduleDto(
                 s.Id,
-                new EmployeeDto(s.User.Id, s.User.EmployeeCode),
+                new EmployeeDto(s.User.Id, s.User.EmployeeCode, s.User.FullName),
                 new ShiftDto(s.ShiftId, s.Shift.ShiftName)
             ),
             s.Created
