@@ -1,7 +1,5 @@
 ﻿using System.Text.Json.Serialization;
 using FluentResults;
-using FOV.Domain.Entities.DishAggregator;
-using FOV.Domain.Entities.DishGeneralAggregator;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
@@ -11,7 +9,7 @@ public sealed record UpdateIngredientQuantityCommand : IRequest<Result>
 {
     [JsonIgnore] public Guid DishGeneralId { get; set; }
 
-    public List<UpdateIngredientCommand> UpdateIngredient { get; set; } 
+    public List<UpdateIngredientCommand> UpdateIngredient { get; set; }
 }
 
 public sealed record UpdateIngredientCommand(Guid IngredientGeneralId, decimal Quantity);
@@ -39,9 +37,8 @@ public class UpdateIngredientQuantityHandler : IRequestHandler<UpdateIngredientQ
                 general.UpdateQuantity(ingredient.Quantity);
                 _unitOfWorks.DishIngredientGeneralRepository.Update(general);
 
-                await UpdateDishesWithIngredient(general.Id, ingredientGeneral.IngredientName);
             }
-           
+
             await _unitOfWorks.SaveChangeAsync();
 
             return Result.Ok();
@@ -50,30 +47,5 @@ public class UpdateIngredientQuantityHandler : IRequestHandler<UpdateIngredientQ
         {
             return Result.Fail(new Error(ex.Message));
         }
-    }
-
-    private async Task UpdateDishesWithIngredient(Guid dishGeneralId, string ingredientName)
-    {
-        var dishes = await _unitOfWorks.DishRepository.WhereAsync(d => d.DishGeneralId == dishGeneralId);
-
-        foreach (var dish in dishes)
-        {
-            var ingredient = await _unitOfWorks.IngredientRepository
-                .FirstOrDefaultAsync(i => i.IngredientGeneral.IngredientName == ingredientName && i.RestaurantId == dish.RestaurantId,x => x.IngredientGeneral)
-                ?? throw new InvalidOperationException("Ingredient not found in the restaurant");
-
-            await UpdateDishIngredient(dish.Id, ingredient.Id);
-        }
-    }
-
-    private async Task UpdateDishIngredient(Guid dishId, Guid ingredientId)
-    {
-        var dishIngredient = await _unitOfWorks.DishIngredientRepository
-            .FirstOrDefaultAsync(x => x.IngredientId == ingredientId && x.DishId == dishId)
-            ?? throw new InvalidOperationException("Dish ingredient not found");
-
-        _unitOfWorks.DishIngredientRepository.Update(dishIngredient);
-
-        await _unitOfWorks.SaveChangeAsync();
     }
 }

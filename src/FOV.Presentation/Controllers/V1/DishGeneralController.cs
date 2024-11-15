@@ -2,6 +2,7 @@
 using FOV.Application.Features.DishGenerals.Commands.AddAdditionalImage;
 using FOV.Application.Features.DishGenerals.Commands.AddIngredient;
 using FOV.Application.Features.DishGenerals.Commands.Create;
+using FOV.Application.Features.DishGenerals.Commands.CreateVariant;
 using FOV.Application.Features.DishGenerals.Commands.Inactive;
 using FOV.Application.Features.DishGenerals.Commands.RemoveAdditionalImage;
 using FOV.Application.Features.DishGenerals.Commands.RemoveIngredient;
@@ -30,6 +31,23 @@ public class DishGeneralController : DefaultController
     {
         _sender = sender;
     }
+
+    /// <summary>
+    /// Creates a new product general.
+    /// </summary>
+    /// <param name="command">The command containing product details.</param>
+    /// <returns>The ID of the newly created product general.</returns>
+    //[Authorize(Role.Administrator)]
+    [HttpPost("{id}/create-variant")]
+    [SwaggerOperation(Summary = "Creates a new product general.")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> CreateVariant(Guid id)
+    {
+        var response = await _sender.Send(new CreateVariantGeneralDishCommand(id));
+        return CreatedAtAction(nameof(CreateVariant), new { id = response }, new CREATED_Result("Tạo product general thành công"));
+    }
+
 
     /// <summary>
     /// Creates a new product general.

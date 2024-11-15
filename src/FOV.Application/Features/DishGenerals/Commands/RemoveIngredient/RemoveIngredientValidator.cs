@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using FOV.Application.Features.DishGenerals.Commands.Update;
 using FOV.Application.Features.DishGenerals.Commands.UpdateIngredientQuantity;
 using FOV.Domain.Entities.DishGeneralAggregator;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
@@ -6,10 +7,10 @@ using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 namespace FOV.Application.Features.DishGenerals.Commands.RemoveIngredient;
 public class RemoveIngredientValidator : AbstractValidator<RemoveIngredientCommand>
 {
-    public RemoveIngredientValidator(CheckIdInGeneralRemoveValidator checkValidator, CheckDishGeneralIdValidator dishId)
+    public RemoveIngredientValidator(CheckIdInGeneralRemoveValidator checkValidator, CheckDishGeneralIdValidator dishId, CheckDishGeneralStateValidator stateValidator)
     {
         RuleFor(x => x).SetValidator(checkValidator);
-        RuleFor(x => x.ProductId).SetValidator(dishId);
+        RuleFor(x => x.ProductId).SetValidator(dishId).SetValidator(stateValidator);
     }
 }
 

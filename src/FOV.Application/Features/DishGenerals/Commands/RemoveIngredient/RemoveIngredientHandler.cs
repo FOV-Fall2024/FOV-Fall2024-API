@@ -21,35 +21,10 @@ public class RemoveIngredientHandler(IUnitOfWorks unitOfWorks) : IRequestHandler
         foreach (var ingreId in request.IngredientId)
         {
             DishIngredientGeneral general = await _unitOfWorks.DishIngredientGeneralRepository.FirstOrDefaultAsync(x => x.IngredientGeneralId == ingreId && x.DishGeneralId == request.ProductId, x => x.IngredientGeneral) ?? throw new Exception();
-            await UpdateDishesWithIngredient(request.ProductId, general.IngredientGeneral.IngredientName);
             _unitOfWorks.DishIngredientGeneralRepository.Remove(general);
-            await UpdateDishesWithIngredient(request.ProductId, general.IngredientGeneral.IngredientName);
         }
 
         await _unitOfWorks.SaveChangeAsync();
         return Result.Ok();
     }
-
-    private async Task UpdateDishesWithIngredient(Guid dishGeneralId, string ingredientName)
-    {
-        var dishes = await _unitOfWorks.DishRepository.WhereAsync(d => d.DishGeneralId == dishGeneralId);
-
-        foreach (var dish in dishes)
-        {
-            var ingredient = await _unitOfWorks.IngredientRepository
-                .FirstOrDefaultAsync(i => i.IngredientGeneral.IngredientName == ingredientName && i.RestaurantId == dish.RestaurantId);
-            await UpdateDishIngredient(dish.Id, ingredient.Id);
-        }
-    }
-
-
-
-    private async Task UpdateDishIngredient(Guid dishId, Guid ingredientId)
-    {
-        DishIngredient dishIngredient = await _unitOfWorks.DishIngredientRepository.FirstOrDefaultAsync(x => x.IngredientId == ingredientId && x.DishId == dishId) ?? throw new Exception();
-        _unitOfWorks.DishIngredientRepository.Update(dishIngredient);
-        await _unitOfWorks.SaveChangeAsync();
-    }
-
-
 }

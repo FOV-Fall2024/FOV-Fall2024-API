@@ -41,6 +41,19 @@ public class DishGeneral : BaseAuditableEntity, IsSoftDeleted
         IsRefund = isRefund;
         PercentagePriceDifference = percentagePriceDifference;
     }
+    public DishGeneral(string name, decimal price, string description, Guid? categoryId, bool isRefund, decimal percentagePriceDifference,Guid parentId)
+    {
+        DishGeneralParentId = parentId;
+        DishName = name;
+        Price = price;
+        DishDescription = description;
+        Status = Status.New;
+        CategoryId = categoryId;
+        Id = Guid.NewGuid();
+        IsRefund = isRefund;
+        PercentagePriceDifference = percentagePriceDifference;
+    }
+
 
     public void Update(string name, string description, Guid categoryId)
     {

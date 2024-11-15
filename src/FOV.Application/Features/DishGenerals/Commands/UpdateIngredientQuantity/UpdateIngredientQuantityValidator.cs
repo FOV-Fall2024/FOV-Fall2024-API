@@ -1,17 +1,16 @@
 ﻿using FluentValidation;
-using FOV.Application.Features.DishGenerals.Commands.AddIngredient;
+using FOV.Application.Features.DishGenerals.Commands.Update;
 using FOV.Domain.Entities.DishGeneralAggregator;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace FOV.Application.Features.DishGenerals.Commands.UpdateIngredientQuantity;
 
 public class UpdateIngredientQuantityValidator : AbstractValidator<UpdateIngredientQuantityCommand>
 {
-    public UpdateIngredientQuantityValidator(CheckIdInGeneralValidator checkIdPairValidator, CheckDishGeneralIdValidator dishId)
+    public UpdateIngredientQuantityValidator(CheckIdInGeneralValidator checkIdPairValidator, CheckDishGeneralIdValidator dishId, CheckDishGeneralStateValidator stateCheck)
     {
         RuleFor(x => x).SetValidator(checkIdPairValidator);
-        RuleFor(x => x.DishGeneralId).SetValidator(dishId);
+        RuleFor(x => x.DishGeneralId).SetValidator(dishId).SetValidator(stateCheck);
     }
 }
 

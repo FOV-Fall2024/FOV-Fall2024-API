@@ -9,11 +9,11 @@ using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 namespace FOV.Application.Features.DishGenerals.Commands.Update;
 public class UpdateDishIngredientValidator : AbstractValidator<UpdateProductGeneralCommand>
 {
-    public UpdateDishIngredientValidator(CheckDishGeneralNameUpdateValidator nameCheck, CheckCategoryIdValidator categoryIdCheck, CheckDishGeneralIdValidator idChecking)
+    public UpdateDishIngredientValidator(CheckDishGeneralNameUpdateValidator nameCheck, CheckCategoryIdValidator categoryIdCheck, CheckDishGeneralIdValidator idChecking, CheckDishGeneralStateValidator stateRule)
     {
         RuleFor(x => x).SetValidator(nameCheck);
         RuleFor(x => x.CategoryId).SetValidator(categoryIdCheck);
-        RuleFor(x => x.Id).SetValidator(idChecking);
+        RuleFor(x => x.Id).SetValidator(idChecking).SetValidator(stateRule);
     }
 }
 
@@ -38,4 +38,29 @@ public sealed class CheckDishGeneralNameUpdateValidator : AbstractValidator<Upda
         return existingDish == null;
     }
 }
+
+
+public sealed class CheckDishGeneralStateValidator : AbstractValidator<Guid>
+{
+    private readonly IUnitOfWorks _unitOfWorks;
+
+    public CheckDishGeneralStateValidator(IUnitOfWorks unitOfWorks)
+    {
+        _unitOfWorks = unitOfWorks;
+
+        RuleFor(command => command)
+            .MustAsync(CheckName).WithMessage("Không thể cập nhật món này");
+    }
+
+    private async Task<bool> CheckName(Guid id, CancellationToken token)
+    {
+        // Check if the name exists for a different dish in the database
+        DishGeneral? existingDish = await _unitOfWorks.DishGeneralRepository
+            .GetByIdAsync(id);
+
+
+        return existingDish.Status == Domain.Entities.TableAggregator.Enums.Status.New;
+    }
+}
+
 

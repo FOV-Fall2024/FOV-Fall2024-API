@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentResults;
+﻿using FluentResults;
 using FOV.Domain.Entities.DishGeneralAggregator;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
@@ -22,4 +17,6 @@ public class ActiveProductGeneralHandler(IUnitOfWorks unitOfWorks) : IRequestHan
         await _unitOfWorks.SaveChangeAsync();
         return Result.Ok();
     }
+
+
 }
