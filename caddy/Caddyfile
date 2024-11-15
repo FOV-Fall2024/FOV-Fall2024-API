@@ -1,0 +1,7 @@
+{
+    email mandayngu@gmail.com
+}
+
+http://localhost {
+    reverse_proxy fov_api:8080
+}
