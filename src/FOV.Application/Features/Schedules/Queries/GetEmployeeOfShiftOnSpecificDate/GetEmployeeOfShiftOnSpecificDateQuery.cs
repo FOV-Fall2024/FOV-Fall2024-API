@@ -25,7 +25,7 @@ internal class GetEmployeeOfShiftOnSpecificDateQuery(IUnitOfWorks unitOfWorks, I
         var schedules = await _unitOfWorks.WaiterScheduleRepository.GetAllAsync(x => x.User, x => x.Shift);
         var filteredSchedules = schedules.Where(s => s.DateTime == request.Date && s.ShiftId == request.ShiftId && s.User.RestaurantId == _claimService.RestaurantId);
 
-        var mappedSchedules = filteredSchedules.Select(schedule => new EmployeeDto(schedule.User.Id, schedule.User.EmployeeCode, schedule.User.FullName)).ToList();
+        var mappedSchedules = filteredSchedules.Select(schedule => new EmployeeDto(schedule.User.Id, schedule.User.EmployeeCode, schedule.User.FullName, schedule.Id)).ToList();
 
         return mappedSchedules;
     }

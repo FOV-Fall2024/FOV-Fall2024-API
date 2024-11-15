@@ -35,7 +35,7 @@ public class GetDailySchedulesQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<
 
         var mappedSchedules = filteredSchedules.Select(schedule => new GetDailyScheduleResponse(
                        schedule.Id,
-                                  new EmployeeDto(schedule.User.Id, schedule.User.EmployeeCode, schedule.User.FullName),
+                                  new EmployeeDto(schedule.User.Id, schedule.User.EmployeeCode, schedule.User.FullName, schedule.Id),
                                              new ShiftDto(schedule.ShiftId, schedule.Shift.ShiftName),
                                              schedule.Created
                                                     )).ToList();

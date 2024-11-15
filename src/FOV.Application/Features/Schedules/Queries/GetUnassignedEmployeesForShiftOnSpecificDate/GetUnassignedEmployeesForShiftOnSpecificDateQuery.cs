@@ -53,7 +53,7 @@ public class GetUnassignedEmployeesForShiftOnSpecificDateQuery : IRequestHandler
         var unassignedEmployees = allEmployees
             .Where(e => !assignedEmployeeIds.Contains(e.Id) &&
                         (e.EmployeeCode.StartsWith("WTR_") || e.EmployeeCode.StartsWith("CKR_")))
-            .Select(e => new EmployeeDto(e.Id, e.EmployeeCode, e.FullName))
+            .Select(e => new EmployeeDto(e.Id, e.EmployeeCode, e.FullName, e.WaiterSchedules.FirstOrDefault().Id))
             .ToList();
 
         return unassignedEmployees;
