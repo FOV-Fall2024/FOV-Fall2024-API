@@ -13,8 +13,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace FOV.Application.Features.Schedules.Queries.GetUnassignedEmployeesForShiftOnSpecificDate;
-public record GetUnassignedEmployeesForShiftOnSpecificDateCommand(Guid ShiftId, DateOnly Date) : IRequest<List<EmployeeDto>>;
-public class GetUnassignedEmployeesForShiftOnSpecificDateQuery : IRequestHandler<GetUnassignedEmployeesForShiftOnSpecificDateCommand, List<EmployeeDto>>
+public record GetUnassignedEmployeesForShiftOnSpecificDateCommand(Guid ShiftId, DateOnly Date) : IRequest<List<UnassignedEmployeeDto>>;
+public class GetUnassignedEmployeesForShiftOnSpecificDateQuery : IRequestHandler<GetUnassignedEmployeesForShiftOnSpecificDateCommand, List<UnassignedEmployeeDto>>
 {
     private readonly IUnitOfWorks _unitOfWorks;
     private readonly IClaimService _claimService;
@@ -27,7 +27,7 @@ public class GetUnassignedEmployeesForShiftOnSpecificDateQuery : IRequestHandler
         _userManager = userManager;
     }
 
-    public async Task<List<EmployeeDto>> Handle(GetUnassignedEmployeesForShiftOnSpecificDateCommand request, CancellationToken cancellationToken)
+    public async Task<List<UnassignedEmployeeDto>> Handle(GetUnassignedEmployeesForShiftOnSpecificDateCommand request, CancellationToken cancellationToken)
     {
         var restaurantId = _claimService.RestaurantId;
         if (restaurantId == null)
@@ -53,7 +53,7 @@ public class GetUnassignedEmployeesForShiftOnSpecificDateQuery : IRequestHandler
         var unassignedEmployees = allEmployees
             .Where(e => !assignedEmployeeIds.Contains(e.Id) &&
                         (e.EmployeeCode.StartsWith("WTR_") || e.EmployeeCode.StartsWith("CKR_")))
-            .Select(e => new EmployeeDto(e.Id, e.EmployeeCode, e.FullName, e.WaiterSchedules.FirstOrDefault().Id))
+            .Select(e => new UnassignedEmployeeDto(e.Id, e.EmployeeCode, e.FullName))
             .ToList();
 
         return unassignedEmployees;

@@ -5,3 +5,5 @@ public sealed record GetDailyScheduleResponse(Guid Id, EmployeeDto Employee, Shi
 public record GetEmployeeScheduleResponse(Guid Id, ShiftDto Shift, DateOnly? Date, DateTime CreatedDate); // EmployeeDto Employee,
 public record ShiftDto(Guid ShiftId, string ShiftName);
 public record EmployeeDto(Guid EmployeeId, string EmployeeCode, string EmployeeName, Guid WaiterScheduleId);
+public record UnassignedEmployeeDto(Guid EmployeeId, string EmployeeCode, string EmployeeName);
+
