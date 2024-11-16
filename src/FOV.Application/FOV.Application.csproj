@@ -31,6 +31,7 @@
     <Folder Include="Features\Combos\Queries\GetComboByUser\" />
     <Folder Include="Features\Employees\Mappers\" />
     <Folder Include="Features\Employees\Responses\" />
+    <Folder Include="Features\IngredientMeasures\Responses\" />
     <Folder Include="Features\Ingredients\Queries\GetIngredientDetail\" />
     <Folder Include="Features\RefundDishInventories\Responses\" />
   </ItemGroup>
