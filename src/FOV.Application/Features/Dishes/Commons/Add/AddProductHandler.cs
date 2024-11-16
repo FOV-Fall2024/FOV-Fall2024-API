@@ -75,7 +75,7 @@ internal class AddProductHandler : IRequestHandler<AddProductCommand, Result>
 
         // Fetch existing ingredients in the current restaurant
         var existingIngredients = await _unitOfWorks.IngredientRepository
-            .WhereAsync(x => ingredientNames.Contains(x.IngredientGeneral.IngredientName) && x.RestaurantId == _claimService.RestaurantId);
+            .WhereAsync(x => ingredientNames.Contains(x.IngredientGeneral.IngredientName) && x.RestaurantId == _claimService.RestaurantId,x => x.IngredientGeneral);
 
         // Iterate through ingredients and process each
         foreach (var ingredient in ingredients)
@@ -89,10 +89,8 @@ internal class AddProductHandler : IRequestHandler<AddProductCommand, Result>
 
     private async Task ProcessIngredient(IngredientGeneral ingredient, IEnumerable<Ingredient> existingIngredients, Guid productId, Guid dishGeneralId)
     {
-        // Check if the ingredient already exists
         var existingIngredient = existingIngredients.FirstOrDefault(e => e.IngredientGeneral.IngredientName == ingredient.IngredientName);
 
-        // Fetch detailed information about the current ingredient
         var ingredientGeneral = await _unitOfWorks.IngredientGeneralRepository.FirstOrDefaultAsync(
             x => x.IngredientName == ingredient.IngredientName,
             x => x.DishIngredientGenerals,
@@ -101,35 +99,28 @@ internal class AddProductHandler : IRequestHandler<AddProductCommand, Result>
 
         if (ingredientGeneral == null)
         {
-            throw new InvalidOperationException("IngredientGeneral not found.");
+            throw new InvalidOperationException($"IngredientGeneral not found for ingredient: {ingredient.IngredientName}");
         }
+
+        var dishIngredientGeneral = ingredientGeneral.DishIngredientGenerals?
+            .FirstOrDefault(x => x.DishGeneralId == dishGeneralId && x.IngredientGeneralId == ingredientGeneral.Id);
+
+        var quantity = dishIngredientGeneral?.Quantity ?? 0;
 
         if (existingIngredient == null)
         {
-            // Add a new ingredient if it doesn't exist
             var newIngredient = new Ingredient(ingredient.IngredientTypeId, _claimService.RestaurantId, ingredientGeneral.Id);
             await _unitOfWorks.IngredientRepository.AddAsync(newIngredient);
 
-            await AddDishIngredientAndUnits(
-                productId,
-                newIngredient.Id,
-                ingredient.IngredientMeasureId,
-                ingredient.DishIngredientGenerals.FirstOrDefault()?.Quantity ?? 0
-            );
+            await AddDishIngredientAndUnits(productId, newIngredient.Id, ingredient.IngredientMeasureId, quantity);
         }
         else
         {
-            // Link the existing ingredient to the new product
-            var dishIngredient = new DishIngredient(
-                productId,
-                existingIngredient.Id,
-                ingredientGeneral.DishIngredientGenerals
-                    .FirstOrDefault(x => x.DishGeneralId == dishGeneralId && x.IngredientGeneralId == ingredientGeneral.Id)?.Quantity ?? 0
-            );
-
+            var dishIngredient = new DishIngredient(productId, existingIngredient.Id, quantity);
             await _unitOfWorks.DishIngredientRepository.AddAsync(dishIngredient);
         }
     }
+
 
 
     private async Task AddDishIngredientAndUnits(Guid productId, Guid ingredientId, Guid ingredientMeasureId, decimal quantity)
