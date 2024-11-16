@@ -18,6 +18,7 @@ jobs:
           port: 2222
           timeout: 60s
           script: |
+            ls
             cd /home/vktrng/
 
             if [ -d ./FOV-Fall2024-API ]; then
@@ -31,14 +32,16 @@ jobs:
               cd FOV-Fall2024-API
             fi
 
-            echo "Stopping and removing old containers..."
-            make remove
+            make reset
 
-            echo "Building and starting containers..."
-            make all
+            # echo "Stopping and removing old containers..."
+            # make remove
 
-            echo "Rebuilding specific services if needed..."
-            make update
+            # echo "Building and starting containers..."
+            # make all
 
-            echo "Stopping database container for maintenance..."
-            docker ps | grep -q fov_database && docker stop fov_database
+            # echo "Rebuilding specific services if needed..."
+            # make update
+
+            # echo "Stopping database container for maintenance..."
+            # docker ps | grep -q fov_database && docker stop fov_database
