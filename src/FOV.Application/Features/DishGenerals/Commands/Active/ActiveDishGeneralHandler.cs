@@ -32,6 +32,7 @@ public class ActiveProductGeneralHandler(IUnitOfWorks unitOfWorks) : IRequestHan
             {
                 generalDish.UpdateState(false);
                 _unitOfWorks.DishGeneralRepository.Update(generalDish);
+                 await UpdateDish(generalDish.Id);
                 await _unitOfWorks.SaveChangeAsync();
                 break;
 
@@ -83,15 +84,15 @@ public class ActiveProductGeneralHandler(IUnitOfWorks unitOfWorks) : IRequestHan
     //    await _unitOfWorks.SaveChangeAsync();
     //}
 
-    //public async Task UpdateDish(Guid dishGeneralId)
-    //{
-    //    var dishes = await _unitOfWorks.DishRepository.WhereAsync(x => x.DishGeneralId == dishGeneralId);
-    //    foreach (var item in dishes)
-    //    {
-    //        item.UpdateState(false);
-    //        _unitOfWorks.DishRepository.Update(item);
-    //    }
-    //    await _unitOfWorks.SaveChangeAsync();
-    //}
+    public async Task UpdateDish(Guid dishGeneralId)
+    {
+        var dishes = await _unitOfWorks.DishRepository.WhereAsync(x => x.DishGeneralId == dishGeneralId);
+        foreach (var item in dishes)
+        {
+            item.UpdateState(false);
+            _unitOfWorks.DishRepository.Update(item);
+        }
+        await _unitOfWorks.SaveChangeAsync();
+    }
 }
 
