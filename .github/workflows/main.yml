@@ -14,7 +14,7 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
-          private-key: ${{ secrets.PRIVATE_KEY }}
+          private-key: ${{ secrets.PASSWORD  }}
           port: 2222
           timeout: 60s
           script: |
