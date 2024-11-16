@@ -14,25 +14,31 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
+          private-key: ${{ secrets.PRIVATE_KEY }}
           port: 2222
           timeout: 60s
           script: |
             cd /home/vktrng/
 
             if [ -d ./FOV-Fall2024-API ]; then
-              docker-compose -f FOV-Fall2024-API/docker-compose.yml down
+              echo "Directory exists. Pulling latest changes..."
               cd ./FOV-Fall2024-API
+              git reset --hard
               git pull origin main
-              make build
-              make commit
             else
               echo "Cloning the repository..."
               git clone https://github.com/FOV-Fall2024/FOV-Fall2024-API.git
               cd FOV-Fall2024-API
             fi
-            docker-compose build fov.presentation
-            docker-compose --project-name fov up -d
-            
-            sleep 1m
-            docker stop fov_database
+
+            echo "Stopping and removing old containers..."
+            make remove
+
+            echo "Building and starting containers..."
+            make all
+
+            echo "Rebuilding specific services if needed..."
+            make update
+
+            echo "Stopping database container for maintenance..."
+            docker ps | grep -q fov_database && docker stop fov_database
