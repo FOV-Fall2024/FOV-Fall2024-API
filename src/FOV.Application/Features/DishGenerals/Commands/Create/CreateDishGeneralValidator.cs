@@ -10,8 +10,8 @@ public class CreateProductGeneralValidator : AbstractValidator<CreateProductGene
     {
         RuleFor(command => command.DishGeneralName)
             .NotEmpty().WithMessage("Tên sản phẩm là bắt buộc.")
-            .MaximumLength(100).WithMessage("Tên sản phẩm không được vượt quá 100 ký tự.")
-            .SetValidator(nameCheck);
+            .MaximumLength(100).WithMessage("Tên sản phẩm không được vượt quá 100 ký tự.");
+            //.SetValidator(nameCheck);
 
         RuleFor(command => command.DishGeneralPrice)
             .GreaterThan(0).WithMessage("Giá phải lớn hơn 0.");
