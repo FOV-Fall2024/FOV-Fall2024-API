@@ -37,7 +37,7 @@ internal class AddProductHandler : IRequestHandler<AddProductCommand, Result>
             }
             else
             {
-                var product = new Dish(productGeneral.Price, _claimService.RestaurantId, productGeneral.CategoryId, productGeneral.Id);
+                var product = new Dish(productGeneral.Price, _claimService.RestaurantId, productGeneral.CategoryId, productGeneral.Id,Domain.Entities.TableAggregator.Enums.Status.Active);
                 await _unitOfWorks.DishRepository.AddAsync(product);
                 await AddIngredientsToProduct(product.Id, productId);
             }
@@ -54,7 +54,7 @@ internal class AddProductHandler : IRequestHandler<AddProductCommand, Result>
                            ?? throw new Exception($"Dish with ID {refundProduct} not found.");
         if (dish.IsRefund)
         {
-            Dish productAdding = new(dish.Price, restaurantId, dish.CategoryId, dish.Id);
+            Dish productAdding = new(dish.Price, restaurantId, dish.CategoryId, dish.Id,Domain.Entities.TableAggregator.Enums.Status.New);
             await _unitOfWorks.DishRepository.AddAsync(productAdding);
             RefundDishInventory inventory = new(productAdding.Id);
             await _unitOfWorks.RefundDishInventoryRepository.AddAsync(inventory);

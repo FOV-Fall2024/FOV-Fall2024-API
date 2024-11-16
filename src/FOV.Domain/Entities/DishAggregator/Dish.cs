@@ -35,11 +35,11 @@ public class Dish : BaseAuditableEntity, IsSoftDeleted
 
     }
 
-    public Dish(decimal price, Guid restaurantId, Guid? categoryId, Guid dishGeneralId)
+    public Dish(decimal price, Guid restaurantId, Guid? categoryId, Guid dishGeneralId,Status status)
     {
         Price = price;
         CategoryId = categoryId;
-        Status = Status.New;
+        Status = status;
         RestaurantId = restaurantId;
         DishGeneralId = dishGeneralId;
     }

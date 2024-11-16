@@ -80,7 +80,7 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
                                ?? throw new Exception($"Dish with ID {product} not found.");
             if (dishGeneral.IsRefund)
             {
-                Dish productAdding = new(dishGeneral.Price, restaurantId, dishGeneral.CategoryId, dishGeneral.Id);
+                Dish productAdding = new(dishGeneral.Price, restaurantId, dishGeneral.CategoryId, dishGeneral.Id,Domain.Entities.TableAggregator.Enums.Status.Active);
                 await _unitOfWorks.DishRepository.AddAsync(productAdding);
                 RefundDishInventory inventory = new(productAdding.Id);
                 await _unitOfWorks.RefundDishInventoryRepository.AddAsync(inventory);
@@ -116,7 +116,7 @@ internal class CreateRestaurantHandler(IUnitOfWorks unitOfWorks) : IRequestHandl
             if (productGeneral is not null)
             {
                 var ingredientGenerals = await _unitOfWorks.IngredientGeneralRepository.WhereAsync(x => x.DishIngredientGenerals.Any(pg => pg.DishGeneralId == productGeneral.Id));
-                Dish productAdding = new(productGeneral.Price, restaurantId, productGeneral.CategoryId, productGeneral.Id);
+                Dish productAdding = new(productGeneral.Price, restaurantId, productGeneral.CategoryId, productGeneral.Id,Domain.Entities.TableAggregator.Enums.Status.New);
                 await _unitOfWorks.DishRepository.AddAsync(productAdding);
                 await ProductIngredientAdd(ingredientGenerals.Select(x => x.IngredientName).ToList(), restaurantId, productAdding.Id, productGeneral.Id);
             }
