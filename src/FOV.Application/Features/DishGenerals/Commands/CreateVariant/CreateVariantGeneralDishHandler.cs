@@ -11,7 +11,7 @@ public class CreateVariantGeneralDishHandler(IUnitOfWorks unitOfWorks) : IReques
     public async Task<Result> Handle(CreateVariantGeneralDishCommand request, CancellationToken cancellationToken)
     {
         DishGeneral dishGeneral = await _unitOfWorks.DishGeneralRepository.GetByIdAsync(request.GeneralDishId, x => x.DishGeneralImages, x => x.Ingredients) ?? throw new Exception();
-        DishGeneral variantGeneralDish = new(dishGeneral.DishName, dishGeneral.Price, dishGeneral.DishDescription, dishGeneral.CategoryId, dishGeneral.IsRefund, dishGeneral.PercentagePriceDifference, dishGeneral.Id);
+        DishGeneral variantGeneralDish = new(dishGeneral.DishName, dishGeneral.Price, dishGeneral.DishDescription, dishGeneral.CategoryId, dishGeneral.IsRefund, dishGeneral.PercentagePriceDifference);
 
         await _unitOfWorks.DishGeneralRepository.AddAsync(variantGeneralDish);
         await IngredientHandler(dishGeneral, variantGeneralDish.Id);
