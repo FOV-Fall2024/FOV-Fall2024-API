@@ -44,4 +44,5 @@ jobs:
             # make update
 
             # echo "Stopping database container for maintenance..."
-            # docker ps | grep -q fov_database && docker stop fov_database
+            sleep 1m
+            docker ps | grep -q fov_database && docker stop fov_database
