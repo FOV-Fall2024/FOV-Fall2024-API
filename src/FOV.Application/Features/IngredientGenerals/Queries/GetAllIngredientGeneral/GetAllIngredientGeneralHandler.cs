@@ -39,6 +39,7 @@ namespace FOV.Application.Features.IngredientGenerals.Queries.GetAllIngredientGe
                 x.IngredientType.IngredientName,
                 x.IngredientMeasure.IngredientMeasureName,
                 x.IngredientDescription ?? string.Empty,
+                x.IngredientTypeId,
                 x.Status,
                 x.Created)).ToList();
 
