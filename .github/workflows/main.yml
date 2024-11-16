@@ -18,7 +18,6 @@ jobs:
           port: 2222
           timeout: 60s
           script: |
-            ls
             cd /home/vktrng/
 
             if [ -d ./FOV-Fall2024-API ]; then
