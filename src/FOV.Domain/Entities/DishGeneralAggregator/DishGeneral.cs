@@ -35,7 +35,7 @@ public class DishGeneral : BaseAuditableEntity, IsSoftDeleted
         DishName = name;
         Price = price;
         DishDescription = description;
-        Status = Status.Active;
+        Status = Status.New;
         CategoryId = categoryId;
         Id = Guid.NewGuid();
         IsRefund = isRefund;
