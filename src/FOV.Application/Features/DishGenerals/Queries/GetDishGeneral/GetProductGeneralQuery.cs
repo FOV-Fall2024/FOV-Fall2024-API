@@ -44,6 +44,7 @@ namespace FOV.Application.Features.DishGenerals.Queries.GetProductGeneral
                 x.Price,
                 x.DishDescription ?? string.Empty,
                 x.Status,
+                x.IsRefund,
                 x.Category.CategoryName,
                 x.Created,
                 x.LastModified ?? DateTime.Now,

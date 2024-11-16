@@ -35,7 +35,7 @@ public class ComboRepository : GenericRepository<Combo>, IComboRepository
                     i.Id,
                     i.Ingredient.IngredientGeneral.IngredientName,
                     i.Quantity,
-                    i.Ingredient.IngredientMeasure.ToString(),
+                    i.Ingredient.IngredientUnits.First().UnitName,
                     i.Ingredient.IngredientType.IngredientName
                 )).ToList()
             )).ToList()

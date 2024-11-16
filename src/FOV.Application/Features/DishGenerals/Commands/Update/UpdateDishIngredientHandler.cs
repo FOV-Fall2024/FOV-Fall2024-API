@@ -10,6 +10,9 @@ public sealed record UpdateProductGeneralCommand : IRequest<Result>
 {
     [JsonIgnore]
     public Guid Id { get; set; }
+    public decimal Price { get; set; }
+
+    public decimal PercentagePriceDifference { get; set; }
 
     public string DishGeneralName { get; set; } = string.Empty;
 
@@ -25,7 +28,7 @@ internal class UpdateDishIngredientHandler(IUnitOfWorks unitOfWorks) : IRequestH
     public async Task<Result> Handle(UpdateProductGeneralCommand request, CancellationToken cancellationToken)
     {
         DishGeneral product = await _unitOfWorks.DishGeneralRepository.GetByIdAsync(request.Id) ?? throw new Exception();
-        product.Update(request.DishGeneralName, request.DishGeneralDescription, request.CategoryId);
+        product.Update(request.DishGeneralName, request.DishGeneralDescription, request.CategoryId,request.Price,request.PercentagePriceDifference);
 
         if (request.ImageUrl is not null)
         {

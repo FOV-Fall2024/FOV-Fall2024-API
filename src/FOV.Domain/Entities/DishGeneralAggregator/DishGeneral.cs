@@ -55,11 +55,13 @@ public class DishGeneral : BaseAuditableEntity, IsSoftDeleted
     }
 
 
-    public void Update(string name, string description, Guid categoryId)
+    public void Update(string name, string description, Guid categoryId,decimal price,decimal percentagePriceDifference)
     {
         DishName = name;
         DishDescription = description;
         CategoryId = categoryId;
+        Price = price;
+        PercentagePriceDifference = percentagePriceDifference;
     }
 
     public void Update(string name, string description, string image)

@@ -76,7 +76,7 @@ internal class AddProductHandler : IRequestHandler<AddProductCommand, Result>
             IngredientGeneral? ingredientGeneral = await _unitOfWorks.IngredientGeneralRepository.FirstOrDefaultAsync(x => x.IngredientName == item.IngredientName, x => x.DishIngredientGenerals, x => x.IngredientMeasure);
             if (existingIngredient is null)
             {
-                var newIngredient = new Ingredient(item.IngredientName, item.IngredientTypeId, _claimService.RestaurantId, ingredientGeneral.Id, ingredientGeneral.IngredientMeasureId);
+                var newIngredient = new Ingredient(item.IngredientTypeId, _claimService.RestaurantId, ingredientGeneral.Id);
                 await _unitOfWorks.IngredientRepository.AddAsync(newIngredient);
                 await AddDishIngredientAndUnits(productId, newIngredient.Id, item.IngredientMeasureId, item.DishIngredientGenerals.FirstOrDefault().Quantity);
             }
