@@ -30,9 +30,9 @@ public class UpdateIngredientQuantityHandler : IRequestHandler<UpdateIngredientQ
                .FirstOrDefaultAsync(x => x.IngredientGeneralId == ingredient.IngredientGeneralId && x.DishGeneralId == request.DishGeneralId)
                ?? throw new InvalidOperationException("Dish ingredient general not found");
 
-                var ingredientGeneral = await _unitOfWorks.IngredientGeneralRepository
-                    .GetByIdAsync(ingredient.IngredientGeneralId)
-                    ?? throw new InvalidOperationException("Ingredient not found");
+                //var ingredientGeneral = await _unitOfWorks.IngredientGeneralRepository
+                //    .GetByIdAsync(ingredient.IngredientGeneralId)
+                //    ?? throw new InvalidOperationException("Ingredient not found");
 
                 general.UpdateQuantity(ingredient.Quantity);
                 _unitOfWorks.DishIngredientGeneralRepository.Update(general);

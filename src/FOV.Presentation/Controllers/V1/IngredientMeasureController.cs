@@ -25,9 +25,9 @@ public class IngredientMeasureController : DefaultController
     [SwaggerOperation(Summary = "Retrieves a list of ingredient measure")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Get()
+    public async Task<IActionResult> Get([FromQuery] GetIngredientMeasureCommand command)
     {
-        var response = await _sender.Send(new GetIngredientMeasureCommand());
+        var response = await _sender.Send(command);
         return Ok(response);
     }
 

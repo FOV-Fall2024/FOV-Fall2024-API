@@ -2,7 +2,7 @@
 using MediatR;
 
 namespace FOV.Application.Features.IngredientMeasures.Queries.Get;
-public sealed record GetIngredientMeasureCommand() : IRequest<List<GetIngredientMeasureResponse>>;
+public sealed record GetIngredientMeasureCommand(string? IngredientMeasureName) : IRequest<List<GetIngredientMeasureResponse>>;
 public sealed record GetIngredientMeasureResponse(Guid Id, string IngredientMeasureName);
 public sealed class GetIngredientMeasureQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetIngredientMeasureCommand, List<GetIngredientMeasureResponse>>
 {
@@ -10,6 +10,9 @@ public sealed class GetIngredientMeasureQuery(IUnitOfWorks unitOfWorks) : IReque
     public async Task<List<GetIngredientMeasureResponse>> Handle(GetIngredientMeasureCommand request, CancellationToken cancellationToken)
     {
         var ingredientMeasures = await _unitOfWorks.IngredientMeasureRepository.GetAllAsync();
-        return ingredientMeasures.Select(x => new GetIngredientMeasureResponse(x.Id, x.IngredientMeasureName)).ToList();
+        var filteredIngredientMeasure = ingredientMeasures.AsQueryable()
+           .Where(x => string.IsNullOrEmpty(request.IngredientMeasureName) ||
+                       x.IngredientMeasureName.Contains(request.IngredientMeasureName, StringComparison.OrdinalIgnoreCase));
+        return filteredIngredientMeasure.Select(x => new GetIngredientMeasureResponse(x.Id, x.IngredientMeasureName)).ToList();
     }
 }
