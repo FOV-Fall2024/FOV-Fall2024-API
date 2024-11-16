@@ -39,7 +39,7 @@ public class Dish : BaseAuditableEntity, IsSoftDeleted
     {
         Price = price;
         CategoryId = categoryId;
-        Status = Status.Active;
+        Status = Status.New;
         RestaurantId = restaurantId;
         DishGeneralId = dishGeneralId;
     }
