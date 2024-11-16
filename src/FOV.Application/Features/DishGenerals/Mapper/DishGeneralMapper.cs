@@ -9,7 +9,7 @@ public static class DishGeneralMapper
 
     public static GetIngredientResponse MapperIngredientDTO(this IngredientGeneral ingredient, Guid productId)
     {
-        return new GetIngredientResponse(ingredient.Id, ingredient.IngredientName, ingredient.DishIngredientGenerals.Where(x => x.DishGeneralId == productId).FirstOrDefault().Quantity, ingredient.IngredientMeasure.ToString(), ingredient.Created);
+        return new GetIngredientResponse(ingredient.Id, ingredient.IngredientName, ingredient.DishIngredientGenerals.Where(x => x.DishGeneralId == productId).FirstOrDefault().Quantity, ingredient.IngredientMeasure.IngredientMeasureName.ToString(), ingredient.Created);
     }
 
     public static GetProductGeneralDetailResponse MapperDetailDTO(this DishGeneral dishGeneral, List<GetIngredientResponse>? getIngredient)

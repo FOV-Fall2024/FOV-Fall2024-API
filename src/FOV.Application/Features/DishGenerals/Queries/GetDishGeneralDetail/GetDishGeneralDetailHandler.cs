@@ -14,9 +14,9 @@ public class GetDishGeneralDetailHandler(IUnitOfWorks unitOfWorks) : IRequestHan
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     public async Task<GetProductGeneralDetailResponse> Handle(GetProductGeneralDetailCommand request, CancellationToken cancellationToken)
     {
-        var response = await _unitOfWorks.DishGeneralRepository.GetByIdAsync(request.Id,x => x.DishGeneralImages,x => x.Ingredients) ?? throw new Exception();
-        
-        var ingredients = await _unitOfWorks.IngredientGeneralRepository.WhereAsync(x => x.DishIngredientGenerals.Any(x => x.DishGeneralId == request.Id), x => x.DishIngredientGenerals);
+        var response = await _unitOfWorks.DishGeneralRepository.GetByIdAsync(request.Id, x => x.DishGeneralImages, x => x.Ingredients) ?? throw new Exception();
+
+        var ingredients = await _unitOfWorks.IngredientGeneralRepository.WhereAsync(x => x.DishIngredientGenerals.Any(x => x.DishGeneralId == request.Id), x => x.DishIngredientGenerals, x => x.IngredientMeasure);
         return response.MapperDetailDTO(ingredients.Select(x => x.MapperIngredientDTO(request.Id)).ToList());
     }
 }
