@@ -8,13 +8,13 @@ public class UpdateIngredientTypeValidator : AbstractValidator<UpdateIngredientT
 {
     public UpdateIngredientTypeValidator(IngredientTypeValidator validator, CheckIngredientParentIdValidator validations)
     {
-        RuleFor(x => x.IngredientTypeName).NotEmpty().SetValidator(validator);
+        RuleFor(x => x).SetValidator(validator);
         RuleFor(x => x.Id).NotEmpty().SetValidator(validations);
     }
 }
 
 
-public sealed class IngredientTypeValidator : AbstractValidator<string>
+public sealed class IngredientTypeValidator : AbstractValidator<UpdateIngredientTypeCommand>
 {
     private readonly IUnitOfWorks _unitOfWorks;
     public IngredientTypeValidator(IUnitOfWorks unitOfWorks)
@@ -27,9 +27,10 @@ public sealed class IngredientTypeValidator : AbstractValidator<string>
 
     }
 
-    private async Task<bool> CheckDuplicateName(string name, CancellationToken token)
+    private async Task<bool> CheckDuplicateName(UpdateIngredientTypeCommand name, CancellationToken token)
     {
-        IngredientType? ingredientType = await _unitOfWorks.IngredientTypeRepository.FirstOrDefaultAsync(x => x.IngredientName == name);
-        return ingredientType == null;
+        var existingIngredient = await _unitOfWorks.IngredientTypeRepository
+           .FirstOrDefaultAsync(x => x.IngredientName == name.IngredientTypeName && x.Id != name.Id);
+        return existingIngredient == null;
     }
 }
