@@ -18,7 +18,7 @@ jobs:
           port: 2222
           timeout: 60s
           script: |
-            echo "test cicd"
+            echo "test cicd - final"
             cd /home/vktrng/
 
             if [ -d ./FOV-Fall2024-API ]; then
