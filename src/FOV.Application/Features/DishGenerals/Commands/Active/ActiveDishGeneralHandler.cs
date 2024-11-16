@@ -17,64 +17,81 @@ public class ActiveProductGeneralHandler(IUnitOfWorks unitOfWorks) : IRequestHan
 
         //? inactvie another general dish
         //? inactive  another dish
-        await UpdateGeneralDish(request.Id);
+        //await UpdateGeneralDish(request.Id);
+        await InactiveGeneralDish(productGeneral.DishName);
         await _unitOfWorks.SaveChangeAsync();
         return Result.Ok();
     }
 
-    public async Task UpdateGeneralDish(Guid generalDishId)
+    public async Task InactiveGeneralDish(string generalDishName)
     {
-        // Get the target dish
-        DishGeneral dishGeneral = await _unitOfWorks.DishGeneralRepository.GetByIdAsync(generalDishId)
-            ?? throw new Exception("DishGeneral not found");
-
-        // Check if it has a parent dish
-        if (dishGeneral.DishGeneralParentId != null)
+        var generalDishes = await _unitOfWorks.DishGeneralRepository.WhereAsync(x => x.DishName == generalDishName);
+        foreach (var generalDish in generalDishes)
         {
-            // Get the parent dish
-            DishGeneral dishGeneralCheck = await _unitOfWorks.DishGeneralRepository.GetByIdAsync((Guid)dishGeneral.DishGeneralParentId)
-                ?? throw new Exception("Parent DishGeneral not found");
-
-            // If the parent is active, deactivate it
-            if (dishGeneralCheck.Status == Domain.Entities.TableAggregator.Enums.Status.Active)
+            if (generalDish.Status == Domain.Entities.TableAggregator.Enums.Status.Active)
             {
-                dishGeneralCheck.UpdateState(false);
-                await UpdateDish(dishGeneral.Id);
-                _unitOfWorks.DishGeneralRepository.Update(dishGeneralCheck);
+                generalDish.UpdateState(false);
+                _unitOfWorks.DishGeneralRepository.Update(generalDish);
+                await _unitOfWorks.SaveChangeAsync();
+                break;
+
             }
         }
-        else
-        {
-            // If it has children, deactivate all active ones
-            var childDishes = await _unitOfWorks.DishGeneralRepository.WhereAsync(x => x.DishGeneralParentId == dishGeneral.Id);
-            foreach (var item in childDishes)
-            {
-                if (item.Status == Domain.Entities.TableAggregator.Enums.Status.Active)
-                {
-                    item.UpdateState(false);
-                    await UpdateDish(item.Id);
-                    _unitOfWorks.DishGeneralRepository.Update(item);
-                    break;
-                }
-                await UpdateGeneralDish(item.Id);
-            }
-        }
-
-        dishGeneral.UpdateState(true);
-        _unitOfWorks.DishGeneralRepository.Update(dishGeneral);
-
-        await _unitOfWorks.SaveChangeAsync();
     }
 
-    public async Task UpdateDish(Guid dishGeneralId)
-    {
-        var dishes = await _unitOfWorks.DishRepository.WhereAsync(x => x.DishGeneralId == dishGeneralId);
-        foreach (var item in dishes)
-        {
-            item.UpdateState(false);
-            _unitOfWorks.DishRepository.Update(item);
-        }
-        await _unitOfWorks.SaveChangeAsync();
-    }
+    //public async Task UpdateGeneralDish(Guid generalDishId)
+    //{
+    //    // Get the target dish
+    //    DishGeneral dishGeneral = await _unitOfWorks.DishGeneralRepository.GetByIdAsync(generalDishId)
+    //        ?? throw new Exception("DishGeneral not found");
+
+    //    // Check if it has a parent dish
+    //    if (dishGeneral.DishGeneralParentId != null)
+    //    {
+    //        // Get the parent dish
+    //        DishGeneral dishGeneralCheck = await _unitOfWorks.DishGeneralRepository.GetByIdAsync((Guid)dishGeneral.DishGeneralParentId)
+    //            ?? throw new Exception("Parent DishGeneral not found");
+
+    //        // If the parent is active, deactivate it
+    //        if (dishGeneralCheck.Status == Domain.Entities.TableAggregator.Enums.Status.Active)
+    //        {
+    //            dishGeneralCheck.UpdateState(false);
+    //            await UpdateDish(dishGeneral.Id);
+    //            _unitOfWorks.DishGeneralRepository.Update(dishGeneralCheck);
+    //        }
+    //    }
+    //    else
+    //    {
+    //        // If it has children, deactivate all active ones
+    //        var childDishes = await _unitOfWorks.DishGeneralRepository.WhereAsync(x => x.DishGeneralParentId == dishGeneral.Id);
+    //        foreach (var item in childDishes)
+    //        {
+    //            if (item.Status == Domain.Entities.TableAggregator.Enums.Status.Active)
+    //            {
+    //                item.UpdateState(false);
+    //                await UpdateDish(item.Id);
+    //                _unitOfWorks.DishGeneralRepository.Update(item);
+    //                break;
+    //            }
+    //            await UpdateGeneralDish(item.Id);
+    //        }
+    //    }
+
+    //    dishGeneral.UpdateState(true);
+    //    _unitOfWorks.DishGeneralRepository.Update(dishGeneral);
+
+    //    await _unitOfWorks.SaveChangeAsync();
+    //}
+
+    //public async Task UpdateDish(Guid dishGeneralId)
+    //{
+    //    var dishes = await _unitOfWorks.DishRepository.WhereAsync(x => x.DishGeneralId == dishGeneralId);
+    //    foreach (var item in dishes)
+    //    {
+    //        item.UpdateState(false);
+    //        _unitOfWorks.DishRepository.Update(item);
+    //    }
+    //    await _unitOfWorks.SaveChangeAsync();
+    //}
 }
 
