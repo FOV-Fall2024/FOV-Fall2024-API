@@ -1,4 +1,5 @@
-﻿using FOV.Application.Common.Behaviours.Claim;
+﻿using System.Linq;
+using FOV.Application.Common.Behaviours.Claim;
 using FOV.Application.Features.DishGenerals.Responses;
 using FOV.Domain.Entities.DishGeneralAggregator;
 using FOV.Domain.Entities.TableAggregator.Enums;
@@ -45,6 +46,7 @@ namespace FOV.Application.Features.DishGenerals.Queries.GetProductGeneral
                 x.DishDescription ?? string.Empty,
                 x.Status,
                 x.IsRefund,
+                (Guid)x.CategoryId,
                 x.Category.CategoryName,
                 x.Created,
                 x.LastModified ?? DateTime.Now,
