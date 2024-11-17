@@ -22,7 +22,7 @@ public sealed record UpdateProductGeneralCommand : IRequest<Result>
 }
 
 
-internal class UpdateDishIngredientHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<UpdateProductGeneralCommand, Result>
+public class UpdateDishIngredientHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<UpdateProductGeneralCommand, Result>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     public async Task<Result> Handle(UpdateProductGeneralCommand request, CancellationToken cancellationToken)
@@ -34,8 +34,8 @@ internal class UpdateDishIngredientHandler(IUnitOfWorks unitOfWorks) : IRequestH
         {
             await UpdateImage(request.ImageUrl, request.Id);
 
-            var updatedImages = await _unitOfWorks.DishGeneralImageRepository.WhereAsync(x => x.DishGeneralId == request.Id);
-            product.DishGeneralImages = updatedImages.OrderBy(x => x.Order).ToList();
+            //var updatedImages = await _unitOfWorks.DishGeneralImageRepository.WhereAsync(x => x.DishGeneralId == request.Id);
+            //product.DishGeneralImages = [.. updatedImages.OrderBy(x => x.Order)];
         }
 
         _unitOfWorks.DishGeneralRepository.Update(product);
@@ -44,7 +44,7 @@ internal class UpdateDishIngredientHandler(IUnitOfWorks unitOfWorks) : IRequestH
     }
 
 
-    public async ValueTask UpdateImage(List<string> images, Guid dishGeneralId)
+    public async Task UpdateImage(List<string> images, Guid dishGeneralId)
     {
         var existingImages = await _unitOfWorks.DishGeneralImageRepository.WhereAsync(x => x.DishGeneralId == dishGeneralId);
 
