@@ -48,8 +48,8 @@ public sealed class CheckDishGeneralStateValidator : AbstractValidator<Guid>
     {
         _unitOfWorks = unitOfWorks;
 
-        RuleFor(command => command)
-            .MustAsync(CheckName).WithMessage("Không thể cập nhật món này");
+        //RuleFor(command => command)
+        //    .MustAsync(CheckName).WithMessage("Không thể cập nhật món này");
     }
 
     private async Task<bool> CheckName(Guid id, CancellationToken token)
