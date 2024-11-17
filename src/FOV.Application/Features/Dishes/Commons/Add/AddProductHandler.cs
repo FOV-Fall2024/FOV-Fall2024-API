@@ -37,7 +37,7 @@ internal class AddProductHandler : IRequestHandler<AddProductCommand, Result>
             }
             else
             {
-                var product = new Dish(productGeneral.Price, _claimService.RestaurantId, productGeneral.CategoryId, productGeneral.Id,Domain.Entities.TableAggregator.Enums.Status.Active);
+                var product = new Dish(productGeneral.Price, _claimService.RestaurantId, productGeneral.CategoryId, productGeneral.Id,Domain.Entities.TableAggregator.Enums.Status.New);
                 await _unitOfWorks.DishRepository.AddAsync(product);
                 await AddIngredientsToProduct(product.Id, productId);
             }
