@@ -18,8 +18,9 @@ internal class UpdateProductHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<
     {
         Dish product = await _unitOfWorks.DishRepository.GetByIdAsync(request.ProductId) ?? throw new Exception();
         product.Update(request.Price);
+
+        _unitOfWorks.DishRepository.Update(product);
         await _unitOfWorks.SaveChangeAsync();
         return Result.Ok();
-
     }
 }
