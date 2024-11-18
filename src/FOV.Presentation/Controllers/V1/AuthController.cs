@@ -42,7 +42,7 @@ public class AuthController : DefaultController
     public async Task<IActionResult> Update(EditProfileCommand command)
     {
         var response = await _sender.Send(command);
-        return Ok(new OK_Result<string>("Thay đổi hồ sơ cá nhân thành công", response.Successes.First().Message));
+        return Ok(new OK_Result<Guid>("Thay đổi hồ sơ cá nhân thành công", response));
     }
 
 
