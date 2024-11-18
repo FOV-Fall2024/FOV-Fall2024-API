@@ -24,9 +24,11 @@ public class GetPaymentsQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetPay
         var filteredPayment = payments.AsQueryable().CustomFilterV1(filterEntity);
 
         return filteredPayment.Select(p => new PaymentResponse(
-                       p.Id,
-                                  p.Amount,
-                                             p.PaymentStatus.ToString(),
-                                                        p.PaymentMethods.ToString(), p.Created)).ToList();
+            p.Id,
+            p.Amount,
+            p.ReduceAmount,
+            p.FinalAmount,
+            p.PaymentStatus.ToString(),
+            p.PaymentMethods.ToString(), p.Created)).ToList();
     }
 }

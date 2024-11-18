@@ -120,6 +120,8 @@ public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
             PaymentMethods = PaymentMethods.Cash,
             PaymentDate = DateTime.UtcNow,
             Amount = finalAmount > 0 ? finalAmount : 0,
+            ReduceAmount = totalReduceMoney,
+            FinalAmount = finalAmount,
             PaymentStatus = PaymentStatus.Pending
         };
 

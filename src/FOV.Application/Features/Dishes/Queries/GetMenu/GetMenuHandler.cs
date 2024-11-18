@@ -76,6 +76,7 @@ public class GetMenuHandler : IRequestHandler<GetMenuCommand, PagedResult<GetMen
             dish.DishGeneral.DishName,
             dish.RefundDishInventory?.QuantityAvailable ?? 0,
             dish.Price.ToString(),
+            dish.DishGeneral.Price.ToString(),
             dish.DishGeneral.PercentagePriceDifference,
             dish.DishGeneral.DishDescription,
             dish.Created,

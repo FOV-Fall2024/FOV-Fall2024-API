@@ -8,6 +8,8 @@ public class Payments : BaseAuditableEntity
 {
     public DateTime? PaymentDate { get; set; } = DateTime.UtcNow;
     public decimal Amount { get; set; }
+    public decimal ReduceAmount { get; set; }
+    public decimal FinalAmount { get; set; }
     public string? VnpTxnRef { get; set; } // VNPay transaction reference
     public PaymentStatus PaymentStatus { get; set; }
     public PaymentMethods PaymentMethods { get; set; }
@@ -17,10 +19,12 @@ public class Payments : BaseAuditableEntity
     {
 
     }
-    public Payments(decimal amount, Guid orderId, PaymentMethods paymentMethods)
+    public Payments(decimal amount, decimal reduceAmount, decimal finalAmount, Guid orderId, PaymentMethods paymentMethods)
     {
         this.Amount = amount;
         this.OrderId = orderId;
         this.PaymentMethods = paymentMethods;
+        ReduceAmount = reduceAmount;
+        FinalAmount = finalAmount;
     }
 }

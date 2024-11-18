@@ -1,6 +1,8 @@
 ﻿using FluentResults;
 using FOV.Application.Common.Behaviours.Claim;
+using FOV.Application.Common.Exceptions;
 using FOV.Domain.Entities.UserAggregator;
+using FOV.Domain.Entities.UserAggregator.Enums;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -19,12 +21,15 @@ public class EditProfileHandler(IUnitOfWorks unitOfWorks, UserManager<User> user
     private readonly IClaimService _claimService = claimService;
     public async Task<Result> Handle(EditProfileCommand request, CancellationToken cancellationToken)
     {
-        Guid userId = _claimService.UserId;
-        User user = await _userManager.FindByIdAsync(userId.ToString()) ?? throw new Exception();
-        user.Update(request.FullName, request.PhoneNumber);
-        Customer customer = await _unitOfWorks.CustomerRepository.FirstOrDefaultAsync(x => x.Id == userId) ?? throw new Exception();
-        customer.Update(request.FullName, request.PhoneNumber);
-        _unitOfWorks.CustomerRepository.Update(customer);
+        string userRole = _claimService.UserRole;
+        if (userRole == Role.Waiter || userRole == Role.Chef || userRole == Role.HeadChef || userRole == Role.Manager)
+        {
+            Guid userId = _claimService.UserId;
+            User user = await _userManager.FindByIdAsync(userId.ToString()) ?? throw new AppException("Không tìm thấy ID của Employee này");
+            user.Update(request.FullName, request.PhoneNumber);
+            await _userManager.UpdateAsync(user);
+        }
+
         await _unitOfWorks.SaveChangeAsync();
         return Result.Ok();
     }

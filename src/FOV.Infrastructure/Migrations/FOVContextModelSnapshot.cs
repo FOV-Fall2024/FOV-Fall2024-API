@@ -789,16 +789,16 @@ namespace FOV.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("6531296e-a86a-4fcc-97e7-7e6182a5c011"),
-                            Created = new DateTime(2024, 11, 16, 11, 48, 51, 459, DateTimeKind.Utc).AddTicks(1359),
+                            Created = new DateTime(2024, 11, 18, 8, 1, 11, 215, DateTimeKind.Utc).AddTicks(3200),
                             IngredientMeasureName = "gam",
-                            LastModified = new DateTime(2024, 11, 16, 11, 48, 51, 459, DateTimeKind.Utc).AddTicks(1360)
+                            LastModified = new DateTime(2024, 11, 18, 8, 1, 11, 215, DateTimeKind.Utc).AddTicks(3200)
                         },
                         new
                         {
                             Id = new Guid("6531296e-a86a-4fcc-97e7-7e6192a5c011"),
-                            Created = new DateTime(2024, 11, 16, 11, 48, 51, 459, DateTimeKind.Utc).AddTicks(1366),
+                            Created = new DateTime(2024, 11, 18, 8, 1, 11, 215, DateTimeKind.Utc).AddTicks(3210),
                             IngredientMeasureName = "ml",
-                            LastModified = new DateTime(2024, 11, 16, 11, 48, 51, 459, DateTimeKind.Utc).AddTicks(1366)
+                            LastModified = new DateTime(2024, 11, 18, 8, 1, 11, 215, DateTimeKind.Utc).AddTicks(3211)
                         });
                 });
 
@@ -1002,6 +1002,9 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
+                    b.Property<decimal>("FinalAmount")
+                        .HasColumnType("numeric");
+
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
@@ -1019,6 +1022,9 @@ namespace FOV.Infrastructure.Migrations
 
                     b.Property<byte>("PaymentStatus")
                         .HasColumnType("smallint");
+
+                    b.Property<decimal>("ReduceAmount")
+                        .HasColumnType("numeric");
 
                     b.Property<string>("VnpTxnRef")
                         .HasColumnType("text");

@@ -84,6 +84,8 @@ public class VNPayPaymentHandler : IRequestHandler<VNPayPaymentCommand, VNPayPay
         {
             OrderId = request.OrderId,
             Amount = totalAmount,
+            ReduceAmount = totalAmount,
+            FinalAmount = totalAmount,
             VnpTxnRef = txnRef,
             PaymentDate = DateTime.UtcNow,
             PaymentMethods = Domain.Entities.PaymentAggregator.Enums.PaymentMethods.VNPay,
