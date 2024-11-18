@@ -27,7 +27,7 @@ internal class GetExportFileQuery(IUnitOfWorks unitOfWorks, IClaimService claimS
         worksheet.Cells[1, 2].Value = "Quantity";   // Column B
 
         int rowIngredient = 2;
-        List<Dish> nameDishes = await _unitOfWorks.DishRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId && x.DishGeneral.IsRefund == true && x.DishGeneral.Status == Status.Active, x => x.DishGeneral);
+        List<Dish> nameDishes = await _unitOfWorks.DishRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId && x.DishGeneral.IsRefund == true && x.DishGeneral.Status == Status.Active && x.Status == Status.Active, x => x.DishGeneral);
         foreach (var item in nameDishes)
         {
             worksheet.Cells[rowIngredient, 1].Value = item.DishGeneral.DishName;
