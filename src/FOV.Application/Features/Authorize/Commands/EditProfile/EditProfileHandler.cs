@@ -26,7 +26,7 @@ public class EditProfileHandler(IUnitOfWorks unitOfWorks, UserManager<User> user
         {
             Guid userId = _claimService.UserId;
             User user = await _userManager.FindByIdAsync(userId.ToString()) ?? throw new AppException("Không tìm thấy ID của Employee này");
-            user.Update(request.FullName, request.PhoneNumber);
+            user.Update(request.PhoneNumber, request.FullName);
             await _userManager.UpdateAsync(user);
         }
 
