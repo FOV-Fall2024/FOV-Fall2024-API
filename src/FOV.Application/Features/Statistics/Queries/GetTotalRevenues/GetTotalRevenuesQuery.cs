@@ -11,7 +11,7 @@ using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Statistics.Queries.GetTotalRevenues;
-public record GetTotalRevenuesCommand(TimeFrame TimeFrame, DateTime? StartDate = null, DateTime? EndDate = null) : IRequest<List<TotalRevenuesDto>>;
+public record GetTotalRevenuesCommand(TimeFrame TimeFrame, DateTime? ChosenDate = null) : IRequest<List<TotalRevenuesDto>>;
 public enum TimeFrame
 {
     Week,
@@ -38,31 +38,55 @@ public class GetTotalRevenuesQuery(IUnitOfWorks unitOfWorks, IClaimService claim
             payments = await _unitOfWorks.PaymentRepository.WhereAsync(p => p.PaymentStatus == PaymentStatus.Paid, p => p.Order.Table);
         }
 
-        if (request.StartDate.HasValue)
+        var chosenDate = request.ChosenDate ?? DateTime.Now;
+        DateTime startDate, endDate;
+
+        switch (request.TimeFrame)
         {
-            payments = payments.Where(p => p.PaymentDate >= request.StartDate).ToList();
+            case TimeFrame.Week:
+                startDate = chosenDate.AddDays(DayOfWeek.Monday - chosenDate.DayOfWeek);
+                endDate = startDate.AddDays(7);
+                break;
+
+            case TimeFrame.Month:
+                startDate = new DateTime(chosenDate.Year, chosenDate.Month, 1);
+                endDate = startDate.AddMonths(1);
+                break;
+
+            case TimeFrame.Year:
+                startDate = new DateTime(chosenDate.Year, 1, 1);
+                endDate = startDate.AddYears(1);
+                break;
+
+            default:
+                throw new AppException("TimeFrame không hợp lệ");
         }
-        if (request.EndDate.HasValue)
+
+        payments = payments.Where(p => p.PaymentDate >= startDate && p.PaymentDate < endDate).ToList();
+        var periods = request.TimeFrame switch
         {
-            payments = payments.Where(p => p.PaymentDate <= request.EndDate).ToList();
-        }
+            TimeFrame.Week or TimeFrame.Month => Enumerable.Range(0, (endDate - startDate).Days)
+                .Select(offset => startDate.AddDays(offset).Date),
+            TimeFrame.Year => Enumerable.Range(0, 12)
+                .Select(month => new DateTime(startDate.Year, month + 1, 1)),
+            _ => throw new AppException("Không tìm thấy TimeFrame")
+        };
 
         var statistics = request.TimeFrame switch
         {
-            TimeFrame.Week => payments.Where(p => p.PaymentDate >= DateTime.Now.AddDays(-7))
-                                      .GroupBy(p => p.PaymentDate!.Value.Date)
-                                      .Select(g => new TotalRevenuesDto(g.Key.ToString("dd/MM/yyyy"), g.Sum(p => p.FinalAmount)))
-                                      .ToList(),
+            TimeFrame.Week or TimeFrame.Month => periods
+                .Select(date => new TotalRevenuesDto(
+                    date.ToString("yyyy-MM-dd"),
+                    payments.Where(p => p.PaymentDate!.Value.Date == date).Sum(p => p.FinalAmount)))
+                .OrderBy(dto => DateTime.ParseExact(dto.TimePeriod, "yyyy-MM-dd", null))
+                .ToList(),
 
-            TimeFrame.Month => payments.Where(p => p.PaymentDate >= DateTime.Now.AddMonths(-1))
-                                       .GroupBy(p => p.PaymentDate!.Value.Date)
-                                       .Select(g => new TotalRevenuesDto(g.Key.ToString("dd/MM/yyyy"), g.Sum(p => p.FinalAmount)))
-                                       .ToList(),
-
-            TimeFrame.Year => payments.Where(p => p.PaymentDate >= DateTime.Now.AddYears(-1))
-                                      .GroupBy(p => p.PaymentDate!.Value.Month)
-                                      .Select(g => new TotalRevenuesDto($"{g.Key}/{DateTime.UtcNow.Year}", g.Sum(p => p.FinalAmount)))
-                                      .ToList(),
+            TimeFrame.Year => periods
+                .Select(month => new TotalRevenuesDto(
+                    $"{month.Year}/{month.Month}",
+                    payments.Where(p => p.PaymentDate!.Value.Month == month.Month).Sum(p => p.FinalAmount)))
+                .OrderBy(dto => DateTime.ParseExact(dto.TimePeriod, "yyyy/M", null))
+                .ToList(),
 
             _ => throw new AppException("Không tìm thấy TimeFrame")
         };
