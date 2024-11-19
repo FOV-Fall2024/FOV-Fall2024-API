@@ -15,7 +15,7 @@ namespace FOV.Infrastructure.Repository.IRepositories
         void UpdateRange(List<TEntity> entities);
         Task AddRangeAsync(List<TEntity> entities);
         Task<Pagination<TEntity>> ToPagination(int pageNumber = 0, int pageSize = 10);
-
+        Task<int> CountAsync(Expression<Func<TEntity, bool>>? filter = null);
         void Remove(TEntity entity);
     }
 }

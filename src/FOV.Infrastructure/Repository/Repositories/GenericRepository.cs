@@ -32,6 +32,13 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
         await _dbSet.AddRangeAsync(entities);
     }
 
+    public async Task<int> CountAsync(Expression<Func<TEntity, bool>>? filter = null)
+    {
+        return filter == null
+            ? await _dbSet.CountAsync()
+            : await _dbSet.CountAsync(filter);
+    }
+
     public async Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> expression, params Expression<Func<TEntity, object>>[] includes)
       => await includes
             .Aggregate(_dbSet!.AsQueryable(), (entity, property) => entity!.Include(property)).AsNoTracking()
