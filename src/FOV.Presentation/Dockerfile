@@ -2,8 +2,9 @@
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER root
-RUN apt-get update && apt-get install -y libgdiplus
-RUN ln -s /usr/lib/libgdiplus.so /usr/lib/libgdiplus.so.0
+RUN apt-get update && apt-get install -y libgdiplus \
+    && ln -sf /usr/lib/libgdiplus.so /usr/lib/libgdiplus.so.0 \
+    && rm -rf /var/lib/apt/lists/*
 USER app
 WORKDIR /app
 EXPOSE 8080
