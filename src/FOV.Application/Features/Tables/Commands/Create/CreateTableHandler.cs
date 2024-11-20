@@ -49,28 +49,4 @@ public class CreateTableHandler(IUnitOfWorks unitOfWorks, StorageHandler storage
 
         return (highestTableNumber ?? 0) + 1;
     }
-
-    private async Task<string> GenerateAndUploadQRCodeAsync(Guid RestaurantId, string TableCode)
-    {
-        var restaurant = await _unitOfWorks.RestaurantRepository.GetByIdAsync(RestaurantId);
-        if (restaurant == null)
-        {
-            throw new Exception("Nhà hàng không tồn tại");
-        }
-        string restaurantCode = restaurant.RestaurantCode;
-
-        string qRUrl = $"https://localhost:5001/api/v1/restaurant/{restaurantCode}/table/{TableCode}"; //Change Url Later
-        string fileName = $"{restaurantCode}_{TableCode}.png";
-
-        Bitmap qrCodeImage = _qrCodeGeneratorHandler.GenerateQRCode(qRUrl);
-
-        using (var memoryStream = new MemoryStream())
-        {
-            qrCodeImage.Save(memoryStream, ImageFormat.Png);
-            memoryStream.Seek(0, SeekOrigin.Begin);
-
-            var storageFile = await _storageHandler.UploadQrImageForTableAsync(memoryStream, fileName);
-            return storageFile.FileUrl;
-        }
-    }
 }

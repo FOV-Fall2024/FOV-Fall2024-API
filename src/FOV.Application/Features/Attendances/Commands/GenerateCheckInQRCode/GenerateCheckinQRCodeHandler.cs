@@ -45,14 +45,11 @@ public class GenerateCheckinQRCodeHandler(IUnitOfWorks unitOfWorks, QRCodeGenera
         var fileName = $"Restaurant_{restaurant.Id}_Date_{date}_Shift_{shift.ShiftName}";
         var qrUrl = $"http://vktrng.ddns.net:8080/api/Attendance/checkin?restaurantId={restaurantId}&shiftId={shiftId}&date={date}&userId=&latitude=&longitude=";
 
-        Bitmap qrCodeImage = _qRCodeGeneratorHandler.GenerateQRCode(qrUrl);
-        using (var memoryStream = new MemoryStream())
-        {
-            qrCodeImage.Save(memoryStream, ImageFormat.Png);
-            memoryStream.Seek(0, SeekOrigin.Begin);
+        var qrCodeBytes = _qRCodeGeneratorHandler.GenerateQRCode(qrUrl);
 
-            var storageFile = await _storageHandler.UploadQrImageForAttendanceAsync(memoryStream, fileName);
-            return storageFile.FileUrl;
-        }
+        using var memoryStream = new MemoryStream(qrCodeBytes);
+
+        var storageFile = await _storageHandler.UploadQrImageForAttendanceAsync(memoryStream, fileName);
+        return storageFile.FileUrl;
     }
 }
