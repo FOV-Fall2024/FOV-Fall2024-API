@@ -11,7 +11,7 @@ namespace FOV.Infrastructure.Helpers.QRCodeGeneratorHelper;
 
 public class QRCodeGeneratorHandler
 {
-    public static byte[] GenerateQRCode(string url, int size = 256)
+    public byte[] GenerateQRCode(string url, int size = 256)
     {
         var qrCodeGenerator = new QRCodeGenerator();
         var qrCode = qrCodeGenerator.CreateQrCode(url, ECCLevel.Q);
