@@ -5,6 +5,8 @@ USER app
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
+RUN apt-get update && apt-get install -y libgdiplus
+RUN ln -s /usr/lib/libgdiplus.so /usr/lib/libgdiplus.so.0
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
