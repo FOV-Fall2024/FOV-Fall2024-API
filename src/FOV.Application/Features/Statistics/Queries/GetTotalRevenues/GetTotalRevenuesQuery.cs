@@ -80,7 +80,7 @@ public class GetTotalRevenuesQuery(IUnitOfWorks unitOfWorks, IClaimService claim
                 .Select(month => new TotalRevenuesDto(
                     $"{month.Year}/{month.Month}",
                     payments.Where(p => p.PaymentDate!.Value.Month == month.Month).Sum(p => p.FinalAmount)))
-                .OrderBy(dto => DateTime.ParseExact(dto.TimePeriod, "yyyy/M", null))
+                .OrderBy(dto => DateTime.ParseExact(dto.TimePeriod, "yyyy-M", null))
                 .ToList(),
 
             _ => throw new AppException("Không tìm thấy TimeFrame")

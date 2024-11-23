@@ -83,8 +83,4 @@ public class OrderDetailRepository : GenericRepository<OrderDetail>, IOrderDetai
             .ToListAsync();
     }
 
-    public Task<List<ComboQuantityDtos>> GetTopNComboOfAllOrderDetails(int topN, Guid restaurantId)
-    {
-        throw new NotImplementedException();
-    }
 }

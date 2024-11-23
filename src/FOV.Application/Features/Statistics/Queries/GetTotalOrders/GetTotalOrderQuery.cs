@@ -12,7 +12,7 @@ using MediatR;
 
 namespace FOV.Application.Features.Statistics.Queries.GetTotalOrders;
 public record GetTotalOrderCommand(TimeFrame TimeFrame, DateTime? ChosenDate = null) : IRequest<List<TotalOrderDtos>>;
-public record TotalOrderDtos(string TimePeriod, int TotalCustomers);
+public record TotalOrderDtos(string TimePeriod, int TotalOrders);
 public class GetTotalOrderQuery(IUnitOfWorks unitOfWorks, IClaimService claimService) : IRequestHandler<GetTotalOrderCommand, List<TotalOrderDtos>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
@@ -67,8 +67,8 @@ public class GetTotalOrderQuery(IUnitOfWorks unitOfWorks, IClaimService claimSer
 
         var statistics = request.TimeFrame switch
         {
-            TimeFrame.Week or TimeFrame.Month => periods.Select(p => new TotalOrderDtos(p.ToString("dd/MM/yyyy"), orders.Count(o => o.OrderTime.Date == p))).ToList(),
-            TimeFrame.Year => periods.Select(p => new TotalOrderDtos(p.ToString("MM/yyyy"), orders.Count(o => o.OrderTime.Month == p.Month && o.OrderTime.Year == p.Year))).ToList(),
+            TimeFrame.Week or TimeFrame.Month => periods.Select(p => new TotalOrderDtos(p.ToString("yyyy-MM-dd"), orders.Count(o => o.OrderTime.Date == p))).ToList(),
+            TimeFrame.Year => periods.Select(p => new TotalOrderDtos(p.ToString("yyyy-M"), orders.Count(o => o.OrderTime.Month == p.Month && o.OrderTime.Year == p.Year))).ToList(),
             _ => throw new AppException("Không tìm thấy TimeFrame")
         };
 

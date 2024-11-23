@@ -13,5 +13,5 @@ public interface IOrderDetailRepository : IGenericRepository<OrderDetail>
     Task<List<OrderDetail>> GetByOrderIdAsync(Guid orderId);
     Task<List<ProductQuantityDtos>> GetTopNDishOfAllOrderDetail(int topN, Guid restaurantId);
     Task<List<ProductQuantityDtos>> GetTopNProductGeneralOfAllOrderDetail(int topN);
-    Task<List<ComboQuantityDtos>> GetTopNComboOfAllOrderDetails(int topN, Guid restaurantId);
+    //Task<List<ComboQuantityDtos>> GetTopNComboOfAllOrderDetails(int topN, Guid restaurantId);
 }
