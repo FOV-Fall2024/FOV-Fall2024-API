@@ -194,32 +194,6 @@ services:
           memory: 512M
         reservations:
           memory: 256M
-  # Duckdns + LetsEncrypt for SSL/TLS
-  duckdns:
-    image: maksimstojkovic/duckdns
-    container_name: duckdns
-    environment:
-      - DUCKDNS_TOKEN=2eaec532-a8d2-406f-a579-98f69fb062f9
-      - DUCKDNS_DOMAIN=vktrng.duckdns.org
-      - DUCKDNS_DELAY=5
-    restart: unless-stopped
-
-  letsencrypt:
-    image: maksimstojkovic/letsencrypt
-    container_name: letsencrypt
-    volumes:
-      - ./certs:/etc/letsencrypt
-    environment:
-      - DUCKDNS_TOKEN=2eaec532-a8d2-406f-a579-98f69fb062f9
-      - DUCKDNS_DOMAIN=vktrng.duckdns.org
-      - LETSENCRYPT_DOMAIN= #optional
-      - LETSENCRYPT_WILDCARD=false
-      - LETSENCRYPT_CHAIN=ISRG Root X1
-      - LETSENCRYPT_EMAIL=hvinh24@gmail.com
-      - TESTING=false #optional
-      - UID=0 #optional
-      - GID=0 #optional
-    restart: unless-stopped
 
 networks:
   fov_network:
