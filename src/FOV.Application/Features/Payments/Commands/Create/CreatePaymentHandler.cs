@@ -49,7 +49,7 @@ public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
 
     public async Task<Guid> Handle(CreatePaymentCommands request, CancellationToken cancellationToken)
     {
-        var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.OrderDetails, o => o.Payments)
+        var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.OrderDetails, o => o.Payments, o => o.Users)
             ?? throw new Exception("Không tìm thấy đơn hàng nào");
 
         if (order.Payments.Any(p => p.PaymentStatus == PaymentStatus.Paid))

@@ -14,6 +14,7 @@ public class Shift : BaseAuditableEntity, IsSoftDeleted
     public TimeSpan? StartTime { get; set; }
     public TimeSpan? EndTime { get; set; }
     public ICollection<WaiterSchedule> WaiterSchedules { get; set; } = [];
+    public ICollection<ShiftRestaurant> ShiftRestaurants { get; set; } = [];
     public Status Status { get; set; }
 
 

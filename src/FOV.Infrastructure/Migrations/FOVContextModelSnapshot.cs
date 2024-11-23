@@ -789,16 +789,16 @@ namespace FOV.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("6531296e-a86a-4fcc-97e7-7e6182a5c011"),
-                            Created = new DateTime(2024, 11, 23, 6, 6, 15, 868, DateTimeKind.Utc).AddTicks(4781),
+                            Created = new DateTime(2024, 11, 23, 8, 33, 4, 153, DateTimeKind.Utc).AddTicks(8724),
                             IngredientMeasureName = "gam",
-                            LastModified = new DateTime(2024, 11, 23, 6, 6, 15, 868, DateTimeKind.Utc).AddTicks(4782)
+                            LastModified = new DateTime(2024, 11, 23, 8, 33, 4, 153, DateTimeKind.Utc).AddTicks(8726)
                         },
                         new
                         {
                             Id = new Guid("6531296e-a86a-4fcc-97e7-7e6192a5c011"),
-                            Created = new DateTime(2024, 11, 23, 6, 6, 15, 868, DateTimeKind.Utc).AddTicks(4786),
+                            Created = new DateTime(2024, 11, 23, 8, 33, 4, 153, DateTimeKind.Utc).AddTicks(8732),
                             IngredientMeasureName = "ml",
-                            LastModified = new DateTime(2024, 11, 23, 6, 6, 15, 868, DateTimeKind.Utc).AddTicks(4786)
+                            LastModified = new DateTime(2024, 11, 23, 8, 33, 4, 153, DateTimeKind.Utc).AddTicks(8733)
                         });
                 });
 
@@ -1150,6 +1150,48 @@ namespace FOV.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Shifts");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.ShiftAggregator.ShiftRestaurant", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("RestaurantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("ShiftId")
+                        .HasColumnType("uuid");
+
+                    b.Property<byte>("Status")
+                        .HasColumnType("smallint");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RestaurantId");
+
+                    b.HasIndex("ShiftId");
+
+                    b.ToTable("ShiftRestaurant");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.TableAggregator.Table", b =>
@@ -1895,6 +1937,21 @@ namespace FOV.Infrastructure.Migrations
                     b.Navigation("Order");
                 });
 
+            modelBuilder.Entity("FOV.Domain.Entities.ShiftAggregator.ShiftRestaurant", b =>
+                {
+                    b.HasOne("FOV.Domain.Entities.RestaurantAggregator.Restaurant", "Restaurant")
+                        .WithMany("ShiftRestaurants")
+                        .HasForeignKey("RestaurantId");
+
+                    b.HasOne("FOV.Domain.Entities.ShiftAggregator.Shift", "Shift")
+                        .WithMany("ShiftRestaurants")
+                        .HasForeignKey("ShiftId");
+
+                    b.Navigation("Restaurant");
+
+                    b.Navigation("Shift");
+                });
+
             modelBuilder.Entity("FOV.Domain.Entities.TableAggregator.Table", b =>
                 {
                     b.HasOne("FOV.Domain.Entities.RestaurantAggregator.Restaurant", "Restaurant")
@@ -2096,11 +2153,15 @@ namespace FOV.Infrastructure.Migrations
 
                     b.Navigation("Ingredients");
 
+                    b.Navigation("ShiftRestaurants");
+
                     b.Navigation("Tables");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.ShiftAggregator.Shift", b =>
                 {
+                    b.Navigation("ShiftRestaurants");
+
                     b.Navigation("WaiterSchedules");
                 });
 

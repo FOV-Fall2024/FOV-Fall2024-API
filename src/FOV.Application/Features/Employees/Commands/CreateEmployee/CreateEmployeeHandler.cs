@@ -1,6 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using FluentResults;
 using FOV.Application.Common.Exceptions;
+using FOV.Domain.Entities.TableAggregator.Enums;
 using FOV.Domain.Entities.UserAggregator;
 using FOV.Domain.Entities.UserAggregator.Enums;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
@@ -27,13 +28,28 @@ public partial class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager
             var existingManager = await _userManager.Users
                 .FirstOrDefaultAsync(u => u.RestaurantId == request.RestaurantId);
 
-            if (existingManager != null && await _userManager.IsInRoleAsync(existingManager, Role.Manager))
+            if (existingManager != null)
             {
-                fieldErrors.Add(new FieldError
+                bool isManager = await _userManager.IsInRoleAsync(existingManager, Role.Manager);
+                bool isHeadChef = await _userManager.IsInRoleAsync(existingManager, Role.HeadChef);
+
+                if (isManager && existingManager.Status == Status.Active)
                 {
-                    Field = "restaurantId",
-                    Message = "Nhà hàng này đã tồn tại manager rồi"
-                });
+                    fieldErrors.Add(new FieldError
+                    {
+                        Field = "restaurantId",
+                        Message = "Nhà hàng này đã tồn tại Manager đang hoạt động."
+                    });
+                }
+
+                if (isHeadChef && existingManager.Status == Status.Active)
+                {
+                    fieldErrors.Add(new FieldError
+                    {
+                        Field = "restaurantId",
+                        Message = "Nhà hàng này đã tồn tại Bếp trưởng đang hoạt động."
+                    });
+                }
             }
         }
 

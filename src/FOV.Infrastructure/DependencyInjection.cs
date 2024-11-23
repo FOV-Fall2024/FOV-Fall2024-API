@@ -60,6 +60,7 @@ public static class DependencyInjection
         services.AddScoped<IDishGeneralImageRepository, DishGeneralImageRepository>();
         services.AddScoped<IIngredientMeasureRepository, IngredientMeasureRepository>();
         services.AddScoped<ISalaryRepository, SalaryRepository>();
+        services.AddScoped<IShiftRestaurantRepository, ShiftRestaurantRepository>();
         services.AddSingleton<OrderHub>();
         services.AddSingleton<NotificationHub>();
         return services;

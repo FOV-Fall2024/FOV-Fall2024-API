@@ -1,6 +1,6 @@
 ﻿using FOV.Application.Common.Exceptions;
 using FOV.Application.Features.Restaurants.Commons.Active;
-//using FOV.Application.Features.Restaurants.Commons.Create;
+using FOV.Application.Features.Restaurants.Commons.Create;
 using FOV.Application.Features.Restaurants.Commons.Inactive;
 using FOV.Application.Features.Restaurants.Commons.Update;
 using FOV.Application.Features.Restaurants.Queries.Detail;
@@ -19,20 +19,20 @@ public class RestaurantController(IMediator mediator) : DefaultController
     private readonly IMediator _mediator = mediator;
 
     // [ ] Add New Restaurant
-    //[Authorize(Roles = Role.Administrator)]
-    //[HttpPost]
-    //public async Task<IActionResult> AddRestaurant(CreateRestaurantCommand command)
-    //{
-    //    try
-    //    {
-    //        var response = await _mediator.Send(command);
-    //        return Ok(new OK_Result<Guid>("Thêm nhà hàng mới thành công", response));
-    //    }
-    //    catch (AppException ex)
-    //    {
-    //        return BadRequest(new Error<FieldError>("Thêm nhà hàng thất bại", ErrorStatusCodeConfig.BAD_REQUEST, ex.FieldErrors));
-    //    }
-    //}
+    [Authorize(Roles = Role.Administrator)]
+    [HttpPost]
+    public async Task<IActionResult> AddRestaurant(CreateRestaurantCommand command)
+    {
+        try
+        {
+            var response = await _mediator.Send(command);
+            return Ok(new OK_Result<CreateRestaurantResponse>("Thêm nhà hàng mới thành công", response));
+        }
+        catch (AppException ex)
+        {
+            return BadRequest(new Error<FieldError>("Thêm nhà hàng thất bại", ErrorStatusCodeConfig.BAD_REQUEST, ex.FieldErrors));
+        }
+    }
 
     [HttpGet]
     public async Task<IActionResult> GetMenu([FromQuery] GetRestaurantCommand query)

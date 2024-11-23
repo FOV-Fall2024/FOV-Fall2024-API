@@ -49,6 +49,7 @@ public interface IUnitOfWorks
 
     public IIngredientMeasureRepository IngredientMeasureRepository { get; }
     public ISalaryRepository SalaryRepository { get; }
+    public IShiftRestaurantRepository ShiftRestaurantRepository { get; }
 
     public Task<int> SaveChangeAsync();
 }

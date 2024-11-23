@@ -2,6 +2,7 @@
 using FOV.Application.Features.Attendances.Commands.CheckIn;
 using FOV.Application.Features.Attendances.Commands.GenerateCheckInQRCode;
 using FOV.Application.Features.Attendances.Queries.GetDailyAttendances;
+using FOV.Application.Features.Attendances.Queries.GetQRShiftOfRestaurants;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,5 +36,11 @@ public class AttendanceController(ISender sender) : DefaultController
 
         var attendanceId = await _sender.Send(checkInCommand);
         return Ok(new { attendanceId });
+    }
+    [HttpGet("qr")]
+    public async Task<IActionResult> GetQrToCheckIn([FromQuery] GetQRShiftOfRestaurantCommand command)
+    {
+        var result = await _sender.Send(command);
+        return Ok(result);
     }
 }
