@@ -14,8 +14,8 @@ public class CreateVariantGeneralDishHandler(IUnitOfWorks unitOfWorks) : IReques
         DishGeneral variantGeneralDish = new(dishGeneral.DishName, dishGeneral.Price, dishGeneral.DishDescription, (Guid)dishGeneral.CategoryId, dishGeneral.IsRefund, dishGeneral.PercentagePriceDifference);
 
         await _unitOfWorks.DishGeneralRepository.AddAsync(variantGeneralDish);
-        await IngredientHandler(dishGeneral, variantGeneralDish.Id);
-        await ImageHandler(dishGeneral,variantGeneralDish.Id);
+        if (!dishGeneral.IsRefund) await IngredientHandler(dishGeneral, variantGeneralDish.Id);
+        await ImageHandler(dishGeneral, variantGeneralDish.Id);
 
         await _unitOfWorks.SaveChangeAsync();
 
@@ -27,7 +27,7 @@ public class CreateVariantGeneralDishHandler(IUnitOfWorks unitOfWorks) : IReques
     {
         foreach (var ingredient in dishGeneral.Ingredients)
         {
-            DishIngredientGeneral ingredientAdd = new(variantGeneralDishId, ingredient.Id, ingredient.Quantity);
+            DishIngredientGeneral ingredientAdd = new(variantGeneralDishId, ingredient.IngredientGeneralId, ingredient.Quantity);
             await _unitOfWorks.DishIngredientGeneralRepository.AddAsync(ingredientAdd);
         }
     }
