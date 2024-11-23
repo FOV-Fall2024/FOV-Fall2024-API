@@ -28,8 +28,7 @@ internal class GetTotalCustomerQuery(IUnitOfWorks unitOfWorks, IClaimService cla
             var restaurantId = _claimService.RestaurantId;
             customers = await _unitOfWorks.CustomerRepository.WhereAsync(
                 c => c.Orders.Any(o => o.Table.RestaurantId == restaurantId),
-                c => c.Orders,
-                c => c.Orders.Select(o => o.Table));
+                c => c.Orders);
         } else if (userRole == Role.Administrator)
         {
             customers = await _unitOfWorks.CustomerRepository.GetAllAsync();

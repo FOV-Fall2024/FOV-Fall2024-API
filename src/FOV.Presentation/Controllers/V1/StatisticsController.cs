@@ -1,4 +1,5 @@
 ﻿using FOV.Application.Features.Statistics.Queries.GetCurrentStatistic;
+using FOV.Application.Features.Statistics.Queries.GetTopNCombo;
 using FOV.Application.Features.Statistics.Queries.GetTopNDishGeneral;
 using FOV.Application.Features.Statistics.Queries.GetTotalCustomers;
 using FOV.Application.Features.Statistics.Queries.GetTotalOrders;
@@ -13,6 +14,12 @@ public class StatisticsController(ISender sender) : DefaultController
     private readonly ISender _sender = sender;
     [HttpGet("top-dish")]
     public async Task<IActionResult> GetTopNDish([FromQuery] GetTopNDishGeneralCommand command)
+    {
+        var result = await _sender.Send(command);
+        return Ok(result);
+    }
+    [HttpGet("top-combo")]
+    public async Task<IActionResult> GetTopNCombo([FromQuery] GetTopNComboCommand command)
     {
         var result = await _sender.Send(command);
         return Ok(result);
