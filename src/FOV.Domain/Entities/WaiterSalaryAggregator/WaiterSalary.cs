@@ -4,8 +4,8 @@ using FOV.Domain.Entities.UserAggregator;
 namespace FOV.Domain.Entities.WaiterSalaryAggregator;
 public class WaiterSalary : BaseAuditableEntity
 {
-    public decimal TotalHours { get; set; }
-    public decimal TotalSalary { get; set; }
+    public decimal TotalShifts { get; set; }
+    public decimal TotalSalaries { get; set; }
     public string? Status { get; set; }
     public DateTime? PayDate { get; set; } = DateTime.UtcNow;
     public User? User { get; set; }
@@ -14,18 +14,18 @@ public class WaiterSalary : BaseAuditableEntity
     {
 
     }
-    public WaiterSalary(Guid? userId, decimal totalHours, decimal totalSalary, string? status, DateTime payDate)
+    public WaiterSalary(Guid? userId, decimal totalShifts, decimal totalSalaries, string? status, DateTime payDate)
     {
         this.UserId = userId;
-        this.TotalHours = totalHours;
-        this.TotalSalary = totalSalary;
+        this.TotalShifts = totalShifts;
+        this.TotalSalaries = totalSalaries;
         this.Status = status;
         this.PayDate = payDate;
     }
-    public void Update(decimal totalHours, decimal totalSalary, string? status, DateTime payDate)
+    public void Update(decimal totalShifts, decimal totalSalaries, string? status, DateTime payDate)
     {
-        this.TotalHours = totalHours;
-        this.TotalSalary = totalSalary;
+        this.TotalShifts = totalShifts;
+        this.TotalSalaries = totalSalaries;
         this.Status = status;
         this.PayDate = payDate;
     }

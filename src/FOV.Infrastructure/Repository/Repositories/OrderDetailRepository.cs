@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FOV.Domain.DTOs;
 using FOV.Domain.Entities.OrderAggregator;
 using FOV.Infrastructure.Data;
 using FOV.Infrastructure.DTOs.ProductQuantity;
@@ -80,5 +81,10 @@ public class OrderDetailRepository : GenericRepository<OrderDetail>, IOrderDetai
             .OrderByDescending(x => x.TotalQuantity)
             .Take(topN)
             .ToListAsync();
+    }
+
+    public Task<List<ComboQuantityDtos>> GetTopNComboOfAllOrderDetails(int topN, Guid restaurantId)
+    {
+        throw new NotImplementedException();
     }
 }

@@ -2,6 +2,7 @@
 using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.RestaurantAggregator;
 using FOV.Domain.Entities.TableAggregator.Enums;
+using FOV.Domain.Entities.UserAggregator.Enums;
 using FOV.Domain.Entities.WaiterSalaryAggregator;
 using FOV.Domain.Entities.WaiterScheduleAggregator;
 using Microsoft.AspNetCore.Identity;
@@ -14,6 +15,7 @@ public class User : IdentityUser<Guid>
     public string FullName { get; set; } = string.Empty;
     public DateTime? HireDate { get; set; } = DateTime.UtcNow;
     public string EmployeeCode { get; set; }
+    public EmployeeType EmployeeType { get; set; }
     public ICollection<Attendance> Attendances { get; set; } = []; // Use List<Attendance>
     public ICollection<WaiterSchedule> WaiterSchedules { get; set; } = [];
     public virtual ICollection<Order>? Orders { get; set; } = [];

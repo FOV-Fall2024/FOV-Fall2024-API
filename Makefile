@@ -39,7 +39,7 @@ run:
 # Update specific service(s)
 update:
 	@echo "Rebuilding and restarting services..."
-	@docker-compose --project-name $(COMPOSE_PROJECT_NAME) up -d --build fov.presentation
+	@docker-compose --project-name $(COMPOSE_PROJECT_NAME) up -d --build
 
 # Reset: full cleanup and rebuild
 reset: remove build update

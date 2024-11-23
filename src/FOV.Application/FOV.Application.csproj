@@ -33,7 +33,6 @@
     <Folder Include="Features\Employees\Responses\" />
     <Folder Include="Features\IngredientMeasures\Responses\" />
     <Folder Include="Features\Ingredients\Queries\GetIngredientDetail\" />
-    <Folder Include="Features\Shared\" />
     <Folder Include="Features\RefundDishInventories\Responses\" />
   </ItemGroup>
 

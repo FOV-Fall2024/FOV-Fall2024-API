@@ -6,36 +6,38 @@ using System.Threading.Tasks;
 using FOV.Application.Common.Behaviours.Claim;
 using FOV.Application.Common.Exceptions;
 using FOV.Application.Features.Shared.TimeFrame;
-using FOV.Domain.Entities.PaymentAggregator.Enums;
+using FOV.Domain.Entities.UserAggregator;
 using FOV.Domain.Entities.UserAggregator.Enums;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
-namespace FOV.Application.Features.Statistics.Queries.GetTotalRevenues;
-public record GetTotalRevenuesCommand(TimeFrame TimeFrame, DateTime? ChosenDate = null) : IRequest<List<TotalRevenuesDto>>;
-public record TotalRevenuesDto(string TimePeriod, decimal TotalRevenues);
-public class GetTotalRevenuesQuery(IUnitOfWorks unitOfWorks, IClaimService claimService) : IRequestHandler<GetTotalRevenuesCommand, List<TotalRevenuesDto>>
+namespace FOV.Application.Features.Statistics.Queries.GetTotalCustomers;
+public record GetTotalCustomerCommand(TimeFrame TimeFrame, DateTime? ChosenDate = null) : IRequest<List<TotalCustomerDtos>>;
+public record TotalCustomerDtos(string TimePeriod, int TotalCustomers);
+internal class GetTotalCustomerQuery(IUnitOfWorks unitOfWorks, IClaimService claimService) : IRequestHandler<GetTotalCustomerCommand, List<TotalCustomerDtos>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     private readonly IClaimService _claimService = claimService;
-    public async Task<List<TotalRevenuesDto>> Handle(GetTotalRevenuesCommand request, CancellationToken cancellationToken)
+    public async Task<List<TotalCustomerDtos>> Handle(GetTotalCustomerCommand request, CancellationToken cancellationToken)
     {
         var userRole = _claimService.UserRole;
-        List<Domain.Entities.PaymentAggregator.Payments> payments = new();
+        List<Customer> customers = new();
 
         if (userRole == Role.Manager)
         {
             var restaurantId = _claimService.RestaurantId;
-            payments = await _unitOfWorks.PaymentRepository.WhereAsync(p => p.PaymentStatus == PaymentStatus.Paid && p.Order.Table.RestaurantId == restaurantId, p => p.Order.Table);
-        }
-        else if (userRole == Role.Administrator)
+            customers = await _unitOfWorks.CustomerRepository.WhereAsync(
+                c => c.Orders.Any(o => o.Table.RestaurantId == restaurantId),
+                c => c.Orders,
+                c => c.Orders.Select(o => o.Table));
+        } else if (userRole == Role.Administrator)
         {
-            payments = await _unitOfWorks.PaymentRepository.WhereAsync(p => p.PaymentStatus == PaymentStatus.Paid, p => p.Order.Table);
+            customers = await _unitOfWorks.CustomerRepository.GetAllAsync();
         }
 
         var chosenDate = request.ChosenDate ?? DateTime.Now;
         DateTime startDate, endDate;
-
+        
         switch (request.TimeFrame)
         {
             case TimeFrame.Week:
@@ -57,7 +59,7 @@ public class GetTotalRevenuesQuery(IUnitOfWorks unitOfWorks, IClaimService claim
                 throw new AppException("TimeFrame không hợp lệ");
         }
 
-        payments = payments.Where(p => p.PaymentDate >= startDate && p.PaymentDate < endDate).ToList();
+        customers = customers.Where(c => c.Created >= startDate && c.Created < endDate).ToList();
         var periods = request.TimeFrame switch
         {
             TimeFrame.Week or TimeFrame.Month => Enumerable.Range(0, (endDate - startDate).Days)
@@ -69,19 +71,15 @@ public class GetTotalRevenuesQuery(IUnitOfWorks unitOfWorks, IClaimService claim
 
         var statistics = request.TimeFrame switch
         {
-            TimeFrame.Week or TimeFrame.Month => periods
-                .Select(date => new TotalRevenuesDto(
-                    date.ToString("yyyy-MM-dd"),
-                    payments.Where(p => p.PaymentDate!.Value.Date == date).Sum(p => p.FinalAmount)))
-                .OrderBy(dto => DateTime.ParseExact(dto.TimePeriod, "yyyy-MM-dd", null))
-                .ToList(),
+            TimeFrame.Week or TimeFrame.Month => periods.Select(date => new TotalCustomerDtos(
+                date.ToString("yyyy-MM-dd"),
+                customers.Count(c => c.Created.Date == date)
+                )).ToList(),
 
-            TimeFrame.Year => periods
-                .Select(month => new TotalRevenuesDto(
-                    $"{month.Year}/{month.Month}",
-                    payments.Where(p => p.PaymentDate!.Value.Month == month.Month).Sum(p => p.FinalAmount)))
-                .OrderBy(dto => DateTime.ParseExact(dto.TimePeriod, "yyyy/M", null))
-                .ToList(),
+            TimeFrame.Year => periods.Select(date => new TotalCustomerDtos(
+                date.ToString("yyyy-MM"),
+                customers.Count(c => c.Created.Month == date.Month)
+                )).ToList(),
 
             _ => throw new AppException("Không tìm thấy TimeFrame")
         };

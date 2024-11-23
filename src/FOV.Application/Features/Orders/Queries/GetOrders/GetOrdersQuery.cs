@@ -39,7 +39,7 @@ public class GetOrdersQuery : IRequestHandler<GetOrdersRequest, List<GetOrdersRe
             o.Id,
             o.OrderStatus != null ? o.OrderStatus.ToString() : OrderStatus.Finish.ToString(),
             o.TotalPrice,
-            o.OrderTime ?? DateTime.MinValue,
+            o.OrderTime,
             o.TableId,
             o.Table.TableNumber)).ToList();
     }

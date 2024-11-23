@@ -789,16 +789,16 @@ namespace FOV.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("6531296e-a86a-4fcc-97e7-7e6182a5c011"),
-                            Created = new DateTime(2024, 11, 18, 8, 1, 11, 215, DateTimeKind.Utc).AddTicks(3200),
+                            Created = new DateTime(2024, 11, 23, 4, 1, 31, 765, DateTimeKind.Utc).AddTicks(6973),
                             IngredientMeasureName = "gam",
-                            LastModified = new DateTime(2024, 11, 18, 8, 1, 11, 215, DateTimeKind.Utc).AddTicks(3200)
+                            LastModified = new DateTime(2024, 11, 23, 4, 1, 31, 765, DateTimeKind.Utc).AddTicks(6974)
                         },
                         new
                         {
                             Id = new Guid("6531296e-a86a-4fcc-97e7-7e6192a5c011"),
-                            Created = new DateTime(2024, 11, 18, 8, 1, 11, 215, DateTimeKind.Utc).AddTicks(3210),
+                            Created = new DateTime(2024, 11, 23, 4, 1, 31, 765, DateTimeKind.Utc).AddTicks(6982),
                             IngredientMeasureName = "ml",
-                            LastModified = new DateTime(2024, 11, 18, 8, 1, 11, 215, DateTimeKind.Utc).AddTicks(3211)
+                            LastModified = new DateTime(2024, 11, 23, 4, 1, 31, 765, DateTimeKind.Utc).AddTicks(6982)
                         });
                 });
 
@@ -1213,6 +1213,9 @@ namespace FOV.Infrastructure.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
+                    b.Property<decimal>("RoleSalary")
+                        .HasColumnType("numeric");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
@@ -1282,6 +1285,9 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("EmployeeCode")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("EmployeeType")
+                        .HasColumnType("integer");
 
                     b.Property<string>("FullName")
                         .IsRequired()
@@ -1367,10 +1373,10 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("Status")
                         .HasColumnType("text");
 
-                    b.Property<decimal>("TotalHours")
+                    b.Property<decimal>("TotalSalaries")
                         .HasColumnType("numeric");
 
-                    b.Property<decimal>("TotalSalary")
+                    b.Property<decimal>("TotalShifts")
                         .HasColumnType("numeric");
 
                     b.Property<Guid?>("UserId")

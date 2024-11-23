@@ -1,5 +1,7 @@
 ﻿using FOV.Application.Features.Statistics.Queries.GetCurrentStatistic;
 using FOV.Application.Features.Statistics.Queries.GetTopNDishGeneral;
+using FOV.Application.Features.Statistics.Queries.GetTotalCustomers;
+using FOV.Application.Features.Statistics.Queries.GetTotalOrders;
 using FOV.Application.Features.Statistics.Queries.GetTotalRevenues;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +19,18 @@ public class StatisticsController(ISender sender) : DefaultController
     }
     [HttpGet("revenue")]
     public async Task<IActionResult> GetRevenue([FromQuery] GetTotalRevenuesCommand command)
+    {
+        var result = await _sender.Send(command);
+        return Ok(result);
+    }
+    [HttpGet("customers")]
+    public async Task<IActionResult> GetTotalCustomers([FromQuery] GetTotalCustomerCommand command)
+    {
+        var result = await _sender.Send(command);
+        return Ok(result);
+    }
+    [HttpGet("orders")]
+    public async Task<IActionResult> GetTotalOrders([FromQuery] GetTotalOrderCommand command)
     {
         var result = await _sender.Send(command);
         return Ok(result);

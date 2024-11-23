@@ -60,29 +60,29 @@ public class ApplicationDbContextInitializer
 
     public async Task TrySeedAsync()
     {
-        var administratorsRole = new ApplicationRole(Role.Administrator);
+        var administratorsRole = new ApplicationRole(Role.Administrator, 0);
 
         if (!await _roleManager.RoleExistsAsync(Role.Waiter.ToString()))
         {
-            var role = new ApplicationRole(Role.Waiter.ToString());
+            var role = new ApplicationRole(Role.Waiter.ToString(), 25000);
             await _roleManager.CreateAsync(role);
         }
 
         if (!await _roleManager.RoleExistsAsync(Role.Manager))
         {
-            var managerRole = new ApplicationRole(Role.Manager);
+            var managerRole = new ApplicationRole(Role.Manager, 0);
             await _roleManager.CreateAsync(managerRole);
         }
 
         if (!await _roleManager.RoleExistsAsync(Role.Chef))
         {
-            var chefRole = new ApplicationRole(Role.Chef);
+            var chefRole = new ApplicationRole(Role.Chef, 30000);
             await _roleManager.CreateAsync(chefRole);
         }
 
         if (!await _roleManager.RoleExistsAsync(Role.HeadChef))
         {
-            var headChefRole = new ApplicationRole(Role.HeadChef);
+            var headChefRole = new ApplicationRole(Role.HeadChef, 50000);
             await _roleManager.CreateAsync(headChefRole);
         }
 

@@ -130,12 +130,21 @@ public partial class CreateEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager
         4 => "HCF_001",
         _ => throw new NotImplementedException(),
     };
+    public static decimal DefaultRoleSalary(int roleId) => roleId switch
+    {
+        1 => 20000000m,
+        2 => 25000m,
+        3 => 30000m,
+        4 => 50000m,
+        _ => throw new NotImplementedException(),
+    };
+
     public async Task<GenerateRole> GenerateCode(int roleId)
     {
         // Ensure the role exists
         if (!await _roleManager.RoleExistsAsync(UserRole(roleId)))
         {
-            var roleResult = await _roleManager.CreateAsync(new ApplicationRole(roleId.ToString()));
+            var roleResult = await _roleManager.CreateAsync(new ApplicationRole(roleId.ToString(), DefaultRoleSalary(roleId)));
             if (!roleResult.Succeeded)
             {
                 throw new Exception("Error creating role.");
