@@ -12,5 +12,15 @@ public class Salary : BaseAuditableEntity
 {
     public SalaryType SalaryType { get; set; }
     public decimal BaseSalary { get; set; }
-    public ICollection<WaiterSchedule> WaiterSchedules { get; set; } = [];
+    public ICollection<WaiterSalary> WaiterSalaries { get; set; } = [];
+
+    public Salary()
+    {
+    }
+
+    public void UpdateSalary(SalaryType salaryType, decimal baseSalary)
+    {
+        SalaryType = salaryType;
+        BaseSalary = baseSalary;
+    }
 }

@@ -789,16 +789,16 @@ namespace FOV.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("6531296e-a86a-4fcc-97e7-7e6182a5c011"),
-                            Created = new DateTime(2024, 11, 23, 4, 1, 31, 765, DateTimeKind.Utc).AddTicks(6973),
+                            Created = new DateTime(2024, 11, 23, 6, 6, 15, 868, DateTimeKind.Utc).AddTicks(4781),
                             IngredientMeasureName = "gam",
-                            LastModified = new DateTime(2024, 11, 23, 4, 1, 31, 765, DateTimeKind.Utc).AddTicks(6974)
+                            LastModified = new DateTime(2024, 11, 23, 6, 6, 15, 868, DateTimeKind.Utc).AddTicks(4782)
                         },
                         new
                         {
                             Id = new Guid("6531296e-a86a-4fcc-97e7-7e6192a5c011"),
-                            Created = new DateTime(2024, 11, 23, 4, 1, 31, 765, DateTimeKind.Utc).AddTicks(6982),
+                            Created = new DateTime(2024, 11, 23, 6, 6, 15, 868, DateTimeKind.Utc).AddTicks(4786),
                             IngredientMeasureName = "ml",
-                            LastModified = new DateTime(2024, 11, 23, 4, 1, 31, 765, DateTimeKind.Utc).AddTicks(6982)
+                            LastModified = new DateTime(2024, 11, 23, 6, 6, 15, 868, DateTimeKind.Utc).AddTicks(4786)
                         });
                 });
 
@@ -902,7 +902,7 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<byte?>("OrderStatus")
                         .HasColumnType("smallint");
 
-                    b.Property<DateTime?>("OrderTime")
+                    b.Property<DateTime>("OrderTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<byte?>("OrderType")
@@ -1349,6 +1349,35 @@ namespace FOV.Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("FOV.Domain.Entities.WaiterSalaryAggregator.Salary", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("BaseSalary")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<int>("SalaryType")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Salary");
+                });
+
             modelBuilder.Entity("FOV.Domain.Entities.WaiterSalaryAggregator.WaiterSalary", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1370,6 +1399,9 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<DateTime?>("PayDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<Guid?>("SalaryId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Status")
                         .HasColumnType("text");
 
@@ -1383,6 +1415,8 @@ namespace FOV.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SalaryId");
 
                     b.HasIndex("UserId");
 
@@ -1883,9 +1917,15 @@ namespace FOV.Infrastructure.Migrations
 
             modelBuilder.Entity("FOV.Domain.Entities.WaiterSalaryAggregator.WaiterSalary", b =>
                 {
+                    b.HasOne("FOV.Domain.Entities.WaiterSalaryAggregator.Salary", "Salary")
+                        .WithMany("WaiterSalaries")
+                        .HasForeignKey("SalaryId");
+
                     b.HasOne("FOV.Domain.Entities.UserAggregator.User", "User")
                         .WithMany("WaiterSalaries")
                         .HasForeignKey("UserId");
+
+                    b.Navigation("Salary");
 
                     b.Navigation("User");
                 });
@@ -2083,6 +2123,11 @@ namespace FOV.Infrastructure.Migrations
                     b.Navigation("WaiterSalaries");
 
                     b.Navigation("WaiterSchedules");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.WaiterSalaryAggregator.Salary", b =>
+                {
+                    b.Navigation("WaiterSalaries");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.WaiterScheduleAggregator.WaiterSchedule", b =>

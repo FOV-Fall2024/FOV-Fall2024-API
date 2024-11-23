@@ -59,6 +59,7 @@ public static class DependencyInjection
         services.AddScoped<IRefundDishInventoryTransactionRepository, RefundDishInventoryTransactionRepository>();
         services.AddScoped<IDishGeneralImageRepository, DishGeneralImageRepository>();
         services.AddScoped<IIngredientMeasureRepository, IngredientMeasureRepository>();
+        services.AddScoped<ISalaryRepository, SalaryRepository>();
         services.AddSingleton<OrderHub>();
         services.AddSingleton<NotificationHub>();
         return services;
