@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using FOV.Application.Common.Exceptions;
 using FOV.Application.Features.Authorize.Commands.UserLogin;
+using FOV.Domain.Entities.TableAggregator.Enums;
 using FOV.Domain.Entities.UserAggregator;
 using FOV.Infrastructure.Notifications.Web.SignalR.Notification.Setup;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
@@ -32,6 +33,11 @@ public class EmployeeLoginHandler(IUnitOfWorks unitOfWorks, UserManager<User> us
         if (user == null)
         {
             fieldErrors.Add(new FieldError { Field = "code", Message = "Mã nhân viên không đúng" });
+            throw new AppException("Đăng nhập thất bại", fieldErrors);
+        }
+        if (user.Status == Status.Inactive)
+        {
+            fieldErrors.Add(new FieldError { Field = "status", Message = "Tài khoản đã bị khóa" });
             throw new AppException("Đăng nhập thất bại", fieldErrors);
         }
         var roles = await _userManager.GetRolesAsync(user);

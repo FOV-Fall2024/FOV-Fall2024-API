@@ -65,7 +65,7 @@ public class GetAllEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User> u
             var roles = await _userManager.GetRolesAsync(user);
             var roleName = roles.FirstOrDefault() ?? string.Empty;
 
-            if (roleName == Role.Administrator)
+            if (roleName == Role.Administrator && roleName == Role.Manager)
             {
                 continue;
             }

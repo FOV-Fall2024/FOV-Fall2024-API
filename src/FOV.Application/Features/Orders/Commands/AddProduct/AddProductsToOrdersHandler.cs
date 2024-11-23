@@ -102,7 +102,7 @@ public class AddProductsToOrderHandler : IRequestHandler<AddProductsToOrdersComm
             _unitOfWorks.OrderRepository.Update(order);
             await _unitOfWorks.SaveChangeAsync();
 
-            await _orderHub.SendOrder(order.Id);
+            await _orderHub.UpdateOrderStatus(order.Id, "Prepare");
 
             return order.Id;
         }
