@@ -5,7 +5,7 @@ using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Payments.Queries;
-public record GetPaymentsRequest(Guid? PaymentId, PaymentStatus? PaymentStatus, PaymentMethods? PaymentMethods) : IRequest<List<PaymentResponse>>;
+public record GetPaymentsRequest(Guid? PaymentId, Guid? OrderId, PaymentStatus? PaymentStatus, PaymentMethods? PaymentMethods) : IRequest<List<PaymentResponse>>;
 
 public class GetPaymentsQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetPaymentsRequest, List<PaymentResponse>>
 {
@@ -17,6 +17,7 @@ public class GetPaymentsQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetPay
         var filterEntity = new Domain.Entities.PaymentAggregator.Payments
         {
             Id = request.PaymentId ?? Guid.Empty,
+            OrderId = request.OrderId ?? Guid.Empty,
             PaymentStatus = request.PaymentStatus ?? PaymentStatus.Pending,
             PaymentMethods = request.PaymentMethods ?? PaymentMethods.Cash
         };
@@ -25,6 +26,7 @@ public class GetPaymentsQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetPay
 
         return filteredPayment.Select(p => new PaymentResponse(
             p.Id,
+            p.OrderId,
             p.Amount,
             p.ReduceAmount,
             p.FinalAmount,
