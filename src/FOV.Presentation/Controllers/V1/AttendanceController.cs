@@ -1,8 +1,10 @@
-﻿using FOV.Application.Features.Attendances.Commands.CheckAttendance;
+﻿using Azure;
+using FOV.Application.Features.Attendances.Commands.CheckAttendance;
 using FOV.Application.Features.Attendances.Commands.CheckIn;
 using FOV.Application.Features.Attendances.Commands.GenerateCheckInQRCode;
 using FOV.Application.Features.Attendances.Queries.GetDailyAttendances;
 using FOV.Application.Features.Attendances.Queries.GetQRShiftOfRestaurants;
+using FOV.Presentation.Infrastructure.Core;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,7 +37,7 @@ public class AttendanceController(ISender sender) : DefaultController
         var checkInCommand = new CheckInCommand(restaurantId, shiftId, userId, date, DateTime.Now, latitude, longitude);
 
         var attendanceId = await _sender.Send(checkInCommand);
-        return Ok(new { attendanceId });
+        return Ok(new OK_Result<Guid>("Điểm danh thành công, response));
     }
     [HttpGet("qr")]
     public async Task<IActionResult> GetQrToCheckIn([FromQuery] GetQRShiftOfRestaurantCommand command)
