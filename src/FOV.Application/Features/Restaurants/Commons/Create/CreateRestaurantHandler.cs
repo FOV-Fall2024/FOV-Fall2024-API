@@ -80,9 +80,9 @@ public partial class CreateRestaurantHandler(IUnitOfWorks unitOfWorks, UserManag
         var manager = new User
         {
             EmployeeCode = generateManagerCode.Code,
-            PhoneNumber = "0999999999",
+            PhoneNumber = GenerateVietnamesePhoneNumber(),
             FullName = "Manager " + restaurant.RestaurantName,
-            UserName = "Manager",
+            UserName = generateManagerCode.Code,
             RestaurantId = restaurant.Id,
             Status = Status.Active
         };
@@ -96,9 +96,9 @@ public partial class CreateRestaurantHandler(IUnitOfWorks unitOfWorks, UserManag
         var headChef = new User
         {
             EmployeeCode = generateHeadchefCode.Code,
-            PhoneNumber = "0999999999",
+            PhoneNumber = GenerateVietnamesePhoneNumber(),
             FullName = "Head Chef " + restaurant.RestaurantName,
-            UserName = "HeadChef",
+            UserName = generateHeadchefCode.Code,
             RestaurantId = restaurant.Id,
             Status = Status.Active
         };
@@ -114,6 +114,14 @@ public partial class CreateRestaurantHandler(IUnitOfWorks unitOfWorks, UserManag
         await _unitOfWorks.SaveChangeAsync();
 
         return new CreateRestaurantResponse(restaurant.Id, manager.EmployeeCode, headChef.EmployeeCode);
+    }
+
+    private static string GenerateVietnamesePhoneNumber()
+    {
+        var random = new Random();
+        string prefix = "09";
+        string randomDigits = random.Next(10000000, 99999999).ToString();
+        return prefix + randomDigits;
     }
 
     public static string UserRole(int role) => role switch

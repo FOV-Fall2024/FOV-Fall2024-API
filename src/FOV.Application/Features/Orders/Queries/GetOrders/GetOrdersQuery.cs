@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentResults;
+using FOV.Application.Common.Behaviours.Claim;
+using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.OrderAggregator.Enums;
+using FOV.Domain.Entities.UserAggregator.Enums;
 using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
@@ -16,15 +20,26 @@ public record GetOrdersResponse(Guid Id, string OrderStatus, decimal TotalPrice,
 public class GetOrdersQuery : IRequestHandler<GetOrdersRequest, List<GetOrdersResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks;
-
-    public GetOrdersQuery(IUnitOfWorks unitOfWorks)
+    private readonly IClaimService _claimService;
+    public GetOrdersQuery(IUnitOfWorks unitOfWorks, IClaimService claimService)
     {
         _unitOfWorks = unitOfWorks;
+        _claimService = claimService;
     }
 
     public async Task<List<GetOrdersResponse>> Handle(GetOrdersRequest request, CancellationToken cancellationToken)
     {
-        var orders = await _unitOfWorks.OrderRepository.GetAllAsync(x => x.Table);
+        var restaurantId = _claimService.RestaurantId;
+        List<Order> orders = new List<Order>();
+        if (_claimService.UserRole == Role.Administrator)
+        {
+            orders = await _unitOfWorks.OrderRepository.WhereAsync(x => x.Table.RestaurantId == restaurantId, x => x.Table);
+        }
+        else
+        {
+            orders = await _unitOfWorks.OrderRepository.WhereAsync(x => x.Table.RestaurantId == restaurantId, x => x.Table);
+        }   
+
         var filterEntity = new Domain.Entities.OrderAggregator.Order
         {
             Id = request.Id ?? Guid.Empty,

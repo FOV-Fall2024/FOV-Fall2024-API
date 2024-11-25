@@ -38,6 +38,7 @@ public class OrderController(ISender sender) : DefaultController
             throw new Exception(ex.Message);
         }
     }
+    [Authorize(Roles = $"{Role.Waiter},{Role.Manager},{Role.Administrator}")]
     [HttpGet]
     public async Task<IActionResult> Get([FromQuery] GetOrdersRequest command)
     {
