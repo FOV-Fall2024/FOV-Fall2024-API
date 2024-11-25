@@ -47,7 +47,7 @@ public class GetQRShiftOfRestaurantsQuery(IUnitOfWorks unitOfWorks, QRCodeGenera
             throw new AppException("Không tìm thấy ca làm việc");
         }
 
-        var fileName = $"Restaurant_{restaurant.Id}_Date_{date}_Shift_{shift.ShiftName}";
+        var fileName = $"Restaurant_{restaurant.Id}_Date_{date:yyyy-MM-dd}_Shift_{shift.ShiftName}";
         var qrUrl = $"http://vktrng.ddns.net:8080/api/Attendance/checkin?restaurantId={restaurantId}&shiftId={shiftId}&date={date}&userId=&latitude=&longitude=";
 
         var qrCodeBytes = _qRCodeGeneratorHandler.GenerateQRCode(qrUrl);

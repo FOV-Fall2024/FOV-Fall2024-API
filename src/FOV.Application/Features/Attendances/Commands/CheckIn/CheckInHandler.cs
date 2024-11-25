@@ -29,7 +29,7 @@ public class CheckInHandler(IUnitOfWorks unitOfWorks, UserManager<User> userMana
         var shiftEndTime = new DateTime(request.CheckInTime.Year, request.CheckInTime.Month, request.CheckInTime.Day,
                                         shift.EndTime?.Hours ?? 0, shift.EndTime?.Minutes ?? 0, shift.EndTime?.Seconds ?? 0);
 
-        if (request.CheckInTime < shiftStartTime || request.CheckInTime > shiftEndTime)
+        if (checkInDate < shiftStartTime || checkInDate > shiftEndTime)
             throw new AppException("Thời gian check-in không nằm trong thời gian ca làm.");
 
         var waiterSchedule = await _unitOfWorks.WaiterScheduleRepository.FirstOrDefaultAsync(
