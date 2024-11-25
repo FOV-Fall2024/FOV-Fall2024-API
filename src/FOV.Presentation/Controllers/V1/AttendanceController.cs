@@ -37,7 +37,7 @@ public class AttendanceController(ISender sender) : DefaultController
         var checkInCommand = new CheckInCommand(restaurantId, shiftId, userId, date, DateTime.Now, latitude, longitude);
 
         var attendanceId = await _sender.Send(checkInCommand);
-        return Ok(new OK_Result<Guid>("Điểm danh thành công, response"));
+        return Ok(new OK_Result<Guid>("Điểm danh thành công", attendanceId));
     }
     [HttpGet("qr")]
     public async Task<IActionResult> GetQrToCheckIn([FromQuery] GetQRShiftOfRestaurantCommand command)
