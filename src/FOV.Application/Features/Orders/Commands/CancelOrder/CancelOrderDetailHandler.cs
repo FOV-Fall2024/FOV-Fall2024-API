@@ -40,7 +40,7 @@ public class CancelOrderDetailHandler : IRequestHandler<CancelOrderDetailCommand
 
         if (!addMoreOrderDetails.Any())
         {
-            throw new AppException("Không có món nào được đặt thêm mà m đòi xóa, nhót.");
+            throw new AppException("Hiện tại không có món ăn nào được thêm, vui lòng kiểm tra lại.");
         }
 
         foreach (var orderDetail in addMoreOrderDetails)
