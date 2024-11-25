@@ -4,6 +4,7 @@ using FOV.Application.Features.Payments.Commands.Create;
 using FOV.Application.Features.Payments.Commands.CreateVNPayPayment;
 using FOV.Application.Features.Payments.Commands.FinishPayment;
 using FOV.Application.Features.Payments.Queries;
+using FOV.Presentation.Infrastructure.Core;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,7 +23,7 @@ public class PaymentController(ISender sender) : DefaultController
             Feedback = feedback?.Feedback
         };
         var response = await _sender.Send(command);
-        return Ok(response);
+        return Ok(new OK_Result<Guid>("Đợi nhân viên xác nhận thanh toán", response));
     }
 
     [HttpPost("{orderId:guid}/vn-pay")]

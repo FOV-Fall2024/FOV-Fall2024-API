@@ -32,7 +32,7 @@ public class OrderController(ISender sender) : DefaultController
         }
         catch (AppException ex)
         {
-            return BadRequest(new Error<FieldError>("Không đủ món ăn trong kho", ErrorStatusCodeConfig.BAD_REQUEST, ex.FieldErrors));
+            return BadRequest(new Error<FieldError>("Đã xảy ra lỗi khi đặt hàng", ErrorStatusCodeConfig.BAD_REQUEST, ex.FieldErrors));
         } catch (Exception ex)
         {
             throw new Exception(ex.Message);
