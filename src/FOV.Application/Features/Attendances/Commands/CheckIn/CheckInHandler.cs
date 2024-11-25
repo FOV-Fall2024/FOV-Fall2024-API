@@ -23,7 +23,7 @@ public class CheckInHandler(IUnitOfWorks unitOfWorks, UserManager<User> userMana
         var restaurant = await _unitOfWorks.RestaurantRepository.GetByIdAsync(request.RestaurantId) ?? throw new AppException("Không tìm thấy thông tin nhà hàng."); ;
         var shift = await _unitOfWorks.ShiftRepository.GetByIdAsync(request.ShiftId) ?? throw new AppException("Không tìm thấy thông tin ca làm việc.");
 
-        var checkInDate = request.CheckInTime.Date.AddHours(7);
+        var checkInDate = request.CheckInTime.AddHours(7);
         var shiftStartTime = new DateTime(request.CheckInTime.Year, request.CheckInTime.Month, request.CheckInTime.Day,
                                              shift.StartTime?.Hours ?? 0, shift.StartTime?.Minutes ?? 0, shift.StartTime?.Seconds ?? 0);
         var shiftEndTime = new DateTime(request.CheckInTime.Year, request.CheckInTime.Month, request.CheckInTime.Day,
