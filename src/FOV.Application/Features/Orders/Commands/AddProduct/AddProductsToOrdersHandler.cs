@@ -9,6 +9,7 @@ using FOV.Application.Common.Exceptions;
 using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.OrderAggregator.Enums;
 using FOV.Infrastructure.Caching.CachingService;
+using FOV.Infrastructure.Notifications.Web.SignalR.Notification.Setup;
 using FOV.Infrastructure.Notifications.Web.SignalR.Order.Setup;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
@@ -36,13 +37,15 @@ public class AddProductsToOrderHandler : IRequestHandler<AddProductsToOrdersComm
     private readonly IUnitOfWorks _unitOfWorks;
     private readonly IDatabase _database;
     private readonly OrderHub _orderHub;
+    private readonly NotificationHub _notificationHub;
     private readonly ConcurrentDictionary<string, LockingHandler> _lockHandlers;
 
-    public AddProductsToOrderHandler(IUnitOfWorks unitOfWorks, IDatabase database, OrderHub orderHub)
+    public AddProductsToOrderHandler(IUnitOfWorks unitOfWorks, IDatabase database, OrderHub orderHub, NotificationHub notificationHub)
     {
         _unitOfWorks = unitOfWorks;
         _database = database;
         _orderHub = orderHub;
+        _notificationHub = notificationHub;
         _lockHandlers = new ConcurrentDictionary<string, LockingHandler>();
     }
 
@@ -103,6 +106,7 @@ public class AddProductsToOrderHandler : IRequestHandler<AddProductsToOrdersComm
             await _unitOfWorks.SaveChangeAsync();
 
             await _orderHub.UpdateOrderStatus(order.Id, "Prepare");
+            await _notificationHub.SendNotificationToWaiter(order.UserId ?? Guid.Empty, order.Id, order.OrderDetails.First().Id);
 
             return order.Id;
         }
