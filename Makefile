@@ -1,6 +1,6 @@
 # Variables
 COMPOSE_PROJECT_NAME=vrom
-DOCKER_IMAGE=fovpresentation
+DOCKER_IMAGE=vrom
 DOCKERFILE_PATH=src/FOV.Presentation/Dockerfile
 DOCKER_COMPOSE_FILE=docker-compose.yml
 
@@ -42,4 +42,4 @@ update:
 	@docker-compose --project-name $(COMPOSE_PROJECT_NAME) up -d --build
 
 # Reset: full cleanup and rebuild
-reset: remove build update
+reset: remove build run
