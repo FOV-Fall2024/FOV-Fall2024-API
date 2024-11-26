@@ -48,6 +48,7 @@ public class VNPayPaymentHandler : IRequestHandler<VNPayPaymentCommand, VNPayPay
             .Where(od => od.Quantity > od.RefundQuantity)
             .Sum(od => (od.Quantity - od.RefundQuantity) * od.Price);
 
+        var totalReduceMoney = 0;
         Customer? customer = null;
 
         if (!string.IsNullOrEmpty(request.PhoneNumber))
@@ -60,7 +61,7 @@ public class VNPayPaymentHandler : IRequestHandler<VNPayPaymentCommand, VNPayPay
 
                 var availablePoints = customer.Point;
                 var pointsToUse = Math.Min(request.PointsToApply.Value, availablePoints);
-                var totalReduceMoney = pointsToUse;
+                totalReduceMoney = pointsToUse;
 
                 if (totalReduceMoney > totalAmount)
                 {
@@ -73,6 +74,19 @@ public class VNPayPaymentHandler : IRequestHandler<VNPayPaymentCommand, VNPayPay
 
                 totalAmount -= totalReduceMoney;
             }
+        }
+
+        var finalAmount = totalAmount - totalReduceMoney;
+        if (finalAmount > 0 && customer != null)
+        {
+            var pointsAwarded = (int)(finalAmount / ConversePoint);
+            customer.Point += pointsAwarded;
+            _unitOfWorks.CustomerRepository.Update(customer);
+        }
+
+        if (!string.IsNullOrEmpty(request.Feedback))
+        {
+            order.Feedback = request.Feedback;
         }
 
         if (totalAmount == 0)
@@ -88,7 +102,7 @@ public class VNPayPaymentHandler : IRequestHandler<VNPayPaymentCommand, VNPayPay
             OrderId = request.OrderId,
             Amount = totalAmount,
             ReduceAmount = totalAmount,
-            FinalAmount = totalAmount,
+            FinalAmount = finalAmount,
             VnpTxnRef = txnRef,
             PaymentDate = DateTime.UtcNow,
             PaymentMethods = Domain.Entities.PaymentAggregator.Enums.PaymentMethods.VNPay,
