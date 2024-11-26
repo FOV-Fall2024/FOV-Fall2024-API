@@ -230,6 +230,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
 
                 if (availableAmount < requiredAmount)
                 {
+                    //Message
                     if (isCombo)
                     {
                         var combo = dish.DishCombos.FirstOrDefault()?.Combo;
@@ -246,7 +247,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
                         fieldErrors.Add(new FieldError
                         {
                             Field = "productId",
-                            Message = $"Món ăn này hiện tại chỉ có thể đặt tối đa {maxDishes} phần."
+                            Message = $"Món ăn {dish.DishGeneral.DishName} hiện tại chỉ có thể đặt tối đa {maxDishes} phần."
                         });
                     }
                     throw new AppException("Không đủ nguyên liệu", fieldErrors, 400);

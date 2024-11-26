@@ -14,10 +14,10 @@ using MediatR;
 
 namespace FOV.Application.Features.Orders.Queries.GetOrders;
 
-public record GetOrdersRequest(Guid? Id, OrderStatus? OrderStatus, DateTime? OrderTime, Guid? TableId) : IRequest<List<GetOrdersResponse>>;
-public record GetOrdersResponse(Guid Id, string OrderStatus, decimal TotalPrice, DateTime OrderTime, Guid TableId, int TableNumber);
+public record GetOrdersRequest(PagingRequest? PagingRequest, Guid? Id, OrderStatus? OrderStatus, string? PhoneNumber, DateTime? OrderTime, Guid? TableId) : IRequest<PagedResult<GetOrdersResponse>>;
+public record GetOrdersResponse(Guid Id, string OrderStatus, decimal TotalPrice, DateTime OrderTime, Guid TableId, int TableNumber, string CustomerName, string? PhoneNumber, string? Feedback, DateTime CreatedDate);
 
-public class GetOrdersQuery : IRequestHandler<GetOrdersRequest, List<GetOrdersResponse>>
+public class GetOrdersQuery : IRequestHandler<GetOrdersRequest, PagedResult<GetOrdersResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks;
     private readonly IClaimService _claimService;
@@ -27,35 +27,59 @@ public class GetOrdersQuery : IRequestHandler<GetOrdersRequest, List<GetOrdersRe
         _claimService = claimService;
     }
 
-    public async Task<List<GetOrdersResponse>> Handle(GetOrdersRequest request, CancellationToken cancellationToken)
+    public async Task<PagedResult<GetOrdersResponse>> Handle(GetOrdersRequest request, CancellationToken cancellationToken)
     {
         var restaurantId = _claimService.RestaurantId;
-        List<Order> orders = new List<Order>();
-        if (_claimService.UserRole == Role.Administrator)
+
+        var orders = await _unitOfWorks.OrderRepository.WhereAsync(
+            x => x.Table.RestaurantId == restaurantId,
+            x => x.Table,
+            x => x.Customer
+        );
+
+        if (request.Id.HasValue)
         {
-            orders = await _unitOfWorks.OrderRepository.WhereAsync(x => x.Table.RestaurantId == restaurantId, x => x.Table);
+            orders = orders.Where(o => o.Id == request.Id.Value).ToList();
         }
-        else
+
+        if (!string.IsNullOrEmpty(request.PhoneNumber))
         {
-            orders = await _unitOfWorks.OrderRepository.WhereAsync(x => x.Table.RestaurantId == restaurantId, x => x.Table);
-        }   
+            orders = orders.Where(o => o.Customer != null && o.Customer.PhoneNumber == request.PhoneNumber).ToList();
+        }
 
-        var filterEntity = new Domain.Entities.OrderAggregator.Order
+        if (request.OrderStatus.HasValue)
         {
-            Id = request.Id ?? Guid.Empty,
-            OrderStatus = request.OrderStatus ?? OrderStatus.Finish,
-            OrderTime = request.OrderTime ?? DateTime.MinValue,
-            TableId = request.TableId ?? Guid.Empty,
-        };
+            orders = orders.Where(o => o.OrderStatus == request.OrderStatus.Value).ToList();
+        }
 
-        var filteredOrder = orders.AsQueryable().CustomFilterV1(filterEntity);
+        if (request.OrderTime.HasValue)
+        {
+            orders = orders.Where(o => o.OrderTime.Date == request.OrderTime.Value.Date).ToList();
+        }
 
-        return filteredOrder.Select(o => new GetOrdersResponse(
+        if (request.TableId.HasValue)
+        {
+            orders = orders.Where(o => o.TableId == request.TableId.Value).ToList();
+        }
+
+        var mappedOrder = orders.Select(o => new GetOrdersResponse(
             o.Id,
             o.OrderStatus != null ? o.OrderStatus.ToString() : OrderStatus.Finish.ToString(),
             o.TotalPrice,
             o.OrderTime,
             o.TableId,
-            o.Table.TableNumber)).ToList();
+            o.Table.TableNumber,
+            o.Customer != null ? o.Customer.FullName : "Khách",
+            o.Customer?.PhoneNumber,
+            o.Feedback,
+            o.Created
+        )).ToList();
+
+        var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
+        var sortedResults = PaginationHelper<GetOrdersResponse>.Sorting(sortType, mappedOrder, sortField);
+        var result = PaginationHelper<GetOrdersResponse>.Paging(sortedResults, page, pageSize);
+
+        return result;
     }
+
 }

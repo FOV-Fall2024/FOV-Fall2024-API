@@ -50,7 +50,7 @@ public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
     public async Task<Guid> Handle(CreatePaymentCommands request, CancellationToken cancellationToken)
     {
         var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.OrderDetails, o => o.Payments, o => o.Users)
-            ?? throw new Exception("Không tìm thấy đơn hàng nào");
+            ?? throw new AppException("Không tìm thấy đơn hàng nào");
 
         if (order.Payments.Any(p => p.PaymentStatus == PaymentStatus.Paid))
         {
@@ -59,7 +59,7 @@ public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
 
         if (order.OrderStatus == OrderStatus.Payment)
         {
-            throw new Exception("Đơn hàng đang được thanh toán");
+            throw new AppException("Đơn hàng đang được thanh toán");
         }
 
         var totalAmount = order.OrderDetails
@@ -68,7 +68,7 @@ public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
 
         if (totalAmount == 0)
         {
-            throw new Exception("No valid items for payment.");
+            throw new AppException("No valid items for payment.");
         }
 
         var totalReduceMoney = 0;
@@ -79,6 +79,9 @@ public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
             customer = await _unitOfWorks.CustomerRepository.FirstOrDefaultAsync(c => c.PhoneNumber == request.PhoneNumber);
             if (customer != null && request.UsePoints && request.PointsToApply.HasValue)
             {
+                order.Customer = customer;
+                order.CustomerId = customer.Id;
+
                 var availablePoints = customer.Point;
                 var pointsToUse = Math.Min(request.PointsToApply.Value, availablePoints);
                 totalReduceMoney = pointsToUse;
