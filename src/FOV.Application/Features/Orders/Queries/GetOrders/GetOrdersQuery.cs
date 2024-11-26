@@ -7,15 +7,17 @@ using FluentResults;
 using FOV.Application.Common.Behaviours.Claim;
 using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.OrderAggregator.Enums;
+using FOV.Domain.Entities.PaymentAggregator.Enums;
 using FOV.Domain.Entities.UserAggregator.Enums;
 using FOV.Infrastructure.Helpers.GetHelper;
+using FOV.Infrastructure.Migrations;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Orders.Queries.GetOrders;
 
 public record GetOrdersRequest(PagingRequest? PagingRequest, Guid? Id, OrderStatus? OrderStatus, string? PhoneNumber, DateTime? OrderTime, Guid? TableId) : IRequest<PagedResult<GetOrdersResponse>>;
-public record GetOrdersResponse(Guid Id, string OrderStatus, decimal TotalPrice, DateTime OrderTime, Guid TableId, int TableNumber, string CustomerName, string? PhoneNumber, string? Feedback, DateTime CreatedDate);
+public record GetOrdersResponse(Guid Id, string OrderStatus, decimal TotalPrice, decimal ReduceAmount, decimal FinalAmount, DateTime OrderTime, Guid TableId, int TableNumber, string CustomerName, string? PhoneNumber, string? Feedback, DateTime CreatedDate);
 
 public class GetOrdersQuery : IRequestHandler<GetOrdersRequest, PagedResult<GetOrdersResponse>>
 {
@@ -34,7 +36,8 @@ public class GetOrdersQuery : IRequestHandler<GetOrdersRequest, PagedResult<GetO
         var orders = await _unitOfWorks.OrderRepository.WhereAsync(
             x => x.Table.RestaurantId == restaurantId,
             x => x.Table,
-            x => x.Customer
+            x => x.Customer,
+            x => x.Payments
         );
 
         if (request.Id.HasValue)
@@ -61,19 +64,25 @@ public class GetOrdersQuery : IRequestHandler<GetOrdersRequest, PagedResult<GetO
         {
             orders = orders.Where(o => o.TableId == request.TableId.Value).ToList();
         }
+        var mappedOrder = orders.Select(o =>
+        {
+            var payment = o.Payments.FirstOrDefault(p => p.OrderId == o.Id);
 
-        var mappedOrder = orders.Select(o => new GetOrdersResponse(
-            o.Id,
-            o.OrderStatus != null ? o.OrderStatus.ToString() : OrderStatus.Finish.ToString(),
-            o.TotalPrice,
-            o.OrderTime,
-            o.TableId,
-            o.Table.TableNumber,
-            o.Customer != null ? o.Customer.FullName : "Khách",
-            o.Customer?.PhoneNumber,
-            o.Feedback,
-            o.Created
-        )).ToList();
+            return new GetOrdersResponse(
+                o.Id,
+                o.OrderStatus != null ? o.OrderStatus.ToString() : OrderStatus.Finish.ToString(),
+                o.TotalPrice,
+                payment?.ReduceAmount ?? 0,
+                payment?.FinalAmount ?? 0,
+                o.OrderTime,
+                o.TableId,
+                o.Table.TableNumber,
+                o.Customer != null ? o.Customer.FullName : "Khách",
+                o.Customer?.PhoneNumber,
+                o.Feedback,
+                o.Created
+            );
+        }).ToList();
 
         var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
         var sortedResults = PaginationHelper<GetOrdersResponse>.Sorting(sortType, mappedOrder, sortField);

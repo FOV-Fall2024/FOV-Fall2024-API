@@ -55,6 +55,9 @@ public class VNPayPaymentHandler : IRequestHandler<VNPayPaymentCommand, VNPayPay
             customer = await _unitOfWorks.CustomerRepository.FirstOrDefaultAsync(c => c.PhoneNumber == request.PhoneNumber);
             if (customer != null && request.UsePoints && request.PointsToApply.HasValue)
             {
+                order.Customer = customer;
+                order.CustomerId = customer.Id;
+
                 var availablePoints = customer.Point;
                 var pointsToUse = Math.Min(request.PointsToApply.Value, availablePoints);
                 var totalReduceMoney = pointsToUse;

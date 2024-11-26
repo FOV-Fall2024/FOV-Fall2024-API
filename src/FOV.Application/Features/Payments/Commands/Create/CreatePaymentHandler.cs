@@ -122,7 +122,7 @@ public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
             OrderId = request.OrderId,
             PaymentMethods = PaymentMethods.Cash,
             PaymentDate = DateTime.UtcNow,
-            Amount = finalAmount > 0 ? finalAmount : 0,
+            Amount = totalAmount > 0 ? totalAmount : 0,
             ReduceAmount = totalReduceMoney,
             FinalAmount = finalAmount,
             PaymentStatus = PaymentStatus.Pending
