@@ -112,6 +112,7 @@ public class VNPayPaymentHandler : IRequestHandler<VNPayPaymentCommand, VNPayPay
 
         order.OrderStatus = OrderStatus.Payment;
         _unitOfWorks.OrderRepository.Update(order);
+        await _unitOfWorks.SaveChangeAsync();
 
         string formatDate = $"{DateTime.UtcNow:yyyyMMddHHmmss}";
         #region VNPay Request
