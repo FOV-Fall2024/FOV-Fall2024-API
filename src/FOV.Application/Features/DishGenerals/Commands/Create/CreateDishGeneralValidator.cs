@@ -34,7 +34,7 @@ public class CreateProductGeneralValidator : AbstractValidator<CreateProductGene
         //RuleFor(command => command.DishGeneralImage)
         //    .NotEmpty().WithMessage("Hình ảnh mặc định là bắt buộc.")
         //    .Must(BeAValidUrl).WithMessage("Hình ảnh mặc định phải là URL hợp lệ.");
-        //RuleFor(command => command.PercentPriceDifference).NotEmpty().ExclusiveBetween(20,50).WithMessage("Trong khoảng 20-50");
+        RuleFor(command => command.PercentPriceDifference).NotEmpty().ExclusiveBetween(20,50).WithMessage("Trong khoảng 20-50");
     }
 
     private bool BeAValidUrl(string url)
