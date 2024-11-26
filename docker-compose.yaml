@@ -119,49 +119,8 @@ services:
           memory: 128M
           cpus: "0.25"
 
-  # Elasticsearch
-  elasticsearch:
-    container_name: els
-    image: elasticsearch:8.15.0
-    ports:
-      - "9200:9200"
-    volumes:
-      - elasticsearch-data:/usr/share/elasticsearch/data
-    environment:
-      - discovery.type=single-node
-      - xpack.security.enabled=false
-    networks:
-      - fov_network
-    deploy:
-      resources:
-        limits:
-          memory: 2G
-          cpus: "2.0"
-        reservations:
-          memory: 1G
-          cpus: "1.0"
+  
 
-  # Kibana for Elasticsearch
-  kibana:
-    container_name: kibana
-    image: kibana:8.15.0
-    ports:
-      - "5601:5601"
-    depends_on:
-      - elasticsearch
-    environment:
-      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-      - NODE_OPTIONS=--max-old-space-size=2048 # Allocate 2GB of memory
-    networks:
-      - fov_network
-    deploy:
-      resources:
-        limits:
-          memory: 512M
-          cpus: "0.50"
-        reservations:
-          memory: 256M
-          cpus: "0.25"
 
   # SonarQube for Code Quality
   sonarqube:
@@ -211,29 +170,7 @@ services:
           memory: 256M
           cpus: "0.25"
 
-  # Duckdns + LetsEncrypt for SSL/TLS
-  duckdns:
-    image: maksimstojkovic/duckdns
-    container_name: duckdns
-    environment:
-      - DUCKDNS_TOKEN=2eaec532-a8d2-406f-a579-98f69fb062f9
-      - DUCKDNS_DOMAIN=vktrng.duckdns.org
-      - DUCKDNS_DELAY=5
-    restart: unless-stopped
 
-  letsencrypt:
-    image: maksimstojkovic/letsencrypt
-    container_name: letsencrypt
-    volumes:
-      - ./certs:/etc/letsencrypt
-    environment:
-      - DUCKDNS_TOKEN=2eaec532-a8d2-406f-a579-98f69fb062f9
-      - DUCKDNS_DOMAIN=vktrng.duckdns.org
-      - LETSENCRYPT_DOMAIN=
-      - LETSENCRYPT_WILDCARD=false
-      - LETSENCRYPT_CHAIN=ISRG Root X1
-      - LETSENCRYPT_EMAIL=hvinh24@gmail.com
-    restart: unless-stopped
 
 networks:
   fov_network:
@@ -242,7 +179,6 @@ networks:
 volumes:
   postgres_data: {}  # PostgreSQL data persistence
   redis_data: {}  # Redis data persistence (optional)
-  elasticsearch-data: {}  # Elasticsearch data persistence
   data-protection-keys: {}  # ASP.NET data protection keys
   sonarqube_data: {}  # SonarQube data persistence
   sonarqube_extensions: {}  # SonarQube plugins
