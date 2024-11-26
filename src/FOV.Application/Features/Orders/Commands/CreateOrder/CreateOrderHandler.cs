@@ -100,7 +100,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
 
             foreach (var detail in request.OrderDetails)
             {
-                if (detail.Quantity < 0)
+                if (detail.Quantity <= 0)
                 {
                     fieldErrors.Add(new FieldError { Field = "quantity", Message = "Số lượng phải lớn hơn hoặc bằng 0." });
                 }
@@ -161,7 +161,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             await lockService.ReleaseLockAsync();
 
             //test, remove when deploy
-            //await _orderHub.SendOrder(order.Id);
+            await _orderHub.SendOrder(order.Id);
 
             return order.Id;
         }
