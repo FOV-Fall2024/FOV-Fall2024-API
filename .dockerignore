@@ -1,3 +1,52 @@
+# Ignore logs and temporary files
+*.log
+**/logs/
+**/*.log.*
+
+# Ignore build directories
 **/bin/
 **/obj/
-.vs/
+**/dist/
+**/build/
+
+# Ignore node_modules, if any
+**/node_modules/
+
+# Ignore Python virtual environments, if applicable
+**/.venv/
+**/venv/
+
+# Ignore IDE-specific files and folders
+.idea/
+.vscode/
+*.iml
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore git files
+.git/
+.gitignore
+
+# Ignore Docker-specific files, except the ones needed
+docker-compose.override.yml
+Dockerfile.*~
+*.dockerfile~*
+
+# Ignore Prometheus and Grafana configuration backups
+prometheus/prometheus.yml.bak
+grafana/config.bak
+
+# Ignore TLS certificates if not necessary for build
+certs/
+
+# Ignore temporary files
+*.swp
+*.tmp
+*.bak
+*.old
+
+# Specific exclusions for SonarQube
+sonarqube/logs/
+sonarqube/temp/

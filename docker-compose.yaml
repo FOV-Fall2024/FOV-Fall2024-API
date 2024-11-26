@@ -14,8 +14,6 @@ services:
     ports:
       - "5000:5000"
       - "5001:5001"
-      - "8080:8080"
-      - "8081:8081"
     environment:
       - TZ=Etc/UTC
       - CONNECTIONSTRINGS__PostgresConnection=Host=dpg-csov56t6l47c7396dqdg-a.singapore-postgres.render.com;Port=5432;Database=restaurantmanagementdb;Username=restaurantmanagementdb_user;Password=V0XThBwwbEzNZa3XBqZV8VEXyFCcfrH2;
@@ -24,19 +22,22 @@ services:
       - data-protection-keys:/home/app/.aspnet/DataProtection-Keys
     networks:
       - fov_network
-    restart: on-failure
+    restart: unless-stopped  # More reliable restart policy
     deploy:
+      replicas: 2  # Add scaling for high availability
       resources:
         limits:
           memory: 512M
+          cpus: "0.50"
         reservations:
           memory: 256M
+          cpus: "0.25"
 
   # PostgreSQL Database for FOV
   database:
     image: postgres:15
     container_name: fov_database
-    restart: always
+    restart: unless-stopped
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
@@ -52,12 +53,14 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-    # deploy:
-    #   resources:
-    #     limits:
-    #       memory: 1G
-    #     reservations:
-    #       memory: 512M
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: "1.0"
+        reservations:
+          memory: 512M
+          cpus: "0.5"
 
   # Redis Cache
   redis:
@@ -73,8 +76,10 @@ services:
       resources:
         limits:
           memory: 256M
+          cpus: "0.50"
         reservations:
           memory: 128M
+          cpus: "0.25"
 
   # Prometheus for Monitoring
   prometheus:
@@ -90,8 +95,10 @@ services:
       resources:
         limits:
           memory: 256M
+          cpus: "0.50"
         reservations:
           memory: 128M
+          cpus: "0.25"
 
   # Grafana for Visualization
   grafana:
@@ -108,8 +115,10 @@ services:
       resources:
         limits:
           memory: 256M
+          cpus: "0.50"
         reservations:
           memory: 128M
+          cpus: "0.25"
 
   # Elasticsearch
   elasticsearch:
@@ -128,8 +137,10 @@ services:
       resources:
         limits:
           memory: 2G
+          cpus: "2.0"
         reservations:
           memory: 1G
+          cpus: "1.0"
 
   # Kibana for Elasticsearch
   kibana:
@@ -141,15 +152,17 @@ services:
       - elasticsearch
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-      - NODE_OPTIONS=--max-old-space-size=4096 # Allocate 4GB of memory
+      - NODE_OPTIONS=--max-old-space-size=2048 # Allocate 2GB of memory
     networks:
       - fov_network
     deploy:
       resources:
         limits:
           memory: 512M
+          cpus: "0.50"
         reservations:
           memory: 256M
+          cpus: "0.25"
 
   # SonarQube for Code Quality
   sonarqube:
@@ -173,8 +186,10 @@ services:
       resources:
         limits:
           memory: 1G
+          cpus: "1.0"
         reservations:
           memory: 512M
+          cpus: "0.5"
 
   # PostgreSQL Database for SonarQube
   sonarqube_db:
@@ -192,8 +207,34 @@ services:
       resources:
         limits:
           memory: 512M
+          cpus: "0.5"
         reservations:
           memory: 256M
+          cpus: "0.25"
+
+  # Duckdns + LetsEncrypt for SSL/TLS
+  duckdns:
+    image: maksimstojkovic/duckdns
+    container_name: duckdns
+    environment:
+      - DUCKDNS_TOKEN=2eaec532-a8d2-406f-a579-98f69fb062f9
+      - DUCKDNS_DOMAIN=vktrng.duckdns.org
+      - DUCKDNS_DELAY=5
+    restart: unless-stopped
+
+  letsencrypt:
+    image: maksimstojkovic/letsencrypt
+    container_name: letsencrypt
+    volumes:
+      - ./certs:/etc/letsencrypt
+    environment:
+      - DUCKDNS_TOKEN=2eaec532-a8d2-406f-a579-98f69fb062f9
+      - DUCKDNS_DOMAIN=vktrng.duckdns.org
+      - LETSENCRYPT_DOMAIN=
+      - LETSENCRYPT_WILDCARD=false
+      - LETSENCRYPT_CHAIN=ISRG Root X1
+      - LETSENCRYPT_EMAIL=hvinh24@gmail.com
+    restart: unless-stopped
 
 networks:
   fov_network:
