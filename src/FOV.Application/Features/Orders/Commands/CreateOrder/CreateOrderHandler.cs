@@ -66,6 +66,12 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             throw new AppException("Không thể khóa bàn. Vui lòng thử lại sau.");
         }
 
+        if (request.OrderDetails == null || !request.OrderDetails.Any())
+        {
+            await lockService.ReleaseLockAsync();
+            throw new AppException("Danh sách món ăn không được để trống.");
+        }
+
         TableStatus originalTableStatus = TableStatus.Available;
 
         try

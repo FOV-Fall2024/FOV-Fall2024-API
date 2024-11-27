@@ -118,15 +118,18 @@ public class AddProductsToOrderHandler : IRequestHandler<AddProductsToOrdersComm
 
     public async Task<decimal> ProcessDish(Guid productId, int quantity, string note, LockingHandler lockService, Domain.Entities.OrderAggregator.Order order, decimal totalPrice, bool isCombo)
     {
-        var fieldErrors = new List<FieldError>();
         var lockedIngredientKeys = new List<string>(); // Track locked ingredients for cleanup
         var dish = await _unitOfWorks.DishRepository.GetByIdAsync(productId, x => x.DishIngredients, x => x.DishGeneral, x => x.RefundDishInventory);
+
+        if (request.AdditionalOrderDetails == null || !request.AdditionalOrderDetails.Any())
+        {
+            throw new AppException("Danh sách món ăn bổ sung không được để trống.");
+        }
 
         if (dish == null)
         {
             await lockService.ReleaseLockAsync();
-            fieldErrors.Add(new FieldError { Field = "productId", Message = "Dish not found" });
-            throw new AppException("Dish not found", fieldErrors);
+            throw new AppException("Không tìm thấy món ăn");
         }
 
         if (dish.DishGeneral.IsRefund && dish.RefundDishInventory != null)
@@ -134,7 +137,7 @@ public class AddProductsToOrderHandler : IRequestHandler<AddProductsToOrdersComm
             if (quantity > dish.RefundDishInventory.QuantityAvailable)
             {
                 await lockService.ReleaseLockAsync();
-                throw new Exception($"Không đủ món {dish.DishGeneral.DishName}. Tối đa còn: {dish.RefundDishInventory.QuantityAvailable} phần");
+                throw new AppException($"Không đủ món {dish.DishGeneral.DishName}. Tối đa còn: {dish.RefundDishInventory.QuantityAvailable} phần");
             }
 
             dish.RefundDishInventory.QuantityAvailable -= quantity;
@@ -158,23 +161,12 @@ public class AddProductsToOrderHandler : IRequestHandler<AddProductsToOrdersComm
                 if (isCombo)
                 {
                     var combo = dish.DishCombos.FirstOrDefault()?.Combo;
-                    fieldErrors.Add(new FieldError
-                    {
-                        Field = "comboId",
-                        Message = combo != null
-                            ? $"Combo '{combo.ComboName}' hiện tại chỉ có thể đặt tối đa {maxDishes} phần do hạn chế về nguyên liệu."
-                            : $"Món ăn này hiện tại chỉ có thể đặt tối đa {maxDishes} phần."
-                    });
+                    throw new AppException($"Combo '{combo.ComboName}' hiện tại chỉ có thể đặt tối đa {maxDishes} phần do hạn chế về nguyên liệu.");
                 }
                 else
                 {
-                    fieldErrors.Add(new FieldError
-                    {
-                        Field = "productId",
-                        Message = $"Món ăn này hiện tại chỉ có thể đặt tối đa {maxDishes} phần."
-                    });
+                    throw new AppException($"Món ăn '{dish.DishGeneral.DishName}' này hiện tại chỉ có thể đặt tối đa {maxDishes} phần.");
                 }
-                throw new AppException("Không đủ nguyên liệu", fieldErrors, 400);
             }
 
             await _database.StringSetAsync(ingredientLockKey, (long)(lockedAmount + requiredAmount));
