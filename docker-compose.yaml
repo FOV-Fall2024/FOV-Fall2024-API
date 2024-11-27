@@ -48,7 +48,7 @@ services:
     networks:
       - fov_network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin"]
+      test: ["CMD-SHELL", "pg_isready -U"]
       interval: 30s
       timeout: 10s
       retries: 5

@@ -18,7 +18,9 @@ jobs:
           port: 2222
           timeout: 60s
           script: |
-            echo "test cicd - final"
+            echo "test cicd"
+            echo "Deploying to the server..."
+            
             cd /home/vktrng/
 
             if [ -d ./FOV-Fall2024-API ]; then
@@ -43,6 +45,6 @@ jobs:
             # echo "Rebuilding specific services if needed..."
             # make update
 
-            # echo "Stopping database container for maintenance..."
-            sleep 1m
-            docker ps | grep -q fov_database && docker stop fov_database
+            # echo "Stopping database container for maintenance..." Comment để test đỡ ngốn file của chú Vinh
+            # sleep 1m
+            # docker ps | grep -q fov_database && docker stop fov_database 

@@ -94,7 +94,7 @@ namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder
             await _unitOfWorks.SaveChangeAsync();
 
             await _orderHub.UpdateOrderStatus(order.Id, order.OrderStatus.ToString());
-            await _notificationHub.SendOrderToHeadChef(headChef.Id);
+            //await _notificationHub.SendOrderToHeadChef(headChef.Id);
 
             return order.Id;
         }

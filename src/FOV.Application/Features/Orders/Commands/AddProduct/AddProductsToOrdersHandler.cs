@@ -106,7 +106,7 @@ public class AddProductsToOrderHandler : IRequestHandler<AddProductsToOrdersComm
             await _unitOfWorks.SaveChangeAsync();
 
             await _orderHub.UpdateOrderStatus(order.Id, "Prepare");
-            await _notificationHub.SendNotificationToWaiter(order.UserId ?? Guid.Empty, order.Id, order.OrderDetails.First().Id);
+            //await _notificationHub.SendNotificationToWaiter(order.UserId ?? Guid.Empty, order.Id, order.OrderDetails.First().Id);
 
             return order.Id;
         }

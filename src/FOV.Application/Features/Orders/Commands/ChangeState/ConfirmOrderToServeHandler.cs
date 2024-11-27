@@ -37,7 +37,7 @@ public class ConfirmOrderToServeHandler(IUnitOfWorks unitOfWorks, OrderHub order
         var productIdOrComboId = orderDetail.ComboId ?? orderDetail.ProductId;
         var status = orderDetail.Status.ToString();
         await _orderHub.UpdateOrderDetailsStatus(order.Id, productIdOrComboId.Value, status);
-        await _notificationHub.SendNotificationToWaiter(userId, order.Id, orderDetail.Id);
+        //await _notificationHub.SendNotificationToWaiter(userId, order.Id, orderDetail.Id);
 
         if (order.OrderDetails.All(d => d.Status == OrderDetailsStatus.Service))
         {

@@ -132,7 +132,7 @@ public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
         await _unitOfWorks.SaveChangeAsync();
 
         //await _orderHub.UpdateOrderStatus(order.Id, order.OrderStatus.ToString());
-        await _notificationHub.SendPaymentNotificationToWaiter(userId, order.Id);
+        //await _notificationHub.SendPaymentNotificationToWaiter(userId, order.Id);
 
         return payment.Id;
     }
