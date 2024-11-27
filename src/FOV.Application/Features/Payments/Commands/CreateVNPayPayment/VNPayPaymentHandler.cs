@@ -101,7 +101,7 @@ public class VNPayPaymentHandler : IRequestHandler<VNPayPaymentCommand, VNPayPay
         {
             OrderId = request.OrderId,
             Amount = totalAmount,
-            ReduceAmount = totalAmount,
+            ReduceAmount = totalReduceMoney,
             FinalAmount = finalAmount,
             VnpTxnRef = txnRef,
             PaymentDate = DateTime.UtcNow,
