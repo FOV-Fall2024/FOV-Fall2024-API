@@ -54,7 +54,6 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
     {
         string lockKey = $"lock:table:{request.TableId}";
         LockingHandler lockService;
-        var fieldErrors = new List<FieldError>();
 
         if (!_lockHandlers.TryGetValue(lockKey, out lockService))
         {
@@ -64,7 +63,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
 
         if (!await lockService.AcquireLockAsync())
         {
-            fieldErrors.Add(new FieldError { Field = "lock", Message = "Không thể khóa bàn. Vui lòng thử lại sau." });
+            throw new AppException("Không thể khóa bàn. Vui lòng thử lại sau.");
         }
 
         TableStatus originalTableStatus = TableStatus.Available;
@@ -74,18 +73,18 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             var table = await _unitOfWorks.TableRepository.GetByIdAsync(request.TableId);
             if (table == null)
             {
-                fieldErrors.Add(new FieldError { Field = "tableId", Message = $"Không tìm thấy bàn có ID {request.TableId}." });
+                throw new AppException($"Không tìm thấy bàn có ID {request.TableId}.");
             }
             else
             {
                 if (!table.IsLogin)
                 {
-                    fieldErrors.Add(new FieldError { Field = "isLogin", Message = "Bàn chưa đăng nhập. Không thể đặt hàng." });
+                    throw new AppException("Bàn chưa đăng nhập. Không thể đặt hàng.");
                 }
 
                 if (table.TableStatus == TableStatus.Working)
                 {
-                    fieldErrors.Add(new FieldError { Field = "tableStatus", Message = "Bàn hiện không khả dụng để đặt hàng." });
+                    throw new AppException("Bàn hiện không khả dụng để đặt hàng.");
                 }
 
                 var tableOrders = (await _unitOfWorks.OrderRepository.GetAllAsync())
@@ -94,7 +93,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
 
                 if (tableOrders.Any())
                 {
-                    fieldErrors.Add(new FieldError { Field = "tableId", Message = "Hiện đang có đơn hàng hoạt động tại bàn này." });
+                    throw new AppException("Hiện đang có đơn hàng hoạt động tại bàn này.");
                 }
             }
 
@@ -102,13 +101,8 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             {
                 if (detail.Quantity <= 0)
                 {
-                    fieldErrors.Add(new FieldError { Field = "quantity", Message = "Số lượng phải lớn hơn hoặc bằng 0." });
+                    throw new AppException("Số lượng phải lớn hơn hoặc bằng 0.");
                 }
-            }
-
-            if (fieldErrors.Any())
-            {
-                throw new AppException("Lỗi khi tạo đơn hàng mới", fieldErrors, 400);
             }
 
             originalTableStatus = table.TableStatus;
@@ -130,7 +124,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
                     var combo = await _unitOfWorks.ComboRepository.GetByIdAsync(detail.ComboId.Value, x => x.DishCombos);
                     if (combo == null)
                     {
-                        fieldErrors.Add(new FieldError { Field = "comboId", Message = "Không có combo này trong hệ thống." });
+                        throw new AppException("Không có combo này trong hệ thống.");
                     }
 
                     var comboPrice = combo.Price;
@@ -165,7 +159,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
 
             return order.Id;
         }
-        catch (Exception ex)
+        catch (AppException ex)
         {
             var table = await _unitOfWorks.TableRepository.GetByIdAsync(request.TableId);
             if (table != null)
@@ -176,14 +170,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             }
 
             await lockService.ReleaseLockAsync();
-            if (ex is AppException appEx)
-            {
-                throw appEx;
-            }
-            else
-            {
-                throw new AppException("Đã xảy ra lỗi khi đặt hàng", new List<string> { ex.Message }, ex);
-            }
+            throw new AppException(ex.Message);
         }
     }
     private async Task<decimal> ProcessDish(Guid productId, int quantity, string note, LockingHandler lockService, Domain.Entities.OrderAggregator.Order order, decimal totalPrice, bool isCombo)
@@ -203,16 +190,14 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             var dish = dishes.FirstOrDefault(x => x.Id == productId);
             if (dish == null)
             {
-                fieldErrors.Add(new FieldError { Field = "productId", Message = "Không tìm thấy món ăn" });
-                throw new AppException("Không tìm thấy món ăn", fieldErrors, 400);
+                throw new AppException("Không tìm thấy món ăn");
             }
 
             if (dish.DishGeneral.IsRefund)
             {
                 if (dish.RefundDishInventory.QuantityAvailable < quantity)
                 {
-                    fieldErrors.Add(new FieldError { Field = "productId", Message = "Không đủ món ăn trong kho" });
-                    throw new AppException("Không đủ món ăn trong kho", fieldErrors, 400);
+                    throw new AppException("Không đủ món ăn trong kho");
                 }
             }
 
@@ -230,27 +215,18 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
 
                 if (availableAmount < requiredAmount)
                 {
-                    //Message
                     if (isCombo)
                     {
                         var combo = dish.DishCombos.FirstOrDefault()?.Combo;
-                        fieldErrors.Add(new FieldError
+                        if (combo != null)
                         {
-                            Field = "comboId",
-                            Message = combo != null
-                                ? $"Combo '{combo.ComboName}' hiện tại chỉ có thể đặt tối đa {maxDishes} phần do hạn chế về nguyên liệu."
-                                : $"Món ăn này hiện tại chỉ có thể đặt tối đa {maxDishes} phần."
-                        });
+                            throw new AppException($"Combo '{combo.ComboName}' hiện tại chỉ có thể đặt tối đa {maxDishes} phần do hạn chế về nguyên liệu.");
+                        }
                     }
                     else
                     {
-                        fieldErrors.Add(new FieldError
-                        {
-                            Field = "productId",
-                            Message = $"Món ăn {dish.DishGeneral.DishName} hiện tại chỉ có thể đặt tối đa {maxDishes} phần."
-                        });
+                        throw new AppException($"Món ăn '{dish.DishGeneral.DishName}' này hiện tại chỉ có thể đặt tối đa {maxDishes} phần.");
                     }
-                    throw new AppException("Không đủ nguyên liệu", fieldErrors, 400);
                 }
 
                 await _database.StringSetAsync(ingredientLockKey, (long)(lockedAmount + requiredAmount));

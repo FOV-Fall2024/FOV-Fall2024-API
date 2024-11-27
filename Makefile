@@ -24,7 +24,7 @@ help:
 # Remove containers and volumes
 remove:
 	@echo "Stopping and removing containers and volumes..."
-	@docker-compose --project-name $(COMPOSE_PROJECT_NAME) down -v
+	@docker-compose --project-name down -v
 
 # Build the Docker image
 build:
@@ -42,4 +42,4 @@ update:
 	@docker-compose --project-name $(COMPOSE_PROJECT_NAME) up -d --build
 
 # Reset: full cleanup and rebuild
-reset: remove build run
+reset: remove build update

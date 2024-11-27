@@ -24,19 +24,9 @@ public class OrderController(ISender sender) : DefaultController
     [HttpPost("{tableId:guid}/table")]
     public async Task<IActionResult> Add(Guid tableId, [FromBody] CreateOrderWithTableIdCommand command)
     {
-        try
-        {
-            command.TableId = tableId;
-            var response = await _sender.Send(command);
-            return Ok(new OK_Result<Guid>("Đặt hàng thành công", response));
-        }
-        catch (AppException ex)
-        {
-            return BadRequest(new Error<FieldError>("Đã xảy ra lỗi khi đặt hàng", ErrorStatusCodeConfig.BAD_REQUEST, ex.FieldErrors));
-        } catch (Exception ex)
-        {
-            throw new Exception(ex.Message);
-        }
+        command.TableId = tableId;
+        var response = await _sender.Send(command);
+        return Ok(new OK_Result<Guid>("Đặt hàng thành công", response));
     }
     [Authorize(Roles = $"{Role.Waiter},{Role.Manager},{Role.Administrator}")]
     [HttpGet]
