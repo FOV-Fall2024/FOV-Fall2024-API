@@ -51,6 +51,11 @@ public class AddProductsToOrderHandler : IRequestHandler<AddProductsToOrdersComm
 
     public async Task<Guid> Handle(AddProductsToOrdersCommand request, CancellationToken cancellationToken)
     {
+        if (request.AdditionalOrderDetails == null || !request.AdditionalOrderDetails.Any())
+        {
+            throw new AppException("Danh sách món ăn bổ sung không được để trống.");
+        }
+
         var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.OrderDetails);
         if (order == null)
         {
@@ -120,11 +125,6 @@ public class AddProductsToOrderHandler : IRequestHandler<AddProductsToOrdersComm
     {
         var lockedIngredientKeys = new List<string>(); // Track locked ingredients for cleanup
         var dish = await _unitOfWorks.DishRepository.GetByIdAsync(productId, x => x.DishIngredients, x => x.DishGeneral, x => x.RefundDishInventory);
-
-        if (request.AdditionalOrderDetails == null || !request.AdditionalOrderDetails.Any())
-        {
-            throw new AppException("Danh sách món ăn bổ sung không được để trống.");
-        }
 
         if (dish == null)
         {
