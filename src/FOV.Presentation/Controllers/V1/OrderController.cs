@@ -2,11 +2,13 @@
 using FOV.Application.Features.Orders.Commands.AddFeedback;
 using FOV.Application.Features.Orders.Commands.AddProduct;
 using FOV.Application.Features.Orders.Commands.CancelOrder;
+using FOV.Application.Features.Orders.Commands.ChangeState;
 using FOV.Application.Features.Orders.Commands.ChangeStateOrder;
 using FOV.Application.Features.Orders.Commands.CreateOrder;
 using FOV.Application.Features.Orders.Commands.RefundOrder;
 using FOV.Application.Features.Orders.Queries.GetOrderDetails;
 using FOV.Application.Features.Orders.Queries.GetOrders;
+using FOV.Application.Features.Orders.Queries.GetRefundableDishToServe;
 using FOV.Application.Features.Orders.Queries.SuggestDishesForHeadchef;
 using FOV.Domain.Entities.UserAggregator.Enums;
 using FOV.Infrastructure.Helpers.GetHelper;
@@ -43,6 +45,22 @@ public class OrderController(ISender sender) : DefaultController
         var response = await _sender.Send(command);
         return Ok(response);
     }
+    [Authorize(Roles = Role.HeadChef)]
+    [HttpPatch("{orderId:guid}/cooked")]
+    public async Task<IActionResult> ConfirmOrderToCooked(Guid orderId, Guid orderDetailsId)
+    {
+        var command = new ConfirmOrderCookedCommand(orderId, orderDetailsId);
+        var response = await _sender.Send(command);
+        return Ok(response);
+    }
+    [Authorize(Roles = Role.Waiter)]
+    [HttpPatch("{orderId:guid}/refundable-dish")]
+    public async Task<IActionResult> ConfirmRefundableDish(Guid orderId, Guid orderDetailsId)
+    {
+        var command = new ConfirmRefundableDishServeCommand(orderId, orderDetailsId);
+        var response = await _sender.Send(command);
+        return Ok(response);
+    }
     [HttpPatch("{orderId:guid}/serve")]
     public async Task<IActionResult> ConfirmOrderToServe(Guid orderId, Guid OrderDetailsId)
     {
@@ -75,6 +93,13 @@ public class OrderController(ISender sender) : DefaultController
     public async Task<IActionResult> SuggestDishesForHeadchef(Guid restaurantId, [FromQuery] PagingRequest pagingRequest)
     {
         var command = new SuggestDishesForHeadchefCommand(pagingRequest, restaurantId);
+        var response = await _sender.Send(command);
+        return Ok(response);
+    }
+    [Authorize(Roles = Role.Waiter)]
+    [HttpGet("serve-refundable-dishes")]
+    public async Task<IActionResult> ServeRefundableDishes(GetRefundableDishToServeCommand command)
+    {
         var response = await _sender.Send(command);
         return Ok(response);
     }

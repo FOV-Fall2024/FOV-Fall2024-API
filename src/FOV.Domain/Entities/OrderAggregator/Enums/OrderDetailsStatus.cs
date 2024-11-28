@@ -11,5 +11,6 @@ public enum OrderDetailsStatus : byte
     Cook = 2,
     Service = 3,
     Finish = 4,
-    Canceled = 5
+    Canceled = 5,
+    Cooked = 6
 }

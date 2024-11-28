@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using FOV.Application.Common.Behaviours.Claim;
 using FOV.Application.Common.Exceptions;
 using FOV.Domain.Entities.IngredientAggregator;
+using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.OrderAggregator.Enums;
 using FOV.Domain.Entities.UserAggregator;
 using FOV.Domain.Entities.UserAggregator.Enums;
@@ -68,6 +69,7 @@ namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder
                 throw new AppException("Head chef not found for this restaurant");
             }
             var ingredientUpdates = new Dictionary<Guid, int>();
+            var refundableDishes = new List<OrderDetail>();
 
             foreach (var detail in order.OrderDetails)
             {
@@ -76,28 +78,41 @@ namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder
                     continue;
                 }
 
-                detail.Status = OrderDetailsStatus.Cook;
-
-                if (detail.ProductId != null)
+                if (detail.IsRefund)
                 {
-                    await ReduceDishIngredients((Guid)detail.ProductId, detail.Quantity, ingredientUpdates);
+                    refundableDishes.Add(detail);
                 }
-                else if (detail.ComboId != null)
+                else
                 {
-                    await ReduceComboIngredients((Guid)detail.ComboId, detail.Quantity, ingredientUpdates);
+                    detail.Status = OrderDetailsStatus.Cook;
+
+                    if (detail.ProductId != null)
+                    {
+                        await ReduceDishIngredients((Guid)detail.ProductId, detail.Quantity, ingredientUpdates);
+                    }
+                    else if (detail.ComboId != null)
+                    {
+                        await ReduceComboIngredients((Guid)detail.ComboId, detail.Quantity, ingredientUpdates);
+                    }
                 }
             }
 
             await UpdateIngredients(ingredientUpdates);
 
+            order.OrderStatus = OrderStatus.Cook;
             _unitOfWorks.OrderRepository.Update(order);
             await _unitOfWorks.SaveChangeAsync();
 
-            await _orderHub.UpdateOrderStatus(order.Id, order.OrderStatus.ToString());
-            //await _notificationHub.SendOrderToHeadChef(headChef.Id);
+            if (refundableDishes.Any())
+            {
+                //Notification FCM to waiter at here
+                //await _orderHub.NotifyWaiterAboutRefundableDishes(refundableDishes.Select(d => d.Id).ToList());
+            }
 
+            await _orderHub.UpdateOrderStatus(order.Id, order.OrderStatus.ToString());
             return order.Id;
         }
+
 
         private async Task ReduceDishIngredients(Guid dishId, int quantity, Dictionary<Guid, int> ingredientUpdates)
         {
