@@ -14,6 +14,7 @@ public class UpdateDishIngredientValidator : AbstractValidator<UpdateProductGene
         RuleFor(x => x).SetValidator(nameCheck);
         RuleFor(x => x.CategoryId).SetValidator(categoryIdCheck);
         RuleFor(x => x.Id).SetValidator(idChecking).SetValidator(stateRule);
+        RuleFor(command => command.PercentagePriceDifference).NotEmpty().ExclusiveBetween(1, 100).WithMessage("Trong khoảng 1-100");
     }
 }
 
