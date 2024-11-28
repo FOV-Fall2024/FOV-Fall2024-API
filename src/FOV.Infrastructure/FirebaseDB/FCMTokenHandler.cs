@@ -5,8 +5,8 @@ using FireSharp.Response;
 namespace FOV.Infrastructure.FirebaseDB;
 public static class FCMTokenHandler
 {
-    private readonly static string AuthSecret = "49tixdsWTpWSVXWdgjfrJPRnvwSKIqUvzC8D1Z2v";
-    private readonly static string BasePath = "https://vrom-f3d37-default-rtdb.asia-southeast1.firebasedatabase.app";
+    private readonly static string AuthSecret = "cSLxf0zRBKGntFFtcCSDquKnzb7DqznbkSNzxzpq";
+    private readonly static string BasePath = "https://final-capstone-da026-default-rtdb.asia-southeast1.firebasedatabase.app/";
 
     static IFirebaseClient _client;
     static IFirebaseConfig config = new FirebaseConfig()

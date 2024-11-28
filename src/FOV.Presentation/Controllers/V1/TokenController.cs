@@ -14,11 +14,12 @@ public class FCMTokenController : DefaultController
         return Ok();
     }
 
-    [HttpPost("{token}/test-notify")]
-    public async Task<IActionResult> TestNotify(string token)
+    [HttpGet("test-notify")]
+    public async Task<IActionResult> TestNotify()
     {
-        await CloudMessagingHandlers.SendPushNotification(token, "hih", "hiih");
-        return Ok();
+        string token = await CloudMessagingHandlers.TakeToken();
+        await CloudMessagingHandlers.SendNotification("fwUMoOjARDS4AcpLmVNqYB:APA91bE8UzCxCMP4MY1SVIylY2Zj36nf6rLwY40uly5RthF96nZ1N_e-2LlmhDC5wUg0gsXmdm_GXeln5lad11nu6NEr3YkMsp2dy8cvreF8fr163Yxyt6w", "hihi","hihi");
+        return Ok(token);
     }
 }
 
