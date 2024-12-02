@@ -14,6 +14,7 @@ using FOV.Infrastructure.Notifications.Web.SignalR.Order.Setup;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json.Serialization;
 using FOV.Infrastructure.Notifications.Web.SignalR.Notification.Setup;
+using FOV.Application.Common.Behaviours.Claim;
 
 namespace FOV.Application.Features.Payments.Commands.Create;
 
@@ -36,20 +37,15 @@ public record FeedbackRequest
 public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
 {
     private readonly IUnitOfWorks _unitOfWorks;
-    private readonly OrderHub _orderHub;
-    private readonly NotificationHub _notificationHub;
     private const int ConversePoint = 1000;
-
-    public CreatePaymentHandler(IUnitOfWorks unitOfWorks, OrderHub orderHub, NotificationHub notificationHub)
+    public CreatePaymentHandler(IUnitOfWorks unitOfWorks)
     {
         _unitOfWorks = unitOfWorks;
-        _orderHub = orderHub;
-        _notificationHub = notificationHub;
     }
 
     public async Task<Guid> Handle(CreatePaymentCommands request, CancellationToken cancellationToken)
     {
-        var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.OrderDetails, o => o.Payments, o => o.Users)
+        var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.OrderDetails, o => o.Payments, o => o.Table)
             ?? throw new AppException("Không tìm thấy đơn hàng nào");
 
         if (order.Payments.Any(p => p.PaymentStatus == PaymentStatus.Paid))
@@ -114,9 +110,6 @@ public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
         order.OrderStatus = OrderStatus.Payment;
         _unitOfWorks.OrderRepository.Update(order);
 
-        var employee = order.Users ?? throw new AppException("Không có nhân viên hợp lệ");
-        var userId = employee.Id;
-
         var payment = new Domain.Entities.PaymentAggregator.Payments
         {
             OrderId = request.OrderId,
@@ -130,9 +123,6 @@ public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
 
         await _unitOfWorks.PaymentRepository.AddAsync(payment);
         await _unitOfWorks.SaveChangeAsync();
-
-        //await _orderHub.UpdateOrderStatus(order.Id, order.OrderStatus.ToString());
-        //await _notificationHub.SendPaymentNotificationToWaiter(userId, order.Id);
 
         return payment.Id;
     }

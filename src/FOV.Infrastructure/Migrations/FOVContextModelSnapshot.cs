@@ -789,16 +789,16 @@ namespace FOV.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("6531296e-a86a-4fcc-97e7-7e6182a5c011"),
-                            Created = new DateTime(2024, 12, 2, 7, 56, 25, 202, DateTimeKind.Utc).AddTicks(7913),
+                            Created = new DateTime(2024, 12, 2, 9, 29, 44, 101, DateTimeKind.Utc).AddTicks(9208),
                             IngredientMeasureName = "gam",
-                            LastModified = new DateTime(2024, 12, 2, 7, 56, 25, 202, DateTimeKind.Utc).AddTicks(7913)
+                            LastModified = new DateTime(2024, 12, 2, 9, 29, 44, 101, DateTimeKind.Utc).AddTicks(9210)
                         },
                         new
                         {
                             Id = new Guid("6531296e-a86a-4fcc-97e7-7e6192a5c011"),
-                            Created = new DateTime(2024, 12, 2, 7, 56, 25, 202, DateTimeKind.Utc).AddTicks(7920),
+                            Created = new DateTime(2024, 12, 2, 9, 29, 44, 101, DateTimeKind.Utc).AddTicks(9218),
                             IngredientMeasureName = "ml",
-                            LastModified = new DateTime(2024, 12, 2, 7, 56, 25, 202, DateTimeKind.Utc).AddTicks(7920)
+                            LastModified = new DateTime(2024, 12, 2, 9, 29, 44, 101, DateTimeKind.Utc).AddTicks(9218)
                         });
                 });
 
@@ -1016,7 +1016,7 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<Guid?>("OrderDetailId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("OrderId")
+                    b.Property<Guid?>("OrderId")
                         .HasColumnType("uuid");
 
                     b.Property<int>("OrderResponsibilityType")
@@ -1938,15 +1938,13 @@ namespace FOV.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FOV.Domain.Entities.UserAggregator.User", "Users")
+                    b.HasOne("FOV.Domain.Entities.UserAggregator.User", null)
                         .WithMany("Orders")
                         .HasForeignKey("UserId");
 
                     b.Navigation("Customer");
 
                     b.Navigation("Table");
-
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.OrderAggregator.OrderDetail", b =>
@@ -1978,9 +1976,7 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasOne("FOV.Domain.Entities.OrderAggregator.Order", "Order")
                         .WithMany("OrderResponsibilities")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OrderId");
 
                     b.Navigation("Order");
 

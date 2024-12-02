@@ -11,8 +11,6 @@ public class Order : BaseAuditableEntity
 {
     public OrderStatus? OrderStatus { get; set; }
     public OrderType? OrderType { get; set; }
-    public User? Users { get; set; }
-    public Guid? UserId { get; set; }
     public DateTime OrderTime { get; set; }
     public decimal TotalPrice { get; set; }
     public Table? Table { get; set; }

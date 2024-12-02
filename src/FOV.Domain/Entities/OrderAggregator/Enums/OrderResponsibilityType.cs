@@ -8,5 +8,9 @@ namespace FOV.Domain.Entities.OrderAggregator.Enums;
 public enum OrderResponsibilityType
 {
     ConfirmOrder = 1,
-    Serve = 2,
+    Cooked = 2,
+    Serve = 3,
+    Refund = 4,
+    Payment = 5,
+    Cancel = 6
 }

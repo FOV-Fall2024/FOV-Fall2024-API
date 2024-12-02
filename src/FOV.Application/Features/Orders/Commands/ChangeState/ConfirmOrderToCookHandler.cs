@@ -59,7 +59,15 @@ namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder
             {
                 throw new AppException("Hiện đơn hàng này không có món nào để chế biến");
             }
-            order.UserId = employee.Id;
+            var responsibility = new OrderResponsibility
+            {
+                OrderId = order.Id,
+                EmployeeCode = employee.EmployeeCode,
+                EmployeeName = $"{employee.FullName}",
+                OrderResponsibilityType = OrderResponsibilityType.ConfirmOrder
+            };
+            await _unitOfWorks.OrderResponsibilityRepository.AddAsync(responsibility);
+
             order.OrderStatus = OrderStatus.Cook;
 
             var headChefs = await _userManager.GetUsersInRoleAsync(Domain.Entities.UserAggregator.Enums.Role.HeadChef.ToString());

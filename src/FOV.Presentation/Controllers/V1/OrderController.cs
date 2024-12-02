@@ -7,6 +7,7 @@ using FOV.Application.Features.Orders.Commands.ChangeStateOrder;
 using FOV.Application.Features.Orders.Commands.CreateOrder;
 using FOV.Application.Features.Orders.Commands.RefundOrder;
 using FOV.Application.Features.Orders.Queries.GetOrderDetails;
+using FOV.Application.Features.Orders.Queries.GetOrderResponsibility;
 using FOV.Application.Features.Orders.Queries.GetOrders;
 using FOV.Application.Features.Orders.Queries.GetRefundableDishToServe;
 using FOV.Application.Features.Orders.Queries.SuggestDishesForHeadchef;
@@ -133,5 +134,12 @@ public class OrderController(ISender sender) : DefaultController
         var command = new CancelOrderDetailCommand(orderId);
         var response = await _sender.Send(command);
         return Ok(new OK_Result<Guid>("Hủy món ăn thành công", response));
+    }
+    [HttpGet("{orderId:guid}/order-responsibility")]
+    public async Task<IActionResult> OrderResponsibility(Guid orderId)
+    {
+        var command = new OrderResponsibilitiesCommand(orderId);
+        var response = await _sender.Send(command);
+        return Ok(response);
     }
 }

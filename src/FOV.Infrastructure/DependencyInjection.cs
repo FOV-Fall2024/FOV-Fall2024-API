@@ -61,6 +61,7 @@ public static class DependencyInjection
         services.AddScoped<IIngredientMeasureRepository, IngredientMeasureRepository>();
         services.AddScoped<ISalaryRepository, SalaryRepository>();
         services.AddScoped<IShiftRestaurantRepository, ShiftRestaurantRepository>();
+        services.AddScoped<IOrderResponsibilityRepository, OrderResponsibilityRepository>();
         services.AddSingleton<OrderHub>();
         services.AddSingleton<NotificationHub>();
         return services;
