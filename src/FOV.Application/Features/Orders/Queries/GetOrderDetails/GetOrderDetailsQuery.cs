@@ -13,9 +13,6 @@ public record GetOrderDetailsResponse(
     decimal TotalPrice,
     DateTime? OrderTime,
     string? Feedback,
-    string? ConfirmEmployeeCode,
-    string? ConfirmEmployeeName,
-    List<OrderResponsibilityDto>? ConfirmAddMore,
     string? PaymentEmployeeCode,
     string? PaymentEmployeeName,
     List<OrderDetailsDto> OrderDetails);
@@ -35,9 +32,19 @@ public record OrderDetailsDto(
     decimal Price,
     string Note,
     bool? IsAddMore,
-    List<OrderDetailResponsibilityDto> Responsibilities);
+    string? ConfirmOrderEmployeeCode,
+    string? ConfirmOrderEmployeeName,
+    string? CookedEmployeeCode,
+    string? CookedEmployeeName,
+    string? ServeEmployeeCode,
+    string? ServeEmployeeName,
+    string? RefundEmployeeCode,
+    string? RefundEmployeeName,
+    string? CancelEmployeeCode,
+    string? CancelEmployeeName
+);
 
-public record OrderResponsibilityDto(string EmployeeCode, string EmployeeName);
+
 public record OrderDetailResponsibilityDto(string EmployeeCode, string EmployeeName, string ResponsibilityType);
 
 public class GetOrderDetailsQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetOrderDetailsCommand, GetOrderDetailsResponse>
@@ -52,11 +59,6 @@ public class GetOrderDetailsQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<Ge
         var orderResponsibilities = await _unitOfWorks.OrderResponsibilityRepository
             .WhereAsync(or => or.OrderId == request.OrderId);
 
-        var confirmAddMore = orderResponsibilities
-            .Where(or => or.OrderResponsibilityType == OrderResponsibilityType.ConfirmAddMore && or.OrderDetailId == null)
-            .Select(or => new OrderResponsibilityDto(or.EmployeeCode, or.EmployeeName))
-            .ToList();
-
         var orderDetails = await _unitOfWorks.OrderDetailRepository.WhereAsync(
             od => od.OrderId == order.Id,
             od => od.Order,
@@ -68,10 +70,21 @@ public class GetOrderDetailsQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<Ge
 
         var orderDetailsDtos = orderDetails.Select(od =>
         {
-            var responsibilities = orderResponsibilities
-                .Where(or => or.OrderDetailId == od.Id)
-                .Select(or => new OrderDetailResponsibilityDto(or.EmployeeCode, or.EmployeeName, or.OrderResponsibilityType.ToString()))
-                .ToList();
+            var confirmAddMoreResponsibility = orderResponsibilities
+                .FirstOrDefault(or => or.OrderDetailId == od.Id && or.OrderResponsibilityType == OrderResponsibilityType.ConfirmAddMore);
+            var confirmOrderResponsibility = orderResponsibilities
+                .FirstOrDefault(or => or.OrderDetailId == od.Id && or.OrderResponsibilityType == OrderResponsibilityType.ConfirmOrder);
+            var cancelResponsibility = orderResponsibilities
+                .FirstOrDefault(or => or.OrderDetailId == od.Id && or.OrderResponsibilityType == OrderResponsibilityType.Cancel);
+            var cookedResponsibility = orderResponsibilities
+                .Where(or => or.OrderDetailId == od.Id && or.OrderResponsibilityType == OrderResponsibilityType.Cooked)
+                .FirstOrDefault();
+            var serveResponsibility = orderResponsibilities
+                .Where(or => or.OrderDetailId == od.Id && or.OrderResponsibilityType == OrderResponsibilityType.Serve)
+                .FirstOrDefault();
+            var refundResponsibility = orderResponsibilities
+                .Where(or => or.OrderDetailId == od.Id && or.OrderResponsibilityType == OrderResponsibilityType.Refund)
+                .FirstOrDefault();
 
             return new OrderDetailsDto(
                 od.Id,
@@ -88,7 +101,16 @@ public class GetOrderDetailsQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<Ge
                 od.Price,
                 od.Note,
                 od.IsAddMore,
-                responsibilities
+                confirmOrderResponsibility?.EmployeeCode,
+                confirmOrderResponsibility?.EmployeeName,
+                cookedResponsibility?.EmployeeCode,
+                cookedResponsibility?.EmployeeName,
+                serveResponsibility?.EmployeeCode,
+                serveResponsibility?.EmployeeName,
+                refundResponsibility?.EmployeeCode,
+                refundResponsibility?.EmployeeName,
+                cancelResponsibility?.EmployeeCode,
+                cancelResponsibility?.EmployeeName
             );
         }).ToList();
 
@@ -98,13 +120,9 @@ public class GetOrderDetailsQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<Ge
             order.TotalPrice,
             order.OrderTime,
             order.Feedback,
-            orderResponsibilities.FirstOrDefault(or => or.OrderResponsibilityType == OrderResponsibilityType.ConfirmOrder)?.EmployeeCode,
-            orderResponsibilities.FirstOrDefault(or => or.OrderResponsibilityType == OrderResponsibilityType.ConfirmOrder)?.EmployeeName,
-            confirmAddMore,
             orderResponsibilities.FirstOrDefault(or => or.OrderResponsibilityType == OrderResponsibilityType.Payment)?.EmployeeCode,
             orderResponsibilities.FirstOrDefault(or => or.OrderResponsibilityType == OrderResponsibilityType.Payment)?.EmployeeName,
             orderDetailsDtos
         );
     }
-
 }

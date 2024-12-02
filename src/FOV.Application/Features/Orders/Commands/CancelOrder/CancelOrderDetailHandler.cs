@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FOV.Application.Common.Behaviours.Claim;
 using FOV.Application.Common.Exceptions;
 using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.OrderAggregator.Enums;
+using FOV.Domain.Entities.UserAggregator;
 using FOV.Infrastructure.Notifications.Web.SignalR.Order.Setup;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using StackExchange.Redis;
 
 namespace FOV.Application.Features.Orders.Commands.CancelOrder;
@@ -18,16 +21,24 @@ public class CancelOrderDetailHandler : IRequestHandler<CancelOrderDetailCommand
     private readonly IUnitOfWorks _unitOfWorks;
     private readonly IDatabase _database;
     private readonly OrderHub _orderHub;
+    private readonly IClaimService _claimService;
+    private readonly UserManager<User> _userManager;
 
-    public CancelOrderDetailHandler(IUnitOfWorks unitOfWorks, IDatabase database, OrderHub orderHub)
+    public CancelOrderDetailHandler(IUnitOfWorks unitOfWorks, IDatabase database, OrderHub orderHub, IClaimService claimService, UserManager<User> userManager)
     {
         _unitOfWorks = unitOfWorks;
         _database = database;
         _orderHub = orderHub;
+        _claimService = claimService;
+        _userManager = userManager;
     }
 
     public async Task<Guid> Handle(CancelOrderDetailCommand request, CancellationToken cancellationToken)
     {
+        var userId = _claimService.UserId;
+        var employee = await _userManager.FindByIdAsync(userId.ToString())
+            ?? throw new AppException("Employee not found");
+
         var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.OrderDetails);
         if (order == null)
         {
@@ -43,10 +54,21 @@ public class CancelOrderDetailHandler : IRequestHandler<CancelOrderDetailCommand
             throw new AppException("Hiện tại không có món ăn nào được thêm, vui lòng kiểm tra lại.");
         }
 
+        var responsibilities = new List<OrderResponsibility>();
         foreach (var orderDetail in addMoreOrderDetails)
         {
             orderDetail.Status = OrderDetailsStatus.Canceled;
             _unitOfWorks.OrderDetailRepository.Update(orderDetail);
+
+            var responsibility = new OrderResponsibility
+            {
+                OrderId = order.Id,
+                OrderDetailId = orderDetail.Id,
+                EmployeeCode = employee.EmployeeCode,
+                EmployeeName = employee.FullName,
+                OrderResponsibilityType = OrderResponsibilityType.Cancel
+            };
+            responsibilities.Add(responsibility);
 
             var refundAmount = orderDetail.Quantity * orderDetail.Price;
             order.TotalPrice -= refundAmount;
@@ -74,6 +96,7 @@ public class CancelOrderDetailHandler : IRequestHandler<CancelOrderDetailCommand
             order.OrderStatus = OrderStatus.Service;
             _unitOfWorks.OrderRepository.Update(order);
         }
+        await _unitOfWorks.OrderResponsibilityRepository.AddRangeAsync(responsibilities);
 
         await _unitOfWorks.SaveChangeAsync();
         await _orderHub.CancelAddMoreOrder(order.Id, "Canceled");

@@ -25,18 +25,16 @@ namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder
     {
         private readonly IUnitOfWorks _unitOfWorks;
         private readonly OrderHub _orderHub;
-        private readonly NotificationHub _notificationHub;
         private readonly IDatabase _database;
         private readonly IClaimService _claimService;
         private readonly UserManager<User> _userManager;
 
-        public ConfirmOrderToCookHandler(IUnitOfWorks unitOfWorks, OrderHub orderHub, IConnectionMultiplexer redis, IClaimService claimService, NotificationHub notificationHub, UserManager<User> userManager)
+        public ConfirmOrderToCookHandler(IUnitOfWorks unitOfWorks, OrderHub orderHub, IConnectionMultiplexer redis, IClaimService claimService, UserManager<User> userManager)
         {
             _unitOfWorks = unitOfWorks;
             _orderHub = orderHub;
             _database = redis.GetDatabase();
             _claimService = claimService;
-            _notificationHub = notificationHub;
             _userManager = userManager;
         }
 
@@ -60,22 +58,36 @@ namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder
                 throw new AppException("Hiện đơn hàng này không có món nào để chế biến");
             }
 
-            var existingResponsibility = await _unitOfWorks.OrderResponsibilityRepository.FirstOrDefaultAsync(r => r.OrderId == order.Id && r.EmployeeCode == employee.EmployeeCode);
+            var responsibilities = new List<OrderResponsibility>();
 
-            var responsibilityType = existingResponsibility != null
-                ? OrderResponsibilityType.ConfirmAddMore
-                : OrderResponsibilityType.ConfirmOrder;
-
-            var responsibility = new OrderResponsibility
+            foreach (var detail in order.OrderDetails)
             {
-                OrderId = order.Id,
-                EmployeeCode = employee.EmployeeCode,
-                EmployeeName = $"{employee.FullName}",
-                OrderResponsibilityType = responsibilityType
-            };
-            await _unitOfWorks.OrderResponsibilityRepository.AddAsync(responsibility);
+                if (detail.Status != OrderDetailsStatus.Prepare)
+                {
+                    continue;
+                }
+
+                var detailResponsibility = new OrderResponsibility
+                {
+                    OrderId = order.Id,
+                    OrderDetailId = detail.Id,
+                    EmployeeCode = employee.EmployeeCode,
+                    EmployeeName = employee.FullName,
+                    OrderResponsibilityType = OrderResponsibilityType.ConfirmOrder
+                };
+
+                responsibilities.Add(detailResponsibility);
+
+                if (detail.Status != OrderDetailsStatus.Cook)
+                {
+                    detail.Status = OrderDetailsStatus.Cook;
+                }
+            }
+
+            await _unitOfWorks.OrderResponsibilityRepository.AddRangeAsync(responsibilities);
 
             order.OrderStatus = OrderStatus.Cook;
+            _unitOfWorks.OrderRepository.Update(order);
 
             var headChefs = await _userManager.GetUsersInRoleAsync(Domain.Entities.UserAggregator.Enums.Role.HeadChef.ToString());
             var headChef = headChefs.FirstOrDefault(hc => hc.RestaurantId == order.Table.RestaurantId);
@@ -83,6 +95,7 @@ namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder
             {
                 throw new AppException("Head chef not found for this restaurant");
             }
+
             var ingredientUpdates = new Dictionary<Guid, int>();
             var refundableDishes = new List<OrderDetail>();
 
@@ -113,9 +126,6 @@ namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder
             }
 
             await UpdateIngredients(ingredientUpdates);
-
-            order.OrderStatus = OrderStatus.Cook;
-            _unitOfWorks.OrderRepository.Update(order);
             await _unitOfWorks.SaveChangeAsync();
 
             if (refundableDishes.Any())
@@ -127,6 +137,7 @@ namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder
             await _orderHub.UpdateOrderStatus(order.Id, order.OrderStatus.ToString());
             return order.Id;
         }
+
 
 
         private async Task ReduceDishIngredients(Guid dishId, int quantity, Dictionary<Guid, int> ingredientUpdates)

@@ -161,7 +161,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             await lockService.ReleaseLockAsync();
 
             //test, remove when deploy
-            await _orderHub.SendOrder(order.Id);
+            //await _orderHub.SendOrder(order.Id);
 
             return order.Id;
         }
@@ -199,12 +199,14 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
                 throw new AppException("Không tìm thấy món ăn");
             }
 
+            var dishPrice = dish.Price ?? 0;
             if (dish.DishGeneral.IsRefund)
             {
                 if (dish.RefundDishInventory.QuantityAvailable < quantity)
                 {
                     throw new AppException($"Không đủ món ăn '{dish.DishGeneral.DishName}' trong kho. Chỉ còn lại: '{dish.RefundDishInventory.QuantityAvailable}'");
                 }
+                totalPrice += dishPrice * quantity;
             }
 
             foreach (var dishIngredient in dish.DishIngredients)
@@ -245,7 +247,6 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
                 await _unitOfWorks.SaveChangeAsync();
             }
 
-            var dishPrice = dish.Price ?? 0;
             if (!isCombo)
             {
                 totalPrice += dishPrice * quantity;
@@ -275,4 +276,5 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             throw;
         }
     }
+
 }

@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using FOV.Application.Common.Behaviours.Claim;
+using FOV.Application.Common.Exceptions;
+using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.OrderAggregator.Enums;
+using FOV.Domain.Entities.UserAggregator;
 using FOV.Infrastructure.Notifications.Web.SignalR.Order.Setup;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using StackExchange.Redis;
 
 namespace FOV.Application.Features.Orders.Commands.CancelOrder;
@@ -16,23 +21,42 @@ public class CancelOrderHandler : IRequestHandler<CancelOrderCommand, Guid>
     private readonly IUnitOfWorks _unitOfWorks;
     private readonly IDatabase _database;
     private readonly OrderHub _orderHub;
+    private readonly IClaimService _claimService;
+    private readonly UserManager<User> _userManager;
 
-    public CancelOrderHandler(IUnitOfWorks unitOfWorks, IDatabase database, OrderHub orderHub)
+    public CancelOrderHandler(IUnitOfWorks unitOfWorks, IDatabase database, OrderHub orderHub, IClaimService claimService, UserManager<User> userManager)
     {
         _unitOfWorks = unitOfWorks;
         _database = database;
         _orderHub = orderHub;
+        _claimService = claimService;
+        _userManager = userManager;
     }
 
     public async Task<Guid> Handle(CancelOrderCommand request, CancellationToken cancellationToken)
     {
+        var userId = _claimService.UserId;
+        var employee = await _userManager.FindByIdAsync(userId.ToString())
+            ?? throw new AppException("Employee not found");
+
         var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.OrderDetails)
             ?? throw new Exception("Order not found");
         var table = await _unitOfWorks.TableRepository.GetByIdAsync(order.TableId)
             ?? throw new Exception("Table not found");
+        var responsibilities = new List<OrderResponsibility>();
 
         foreach (var orderDetail in order.OrderDetails)
         {
+            var responsibility = new OrderResponsibility
+            {
+                OrderId = order.Id,
+                OrderDetailId = orderDetail.Id,
+                EmployeeCode = employee.EmployeeCode,
+                EmployeeName = employee.FullName,
+                OrderResponsibilityType = OrderResponsibilityType.Cancel
+            };
+            responsibilities.Add(responsibility);
+
             orderDetail.Status = OrderDetailsStatus.Canceled;
             _unitOfWorks.OrderDetailRepository.Update(orderDetail);
 
@@ -41,7 +65,7 @@ public class CancelOrderHandler : IRequestHandler<CancelOrderCommand, Guid>
                 var combo = await _unitOfWorks.ComboRepository.GetByIdAsync(orderDetail.ComboId.Value, c => c.DishCombos);
                 if (combo != null)
                 {
-                    foreach (var dishCombo in combo.DishCombos)
+                      foreach (var dishCombo in combo.DishCombos)
                     {
                         await ReleaseIngredientLocks(dishCombo.DishId, orderDetail.Quantity);
                     }
@@ -57,6 +81,7 @@ public class CancelOrderHandler : IRequestHandler<CancelOrderCommand, Guid>
 
         order.OrderStatus = OrderStatus.Canceled;
         _unitOfWorks.OrderRepository.Update(order);
+        await _unitOfWorks.OrderResponsibilityRepository.AddRangeAsync(responsibilities);
 
         await _unitOfWorks.SaveChangeAsync();
         await _orderHub.UpdateOrderStatus(order.Id, order.OrderStatus.ToString());
