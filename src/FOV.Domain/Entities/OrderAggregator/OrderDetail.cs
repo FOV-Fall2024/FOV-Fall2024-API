@@ -23,6 +23,7 @@ public class OrderDetail : BaseAuditableEntity
     public Combo? Combo { get; set; }
     public Dish? Dish { get; set; }
     public Order? Order { get; set; }
+    public virtual ICollection<OrderResponsibility> OrderResponsibilities { get; set; } = [];
     public bool IsAddMore { get; set; } = false;
     public OrderDetail()
     {

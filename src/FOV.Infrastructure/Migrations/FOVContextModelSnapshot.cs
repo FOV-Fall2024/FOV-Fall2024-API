@@ -789,16 +789,16 @@ namespace FOV.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("6531296e-a86a-4fcc-97e7-7e6182a5c011"),
-                            Created = new DateTime(2024, 11, 23, 8, 33, 4, 153, DateTimeKind.Utc).AddTicks(8724),
+                            Created = new DateTime(2024, 12, 2, 7, 56, 25, 202, DateTimeKind.Utc).AddTicks(7913),
                             IngredientMeasureName = "gam",
-                            LastModified = new DateTime(2024, 11, 23, 8, 33, 4, 153, DateTimeKind.Utc).AddTicks(8726)
+                            LastModified = new DateTime(2024, 12, 2, 7, 56, 25, 202, DateTimeKind.Utc).AddTicks(7913)
                         },
                         new
                         {
                             Id = new Guid("6531296e-a86a-4fcc-97e7-7e6192a5c011"),
-                            Created = new DateTime(2024, 11, 23, 8, 33, 4, 153, DateTimeKind.Utc).AddTicks(8732),
+                            Created = new DateTime(2024, 12, 2, 7, 56, 25, 202, DateTimeKind.Utc).AddTicks(7920),
                             IngredientMeasureName = "ml",
-                            LastModified = new DateTime(2024, 11, 23, 8, 33, 4, 153, DateTimeKind.Utc).AddTicks(8733)
+                            LastModified = new DateTime(2024, 12, 2, 7, 56, 25, 202, DateTimeKind.Utc).AddTicks(7920)
                         });
                 });
 
@@ -985,6 +985,50 @@ namespace FOV.Infrastructure.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("OrderDetails");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.OrderAggregator.OrderResponsibility", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("EmployeeCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("EmployeeName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("OrderDetailId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("OrderResponsibilityType")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderDetailId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderResponsibility");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.PaymentAggregator.Payments", b =>
@@ -1926,6 +1970,23 @@ namespace FOV.Infrastructure.Migrations
                     b.Navigation("Order");
                 });
 
+            modelBuilder.Entity("FOV.Domain.Entities.OrderAggregator.OrderResponsibility", b =>
+                {
+                    b.HasOne("FOV.Domain.Entities.OrderAggregator.OrderDetail", "OrderDetail")
+                        .WithMany("OrderResponsibilities")
+                        .HasForeignKey("OrderDetailId");
+
+                    b.HasOne("FOV.Domain.Entities.OrderAggregator.Order", "Order")
+                        .WithMany("OrderResponsibilities")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("OrderDetail");
+                });
+
             modelBuilder.Entity("FOV.Domain.Entities.PaymentAggregator.Payments", b =>
                 {
                     b.HasOne("FOV.Domain.Entities.OrderAggregator.Order", "Order")
@@ -2140,7 +2201,14 @@ namespace FOV.Infrastructure.Migrations
 
                     b.Navigation("OrderDetails");
 
+                    b.Navigation("OrderResponsibilities");
+
                     b.Navigation("Payments");
+                });
+
+            modelBuilder.Entity("FOV.Domain.Entities.OrderAggregator.OrderDetail", b =>
+                {
+                    b.Navigation("OrderResponsibilities");
                 });
 
             modelBuilder.Entity("FOV.Domain.Entities.RestaurantAggregator.Restaurant", b =>

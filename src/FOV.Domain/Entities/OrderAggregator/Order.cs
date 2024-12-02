@@ -23,6 +23,7 @@ public class Order : BaseAuditableEntity
     public Customer? Customer { get; set; }
     public Guid? CustomerId { get; set; }
     public virtual ICollection<IngredientUsage> IngredientTransactions { get; set; } = [];
+    public virtual ICollection<OrderResponsibility> OrderResponsibilities { get; set; } = [];
     public Order()
     {
 
