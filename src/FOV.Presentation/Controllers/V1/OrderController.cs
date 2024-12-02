@@ -62,6 +62,7 @@ public class OrderController(ISender sender) : DefaultController
         var response = await _sender.Send(command);
         return Ok(response);
     }
+    [Authorize(Roles = Role.Waiter)]
     [HttpPatch("{orderId:guid}/serve")]
     public async Task<IActionResult> ConfirmOrderToServe(Guid orderId, Guid OrderDetailsId)
     {
@@ -83,6 +84,7 @@ public class OrderController(ISender sender) : DefaultController
         var response = await _sender.Send(command);
         return Ok(new OK_Result<Guid>("Đặt thêm món thành công", response));
     }
+    [Authorize(Roles = Role.Waiter)]
     [HttpPatch("{orderId:guid}/refund")]
     public async Task<IActionResult> RefundOrder(Guid orderId, [FromQuery] Guid orderDetailId, [FromQuery] int refundQuantity)
     {

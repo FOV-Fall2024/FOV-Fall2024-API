@@ -59,8 +59,6 @@ public class ConfirmOrderToCookedHandler(IUnitOfWorks unitOfWorks, OrderHub orde
         _unitOfWorks.OrderDetailRepository.Update(orderDetail);
         await _unitOfWorks.SaveChangeAsync();
 
-        await _orderHub.UpdateOrderDetailsStatus(orderDetail.Id, orderDetail.ProductId ?? Guid.Empty, orderDetail.Status.ToString());
-
         return order.Id;
     }
 }
