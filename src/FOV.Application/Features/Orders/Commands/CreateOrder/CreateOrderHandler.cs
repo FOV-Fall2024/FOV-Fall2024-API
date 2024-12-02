@@ -203,7 +203,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             {
                 if (dish.RefundDishInventory.QuantityAvailable < quantity)
                 {
-                    throw new AppException("Không đủ món ăn trong kho");
+                    throw new AppException($"Không đủ món ăn '{dish.DishGeneral.DishName}' trong kho. Chỉ còn lại: '{dish.RefundDishInventory.QuantityAvailable}'");
                 }
             }
 
@@ -231,7 +231,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
                     }
                     else
                     {
-                        throw new AppException($"Món ăn '{dish.DishGeneral.DishName}' này hiện tại chỉ có thể đặt tối đa {maxDishes} phần.");
+                        throw new AppException($"Món ăn '{dish.DishGeneral.DishName}' này hiện tại chỉ có thể đặt tối đa {maxDishes} phần do hạn chế về nguyên liệu.");
                     }
                 }
 

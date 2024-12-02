@@ -5,7 +5,7 @@ using MediatR;
 
 namespace FOV.Application.Features.Orders.Queries.SuggestDishesForHeadchef;
 public record SuggestDishesForHeadchefCommand(PagingRequest? PagingRequest, Guid RestaurantId) : IRequest<PagedResult<SuggestDishesForHeadchefResponse>>;
-public record SuggestDishesForHeadchefResponse(Guid? OrderId, Guid Id, string? DishName, string? ComboName, string? Note, DateTime CreatedDate);
+public record SuggestDishesForHeadchefResponse(Guid? OrderId, Guid Id, int TableNumber, string? DishName, string? ComboName, string? Note, DateTime CreatedDate);
 public class SuggestDishesForHeadchefQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<SuggestDishesForHeadchefCommand, PagedResult<SuggestDishesForHeadchefResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
@@ -18,6 +18,7 @@ public class SuggestDishesForHeadchefQuery(IUnitOfWorks unitOfWorks) : IRequestH
             .Select(d => new SuggestDishesForHeadchefResponse(
                 d.OrderId,
                 d.Id,
+                d.Order.Table.TableNumber,
                 d.Dish?.DishGeneral?.DishName,
                 d.Combo?.ComboName,
                 d.Note,

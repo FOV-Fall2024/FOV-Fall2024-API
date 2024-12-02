@@ -71,8 +71,6 @@ public class VNPayPaymentHandler : IRequestHandler<VNPayPaymentCommand, VNPayPay
 
                 customer.Point -= pointsToUse;
                 _unitOfWorks.CustomerRepository.Update(customer);
-
-                totalAmount -= totalReduceMoney;
             }
         }
 
