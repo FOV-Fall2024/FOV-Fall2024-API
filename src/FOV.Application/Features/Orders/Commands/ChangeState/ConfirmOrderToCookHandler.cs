@@ -59,12 +59,19 @@ namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder
             {
                 throw new AppException("Hiện đơn hàng này không có món nào để chế biến");
             }
+
+            var existingResponsibility = await _unitOfWorks.OrderResponsibilityRepository.FirstOrDefaultAsync(r => r.OrderId == order.Id && r.EmployeeCode == employee.EmployeeCode);
+
+            var responsibilityType = existingResponsibility != null
+                ? OrderResponsibilityType.ConfirmAddMore
+                : OrderResponsibilityType.ConfirmOrder;
+
             var responsibility = new OrderResponsibility
             {
                 OrderId = order.Id,
                 EmployeeCode = employee.EmployeeCode,
                 EmployeeName = $"{employee.FullName}",
-                OrderResponsibilityType = OrderResponsibilityType.ConfirmOrder
+                OrderResponsibilityType = responsibilityType
             };
             await _unitOfWorks.OrderResponsibilityRepository.AddAsync(responsibility);
 

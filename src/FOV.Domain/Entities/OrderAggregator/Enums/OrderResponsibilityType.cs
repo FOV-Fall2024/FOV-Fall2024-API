@@ -12,5 +12,6 @@ public enum OrderResponsibilityType
     Serve = 3,
     Refund = 4,
     Payment = 5,
-    Cancel = 6
+    Cancel = 6,
+    ConfirmAddMore = 7
 }
