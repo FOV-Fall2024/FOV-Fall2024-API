@@ -22,21 +22,14 @@ public record GetSalaryOfAllEmployeeCommand(
     DateTime? ChosenDate = null
 ) : IRequest<PagedResult<CreateSalaryResponse>>;
 
-public class GetSalaryOfAllEmployeeQuery(
-    IUnitOfWorks unitOfWorks,
-    IClaimService claimService,
-    UserManager<User> userManager,
-    RoleManager<ApplicationRole> roleManager
-) : IRequestHandler<GetSalaryOfAllEmployeeCommand, PagedResult<CreateSalaryResponse>>
+public class GetSalaryOfAllEmployeeQuery(IUnitOfWorks unitOfWorks, IClaimService claimService, UserManager<User> userManager, RoleManager<ApplicationRole> roleManager) : IRequestHandler<GetSalaryOfAllEmployeeCommand, PagedResult<CreateSalaryResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     private readonly IClaimService _claimService = claimService;
     private readonly UserManager<User> _userManager = userManager;
     private readonly RoleManager<ApplicationRole> _roleManager = roleManager;
 
-    public async Task<PagedResult<CreateSalaryResponse>> Handle(
-    GetSalaryOfAllEmployeeCommand request,
-    CancellationToken cancellationToken)
+    public async Task<PagedResult<CreateSalaryResponse>> Handle(GetSalaryOfAllEmployeeCommand request, CancellationToken cancellationToken)
     {
         var userRole = _claimService.UserRole;
         Guid? restaurantId = null;
@@ -45,62 +38,71 @@ public class GetSalaryOfAllEmployeeQuery(
             restaurantId = _claimService.RestaurantId;
         }
 
-        // Chọn ngày để tính lương (nếu không có sẽ dùng ngày hiện tại)
         var chosenDate = request.ChosenDate?.ToUniversalTime() ?? DateTime.UtcNow;
 
-        // Tính startDate là ngày đầu tháng và endDate là ngày cuối tháng
         var startDate = new DateTime(chosenDate.Year, chosenDate.Month, 1, 0, 0, 0, DateTimeKind.Utc);
-        var endDate = startDate.AddMonths(1).AddDays(-1);  // Ngày cuối tháng
+        var endDate = startDate.AddMonths(1).AddDays(-1);
 
-        // Kiểm tra xem lương đã được tạo cho tháng này chưa
         var existingSalaries = await _unitOfWorks.WaiterSalaryRepository
             .WhereAsync(ws => ws.PayDate >= startDate && ws.PayDate <= endDate
                             && (!restaurantId.HasValue || ws.User.RestaurantId == restaurantId), x => x.User);
 
-        if (!existingSalaries.Any())
+        var users = await _userManager.Users
+            .Where(u => u.RestaurantId == restaurantId)
+            .ToListAsync();
+
+        if (!users.Any())
+            throw new AppException("Không có nhân viên trong nhà hàng này.");
+
+        foreach (var user in users)
         {
-            var users = await _userManager.Users
-                .Where(u => u.RestaurantId == restaurantId)
-                .ToListAsync();
+            var roles = await _userManager.GetRolesAsync(user);
+            if (!roles.Any())
+                throw new AppException($"Người dùng {user.FullName} chưa được gán vai trò nào.");
 
-            if (!users.Any())
-                throw new AppException("Không có nhân viên trong nhà hàng này.");
+            var roleName = roles.First();
+            var role = await _roleManager.FindByNameAsync(roleName);
+            if (role == null)
+                throw new AppException($"Không tìm thấy thông tin vai trò cho {user.FullName}.");
 
-            foreach (var user in users)
+            var hourlyRate = role.RoleSalary;
+
+            var attendances = await _unitOfWorks.AttendanceRepository
+                .WhereAsync(a => a.CheckInTime >= startDate && a.CheckInTime <= endDate
+                                && a.WaiterSchedule.UserId == user.Id);
+
+            if (!attendances.Any())
+                continue;
+
+            const int shiftHours = 5;
+            var totalShifts = attendances.Count();
+            var totalHoursWorked = attendances
+                .Sum(a => (a.CheckOutTime - a.CheckInTime)?.TotalHours ?? 0);
+            var totalStandardHours = totalShifts * shiftHours;
+            var overtimeHours = Math.Max(0, totalHoursWorked - totalStandardHours);
+            var penaltyHours = Math.Max(0, totalStandardHours - totalHoursWorked);
+
+            var regularSalary = (decimal)totalHoursWorked * hourlyRate;
+            var overtimeSalary = (decimal)overtimeHours * hourlyRate * 1.5m;
+            var penalty = (decimal)penaltyHours * hourlyRate;
+            var totalSalary = regularSalary + overtimeSalary - penalty;
+
+            var waiterSalary = existingSalaries.FirstOrDefault(ws => ws.UserId == user.Id);
+
+            if (waiterSalary != null)
             {
-                var roles = await _userManager.GetRolesAsync(user);
-                if (!roles.Any())
-                    throw new AppException($"Người dùng {user.FullName} chưa được gán vai trò nào.");
-
-                var roleName = roles.First();
-                var role = await _roleManager.FindByNameAsync(roleName);
-                if (role == null)
-                    throw new AppException($"Không tìm thấy thông tin vai trò cho {user.FullName}.");
-
-                var hourlyRate = role.RoleSalary;
-
-                // Lấy tất cả bản ghi chấm công trong tháng này
-                var attendances = await _unitOfWorks.AttendanceRepository
-                    .WhereAsync(a => a.CheckInTime >= startDate && a.CheckInTime <= endDate
-                                    && a.WaiterSchedule.UserId == user.Id);
-
-                if (!attendances.Any())
-                    continue;
-
-                const int shiftHours = 5;
-                var totalShifts = attendances.Count();
-                var totalHoursWorked = attendances
-                    .Sum(a => (a.CheckOutTime - a.CheckInTime)?.TotalHours ?? 0);
-                var totalStandardHours = totalShifts * shiftHours;
-                var overtimeHours = Math.Max(0, totalHoursWorked - totalStandardHours);
-                var penaltyHours = Math.Max(0, totalStandardHours - totalHoursWorked);
-
-                var regularSalary = (decimal)totalHoursWorked * hourlyRate;
-                var overtimeSalary = (decimal)overtimeHours * hourlyRate * 1.5m;
-                var penalty = (decimal)penaltyHours * hourlyRate;
-                var totalSalary = regularSalary + overtimeSalary - penalty;
-
-                var waiterSalary = new WaiterSalary
+                waiterSalary.TotalShifts = totalShifts;
+                waiterSalary.TotalHoursWorked = (decimal)totalHoursWorked;
+                waiterSalary.ActualHoursWorked = (decimal)(totalHoursWorked + overtimeHours - penaltyHours);
+                waiterSalary.RegularSalary = regularSalary;
+                waiterSalary.OvertimeSalary = overtimeSalary;
+                waiterSalary.Penalty = penalty;
+                waiterSalary.TotalSalaries = totalSalary;
+                waiterSalary.Status = "Pending";
+            }
+            else
+            {
+                waiterSalary = new WaiterSalary
                 {
                     UserId = user.Id,
                     TotalShifts = totalShifts,
@@ -110,15 +112,14 @@ public class GetSalaryOfAllEmployeeQuery(
                     OvertimeSalary = overtimeSalary,
                     Penalty = penalty,
                     TotalSalaries = totalSalary,
-                    PayDate = endDate, // Chọn ngày cuối tháng làm ngày thanh toán
+                    PayDate = endDate,
                     Status = "Pending"
                 };
-
                 await _unitOfWorks.WaiterSalaryRepository.AddAsync(waiterSalary);
             }
-
-            await _unitOfWorks.SaveChangeAsync();
         }
+
+        await _unitOfWorks.SaveChangeAsync();
 
         var query = await _unitOfWorks.WaiterSalaryRepository
             .WhereAsync(ws => ws.PayDate >= startDate && ws.PayDate <= endDate
