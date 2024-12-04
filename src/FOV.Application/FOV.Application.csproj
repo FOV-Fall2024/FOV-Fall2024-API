@@ -34,7 +34,6 @@
     <Folder Include="Features\IngredientMeasures\Responses\" />
     <Folder Include="Features\Ingredients\Queries\GetIngredientDetail\" />
     <Folder Include="Features\RefundDishInventories\Responses\" />
-    <Folder Include="Features\Salaries\Queries\" />
   </ItemGroup>
 
 </Project>

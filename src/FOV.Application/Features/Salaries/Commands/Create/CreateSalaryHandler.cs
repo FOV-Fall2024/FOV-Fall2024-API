@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FOV.Application.Features.Salaries.Commands.Create;
 public record CreateSalaryCommand(Guid UserId) : IRequest<CreateSalaryResponse>;
-public record CreateSalaryResponse(Guid Id, string EmployeeCode, string EmployeeName, CreateSalaryDto Salary);
+public record CreateSalaryResponse(Guid Id, string EmployeeCode, string EmployeeName, CreateSalaryDto Salary, DateTime CreatedDate);
 public record CreateSalaryDto(decimal TotalShifts, decimal TotalHoursWorked, decimal ActualHoursWorked, decimal RegularSalary, decimal OvertimeSalary, decimal Penalty, decimal TotalSalaries);
 public class CreateSalaryHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager, RoleManager<ApplicationRole> roleManager) : IRequestHandler<CreateSalaryCommand, CreateSalaryResponse>
 {
@@ -87,7 +87,8 @@ public class CreateSalaryHandler(IUnitOfWorks unitOfWorks, UserManager<User> use
                 waiterSalary.OvertimeSalary,
                 waiterSalary.Penalty,
                 waiterSalary.TotalSalaries
-            )
+            ),
+            waiterSalary.Created
         );
 
         return response;

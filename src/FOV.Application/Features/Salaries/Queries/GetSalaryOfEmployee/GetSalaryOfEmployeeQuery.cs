@@ -71,7 +71,8 @@ public class GetSalaryOfEmployeeQuery(IUnitOfWorks unitOfWorks, IClaimService cl
                 overtimeSalary,
                 penalty,
                 totalSalary
-            )
+            ),
+            DateTime.UtcNow.ToUniversalTime()
         );
 
         return salaryResponse;

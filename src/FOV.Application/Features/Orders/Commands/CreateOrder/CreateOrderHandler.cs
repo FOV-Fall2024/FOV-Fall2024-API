@@ -206,7 +206,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
                 {
                     throw new AppException($"Không đủ món ăn '{dish.DishGeneral.DishName}' trong kho. Chỉ còn lại: '{dish.RefundDishInventory.QuantityAvailable}'");
                 }
-                totalPrice += dishPrice * quantity;
+                //dish.Price += dishPrice * quantity;
             }
 
             foreach (var dishIngredient in dish.DishIngredients)

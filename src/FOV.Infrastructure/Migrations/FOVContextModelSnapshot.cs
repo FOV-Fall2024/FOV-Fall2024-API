@@ -789,16 +789,16 @@ namespace FOV.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("6531296e-a86a-4fcc-97e7-7e6182a5c011"),
-                            Created = new DateTime(2024, 12, 2, 9, 29, 44, 101, DateTimeKind.Utc).AddTicks(9208),
+                            Created = new DateTime(2024, 12, 4, 14, 18, 9, 295, DateTimeKind.Utc).AddTicks(6410),
                             IngredientMeasureName = "gam",
-                            LastModified = new DateTime(2024, 12, 2, 9, 29, 44, 101, DateTimeKind.Utc).AddTicks(9210)
+                            LastModified = new DateTime(2024, 12, 4, 14, 18, 9, 295, DateTimeKind.Utc).AddTicks(6412)
                         },
                         new
                         {
                             Id = new Guid("6531296e-a86a-4fcc-97e7-7e6192a5c011"),
-                            Created = new DateTime(2024, 12, 2, 9, 29, 44, 101, DateTimeKind.Utc).AddTicks(9218),
+                            Created = new DateTime(2024, 12, 4, 14, 18, 9, 295, DateTimeKind.Utc).AddTicks(6421),
                             IngredientMeasureName = "ml",
-                            LastModified = new DateTime(2024, 12, 2, 9, 29, 44, 101, DateTimeKind.Utc).AddTicks(9218)
+                            LastModified = new DateTime(2024, 12, 4, 14, 18, 9, 295, DateTimeKind.Utc).AddTicks(6421)
                         });
                 });
 
@@ -1016,7 +1016,7 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<Guid?>("OrderDetailId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("OrderId")
+                    b.Property<Guid>("OrderId")
                         .HasColumnType("uuid");
 
                     b.Property<int>("OrderResponsibilityType")
@@ -1470,6 +1470,9 @@ namespace FOV.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<decimal>("ActualHoursWorked")
+                        .HasColumnType("numeric");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
@@ -1482,14 +1485,26 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
 
+                    b.Property<decimal>("OvertimeSalary")
+                        .HasColumnType("numeric");
+
                     b.Property<DateTime?>("PayDate")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("Penalty")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("RegularSalary")
+                        .HasColumnType("numeric");
 
                     b.Property<Guid?>("SalaryId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Status")
                         .HasColumnType("text");
+
+                    b.Property<decimal>("TotalHoursWorked")
+                        .HasColumnType("numeric");
 
                     b.Property<decimal>("TotalSalaries")
                         .HasColumnType("numeric");
@@ -1976,7 +1991,9 @@ namespace FOV.Infrastructure.Migrations
 
                     b.HasOne("FOV.Domain.Entities.OrderAggregator.Order", "Order")
                         .WithMany("OrderResponsibilities")
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Order");
 

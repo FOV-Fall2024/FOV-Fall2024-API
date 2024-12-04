@@ -4,7 +4,7 @@ using FOV.Domain.Entities.UserAggregator;
 namespace FOV.Domain.Entities.WaiterSalaryAggregator;
 public class WaiterSalary : BaseAuditableEntity
 {
-    public DateTime? PayDate { get; set; } = DateTime.UtcNow;
+    public DateTime? PayDate { get; set; }
     public Salary? Salary { get; set; }
     public Guid? SalaryId { get; set; }
     public User? User { get; set; }
