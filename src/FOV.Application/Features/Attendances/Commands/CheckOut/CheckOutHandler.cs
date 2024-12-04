@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using FOV.Application.Common.Behaviours.Claim;
 using FOV.Application.Common.Exceptions;
@@ -12,7 +13,22 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 
 namespace FOV.Application.Features.Attendances.Commands.CheckOut;
-public record CheckOutCommand(DateOnly Date, Guid ShiftId, DateTime CheckOutTime, double Latitude, double Longitude) : IRequest<Guid>;
+public record CheckOutCommand() : IRequest<Guid>
+{
+    [JsonIgnore]
+    public DateOnly Date { get; set; }
+
+    [JsonIgnore]
+    public Guid ShiftId { get; set; }
+
+    [JsonIgnore]
+    public DateTime CheckOutTime { get; set; }
+
+    public double Latitude { get; set; }
+
+    public double Longitude { get; set; }
+}
+
 public class CheckOutHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager, IClaimService claimService) : IRequestHandler<CheckOutCommand, Guid>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
