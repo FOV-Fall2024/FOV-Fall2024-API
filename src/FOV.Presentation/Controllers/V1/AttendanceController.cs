@@ -1,6 +1,7 @@
 ﻿using Azure;
 using FOV.Application.Features.Attendances.Commands.CheckAttendance;
 using FOV.Application.Features.Attendances.Commands.CheckIn;
+using FOV.Application.Features.Attendances.Commands.CheckOut;
 using FOV.Application.Features.Attendances.Commands.GenerateCheckInQRCode;
 using FOV.Application.Features.Attendances.Queries.GetDailyAttendances;
 using FOV.Application.Features.Attendances.Queries.GetQRShiftOfRestaurants;
@@ -38,6 +39,13 @@ public class AttendanceController(ISender sender) : DefaultController
 
         var attendanceId = await _sender.Send(checkInCommand);
         return Ok(new OK_Result<Guid>("Điểm danh thành công", attendanceId));
+    }
+    [HttpPost("checkout")]
+    public async Task<IActionResult> CheckOut([FromQuery] Guid shiftId, [FromQuery] DateOnly date, [FromBody] double latitude, [FromBody] double longitude)
+    {
+        var checkOutCommand = new CheckOutCommand(date, shiftId, DateTime.Now, latitude, longitude);
+        var attendanceId = await _sender.Send(checkOutCommand);
+        return Ok(new OK_Result<Guid>("Check-out thành công", attendanceId));
     }
     [HttpGet("qr")]
     public async Task<IActionResult> GetQrToCheckIn([FromQuery] GetQRShiftOfRestaurantCommand command)

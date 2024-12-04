@@ -62,6 +62,7 @@ public static class DependencyInjection
         services.AddScoped<ISalaryRepository, SalaryRepository>();
         services.AddScoped<IShiftRestaurantRepository, ShiftRestaurantRepository>();
         services.AddScoped<IOrderResponsibilityRepository, OrderResponsibilityRepository>();
+        services.AddScoped<IWaiterSalaryRepository, WaiterSalaryRepository>();
         services.AddSingleton<OrderHub>();
         services.AddSingleton<NotificationHub>();
         return services;

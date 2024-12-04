@@ -51,5 +51,6 @@ public interface IUnitOfWorks
     public ISalaryRepository SalaryRepository { get; }
     public IShiftRestaurantRepository ShiftRestaurantRepository { get; }
     public IOrderResponsibilityRepository OrderResponsibilityRepository { get; }
+    public IWaiterSalaryRepository WaiterSalaryRepository { get; }
     public Task<int> SaveChangeAsync();
 }
