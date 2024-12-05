@@ -19,7 +19,8 @@ namespace FOV.Application.Features.Salaries.Queries.GetSalaryOfAllEmployee;
 
 public record GetSalaryOfAllEmployeeCommand(
     PagingRequest? PagingRequest,
-    DateTime? ChosenDate = null
+    DateTime? ChosenDate = null,
+    Guid? UserId = null
 ) : IRequest<PagedResult<CreateSalaryResponse>>;
 
 public class GetSalaryOfAllEmployeeQuery(IUnitOfWorks unitOfWorks, IClaimService claimService, UserManager<User> userManager, RoleManager<ApplicationRole> roleManager) : IRequestHandler<GetSalaryOfAllEmployeeCommand, PagedResult<CreateSalaryResponse>>
@@ -32,10 +33,21 @@ public class GetSalaryOfAllEmployeeQuery(IUnitOfWorks unitOfWorks, IClaimService
     public async Task<PagedResult<CreateSalaryResponse>> Handle(GetSalaryOfAllEmployeeCommand request, CancellationToken cancellationToken)
     {
         var userRole = _claimService.UserRole;
+        var userId = request.UserId;
         Guid? restaurantId = null;
+
         if (userRole == Role.Manager)
         {
             restaurantId = _claimService.RestaurantId;
+
+            if (userId.HasValue)
+            {
+                var user = await _userManager.Users
+                    .FirstOrDefaultAsync(u => u.Id == userId.Value && u.RestaurantId == restaurantId);
+
+                if (user == null)
+                    throw new AppException("Không tìm thấy nhân viên trong nhà hàng của bạn.");
+            }
         }
 
         var chosenDate = request.ChosenDate?.ToUniversalTime() ?? DateTime.UtcNow;
@@ -45,14 +57,21 @@ public class GetSalaryOfAllEmployeeQuery(IUnitOfWorks unitOfWorks, IClaimService
 
         var existingSalaries = await _unitOfWorks.WaiterSalaryRepository
             .WhereAsync(ws => ws.PayDate >= startDate && ws.PayDate <= endDate
+                            && (!userId.HasValue || ws.UserId == userId)
                             && (!restaurantId.HasValue || ws.User.RestaurantId == restaurantId), x => x.User);
 
-        var users = await _userManager.Users
-            .Where(u => u.RestaurantId == restaurantId)
-            .ToListAsync();
+        var usersQuery = _userManager.Users.AsQueryable();
+
+        if (restaurantId.HasValue)
+            usersQuery = usersQuery.Where(u => u.RestaurantId == restaurantId);
+
+        if (userId.HasValue)
+            usersQuery = usersQuery.Where(u => u.Id == userId);
+
+        var users = await usersQuery.ToListAsync(cancellationToken);
 
         if (!users.Any())
-            throw new AppException("Không có nhân viên trong nhà hàng này.");
+            throw new AppException("Không tìm thấy nhân viên phù hợp.");
 
         foreach (var user in users)
         {
@@ -123,6 +142,7 @@ public class GetSalaryOfAllEmployeeQuery(IUnitOfWorks unitOfWorks, IClaimService
 
         var query = await _unitOfWorks.WaiterSalaryRepository
             .WhereAsync(ws => ws.PayDate >= startDate && ws.PayDate <= endDate
+                            && (!userId.HasValue || ws.UserId == userId)
                             && (!restaurantId.HasValue || ws.User.RestaurantId == restaurantId), x => x.User);
 
         var mappedResult = query.Select(ws => new CreateSalaryResponse(
