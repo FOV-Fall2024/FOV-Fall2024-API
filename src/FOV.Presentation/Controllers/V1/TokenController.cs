@@ -17,8 +17,14 @@ public class FCMTokenController : DefaultController
     [HttpGet("test-notify")]
     public async Task<IActionResult> TestNotify()
     {
-        string token = await CloudMessagingHandlers.TakeToken();
-        await CloudMessagingHandlers.SendNotification("dFugB9D5Sq6OCEXHAebcra:APA91bGgTbesgfIGB72YM_gusaudL-8aICZbPbH5W-3XsSwWyuY9RD6-PlcJaoLYvGiMVdLT055RerUYVYesdmfDZo2j04k3lbthS1QRWfQ2qt0VBgpPHZU", "hihi","hihi");
+        var token = await FCMTokenHandler.GetFCMTokenByUserID(Guid.Parse("3c9bde0c-4842-4cfa-9f55-b49096cfbb70"));
+        
+        return Ok(token);
+    }
+    [HttpGet("test-to")]
+    public async Task<IActionResult> TestToken()
+    {
+        string token = await FCMTokenHandler.GetFCMToken();
         return Ok(token);
     }
 }

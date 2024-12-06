@@ -18,7 +18,14 @@ public static class FCMTokenHandler
     {
         _client = new FireSharp.FirebaseClient(config);
         FirebaseResponse response = await _client.GetAsync($@"FCMToken/{userId}");
-        return response.StatusCode == System.Net.HttpStatusCode.BadRequest ? "NotUserloginInthis Account" : response.Body.ToString();
+
+        if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+        {
+            return "NotUserloginInthis Account";
+        }
+
+        // Remove surrounding quotes if present
+        return response.Body.Trim('"');
     }
     public static async Task AddFCMToken(Guid userId, string token)
     {
