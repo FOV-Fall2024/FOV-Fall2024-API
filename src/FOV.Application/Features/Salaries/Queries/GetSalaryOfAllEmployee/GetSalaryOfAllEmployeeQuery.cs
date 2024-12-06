@@ -95,25 +95,25 @@ public class GetSalaryOfAllEmployeeQuery(IUnitOfWorks unitOfWorks, IClaimService
 
             const int shiftHours = 5;
             var totalShifts = attendances.Count();
-            var totalHoursWorked = attendances
-                .Sum(a => (a.CheckOutTime - a.CheckInTime)?.TotalHours ?? 0);
-            var totalStandardHours = totalShifts * shiftHours;
-            var overtimeHours = Math.Max(0, totalHoursWorked - totalStandardHours);
-            var penaltyHours = Math.Max(0, totalStandardHours - totalHoursWorked);
+            var totalEmployeeHoursWorked = attendances
+                .Sum(a => (a.CheckOutTime - a.CheckInTime)?.TotalHours ?? 0); //tong so gio lam cua nhan vien
+            var totalBaseHours = totalShifts * shiftHours; // tong gio thuc te trong ca
+            var overtimeHours = Math.Max(0, totalEmployeeHoursWorked - totalBaseHours);
+            var penaltyHours = Math.Max(0, totalBaseHours - totalEmployeeHoursWorked);
 
-            var regularSalary = (decimal)totalHoursWorked * hourlyRate;
+            var baseSalary = (decimal)totalBaseHours * hourlyRate;
             var overtimeSalary = (decimal)overtimeHours * hourlyRate * 1.5m;
             var penalty = (decimal)penaltyHours * hourlyRate;
-            var totalSalary = regularSalary + overtimeSalary - penalty;
+            var totalSalary = baseSalary + overtimeSalary - penalty;
 
             var waiterSalary = await _unitOfWorks.WaiterSalaryRepository.FirstOrDefaultAsync(ws => ws.UserId == user.Id);
 
             if (waiterSalary != null)
             {
                 waiterSalary.TotalShifts = totalShifts;
-                waiterSalary.TotalHoursWorked = (decimal)totalHoursWorked;
-                waiterSalary.ActualHoursWorked = (decimal)(totalHoursWorked + overtimeHours - penaltyHours);
-                waiterSalary.RegularSalary = regularSalary;
+                waiterSalary.TotalHoursWorked = (decimal)totalBaseHours; //base hours
+                waiterSalary.ActualHoursWorked = (decimal) totalEmployeeHoursWorked;
+                waiterSalary.RegularSalary = baseSalary;
                 waiterSalary.OvertimeSalary = overtimeSalary;
                 waiterSalary.Penalty = penalty;
                 waiterSalary.TotalSalaries = totalSalary;
@@ -126,9 +126,9 @@ public class GetSalaryOfAllEmployeeQuery(IUnitOfWorks unitOfWorks, IClaimService
                 {
                     UserId = user.Id,
                     TotalShifts = totalShifts,
-                    TotalHoursWorked = (decimal)totalHoursWorked,
-                    ActualHoursWorked = (decimal)(totalHoursWorked + overtimeHours - penaltyHours),
-                    RegularSalary = regularSalary,
+                    TotalHoursWorked = (decimal)totalBaseHours,
+                    ActualHoursWorked = (decimal)totalEmployeeHoursWorked,
+                    RegularSalary = baseSalary,
                     OvertimeSalary = overtimeSalary,
                     Penalty = penalty,
                     TotalSalaries = totalSalary,
