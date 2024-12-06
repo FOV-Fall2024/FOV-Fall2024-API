@@ -18,6 +18,7 @@ public class FCMTokenController : DefaultController
     public async Task<IActionResult> TestNotify()
     {
         var token = await FCMTokenHandler.GetFCMTokenByUserID(Guid.Parse("3c9bde0c-4842-4cfa-9f55-b49096cfbb70"));
+        await CloudMessagingHandlers.SendNotification(token, "ccc", "ccc");
         
         return Ok(token);
     }
