@@ -18,9 +18,9 @@ public class SuggestDishesForHeadchefQuery(IUnitOfWorks unitOfWorks) : IRequestH
             .Select(d => new SuggestDishesForHeadchefResponse(
                 d.OrderId,
                 d.Id,
-                d.Order.Table.TableNumber,
-                d.Dish?.DishGeneral?.DishName,
-                d.Combo?.ComboName,
+                d.Order?.Table?.TableNumber ?? 0,
+                d.Dish?.DishGeneral?.DishName ?? null,
+                d.Combo?.ComboName ?? null,
                 d.Note,
                 d.Created))
             .ToList();
