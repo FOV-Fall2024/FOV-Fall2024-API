@@ -4,18 +4,26 @@ import random
 from datetime import datetime, timedelta
 
 # Cấu hình kết nối PostgreSQL
-db_config = {
-    "host": "127.0.0.1",
-    "port": 5433,
-    "database": "RestaurantManagementDatabase",
-    "user": "admin",
-    "password": "admin",
+# db_config = {
+#     "host": "127.0.0.1",
+#     "port": 5433,
+#     "database": "RestaurantManagementDatabase",
+#     "user": "admin",
+#     "password": "admin",
+# }
+
+db_config_server = {
+    "host": "dpg-csov56t6l47c7396dqdg-a.singapore-postgres.render.com",
+    "port": "5432",
+    "database": "restaurantmanagementdb",
+    "user": "restaurantmanagementdb_user",
+    "password": "V0XThBwwbEzNZa3XBqZV8VEXyFCcfrH2",
 }
 
 # Hàm lấy danh sách WaiterScheduleId và DateTime từ cơ sở dữ liệu
 def fetch_waiter_schedule_data():
     try:
-        conn = psycopg2.connect(**db_config)
+        conn = psycopg2.connect(**db_config_server)
         cur = conn.cursor()
         
         query = 'SELECT "Id", "DateTime" FROM public."WaiterSchedules";'

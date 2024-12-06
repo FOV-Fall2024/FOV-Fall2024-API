@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using FOV.Application.Common.Exceptions;
 using FOV.Domain.Entities.AttendanceAggregator;
@@ -11,7 +12,20 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 
 namespace FOV.Application.Features.Attendances.Commands.CheckIn;
-public record CheckInCommand(Guid RestaurantId, Guid ShiftId, Guid UserId, DateOnly Date, DateTime CheckInTime, double Latitude, double Longitude) : IRequest<Guid>;
+public record CheckInCommand() : IRequest<Guid>
+{
+    [JsonIgnore]
+    public Guid RestaurantId { get; set; }
+    [JsonIgnore]
+    public Guid ShiftId { get; set; }
+    [JsonIgnore]
+    public DateOnly Date { get; set; }
+    [JsonIgnore]
+    public DateTime CheckInTime { get; set; }
+    public Guid UserId { get; set; }
+    public double Latitude { get; set; }
+    public double Longitude { get; set; }
+}
 public class CheckInHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager) : IRequestHandler<CheckInCommand, Guid>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;

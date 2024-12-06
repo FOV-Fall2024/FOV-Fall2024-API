@@ -12,7 +12,7 @@ using MediatR;
 
 namespace FOV.Application.Features.Attendances.Queries.GetDailyAttendances;
 public sealed record GetDailyAttendanceCommand(PagingRequest? PagingRequest, bool? IsCheckIn) : IRequest<PagedResult<GetDailyAttendanceResponse>>;
-public sealed record GetDailyAttendanceResponse(Guid Id, DateTimeOffset? CheckInTime, WaiterScheduleDto WaiterSchedule, DateTime CreatedDate);
+public sealed record GetDailyAttendanceResponse(Guid Id, DateTimeOffset? CheckInTime, DateTimeOffset? CheckOutTime, WaiterScheduleDto WaiterSchedule, DateTime CreatedDate);
 public record WaiterScheduleDto(Guid Id, EmployeeDto Employee, ShiftDto Shift);
 public class GetDailyAttendancesHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<GetDailyAttendanceCommand, PagedResult<GetDailyAttendanceResponse>>
 {
@@ -39,6 +39,7 @@ public class GetDailyAttendancesHandler(IUnitOfWorks unitOfWorks) : IRequestHand
         var attendanceList = schedules.Select(s => new GetDailyAttendanceResponse(
             s.Id,
             s.Attendances.FirstOrDefault()?.CheckInTime,
+            s.Attendances.FirstOrDefault()?.CheckOutTime,
             new WaiterScheduleDto(
                 s.Id,
                 new EmployeeDto(s.User.Id, s.User.EmployeeCode, s.User.FullName, s.Id),

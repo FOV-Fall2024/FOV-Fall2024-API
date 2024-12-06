@@ -33,11 +33,15 @@ public class AttendanceController(ISender sender) : DefaultController
         return Ok(result);
     }
     [HttpPost("checkin")]
-    public async Task<IActionResult> CheckIn([FromQuery] Guid restaurantId, [FromQuery] Guid shiftId, [FromQuery] Guid userId, [FromQuery] DateOnly date, [FromQuery] double latitude, [FromQuery] double longitude)
+    public async Task<IActionResult> CheckIn([FromQuery] Guid restaurantId, [FromQuery] Guid shiftId, [FromQuery] DateOnly date, [FromBody] CheckInCommand command)
     {
-        var checkInCommand = new CheckInCommand(restaurantId, shiftId, userId, date, DateTime.Now, latitude, longitude);
+        command.RestaurantId = restaurantId;
+        command.ShiftId = shiftId;
+        command.CheckInTime = DateTime.Now.AddHours(7);
+        command.Date = date;
 
-        var attendanceId = await _sender.Send(checkInCommand);
+        var attendanceId = await _sender.Send(command);
+
         return Ok(new OK_Result<Guid>("Điểm danh thành công", attendanceId));
     }
     [HttpPost("checkout")]
@@ -45,7 +49,7 @@ public class AttendanceController(ISender sender) : DefaultController
     {
         command.ShiftId = shiftId;
         command.Date = date;
-        command.CheckOutTime = DateTime.Now;
+        command.CheckOutTime = DateTime.Now.AddHours(7);
         var attendanceId = await _sender.Send(command);
         return Ok(new OK_Result<Guid>("Check-out thành công", attendanceId));
     }

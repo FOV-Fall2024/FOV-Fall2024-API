@@ -89,7 +89,7 @@ public class CheckOutHandler(IUnitOfWorks unitOfWorks, UserManager<User> userMan
             var nextShift = shifts.OrderBy(s => s.StartTime).FirstOrDefault(s => s.StartTime > shift.EndTime);
             if (nextShift != null)
             {
-                var nextShiftWaiterSchedules = await _unitOfWorks.WaiterScheduleRepository.GetAllAsync(
+                var nextShiftWaiterSchedules = await _unitOfWorks.WaiterScheduleRepository.WhereAsync(
                     ws => ws.DateTime == request.Date && ws.ShiftId == nextShift.Id,
                     ws => ws.Attendances);
                 if (!nextShiftWaiterSchedules.Any(ws => ws.Attendances?.Any(a => a.CheckInTime != null) == true))

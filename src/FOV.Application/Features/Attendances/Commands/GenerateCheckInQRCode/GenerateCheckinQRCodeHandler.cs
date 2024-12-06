@@ -43,7 +43,8 @@ public class GenerateCheckinQRCodeHandler(IUnitOfWorks unitOfWorks, QRCodeGenera
         }
 
         var fileName = $"Restaurant_{restaurant.Id}_Date_{date}_Shift_{shift.ShiftName}";
-        var qrUrl = $"http://vktrng.ddns.net:8080/api/Attendance/checkin?restaurantId={restaurantId}&shiftId={shiftId}&date={date}&userId=&latitude=&longitude=";
+        var qrUrl = $"http://vktrng.ddns.net:8080/api/Attendance/checkin?restaurantId={restaurantId}&shiftId={shiftId}&date={date}"; //&userId=&latitude=&longitude="
+        //var qrUrl = $"https://localhost:7107/api/Attendance/checkin?restaurantId={restaurantId}&shiftId={shiftId}&date={date}"; //&userId=&latitude=&longitude="
 
         var qrCodeBytes = _qRCodeGeneratorHandler.GenerateQRCode(qrUrl);
 
