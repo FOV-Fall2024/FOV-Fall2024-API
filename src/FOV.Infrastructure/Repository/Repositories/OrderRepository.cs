@@ -28,6 +28,7 @@ public class OrderRepository : GenericRepository<Domain.Entities.OrderAggregator
     public async Task<List<OrderDetail>> GetOrderDishesAndCombo(Guid restaurantId)
     {
         return await _context.Orders
+            .Include(o => o.Table)
             .Include(o => o.OrderDetails)
                 .ThenInclude(od => od.Dish)
                     .ThenInclude(dg => dg.DishGeneral)
