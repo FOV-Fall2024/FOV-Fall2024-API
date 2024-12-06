@@ -25,6 +25,11 @@ public class SuggestDishesForHeadchefQuery(IUnitOfWorks unitOfWorks) : IRequestH
                 d.Created))
             .ToList();
 
+        if (prioritizedDishes == null)
+        {
+            return new PagedResult<SuggestDishesForHeadchefResponse>();
+        }
+
         var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
 
         var sortedResults = PaginationHelper<SuggestDishesForHeadchefResponse>.Sorting(sortType, prioritizedDishes, sortField);
