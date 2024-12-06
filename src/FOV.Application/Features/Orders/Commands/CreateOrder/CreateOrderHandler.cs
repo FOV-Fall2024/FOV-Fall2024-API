@@ -9,11 +9,16 @@ using FOV.Domain.Entities.DishAggregator;
 using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.OrderAggregator.Enums;
 using FOV.Domain.Entities.TableAggregator.Enums;
+using FOV.Domain.Entities.UserAggregator;
 using FOV.Infrastructure.Caching.CachingService;
+using FOV.Infrastructure.FCM;
+using FOV.Infrastructure.FirebaseDB;
 using FOV.Infrastructure.Notifications.Web.SignalR.Order.Setup;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 
 namespace FOV.Application.Features.Orders.Commands.CreateOrder;
@@ -41,13 +46,15 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
     private readonly IDatabase _database;
     private readonly OrderHub _orderHub;
     private readonly ConcurrentDictionary<string, LockingHandler> _lockHandlers;
+    private readonly UserManager<User> _userManager;
 
-    public CreateOrderHandler(IUnitOfWorks unitOfWorks, IDatabase database, OrderHub orderHub)
+    public CreateOrderHandler(IUnitOfWorks unitOfWorks, IDatabase database, OrderHub orderHub, UserManager<User> userManager)
     {
         _unitOfWorks = unitOfWorks;
         _database = database;
         _lockHandlers = new ConcurrentDictionary<string, LockingHandler>();
         _orderHub = orderHub;
+        _userManager = userManager;
     }
 
     public async Task<Guid> Handle(CreateOrderWithTableIdCommand request, CancellationToken cancellationToken)
@@ -159,6 +166,27 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             await _unitOfWorks.OrderRepository.AddAsync(order);
             await _unitOfWorks.SaveChangeAsync();
             await lockService.ReleaseLockAsync();
+
+            var restaurantId = table.Restaurant.Id;
+            var userInRestaurantAlreadyCheckAttendance = _userManager.Users
+                .Where(x => x.RestaurantId == restaurantId &&
+                            x.WaiterSchedules.Any(ws =>
+                                ws.Attendances.Any(a =>
+                                    a.CheckInTime != null &&
+                                    a.CheckOutTime == null &&
+                                    ws.DateTime == DateOnly.FromDateTime(DateTime.Now.AddHours(7)))))
+                .Include(x => x.WaiterSchedules)
+                    .ThenInclude(ws => ws.Attendances)
+                .ToList();
+
+            foreach (var eachUserInRestaurantAlreadyCheckAttendance in userInRestaurantAlreadyCheckAttendance)
+            {
+                var tokenUser = FCMTokenHandler.GetFCMToken(eachUserInRestaurantAlreadyCheckAttendance.Id).ToString();
+                if (!string.IsNullOrEmpty(tokenUser))
+                {
+                    CloudMessagingHandlers.SendNotification(tokenUser, $"Có đơn hàng mới", $"Có đơn hàng mới tại bàn {table.TableNumber}");
+                };
+            }
 
             //test, remove when deploy
             //await _orderHub.SendOrder(order.Id);

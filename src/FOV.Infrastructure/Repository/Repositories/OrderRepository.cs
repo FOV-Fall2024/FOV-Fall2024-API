@@ -36,7 +36,7 @@ public class OrderRepository : GenericRepository<Domain.Entities.OrderAggregator
                 .ThenInclude(od => od.Combo)
             .Where(o => o.Table != null && o.Table.RestaurantId == restaurantId && o.OrderStatus == OrderStatus.Cook)
             .SelectMany(o => o.OrderDetails)
-            .Where(od => (od.Dish != null || od.Combo != null) && od.Status == OrderDetailsStatus.Cook)
+            .Where(od => (od.Dish != null || od.Combo != null) && od.Status == OrderDetailsStatus.Cook && od.IsRefund == false)
             .ToListAsync();
     }
 }

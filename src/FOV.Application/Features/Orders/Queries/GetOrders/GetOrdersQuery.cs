@@ -8,11 +8,15 @@ using FOV.Application.Common.Behaviours.Claim;
 using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.OrderAggregator.Enums;
 using FOV.Domain.Entities.PaymentAggregator.Enums;
+using FOV.Domain.Entities.UserAggregator;
 using FOV.Domain.Entities.UserAggregator.Enums;
 using FOV.Infrastructure.Helpers.GetHelper;
 using FOV.Infrastructure.Migrations;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 
 namespace FOV.Application.Features.Orders.Queries.GetOrders;
 
@@ -23,15 +27,36 @@ public class GetOrdersQuery : IRequestHandler<GetOrdersRequest, PagedResult<GetO
 {
     private readonly IUnitOfWorks _unitOfWorks;
     private readonly IClaimService _claimService;
-    public GetOrdersQuery(IUnitOfWorks unitOfWorks, IClaimService claimService)
+    private readonly UserManager<User> _userManager;
+    public GetOrdersQuery(IUnitOfWorks unitOfWorks, IClaimService claimService, UserManager<User> userManager)
     {
         _unitOfWorks = unitOfWorks;
         _claimService = claimService;
+        _userManager = userManager;
     }
 
     public async Task<PagedResult<GetOrdersResponse>> Handle(GetOrdersRequest request, CancellationToken cancellationToken)
     {
         var restaurantId = _claimService.RestaurantId;
+        var userId = _claimService.UserId;
+        var userRole = _claimService.UserRole;
+
+        if ((userRole == Domain.Entities.UserAggregator.Enums.Role.Waiter || userRole == Domain.Entities.UserAggregator.Enums.Role.Chef))
+        {
+            var user = await _userManager.Users
+                .Include(x => x.WaiterSchedules)
+                    .ThenInclude(ws => ws.Attendances)
+                .FirstOrDefaultAsync(u => u.Id == userId && u.RestaurantId == restaurantId);
+
+            var isCheckedIn = user?.WaiterSchedules
+                .Any(ws => ws.Attendances
+                    .Any(a => a.CheckInTime != null && a.CheckOutTime == null && ws.DateTime == DateOnly.FromDateTime(DateTime.Now.AddHours(7)))) ?? false;
+
+            if (!isCheckedIn)
+            {
+                return new PagedResult<GetOrdersResponse>();
+            }
+        }
 
         var orders = await _unitOfWorks.OrderRepository.WhereAsync(
             x => x.Table.RestaurantId == restaurantId,
@@ -80,7 +105,7 @@ public class GetOrdersQuery : IRequestHandler<GetOrdersRequest, PagedResult<GetO
                 o.Customer != null ? o.Customer.FullName : "Khách",
                 o.Customer?.PhoneNumber,
                 o.Feedback,
-                o.Created
+            o.Created
             );
         }).ToList();
 

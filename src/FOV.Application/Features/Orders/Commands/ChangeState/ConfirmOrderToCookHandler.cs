@@ -10,11 +10,14 @@ using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.OrderAggregator.Enums;
 using FOV.Domain.Entities.UserAggregator;
 using FOV.Domain.Entities.UserAggregator.Enums;
+using FOV.Infrastructure.FCM;
+using FOV.Infrastructure.FirebaseDB;
 using FOV.Infrastructure.Notifications.Web.SignalR.Notification.Setup;
 using FOV.Infrastructure.Notifications.Web.SignalR.Order.Setup;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 
 namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder
@@ -25,17 +28,19 @@ namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder
     {
         private readonly IUnitOfWorks _unitOfWorks;
         private readonly OrderHub _orderHub;
+        private readonly NotificationHub _notificationHub;
         private readonly IDatabase _database;
         private readonly IClaimService _claimService;
         private readonly UserManager<User> _userManager;
 
-        public ConfirmOrderToCookHandler(IUnitOfWorks unitOfWorks, OrderHub orderHub, IConnectionMultiplexer redis, IClaimService claimService, UserManager<User> userManager)
+        public ConfirmOrderToCookHandler(IUnitOfWorks unitOfWorks, OrderHub orderHub, IConnectionMultiplexer redis, IClaimService claimService, UserManager<User> userManager, NotificationHub notificationHub)
         {
             _unitOfWorks = unitOfWorks;
             _orderHub = orderHub;
             _database = redis.GetDatabase();
             _claimService = claimService;
             _userManager = userManager;
+            _notificationHub = notificationHub;
         }
 
         public async Task<Guid> Handle(ConfirmOrderToCookCommand request, CancellationToken cancellationToken)
@@ -130,11 +135,32 @@ namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder
 
             if (refundableDishes.Any())
             {
-                //Notification FCM to waiter at here
-                //await _orderHub.NotifyWaiterAboutRefundableDishes(refundableDishes.Select(d => d.Id).ToList());
+                var table = await _unitOfWorks.TableRepository.GetByIdAsync(order.TableId);
+                var restaurantId = table.Restaurant.Id;
+                var userInRestaurantAlreadyCheckAttendance = _userManager.Users
+                    .Where(x => x.RestaurantId == restaurantId &&
+                                x.WaiterSchedules.Any(ws =>
+                                    ws.Attendances.Any(a =>
+                                        a.CheckInTime != null &&
+                                        a.CheckOutTime == null &&
+                                        ws.DateTime == DateOnly.FromDateTime(DateTime.Now.AddHours(7)))))
+                    .Include(x => x.WaiterSchedules)
+                        .ThenInclude(ws => ws.Attendances)
+                    .ToList();
+
+                foreach (var eachUserInRestaurantAlreadyCheckAttendance in userInRestaurantAlreadyCheckAttendance)
+                {
+                    var tokenUser = FCMTokenHandler.GetFCMToken(eachUserInRestaurantAlreadyCheckAttendance.Id).ToString();
+                    if (!string.IsNullOrEmpty(tokenUser))
+                    {
+                        CloudMessagingHandlers.SendNotification(tokenUser, $"Khách hàng đã đặt món phụ", $"Khách hàng đã đặt món phụ tại bàn {table.TableNumber}");
+                    };
+                }
             }
 
             await _orderHub.UpdateOrderStatus(order.Id, order.OrderStatus.ToString());
+            //sua lai suggest dish
+            await _notificationHub.SendOrderToHeadChef(headChef.Id);
             return order.Id;
         }
 

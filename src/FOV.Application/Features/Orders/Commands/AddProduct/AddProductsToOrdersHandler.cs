@@ -8,11 +8,16 @@ using System.Threading.Tasks;
 using FOV.Application.Common.Exceptions;
 using FOV.Domain.Entities.OrderAggregator;
 using FOV.Domain.Entities.OrderAggregator.Enums;
+using FOV.Domain.Entities.UserAggregator;
 using FOV.Infrastructure.Caching.CachingService;
+using FOV.Infrastructure.FCM;
+using FOV.Infrastructure.FirebaseDB;
 using FOV.Infrastructure.Notifications.Web.SignalR.Notification.Setup;
 using FOV.Infrastructure.Notifications.Web.SignalR.Order.Setup;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 
 namespace FOV.Application.Features.Orders.Commands.AddProduct;
@@ -39,14 +44,16 @@ public class AddProductsToOrderHandler : IRequestHandler<AddProductsToOrdersComm
     private readonly OrderHub _orderHub;
     private readonly NotificationHub _notificationHub;
     private readonly ConcurrentDictionary<string, LockingHandler> _lockHandlers;
+    private readonly UserManager<User> _userManager;
 
-    public AddProductsToOrderHandler(IUnitOfWorks unitOfWorks, IDatabase database, OrderHub orderHub, NotificationHub notificationHub)
+    public AddProductsToOrderHandler(IUnitOfWorks unitOfWorks, IDatabase database, OrderHub orderHub, NotificationHub notificationHub, UserManager<User> userManager)
     {
         _unitOfWorks = unitOfWorks;
         _database = database;
         _orderHub = orderHub;
         _notificationHub = notificationHub;
         _lockHandlers = new ConcurrentDictionary<string, LockingHandler>();
+        _userManager = userManager;
     }
 
     public async Task<Guid> Handle(AddProductsToOrdersCommand request, CancellationToken cancellationToken)
@@ -112,6 +119,28 @@ public class AddProductsToOrderHandler : IRequestHandler<AddProductsToOrdersComm
 
             await _orderHub.UpdateOrderStatus(order.Id, "Prepare");
             //await _notificationHub.SendNotificationToWaiter(order.UserId ?? Guid.Empty, order.Id, order.OrderDetails.First().Id);
+
+            var table = await _unitOfWorks.TableRepository.GetByIdAsync(order.TableId);
+            var restaurantId = table.Restaurant.Id;
+            var userInRestaurantAlreadyCheckAttendance = _userManager.Users
+                .Where(x => x.RestaurantId == restaurantId &&
+                            x.WaiterSchedules.Any(ws =>
+                                ws.Attendances.Any(a =>
+                                    a.CheckInTime != null &&
+                                    a.CheckOutTime == null &&
+                                    ws.DateTime == DateOnly.FromDateTime(DateTime.Now.AddHours(7)))))
+                .Include(x => x.WaiterSchedules)
+                    .ThenInclude(ws => ws.Attendances)
+                .ToList();
+
+            foreach (var eachUserInRestaurantAlreadyCheckAttendance in userInRestaurantAlreadyCheckAttendance)
+            {
+                var tokenUser = FCMTokenHandler.GetFCMToken(eachUserInRestaurantAlreadyCheckAttendance.Id).ToString();
+                if (!string.IsNullOrEmpty(tokenUser))
+                {
+                    CloudMessagingHandlers.SendNotification(tokenUser, $"Khách hàng đã đặt thêm món mới", $"Khách hàng đã đặt thêm món mới tại bàn {table.TableNumber}");
+                };
+            }
 
             return order.Id;
         }

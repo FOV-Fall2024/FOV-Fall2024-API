@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Text.Json.Serialization;
 using FOV.Infrastructure.Notifications.Web.SignalR.Notification.Setup;
 using FOV.Application.Common.Behaviours.Claim;
+using FOV.Infrastructure.FCM;
+using FOV.Infrastructure.FirebaseDB;
 
 namespace FOV.Application.Features.Payments.Commands.Create;
 
@@ -37,10 +39,12 @@ public record FeedbackRequest
 public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
 {
     private readonly IUnitOfWorks _unitOfWorks;
+    private readonly UserManager<User> _userManager;
     private const int ConversePoint = 1000;
-    public CreatePaymentHandler(IUnitOfWorks unitOfWorks)
+    public CreatePaymentHandler(IUnitOfWorks unitOfWorks, UserManager<User> userManager)
     {
         _unitOfWorks = unitOfWorks;
+        _userManager = userManager;
     }
 
     public async Task<Guid> Handle(CreatePaymentCommands request, CancellationToken cancellationToken)
@@ -124,6 +128,27 @@ public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
         await _unitOfWorks.PaymentRepository.AddAsync(payment);
         await _unitOfWorks.SaveChangeAsync();
 
+        var table = await _unitOfWorks.TableRepository.GetByIdAsync(order.TableId);
+        var restaurantId = table.Restaurant.Id;
+        var userInRestaurantAlreadyCheckAttendance = _userManager.Users
+            .Where(x => x.RestaurantId == restaurantId &&
+                        x.WaiterSchedules.Any(ws =>
+                            ws.Attendances.Any(a =>
+                                a.CheckInTime != null &&
+                                a.CheckOutTime == null &&
+                                ws.DateTime == DateOnly.FromDateTime(DateTime.Now.AddHours(7)))))
+            .Include(x => x.WaiterSchedules)
+                .ThenInclude(ws => ws.Attendances)
+            .ToList();
+
+        foreach (var eachUserInRestaurantAlreadyCheckAttendance in userInRestaurantAlreadyCheckAttendance)
+        {
+            var tokenUser = FCMTokenHandler.GetFCMToken(eachUserInRestaurantAlreadyCheckAttendance.Id).ToString();
+            if (!string.IsNullOrEmpty(tokenUser))
+            {
+                CloudMessagingHandlers.SendNotification(tokenUser, $"Khách hàng yêu cầu thanh toán", $"Khách hàng yêu cầu thanh toán tại bàn {table.TableNumber}");
+            };
+        }
         return payment.Id;
     }
 }
