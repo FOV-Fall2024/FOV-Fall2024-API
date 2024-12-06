@@ -69,7 +69,6 @@ public class CreateSalaryHandler(IUnitOfWorks unitOfWorks, UserManager<User> use
             Penalty = penalty,
             TotalSalaries = totalSalary,
             PayDate = DateTime.UtcNow,
-            Status = "Pending"
         };
 
         await _unitOfWorks.WaiterSalaryRepository.AddAsync(waiterSalary);

@@ -117,7 +117,6 @@ public class GetSalaryOfAllEmployeeQuery(IUnitOfWorks unitOfWorks, IClaimService
                 waiterSalary.OvertimeSalary = overtimeSalary;
                 waiterSalary.Penalty = penalty;
                 waiterSalary.TotalSalaries = totalSalary;
-                waiterSalary.Status = "Pending";
             }
             else
             {
@@ -132,7 +131,6 @@ public class GetSalaryOfAllEmployeeQuery(IUnitOfWorks unitOfWorks, IClaimService
                     Penalty = penalty,
                     TotalSalaries = totalSalary,
                     PayDate = endDate,
-                    Status = "Pending"
                 };
                 await _unitOfWorks.WaiterSalaryRepository.AddAsync(waiterSalary);
             }

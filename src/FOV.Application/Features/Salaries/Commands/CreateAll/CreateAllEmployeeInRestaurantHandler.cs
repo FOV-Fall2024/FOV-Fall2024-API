@@ -72,7 +72,6 @@ public class CreateAllEmployeeInRestaurantHandler(IUnitOfWorks unitOfWorks, User
                 Penalty = penalty,
                 TotalSalaries = totalSalary,
                 PayDate = DateTime.UtcNow,
-                Status = "Pending"
             };
 
             await _unitOfWorks.WaiterSalaryRepository.AddAsync(waiterSalary);

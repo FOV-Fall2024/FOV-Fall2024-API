@@ -16,24 +16,21 @@ public class WaiterSalary : BaseAuditableEntity
     public decimal OvertimeSalary { get; set; }
     public decimal Penalty { get; set; }
     public decimal TotalSalaries { get; set; }
-    public string? Status { get; set; }
     public WaiterSalary()
     {
 
     }
-    public WaiterSalary(Guid? userId, decimal totalShifts, decimal totalSalaries, string? status, DateTime payDate)
+    public WaiterSalary(Guid? userId, decimal totalShifts, decimal totalSalaries, DateTime payDate)
     {
         this.UserId = userId;
         this.TotalShifts = totalShifts;
         this.TotalSalaries = totalSalaries;
-        this.Status = status;
         this.PayDate = payDate;
     }
-    public void Update(decimal totalShifts, decimal totalSalaries, string? status, DateTime payDate)
+    public void Update(decimal totalShifts, decimal totalSalaries, DateTime payDate)
     {
         this.TotalShifts = totalShifts;
         this.TotalSalaries = totalSalaries;
-        this.Status = status;
         this.PayDate = payDate;
     }
 }

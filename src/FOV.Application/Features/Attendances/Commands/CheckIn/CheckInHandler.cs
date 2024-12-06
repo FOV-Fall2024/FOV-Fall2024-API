@@ -43,11 +43,11 @@ public class CheckInHandler(IUnitOfWorks unitOfWorks, UserManager<User> userMana
         var shiftEndTime = new DateTime(request.CheckInTime.Year, request.CheckInTime.Month, request.CheckInTime.Day,
                                         shift.EndTime?.Hours ?? 0, shift.EndTime?.Minutes ?? 0, shift.EndTime?.Seconds ?? 0);
 
-        var earliestCheckInTime = shiftStartTime.AddMinutes(-15);
-        var latestCheckInTime = shiftStartTime.AddMinutes(15);
+        //var earliestCheckInTime = shiftStartTime.AddMinutes(-15);
+        //var latestCheckInTime = shiftStartTime.AddMinutes(15);
 
-        if (checkInDate < earliestCheckInTime || checkInDate > latestCheckInTime)
-            throw new AppException($"Thời gian check-in chỉ được phép trong khoảng từ {earliestCheckInTime:HH:mm} đến {latestCheckInTime:HH:mm}.");
+        //if (checkInDate < earliestCheckInTime || checkInDate > latestCheckInTime)
+        //    throw new AppException($"Thời gian check-in chỉ được phép trong khoảng từ {earliestCheckInTime:HH:mm} đến {latestCheckInTime:HH:mm}.");
 
         var waiterSchedule = await _unitOfWorks.WaiterScheduleRepository.FirstOrDefaultAsync(
                        ws => ws.DateTime == request.Date && ws.ShiftId == request.ShiftId && ws.UserId == request.UserId,

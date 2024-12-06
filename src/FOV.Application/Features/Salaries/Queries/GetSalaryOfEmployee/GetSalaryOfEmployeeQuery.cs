@@ -135,7 +135,6 @@ public class GetSalaryOfEmployeeQuery(IUnitOfWorks unitOfWorks, IClaimService cl
             Penalty = penaltyNew,
             TotalSalaries = totalSalaryNew,
             PayDate = endDate,
-            Status = "Pending"
         };
 
         await _unitOfWorks.WaiterSalaryRepository.AddAsync(waiterSalary);
