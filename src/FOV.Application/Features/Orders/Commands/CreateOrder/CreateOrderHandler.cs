@@ -172,7 +172,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
                 .Where(x => x.RestaurantId == restaurantId &&
                             x.WaiterSchedules.Any(ws =>
                                 ws.Attendances.Any(a =>
-                                    a.CheckInTime != null &&
+                                    a.CheckInTime != null &&    
                                     a.CheckOutTime == null &&
                                     ws.DateTime == DateOnly.FromDateTime(DateTime.Now.AddHours(7)))))
                 .Include(x => x.WaiterSchedules)
@@ -182,14 +182,15 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             foreach (var eachUserInRestaurantAlreadyCheckAttendance in userInRestaurantAlreadyCheckAttendance)
             {
                 var tokenUser = FCMTokenHandler.GetFCMToken(eachUserInRestaurantAlreadyCheckAttendance.Id).ToString();
+                Console.WriteLine(tokenUser);
                 if (!string.IsNullOrEmpty(tokenUser))
                 {
-                    CloudMessagingHandlers.SendNotification(tokenUser, $"Có đơn hàng mới", $"Có đơn hàng mới tại bàn {table.TableNumber}");
+                     await CloudMessagingHandlers.SendNotification(tokenUser, $"Có đơn hàng mới", $"Có đơn hàng mới tại bàn {table.TableNumber}");
                 };
             }
 
             //test, remove when deploy
-            await _orderHub.SendOrder(order.Id);
+            //await _orderHub.SendOrder(order.Id);
 
             return order.Id;
         }
