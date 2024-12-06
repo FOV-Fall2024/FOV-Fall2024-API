@@ -106,7 +106,7 @@ public class GetSalaryOfAllEmployeeQuery(IUnitOfWorks unitOfWorks, IClaimService
             var penalty = (decimal)penaltyHours * hourlyRate;
             var totalSalary = regularSalary + overtimeSalary - penalty;
 
-            var waiterSalary = existingSalaries.FirstOrDefault(ws => ws.UserId == user.Id);
+            var waiterSalary = await _unitOfWorks.WaiterSalaryRepository.FirstOrDefaultAsync(ws => ws.UserId == user.Id);
 
             if (waiterSalary != null)
             {
@@ -117,10 +117,12 @@ public class GetSalaryOfAllEmployeeQuery(IUnitOfWorks unitOfWorks, IClaimService
                 waiterSalary.OvertimeSalary = overtimeSalary;
                 waiterSalary.Penalty = penalty;
                 waiterSalary.TotalSalaries = totalSalary;
+
+                _unitOfWorks.WaiterSalaryRepository.Update(waiterSalary);
             }
             else
             {
-                waiterSalary = new WaiterSalary
+                var newWaiterSalary = new WaiterSalary
                 {
                     UserId = user.Id,
                     TotalShifts = totalShifts,
@@ -132,7 +134,7 @@ public class GetSalaryOfAllEmployeeQuery(IUnitOfWorks unitOfWorks, IClaimService
                     TotalSalaries = totalSalary,
                     PayDate = endDate,
                 };
-                await _unitOfWorks.WaiterSalaryRepository.AddAsync(waiterSalary);
+                await _unitOfWorks.WaiterSalaryRepository.AddAsync(newWaiterSalary);
             }
         }
 

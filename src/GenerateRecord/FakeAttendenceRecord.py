@@ -67,7 +67,7 @@ def generate_attendance_data(fake, waiter_schedule_data):
 # Chèn dữ liệu vào cơ sở dữ liệu
 def insert_attendance_data_to_db(records):
     try:
-        conn = psycopg2.connect(**db_config)
+        conn = psycopg2.connect(**db_config_server)
         cur = conn.cursor()
         
         query = """
