@@ -83,7 +83,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
 
         try
         {
-            var table = await _unitOfWorks.TableRepository.GetByIdAsync(request.TableId);
+            var table = await _unitOfWorks.TableRepository.GetByIdAsync(request.TableId, x => x.Restaurant);
             if (table == null)
             {
                 throw new AppException($"Không tìm thấy bàn có ID {request.TableId}.");
@@ -189,7 +189,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
             }
 
             //test, remove when deploy
-            //await _orderHub.SendOrder(order.Id);
+            await _orderHub.SendOrder(order.Id);
 
             return order.Id;
         }

@@ -11,6 +11,7 @@ using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Attendances.Queries.GetDailyAttendances;
+//Them field ischeckin cho waiterschedule
 public sealed record GetDailyAttendanceCommand(PagingRequest? PagingRequest, bool? IsCheckIn) : IRequest<PagedResult<GetDailyAttendanceResponse>>;
 public sealed record GetDailyAttendanceResponse(Guid Id, DateTimeOffset? CheckInTime, DateTimeOffset? CheckOutTime, WaiterScheduleDto WaiterSchedule, DateTime CreatedDate);
 public record WaiterScheduleDto(Guid Id, EmployeeDto Employee, ShiftDto Shift);

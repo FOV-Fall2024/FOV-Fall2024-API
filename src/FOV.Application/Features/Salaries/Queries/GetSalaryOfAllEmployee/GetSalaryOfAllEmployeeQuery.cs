@@ -23,6 +23,7 @@ public record GetSalaryOfAllEmployeeCommand(
     Guid? UserId = null
 ) : IRequest<PagedResult<CreateSalaryResponse>>;
 
+//Filter theo userId, trả về list các ngày đi làm trong tháng, bao gồm: ca trong ngày, ghời gian checkin check out của từng ca đó
 public class GetSalaryOfAllEmployeeQuery(IUnitOfWorks unitOfWorks, IClaimService claimService, UserManager<User> userManager, RoleManager<ApplicationRole> roleManager) : IRequestHandler<GetSalaryOfAllEmployeeCommand, PagedResult<CreateSalaryResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;

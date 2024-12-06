@@ -11,6 +11,7 @@ using MediatR;
 
 namespace FOV.Application.Features.Schedules.Queries.GetEmployeeOfShiftOnSpecificDate;
 public record GetEmployeeOfShiftOnSpecificDateCommand(Guid ShiftId, DateOnly Date) : IRequest<List<EmployeeDto>>;
+//them option IsCheckIn
 internal class GetEmployeeOfShiftOnSpecificDateQuery(IUnitOfWorks unitOfWorks, IClaimService claimService) : IRequestHandler<GetEmployeeOfShiftOnSpecificDateCommand, List<EmployeeDto>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
