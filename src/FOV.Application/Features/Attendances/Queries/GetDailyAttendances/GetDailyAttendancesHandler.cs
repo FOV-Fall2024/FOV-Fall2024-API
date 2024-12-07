@@ -11,10 +11,9 @@ using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Attendances.Queries.GetDailyAttendances;
-//Them field ischeckin cho waiterschedule
 public sealed record GetDailyAttendanceCommand(PagingRequest? PagingRequest, bool? IsCheckIn) : IRequest<PagedResult<GetDailyAttendanceResponse>>;
 public sealed record GetDailyAttendanceResponse(Guid Id, DateTimeOffset? CheckInTime, DateTimeOffset? CheckOutTime, WaiterScheduleDto WaiterSchedule, DateTime CreatedDate);
-public record WaiterScheduleDto(Guid Id, EmployeeDto Employee, ShiftDto Shift);
+public record WaiterScheduleDto(Guid Id, EmployeeDto Employee, ShiftDto Shift, bool IsCheckIn);
 public class GetDailyAttendancesHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<GetDailyAttendanceCommand, PagedResult<GetDailyAttendanceResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
@@ -44,7 +43,8 @@ public class GetDailyAttendancesHandler(IUnitOfWorks unitOfWorks) : IRequestHand
             new WaiterScheduleDto(
                 s.Id,
                 new EmployeeDto(s.User.Id, s.User.EmployeeCode, s.User.FullName, s.Id),
-                new ShiftDto(s.ShiftId, s.Shift.ShiftName)
+                new ShiftDto(s.ShiftId, s.Shift.ShiftName),
+                s.Attendances.Any(a => a.CheckInTime != null)
             ),
             s.Created
         )).ToList();

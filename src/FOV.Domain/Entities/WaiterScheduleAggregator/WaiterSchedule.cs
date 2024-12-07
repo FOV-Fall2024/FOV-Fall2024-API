@@ -11,7 +11,7 @@ using FOV.Domain.Entities.UserAggregator;
 namespace FOV.Domain.Entities.WaiterScheduleAggregator;
 public class WaiterSchedule : BaseAuditableEntity
 {
-    public DateOnly? DateTime { get; set; }
+    public DateOnly DateTime { get; set; }
     public Guid ShiftId { get; set; }
     public Shift? Shift { get; set; }
     public ICollection<Attendance> Attendances { get; set; } = [];

@@ -22,8 +22,11 @@ public record GetSalaryOfAllEmployeeCommand(
     DateTime? ChosenDate = null,
     Guid? UserId = null
 ) : IRequest<PagedResult<CreateSalaryResponse>>;
+public record CreateSalaryResponse(Guid Id, string EmployeeCode, string EmployeeName, CreateSalaryDto Salary, DateTime CreatedDate);
+public record CreateSalaryDto(decimal TotalShifts, decimal TotalHoursWorked, double ActualHoursWorked, decimal RegularSalary, decimal OvertimeSalary, decimal Penalty, decimal TotalSalaries, double OvertimeHours, double PenaltyHours, List<AttendanceDetailsDto> AttendanceDetailsDtos);
+public record AttendanceDetailsDto(DateOnly Date, string ShiftName, string CheckInTime, string CheckOutTime);
 
-//Filter theo userId, trả về list các ngày đi làm trong tháng, bao gồm: ca trong ngày, ghời gian checkin check out của từng ca đó
+//trả về thêm số giờ phạt, số giờ tăng ca và list các ngày đi làm trong tháng, bao gồm: ca trong ngày, thời gian checkin check out của từng ca đó
 public class GetSalaryOfAllEmployeeQuery(IUnitOfWorks unitOfWorks, IClaimService claimService, UserManager<User> userManager, RoleManager<ApplicationRole> roleManager) : IRequestHandler<GetSalaryOfAllEmployeeCommand, PagedResult<CreateSalaryResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
@@ -74,6 +77,8 @@ public class GetSalaryOfAllEmployeeQuery(IUnitOfWorks unitOfWorks, IClaimService
         if (!users.Any())
             throw new AppException("Không tìm thấy nhân viên phù hợp.");
 
+        var mappedResult = new List<CreateSalaryResponse>();
+
         foreach (var user in users)
         {
             var roles = await _userManager.GetRolesAsync(user);
@@ -89,7 +94,7 @@ public class GetSalaryOfAllEmployeeQuery(IUnitOfWorks unitOfWorks, IClaimService
 
             var attendances = await _unitOfWorks.AttendanceRepository
                 .WhereAsync(a => a.CheckInTime >= startDate && a.CheckInTime <= endDate
-                                && a.WaiterSchedule.UserId == user.Id);
+                                && a.WaiterSchedule.UserId == user.Id, x => x.WaiterSchedule.Shift);
 
             if (!attendances.Any())
                 continue;
@@ -107,13 +112,20 @@ public class GetSalaryOfAllEmployeeQuery(IUnitOfWorks unitOfWorks, IClaimService
             var penalty = (decimal)penaltyHours * hourlyRate;
             var totalSalary = baseSalary + overtimeSalary - penalty;
 
+            var attendanceDetailsDtos = attendances.Select(a => new AttendanceDetailsDto(
+                Date: a.WaiterSchedule.DateTime,
+                ShiftName: a.WaiterSchedule.Shift.ShiftName,
+                CheckInTime: a.CheckInTime?.ToString() ?? "Chưa thực hiện CheckIn",
+                CheckOutTime: a.CheckOutTime?.ToString() ?? "Chưa thực hiện CheckOut"
+            )).ToList();
+
             var waiterSalary = await _unitOfWorks.WaiterSalaryRepository.FirstOrDefaultAsync(ws => ws.UserId == user.Id);
 
             if (waiterSalary != null)
             {
                 waiterSalary.TotalShifts = totalShifts;
                 waiterSalary.TotalHoursWorked = (decimal)totalBaseHours; //base hours
-                waiterSalary.ActualHoursWorked = (decimal) totalEmployeeHoursWorked;
+                waiterSalary.ActualHoursWorked = (decimal)totalEmployeeHoursWorked;
                 waiterSalary.RegularSalary = baseSalary;
                 waiterSalary.OvertimeSalary = overtimeSalary;
                 waiterSalary.Penalty = penalty;
@@ -137,6 +149,25 @@ public class GetSalaryOfAllEmployeeQuery(IUnitOfWorks unitOfWorks, IClaimService
                 };
                 await _unitOfWorks.WaiterSalaryRepository.AddAsync(newWaiterSalary);
             }
+
+            mappedResult.Add(new CreateSalaryResponse(
+                user.Id,
+                user.EmployeeCode,
+                user.FullName,
+                new CreateSalaryDto(
+                    totalShifts,
+                    totalBaseHours,
+                    totalEmployeeHoursWorked,
+                    baseSalary,
+                    overtimeSalary,
+                    penalty,
+                    totalSalary,
+                    OvertimeHours: overtimeHours,
+                    PenaltyHours: penaltyHours,
+                    AttendanceDetailsDtos: attendanceDetailsDtos
+                ),
+                DateTime.UtcNow
+            ));
         }
 
         await _unitOfWorks.SaveChangeAsync();
@@ -145,23 +176,6 @@ public class GetSalaryOfAllEmployeeQuery(IUnitOfWorks unitOfWorks, IClaimService
             .WhereAsync(ws => ws.PayDate >= startDate && ws.PayDate <= endDate
                             && (!userId.HasValue || ws.UserId == userId)
                             && (!restaurantId.HasValue || ws.User.RestaurantId == restaurantId), x => x.User);
-
-        var mappedResult = query.Select(ws => new CreateSalaryResponse(
-                ws.Id,
-                ws.User.EmployeeCode,
-                ws.User.FullName,
-                new CreateSalaryDto(
-                    ws.TotalShifts,
-                    ws.TotalHoursWorked,
-                    ws.ActualHoursWorked,
-                    ws.RegularSalary,
-                    ws.OvertimeSalary,
-                    ws.Penalty,
-                    ws.TotalSalaries
-                ),
-                ws.Created
-            ))
-            .ToList();
 
         var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
         var sortedResults = PaginationHelper<CreateSalaryResponse>.Sorting(sortType, mappedResult, sortField);

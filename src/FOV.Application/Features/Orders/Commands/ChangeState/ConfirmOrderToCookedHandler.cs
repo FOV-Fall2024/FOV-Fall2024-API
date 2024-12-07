@@ -77,11 +77,8 @@ public class ConfirmOrderToCookedHandler(IUnitOfWorks unitOfWorks, OrderHub orde
 
         foreach (var eachUserInRestaurantAlreadyCheckAttendance in userInRestaurantAlreadyCheckAttendance)
         {
-            var tokenUser = FCMTokenHandler.GetFCMToken(eachUserInRestaurantAlreadyCheckAttendance.Id).ToString();
-            if (!string.IsNullOrEmpty(tokenUser))
-            {
-                CloudMessagingHandlers.SendNotification(tokenUser, $"Đầu bếp đã nấu xong", $"Đầu bếp đã nấu xong món ăn tại bàn {table.TableNumber}");
-            };
+            var tokenUser = await FCMTokenHandler.GetFCMToken(eachUserInRestaurantAlreadyCheckAttendance.Id);
+            await CloudMessagingHandlers.SendNotification(tokenUser, $"Đầu bếp đã nấu xong", $"Đầu bếp đã nấu xong món ăn tại bàn {table.TableNumber}");
         }
         return order.Id;
     }

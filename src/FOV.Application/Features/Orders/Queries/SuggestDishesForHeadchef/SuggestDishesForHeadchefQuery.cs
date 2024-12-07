@@ -9,8 +9,8 @@ using System.Linq.Expressions;
 namespace FOV.Application.Features.Orders.Queries.SuggestDishesForHeadchef;
 
 public record SuggestDishesForHeadchefCommand(PagingRequest? PagingRequest, Guid RestaurantId) : IRequest<PagedResult<SuggestDishesForHeadchefResponse>>;
-//them thang image, them quantity, khong tach
-public record SuggestDishesForHeadchefResponse(Guid? OrderId, Guid Id, int TableNumber, string? DishName, string? ComboName, string? Note, DateTime CreatedDate);
+//them thang image, them quantity
+public record SuggestDishesForHeadchefResponse(Guid? OrderId, Guid Id, int TableNumber, string? DishName, string? ComboName, string Image, int Quantity, string? Note, DateTime CreatedDate);
 public class SuggestDishesForHeadchefQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<SuggestDishesForHeadchefCommand, PagedResult<SuggestDishesForHeadchefResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
@@ -29,7 +29,7 @@ public class SuggestDishesForHeadchefQuery(IUnitOfWorks unitOfWorks) : IRequestH
         var includes = new Expression<Func<OrderDetail, object>>[]
         {
             od => od.Order.Table,
-            od => od.Dish.DishGeneral,
+            od => od.Dish.DishGeneral.DishGeneralImages,
             od => od.Combo
         };
 
@@ -43,6 +43,8 @@ public class SuggestDishesForHeadchefQuery(IUnitOfWorks unitOfWorks) : IRequestH
                 d.Order!.Table!.TableNumber,
                 d.Dish?.DishGeneral?.DishName ?? null,
                 d.Combo?.ComboName ?? null,
+                d.Dish?.DishGeneral?.DishGeneralImages.FirstOrDefault()?.Url ?? d.Combo?.Thumbnail,
+                d.Quantity,
                 d.Note,
                 d.Created))
             .ToList();

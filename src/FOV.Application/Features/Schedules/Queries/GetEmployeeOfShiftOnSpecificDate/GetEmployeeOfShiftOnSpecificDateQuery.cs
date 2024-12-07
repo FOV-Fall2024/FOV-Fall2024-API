@@ -10,8 +10,8 @@ using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Schedules.Queries.GetEmployeeOfShiftOnSpecificDate;
+public record EmployeeDto(Guid EmployeeId, string EmployeeCode, string EmployeeName, Guid WaiterScheduleId, bool IsCheckIn);
 public record GetEmployeeOfShiftOnSpecificDateCommand(Guid ShiftId, DateOnly Date) : IRequest<List<EmployeeDto>>;
-//them option IsCheckIn
 internal class GetEmployeeOfShiftOnSpecificDateQuery(IUnitOfWorks unitOfWorks, IClaimService claimService) : IRequestHandler<GetEmployeeOfShiftOnSpecificDateCommand, List<EmployeeDto>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
@@ -23,10 +23,18 @@ internal class GetEmployeeOfShiftOnSpecificDateQuery(IUnitOfWorks unitOfWorks, I
         {
             throw new AppException("User role is not found");
         }
-        var schedules = await _unitOfWorks.WaiterScheduleRepository.GetAllAsync(x => x.User, x => x.Shift);
+        var schedules = await _unitOfWorks.WaiterScheduleRepository.GetAllAsync(x => x.User, x => x.Shift, x => x.Attendances);
         var filteredSchedules = schedules.Where(s => s.DateTime == request.Date && s.ShiftId == request.ShiftId && s.User.RestaurantId == _claimService.RestaurantId);
 
-        var mappedSchedules = filteredSchedules.Select(schedule => new EmployeeDto(schedule.User.Id, schedule.User.EmployeeCode, schedule.User.FullName, schedule.Id)).ToList();
+        var mappedSchedules = filteredSchedules
+            .Select(schedule => new EmployeeDto(
+                schedule.User.Id,
+                schedule.User.EmployeeCode,
+                schedule.User.FullName,
+                schedule.Id,
+                schedule.Attendances.Any(a => a.CheckInTime != null)
+            ))
+            .ToList();
 
         return mappedSchedules;
     }

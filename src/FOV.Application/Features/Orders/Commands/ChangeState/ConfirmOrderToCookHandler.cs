@@ -150,11 +150,8 @@ namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder
 
                 foreach (var eachUserInRestaurantAlreadyCheckAttendance in userInRestaurantAlreadyCheckAttendance)
                 {
-                    var tokenUser = FCMTokenHandler.GetFCMToken(eachUserInRestaurantAlreadyCheckAttendance.Id).ToString();
-                    if (!string.IsNullOrEmpty(tokenUser))
-                    {
-                        CloudMessagingHandlers.SendNotification(tokenUser, $"Khách hàng đã đặt món phụ", $"Khách hàng đã đặt món phụ tại bàn {table.TableNumber}");
-                    };
+                    var tokenUser = await FCMTokenHandler.GetFCMToken(eachUserInRestaurantAlreadyCheckAttendance.Id);
+                    await CloudMessagingHandlers.SendNotification(tokenUser, $"Khách hàng đã đặt món phụ", $"Khách hàng đã đặt món phụ tại bàn {table.TableNumber}");
                 }
             }
 
