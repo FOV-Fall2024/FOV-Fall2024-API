@@ -19,7 +19,7 @@ namespace FOV.Application.Features.Payments.Commands
     {
         private readonly IUnitOfWorks _unitOfWorks;
         private readonly IConfiguration _configuration;
-
+        //Change Order Detail Status To Finish
         public VNPayCallbackHandler(IUnitOfWorks unitOfWorks, IConfiguration configuration)
         {
             _unitOfWorks = unitOfWorks;

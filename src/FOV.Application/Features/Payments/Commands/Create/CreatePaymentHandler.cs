@@ -128,7 +128,7 @@ public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
         await _unitOfWorks.PaymentRepository.AddAsync(payment);
         await _unitOfWorks.SaveChangeAsync();
 
-        var table = await _unitOfWorks.TableRepository.GetByIdAsync(order.TableId);
+        var table = await _unitOfWorks.TableRepository.GetByIdAsync(order.TableId, x => x.Restaurant);
         var restaurantId = table.Restaurant.Id;
         var userInRestaurantAlreadyCheckAttendance = _userManager.Users
             .Where(x => x.RestaurantId == restaurantId &&
