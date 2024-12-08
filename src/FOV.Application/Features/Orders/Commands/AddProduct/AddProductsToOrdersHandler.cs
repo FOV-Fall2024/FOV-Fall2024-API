@@ -135,7 +135,7 @@ public class AddProductsToOrderHandler : IRequestHandler<AddProductsToOrdersComm
 
             foreach (var eachUserInRestaurantAlreadyCheckAttendance in userInRestaurantAlreadyCheckAttendance)
             {
-                var tokenUser = await FCMTokenHandler.GetFCMToken(eachUserInRestaurantAlreadyCheckAttendance.Id);
+                var tokenUser = await FCMTokenHandler.GetFCMTokenByUserID(eachUserInRestaurantAlreadyCheckAttendance.Id);
                 await CloudMessagingHandlers.SendNotification(tokenUser, $"Khách hàng đã đặt thêm món mới", $"Khách hàng đã đặt thêm món mới tại bàn {table.TableNumber}");
             }
 

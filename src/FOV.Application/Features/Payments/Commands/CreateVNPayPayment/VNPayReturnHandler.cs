@@ -69,6 +69,15 @@ namespace FOV.Application.Features.Payments.Commands
             var table = await _unitOfWorks.TableRepository.GetByIdAsync(order.TableId);
             table.TableStatus = TableStatus.Available;
 
+            foreach (var detail in order.OrderDetails)
+            {
+                if (detail.Status != OrderDetailsStatus.Finish)
+                {
+                    detail.Status = OrderDetailsStatus.Finish;
+                    _unitOfWorks.OrderDetailRepository.Update(detail);
+                }
+            }
+
             _unitOfWorks.TableRepository.Update(table);
             _unitOfWorks.PaymentRepository.Update(payment);
             _unitOfWorks.OrderRepository.Update(order);

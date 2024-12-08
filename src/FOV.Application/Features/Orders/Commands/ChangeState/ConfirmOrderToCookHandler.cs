@@ -87,12 +87,18 @@ namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder
                 {
                     detail.Status = OrderDetailsStatus.Cook;
                 }
+
+                if (detail.IsRefund)
+                {
+                    detail.Status = OrderDetailsStatus.Cooked;
+                }
             }
 
             await _unitOfWorks.OrderResponsibilityRepository.AddRangeAsync(responsibilities);
 
             order.OrderStatus = OrderStatus.Cook;
             _unitOfWorks.OrderRepository.Update(order);
+            await _unitOfWorks.SaveChangeAsync();
 
             var headChefs = await _userManager.GetUsersInRoleAsync(Domain.Entities.UserAggregator.Enums.Role.HeadChef.ToString());
             var headChef = headChefs.FirstOrDefault(hc => hc.RestaurantId == order.Table.RestaurantId);
@@ -102,7 +108,9 @@ namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder
             }
 
             var ingredientUpdates = new Dictionary<Guid, int>();
-            var refundableDishes = new List<OrderDetail>();
+            var refundableDishes = order.OrderDetails
+                .Where(detail => detail.IsRefund && detail.Status != OrderDetailsStatus.Service)
+                .ToList();
 
             foreach (var detail in order.OrderDetails)
             {
@@ -111,10 +119,6 @@ namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder
                     continue;
                 }
 
-                if (detail.IsRefund)
-                {
-                    refundableDishes.Add(detail);
-                }
                 else
                 {
                     detail.Status = OrderDetailsStatus.Cook;
@@ -150,7 +154,7 @@ namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder
 
                 foreach (var eachUserInRestaurantAlreadyCheckAttendance in userInRestaurantAlreadyCheckAttendance)
                 {
-                    var tokenUser = await FCMTokenHandler.GetFCMToken(eachUserInRestaurantAlreadyCheckAttendance.Id);
+                    var tokenUser = await FCMTokenHandler.GetFCMTokenByUserID(eachUserInRestaurantAlreadyCheckAttendance.Id);
                     await CloudMessagingHandlers.SendNotification(tokenUser, $"Khách hàng đã đặt món phụ", $"Khách hàng đã đặt món phụ tại bàn {table.TableNumber}");
                 }
             }

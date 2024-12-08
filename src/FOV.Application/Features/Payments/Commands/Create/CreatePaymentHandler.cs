@@ -143,7 +143,7 @@ public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
 
         foreach (var eachUserInRestaurantAlreadyCheckAttendance in userInRestaurantAlreadyCheckAttendance)
         {
-            var tokenUser = await FCMTokenHandler.GetFCMToken(eachUserInRestaurantAlreadyCheckAttendance.Id);
+            var tokenUser = await FCMTokenHandler.GetFCMTokenByUserID(eachUserInRestaurantAlreadyCheckAttendance.Id);
             await CloudMessagingHandlers.SendNotification(tokenUser, $"Khách hàng yêu cầu thanh toán", $"Khách hàng yêu cầu thanh toán tại bàn {table.TableNumber}");
         }
         return payment.Id;

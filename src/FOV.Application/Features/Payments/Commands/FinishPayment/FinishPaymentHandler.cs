@@ -53,6 +53,15 @@ public class FinishPaymentHandler(IUnitOfWorks unitOfWorks, OrderHub orderHub, I
             _unitOfWorks.OrderRepository.Update(order);
         }
 
+        foreach (var detail in order.OrderDetails)
+        {
+            if (detail.Status != OrderDetailsStatus.Finish)
+            {
+                detail.Status = OrderDetailsStatus.Finish;
+                _unitOfWorks.OrderDetailRepository.Update(detail);
+            }
+        }
+
         if (order.Table != null)
         {
             order.Table.TableStatus = TableStatus.Available;
