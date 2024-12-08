@@ -135,7 +135,7 @@ namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder
 
             if (refundableDishes.Any())
             {
-                var table = await _unitOfWorks.TableRepository.GetByIdAsync(order.TableId);
+                var table = await _unitOfWorks.TableRepository.GetByIdAsync(order.TableId, x => x.Restaurant);
                 var restaurantId = table.Restaurant.Id;
                 var userInRestaurantAlreadyCheckAttendance = _userManager.Users
                     .Where(x => x.RestaurantId == restaurantId &&
@@ -156,7 +156,6 @@ namespace FOV.Application.Features.Orders.Commands.ChangeStateOrder
             }
 
             await _orderHub.UpdateOrderStatus(order.Id, order.OrderStatus.ToString());
-            //sua lai suggest dish
             await _notificationHub.SendOrderToHeadChef(headChef.Id);
             return order.Id;
         }

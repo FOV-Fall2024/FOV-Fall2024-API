@@ -120,7 +120,7 @@ public class AddProductsToOrderHandler : IRequestHandler<AddProductsToOrdersComm
             await _orderHub.UpdateOrderStatus(order.Id, "Prepare");
             //await _notificationHub.SendNotificationToWaiter(order.UserId ?? Guid.Empty, order.Id, order.OrderDetails.First().Id);
 
-            var table = await _unitOfWorks.TableRepository.GetByIdAsync(order.TableId);
+            var table = await _unitOfWorks.TableRepository.GetByIdAsync(order.TableId, x => x.Restaurant);
             var restaurantId = table.Restaurant.Id;
             var userInRestaurantAlreadyCheckAttendance = _userManager.Users
                 .Where(x => x.RestaurantId == restaurantId &&

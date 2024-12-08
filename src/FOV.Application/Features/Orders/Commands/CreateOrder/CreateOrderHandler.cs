@@ -181,7 +181,6 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
 
             foreach (var eachUserInRestaurantAlreadyCheckAttendance in userInRestaurantAlreadyCheckAttendance)
             {
-
                 var tokenUser = await FCMTokenHandler.GetFCMTokenByUserID(eachUserInRestaurantAlreadyCheckAttendance.Id);
                 await CloudMessagingHandlers.SendNotification(tokenUser, $"Có đơn hàng mới", $"Có đơn hàng mới tại bàn {table.TableNumber}");
             }
