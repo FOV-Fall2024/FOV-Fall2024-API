@@ -19,7 +19,7 @@ public class GetDailyAttendancesHandler(IUnitOfWorks unitOfWorks) : IRequestHand
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
     public async Task<PagedResult<GetDailyAttendanceResponse>> Handle(GetDailyAttendanceCommand request, CancellationToken cancellationToken)
     {
-        DateOnly today = DateOnly.FromDateTime(DateTime.Today);
+        DateOnly today = DateOnly.FromDateTime(DateTime.Now.AddHours(7));
 
         var schedules = (await _unitOfWorks.WaiterScheduleRepository
             .GetAllAsync(s => s.Attendances, s => s.User, s => s.Shift))

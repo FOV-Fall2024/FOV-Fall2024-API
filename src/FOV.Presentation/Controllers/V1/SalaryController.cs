@@ -19,7 +19,7 @@ public class SalaryController(ISender sender) : DefaultController
         var response = await _sender.Send(command);
         return Ok(response);
     }
-    [Authorize(Roles = Role.Manager)]
+    [Authorize(Roles = $"{Role.Waiter},{Role.Chef},{Role.Manager}")]
     [HttpGet("salary-restaurant")]
     public async Task<IActionResult> GetRestaurantSalaries([FromQuery] GetSalaryOfAllEmployeeCommand command)
     {

@@ -32,6 +32,7 @@ public class ScheduleController(ISender sender) : DefaultController
         }) : BadRequest();
     }
     [SwaggerOperation(Summary = "Lấy lịch làm của 1 nhân viên trong tuần")]
+    [Authorize(Roles = $"{Role.Waiter}, {Role.Chef}")]
     [HttpGet("employee")]
     public async Task<IActionResult> GetSchedule([FromQuery] GetEmployeeScheduleRequest request)
     {

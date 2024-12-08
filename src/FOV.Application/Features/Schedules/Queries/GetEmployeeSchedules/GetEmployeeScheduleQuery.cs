@@ -1,4 +1,5 @@
-﻿using FOV.Application.Common.Exceptions;
+﻿using FOV.Application.Common.Behaviours.Claim;
+using FOV.Application.Common.Exceptions;
 using FOV.Application.Features.Schedules.Responses;
 using FOV.Domain.Entities.WaiterScheduleAggregator;
 using FOV.Infrastructure.Helpers.GetHelper;
@@ -6,24 +7,24 @@ using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Schedules.Queries.GetEmployeeSchedules;
-public record GetEmployeeScheduleRequest(PagingRequest? PagingRequest, Guid EmployeeId) : IRequest<PagedResult<GetEmployeeScheduleResponse>>;
-public class GetEmployeeScheduleQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetEmployeeScheduleRequest, PagedResult<GetEmployeeScheduleResponse>>
+public record GetEmployeeScheduleRequest(PagingRequest? PagingRequest, DateTime? SelectedDate = null) : IRequest<PagedResult<GetEmployeeScheduleResponse>>;
+public class GetEmployeeScheduleQuery(IUnitOfWorks unitOfWorks, IClaimService claimService) : IRequestHandler<GetEmployeeScheduleRequest, PagedResult<GetEmployeeScheduleResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
+    private readonly IClaimService _claimService = claimService;
     public async Task<PagedResult<GetEmployeeScheduleResponse>> Handle(GetEmployeeScheduleRequest request, CancellationToken cancellationToken)
     {
-        if (request.EmployeeId == Guid.Empty)
-        {
-            throw new AppException("Không đúng Id Nhân viên");
-        }
+        var employeeId = _claimService.UserId;
+        var referenceDate = request.SelectedDate?.Date ?? DateTime.Today;
+        var selectedDay = DateOnly.FromDateTime(referenceDate);
 
-        var today = DateOnly.FromDateTime(DateTime.Today);
-        int daysToMonday = (int)DayOfWeek.Monday - (int)today.DayOfWeek;
-        DateOnly startOfWeek = today.AddDays(daysToMonday);
+        int daysToMonday = (int)DayOfWeek.Monday - (int)selectedDay.DayOfWeek;
+        if (daysToMonday > 0) daysToMonday -= 7;
+        DateOnly startOfWeek = selectedDay.AddDays(daysToMonday);
         DateOnly endOfWeek = startOfWeek.AddDays(6);
 
         var schedules = await _unitOfWorks.WaiterScheduleRepository
-            .WhereAsync(ws => ws.UserId == request.EmployeeId
+            .WhereAsync(ws => ws.UserId == employeeId
                               && ws.DateTime >= startOfWeek
                               && ws.DateTime <= endOfWeek,
                         ws => ws.Shift, ws => ws.User);
