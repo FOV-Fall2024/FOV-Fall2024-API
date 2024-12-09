@@ -63,7 +63,7 @@ public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
         }
 
         var totalAmount = order.OrderDetails
-            .Where(od => od.Quantity > od.RefundQuantity)
+            .Where(od => od.Quantity > od.RefundQuantity && od.Status != OrderDetailsStatus.Canceled)
             .Sum(od => (od.Quantity - od.RefundQuantity) * od.Price);
 
         if (totalAmount == 0)

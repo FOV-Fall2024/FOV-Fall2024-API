@@ -55,7 +55,7 @@ public class ConfirmOrderToServeHandler(IUnitOfWorks unitOfWorks, OrderHub order
         var status = orderDetail.Status.ToString();
         await _orderHub.UpdateOrderDetailsStatus(order.Id, productIdOrComboId.Value, status);
 
-        if (order.OrderDetails.All(d => d.Status == OrderDetailsStatus.Service))
+        if (order.OrderDetails.Where(d => d.Status != OrderDetailsStatus.Canceled).All(d => d.Status == OrderDetailsStatus.Service))
         {
             order.OrderStatus = OrderStatus.Service;
             _unitOfWorks.OrderRepository.Update(order);

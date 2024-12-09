@@ -45,7 +45,7 @@ public class VNPayPaymentHandler : IRequestHandler<VNPayPaymentCommand, VNPayPay
             ?? throw new Exception("Không tìm thấy đơn hàng");
 
         var totalAmount = order.OrderDetails
-            .Where(od => od.Quantity > od.RefundQuantity)
+            .Where(od => od.Quantity > od.RefundQuantity && od.Status != OrderDetailsStatus.Canceled)
             .Sum(od => (od.Quantity - od.RefundQuantity) * od.Price);
 
         var totalReduceMoney = 0;
@@ -132,7 +132,7 @@ public class VNPayPaymentHandler : IRequestHandler<VNPayPaymentCommand, VNPayPay
         vnPayHandler.AddRequestData("vnp_Version", "2.1.0");
         vnPayHandler.AddRequestData("vnp_Command", "pay");
         vnPayHandler.AddRequestData("vnp_TmnCode", tmn_code);
-        vnPayHandler.AddRequestData("vnp_Amount", ((long)(totalAmount * 100)).ToString());
+        vnPayHandler.AddRequestData("vnp_Amount", ((long)(finalAmount * 100)).ToString());
         vnPayHandler.AddRequestData("vnp_BankCode", "");
         vnPayHandler.AddRequestData("vnp_CreateDate", formatDate);
         vnPayHandler.AddRequestData("vnp_CurrCode", "VND");
