@@ -14,7 +14,7 @@ public class CreateProductGeneralValidator : AbstractValidator<CreateProductGene
             //.SetValidator(nameCheck);
 
         RuleFor(command => command.DishGeneralPrice)
-            .GreaterThan(0).WithMessage("Giá phải lớn hơn 0.");
+            .ExclusiveBetween(1000,1000000).WithMessage("Giá phải trong khoảng 1.000 ~ 1.000.000 .");
 
         RuleFor(command => command.DishGeneralDescription)
             .NotEmpty().WithMessage("Mô tả là bắt buộc.")
