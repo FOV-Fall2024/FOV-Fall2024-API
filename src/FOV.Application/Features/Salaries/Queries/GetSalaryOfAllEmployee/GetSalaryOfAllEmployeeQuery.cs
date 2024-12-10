@@ -127,8 +127,10 @@ public class GetSalaryOfAllEmployeeQuery(IUnitOfWorks unitOfWorks, IClaimService
                     );
                 }).ToList();
 
-            var totalEmployeeHoursWorked = validAttendances
-                .Sum(a => (a.CheckOutTime - a.CheckInTime)?.TotalHours ?? 0);
+            var totalEmployeeHoursWorked = Math.Round(
+                validAttendances.Sum(a => (a.CheckOutTime - a.CheckInTime)?.TotalHours ?? 0),
+                2
+            );
 
             var totalBaseHours = validAttendances.Count * shiftHours;
             var overtimeHours = Math.Max(0, totalEmployeeHoursWorked - totalBaseHours);
