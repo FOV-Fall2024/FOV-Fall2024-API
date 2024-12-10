@@ -19,7 +19,7 @@ public sealed class IngredientMeasureNameValidator : AbstractValidator<string>
         _unitOfWorks = unitOfWorks;
         RuleFor(IngredientType => IngredientType)
            .MustAsync(CheckIsExist)
-           .WithMessage("Tìm đã được dùng trong hệ thống");
+           .WithMessage("Tên đơn vị đã được dùng trong hệ thống");
     }
 
     private async Task<bool> CheckIsExist(string name, CancellationToken token)
