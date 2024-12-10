@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.Text.Json.Serialization;
+using FOV.Application.Common.Exceptions;
 using FOV.Domain.Entities.TableAggregator;
 using FOV.Domain.Entities.TableAggregator.Enums;
 using FOV.Infrastructure.Helpers.FirebaseHandler;
@@ -23,6 +24,10 @@ public class CreateTableHandler(IUnitOfWorks unitOfWorks, StorageHandler storage
 
     public async Task<List<Guid>> Handle(CreateTableCommand request, CancellationToken cancellationToken)
     {
+        if (request.Amount >= 100)
+        {
+            throw new AppException("Số lương thêm bàn không vượt quá 100 bàn");
+        }
         var tableIds = new List<Guid>();
         int nextTableNumber = await GetNextTableNumberAsync(request.RestaurantId);
 

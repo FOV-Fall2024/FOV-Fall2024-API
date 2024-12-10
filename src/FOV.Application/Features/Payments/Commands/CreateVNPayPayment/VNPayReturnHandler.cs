@@ -20,7 +20,6 @@ namespace FOV.Application.Features.Payments.Commands
     {
         private readonly IUnitOfWorks _unitOfWorks;
         private readonly IConfiguration _configuration;
-        //Change Order Detail Status To Finish
         public VNPayCallbackHandler(IUnitOfWorks unitOfWorks, IConfiguration configuration)
         {
             _unitOfWorks = unitOfWorks;
@@ -62,7 +61,7 @@ namespace FOV.Application.Features.Payments.Commands
                 };
             }
 
-            var order = await _unitOfWorks.OrderRepository.GetByIdAsync(payment.OrderId);
+            var order = await _unitOfWorks.OrderRepository.GetByIdAsync(payment.OrderId, x => x.OrderDetails);
 
             payment.PaymentStatus = Domain.Entities.PaymentAggregator.Enums.PaymentStatus.Paid;
             order.OrderStatus = Domain.Entities.OrderAggregator.Enums.OrderStatus.Finish;

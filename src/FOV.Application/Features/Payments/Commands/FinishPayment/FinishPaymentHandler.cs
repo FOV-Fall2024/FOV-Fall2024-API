@@ -32,7 +32,7 @@ public class FinishPaymentHandler(IUnitOfWorks unitOfWorks, OrderHub orderHub, I
         var employee = await _userManager.FindByIdAsync(userId.ToString())
             ?? throw new AppException("Employee not found");
 
-        var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.Payments, t => t.Table)
+        var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.Payments, t => t.Table, o => o.OrderDetails)
             ?? throw new Exception("Đơn hàng không tồn tại");
 
         var payment = order.Payments.FirstOrDefault();

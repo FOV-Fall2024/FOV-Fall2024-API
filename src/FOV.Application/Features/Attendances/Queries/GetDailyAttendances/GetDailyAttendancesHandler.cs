@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FOV.Application.Common.Behaviours.Claim;
 using FOV.Application.Features.Schedules.Queries.GetEmployeeSchedules;
 using FOV.Application.Features.Schedules.Responses;
 using FOV.Domain.Entities.AttendanceAggregator;
@@ -14,16 +15,19 @@ namespace FOV.Application.Features.Attendances.Queries.GetDailyAttendances;
 public sealed record GetDailyAttendanceCommand(PagingRequest? PagingRequest, bool? IsCheckIn) : IRequest<PagedResult<GetDailyAttendanceResponse>>;
 public sealed record GetDailyAttendanceResponse(Guid Id, DateTimeOffset? CheckInTime, DateTimeOffset? CheckOutTime, WaiterScheduleDto WaiterSchedule, DateTime CreatedDate);
 public record WaiterScheduleDto(Guid Id, EmployeeDto Employee, ShiftDto Shift, bool IsCheckIn);
-public class GetDailyAttendancesHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<GetDailyAttendanceCommand, PagedResult<GetDailyAttendanceResponse>>
+public class GetDailyAttendancesHandler(IUnitOfWorks unitOfWorks, IClaimService claimService) : IRequestHandler<GetDailyAttendanceCommand, PagedResult<GetDailyAttendanceResponse>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
+    private readonly IClaimService _claimService = claimService;
     public async Task<PagedResult<GetDailyAttendanceResponse>> Handle(GetDailyAttendanceCommand request, CancellationToken cancellationToken)
     {
+        var userId = _claimService.UserId;
         DateOnly today = DateOnly.FromDateTime(DateTime.Now.AddHours(7));
 
         var schedules = (await _unitOfWorks.WaiterScheduleRepository
             .GetAllAsync(s => s.Attendances, s => s.User, s => s.Shift))
-            .Where(s => s.DateTime == today);
+            .Where(s => s.DateTime == today)
+            .Where(x => x.UserId == userId);
 
         if (request.IsCheckIn.HasValue)
         {
