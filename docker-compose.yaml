@@ -15,7 +15,7 @@ services:
       - "8080:8080"
     environment:
       - TZ=Etc/UTC
-      - CONNECTIONSTRINGS__PostgresConnection=Host=dpg-csov56t6l47c7396dqdg-a.singapore-postgres.render.com;Port=5432;Database=restaurantmanagementdb;Username=restaurantmanagementdb_user;Password=V0XThBwwbEzNZa3XBqZV8VEXyFCcfrH2;
+      - CONNECTIONSTRINGS__PostgresConnection=Host=dpg-ctcoli5ds78s739i2f9g-a.singapore-postgres.render.com;Port=5432;Database=restaurantmanagementdb_uafr;Username=restaurantmanagementdb_uafr_user;Password=CGIYg7sOLOO3L7ACPiDMNzyzUpugTHxV;
       - CONNECTIONSTRINGS__RedisConnection=redis:6379
     volumes:
       - data-protection-keys:/home/app/.aspnet/DataProtection-Keys
