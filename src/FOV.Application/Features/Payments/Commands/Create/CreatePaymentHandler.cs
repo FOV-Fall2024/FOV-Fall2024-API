@@ -93,8 +93,12 @@ public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommands, Guid>
                 }
 
                 customer.Point -= pointsToUse;
-                _unitOfWorks.CustomerRepository.Update(customer);
             }
+            order.Customer = customer;
+            order.CustomerId = customer.Id;
+
+            _unitOfWorks.CustomerRepository.Update(customer);
+
         }
 
         var finalAmount = totalAmount - totalReduceMoney;
