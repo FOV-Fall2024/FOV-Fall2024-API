@@ -37,10 +37,10 @@ internal class GetExportFileQuery(IUnitOfWorks unitOfWorks, IClaimService claimS
             rowIngredient++;
         }
         // Lock column A to make it read-only
-        worksheet.Cells["A2:A10"].Style.Locked = true;
+        worksheet.Cells["A2:A3000"].Style.Locked = true;
 
         // Unlock columns B and C
-        worksheet.Cells["B2:B10"].Style.Locked = false;  // Unlock column B
+        worksheet.Cells["B2:B300"].Style.Locked = false;  // Unlock column B
 
         // Apply number validation for the second column (B)
         int count = _unitOfWorks.DishRepository
