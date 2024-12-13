@@ -13,11 +13,11 @@ from datetime import datetime, timedelta
 # }
 
 db_config_server = {
-    "host": "dpg-csov56t6l47c7396dqdg-a.singapore-postgres.render.com",
+    "host": "dpg-ctd6q99u0jms73f3bmjg-a.singapore-postgres.render.com",
     "port": "5432",
-    "database": "restaurantmanagementdb",
-    "user": "restaurantmanagementdb_user",
-    "password": "V0XThBwwbEzNZa3XBqZV8VEXyFCcfrH2",
+    "database": "vrom_db",
+    "user": "vrom_db_user",
+    "password": "PetEBNZhmP9sYFiyrBAEgmPariwvsp7r",
 }
 
 # Hàm lấy danh sách WaiterScheduleId và DateTime từ cơ sở dữ liệu
@@ -57,9 +57,9 @@ def generate_attendance_data(fake, waiter_schedule_data):
             schedule_id,  # WaiterScheduleId
             None,  # UserId is NULL
             fake.date_time_this_year(),  # Created
-            fake.name(),  # CreatedBy
-            fake.date_time_this_year(),  # LastModified
-            fake.name(),  # LastModifiedBy
+            None,  # CreatedBy
+            None,  # LastModified
+            None,  # LastModifiedBy
         )
         records.append(record)
     return records

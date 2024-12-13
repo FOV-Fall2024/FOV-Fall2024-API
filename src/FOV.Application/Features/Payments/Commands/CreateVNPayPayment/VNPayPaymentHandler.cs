@@ -54,7 +54,7 @@ public class VNPayPaymentHandler : IRequestHandler<VNPayPaymentCommand, VNPayPay
         if (!string.IsNullOrEmpty(request.PhoneNumber))
         {
             customer = await _unitOfWorks.CustomerRepository.FirstOrDefaultAsync(c => c.PhoneNumber == request.PhoneNumber);
-            if (customer != null && request.UsePoints && request.PointsToApply.HasValue)
+            if (customer != null)
             {
                 order.Customer = customer;
                 order.CustomerId = customer.Id;
