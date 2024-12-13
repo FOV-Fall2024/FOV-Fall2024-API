@@ -62,10 +62,10 @@ public class TakeImportFileHandler(IUnitOfWorks unitOfWorks, IClaimService claim
         }
 
         // Lock column A to make it read-only
-        worksheet.Cells["A2:A10"].Style.Locked = true;
+        worksheet.Cells["A2:A3000"].Style.Locked = true;
 
         // Unlock columns B (for input)
-        worksheet.Cells["B2:B10"].Style.Locked = false;
+        worksheet.Cells["B2:B3000"].Style.Locked = false;
 
         // Apply number validation for column B
         int count = _unitOfWorks.IngredientRepository.WhereAsync(x => x.RestaurantId == _claimService.RestaurantId).Result.Count;

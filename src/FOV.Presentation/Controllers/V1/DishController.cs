@@ -53,7 +53,7 @@ public class DishController : DefaultController
     public async Task<IActionResult> Active(Guid id)
     {
         var response = await _mediator.Send(new ActiveProductCommand(id));
-        return Ok(new UPDATED_Result("Product activated successfully", response));
+        return Ok(new UPDATED_Result("Món ăn hoạt động thành công", response));
     }
 
     [Authorize(Roles = Role.Manager)]
@@ -64,7 +64,7 @@ public class DishController : DefaultController
     public async Task<IActionResult> Inactive(Guid id)
     {
         var response = await _mediator.Send(new InactiveProductCommand(id));
-        return Ok(new UPDATED_Result("Product deactivated successfully", response));
+        return Ok(new UPDATED_Result("Món ăn ngưng hoạt động", response));
     }
 
 
