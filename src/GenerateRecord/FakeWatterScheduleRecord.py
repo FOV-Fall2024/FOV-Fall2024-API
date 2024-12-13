@@ -4,54 +4,67 @@ import random
 from datetime import datetime, timedelta
 
 # Cấu hình kết nối PostgreSQL
-db_config = {
-    "host": "127.0.0.1",
-    "port": 5433,
-    "database": "RestaurantManagementDatabase",
-    "user": "admin",
-    "password": "admin",
+db_config_server = {
+    "host": "dpg-ctd6q99u0jms73f3bmjg-a.singapore-postgres.render.com",
+    "port": "5432",
+    "database": "vrom_db",
+    "user": "vrom_db_user",
+    "password": "PetEBNZhmP9sYFiyrBAEgmPariwvsp7r",
 }
 
 # Danh sách UserId và ShiftId
 user_ids = [
-    "d9e69f16-0b7d-4119-ae79-039d94fcf410",
-    "5e79601d-c2cb-4d2f-a3d2-aa1fd8e77715",
-    "b12eb0bf-5487-4a09-b50a-bd29546057c9",
-    "ab3ee0ff-3d0a-486b-ad1e-66fb0ff0ebba",
+    "944d11fd-80f4-46f6-898a-a3bf6ed24600",
+    "c5a14a90-5f6b-4b13-8cac-ed85d635e24f",
+    "ef918ae5-b4a2-4139-a1f4-83ea932b0691",
 ]
 
 shift_ids = [
-    "d9c335f9-c234-42e6-a325-c8e7b51cf147",
-    "e32da7d0-eda0-4940-a902-c1fc225bc0b2",
-    "7cbe6b52-4c73-4144-a888-46eaf8a737de",
+    "7346b17a-2c84-4ee5-be16-16ad90d29537",
+    "d42c0840-faf3-4ee4-9b09-65a4673e270d",
+    "4f8cc7f6-d331-443b-a857-f83d7fce5d0b",
 ]
 
 # Hàm tạo dữ liệu giả
-def generate_waiter_schedule(fake, num_records):
+def generate_waiter_schedule(fake):
     records = []
-    for _ in range(num_records):
-        record = (
-            fake.uuid4(),  # Id
-            fake.date_time_between_dates(
-                datetime_start=datetime(datetime.now().year, 11, 1),
-                datetime_end=datetime(datetime.now().year, 12, 31),
-            ).date(),  # DateTime (chỉ lấy phần ngày)
-            random.choice(shift_ids),  # ShiftId
-            random.choice(user_ids),  # UserId
-            fake.date_time_this_year().date(),  # Created (chỉ lấy phần ngày)
-            fake.name(),  # CreatedBy
-            fake.date_time_this_year().date(),  # LastModified (chỉ lấy phần ngày)
-            fake.name(),  # LastModifiedBy
-        )
-        records.append(record)
+    start_date = datetime(datetime.now().year, 11, 1).date()
+    end_date = datetime(datetime.now().year, 12, 31).date()
+    current_date = start_date
+
+    while current_date <= end_date:
+        daily_assigned_users = set()  # Đảm bảo không user nào lặp lại trong ngày
+        for shift_id in shift_ids:
+            shift_users = []
+            while len(shift_users) < 3 and len(daily_assigned_users) < len(user_ids):
+                available_users = [user for user in user_ids if user not in daily_assigned_users]
+                if available_users:
+                    user_id = random.choice(available_users)
+                    daily_assigned_users.add(user_id)
+                    shift_users.append(user_id)
+
+                    record = (
+                        fake.uuid4(),  # Id
+                        current_date,  # DateTime (chỉ lấy phần ngày)
+                        shift_id,      # ShiftId
+                        user_id,       # UserId
+                        fake.date_time_this_year().date(),          # Created (chỉ lấy phần ngày)
+                        None,          # CreatedBy
+                        None,          # LastModified (chỉ lấy phần ngày)
+                        None,          # LastModifiedBy
+                    )
+                    records.append(record)
+
+        current_date += timedelta(days=1)
+
     return records
 
 # Chèn dữ liệu vào cơ sở dữ liệu
 def insert_waiter_schedules_to_db(records):
     try:
-        conn = psycopg2.connect(**db_config)
+        conn = psycopg2.connect(**db_config_server)
         cur = conn.cursor()
-        
+
         query = """
         INSERT INTO public."WaiterSchedules" 
         ("Id", "DateTime", "ShiftId", "UserId", "Created", "CreatedBy", "LastModified", "LastModifiedBy") 
@@ -68,10 +81,6 @@ def insert_waiter_schedules_to_db(records):
 # Main program
 if __name__ == "__main__":
     fake = Faker()
-    num_records = 100  # Số lượng bản ghi cần tạo
-    batch_size = 20    # Số lượng bản ghi chèn mỗi lần
-
-    for i in range(0, num_records, batch_size):
-        batch = generate_waiter_schedule(fake, min(batch_size, num_records - i))
-        insert_waiter_schedules_to_db(batch)
-        print(f"Processed {i + len(batch)} / {num_records} waiter schedule records")
+    records = generate_waiter_schedule(fake)
+    insert_waiter_schedules_to_db(records)
+    print(f"Processed {len(records)} waiter schedule records")
