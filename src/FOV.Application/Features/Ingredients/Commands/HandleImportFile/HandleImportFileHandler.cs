@@ -1,4 +1,5 @@
-﻿using FluentResults;
+﻿using System.Collections.Concurrent;
+using FluentResults;
 using FOV.Application.Common.Behaviours.Claim;
 using FOV.Domain.Entities.IngredientAggregator;
 using FOV.Domain.Entities.IngredientAggregator.Enums;
@@ -26,46 +27,52 @@ public class HandleImportFileHandler(IUnitOfWorks unitOfWorks, IClaimService cla
         var worksheet = package.Workbook.Worksheets[0]; // Assume the first sheet
         var rowCount = worksheet.Dimension.Rows;
 
-        // Iterate through each row (starting from row 2, assuming row 1 has headers)
+        // Pre-fetch ingredients and units for the given restaurant
+        var ingredientNames = worksheet.Cells[2, 1, rowCount, 1].Select(c => c.Text).Distinct().ToList();
+
+        var ingredients = await _unitOfWorks.IngredientRepository
+            .WhereAsync(x => ingredientNames.Contains(x.IngredientGeneral.IngredientName) && x.RestaurantId == _claimService.RestaurantId,
+                       x => x.IngredientGeneral);
+
+        var ingredientDict = ingredients.ToDictionary(i => i.IngredientGeneral.IngredientName, i => i);
+
+        // Pre-fetch units for the ingredients
+        var ingredientIds = ingredients.Select(i => i.Id).ToList();
+
+        var units = await _unitOfWorks.IngredientUnitRepository
+            .WhereAsync(x => ingredientIds.Contains(x.IngredientId));
+
+        var unitDict = units.GroupBy(u => (u.IngredientId, u.UnitName))
+                            .ToDictionary(g => g.Key, g => g.First());
+
+
+        // Loop through the worksheet
         for (int row = 2; row <= rowCount; row++)
         {
             var ingredientName = worksheet.Cells[row, 1].Text;  // Column A
-            var quantityText = worksheet.Cells[row, 2].Text;  // Column B
-            var measurement = worksheet.Cells[row, 3].Text;  // Column C
+            var quantityText = worksheet.Cells[row, 2].Text;    // Column B
+            var measurement = worksheet.Cells[row, 3].Text;     // Column C
 
-            Ingredient? ingredient = await _unitOfWorks.IngredientRepository.FirstOrDefaultAsync(
-                x => x.IngredientGeneral.IngredientName == ingredientName && x.RestaurantId == _claimService.RestaurantId,x => x.IngredientGeneral);
+            if (!ingredientDict.TryGetValue(ingredientName, out var ingredient))
+                continue;
 
-            // Skip this row if the ingredient is not found
-            if (ingredient == null) continue;
+            if (!unitDict.TryGetValue((ingredient.Id, measurement), out var unit))
+                continue;
 
-            IngredientUnit? unit = await _unitOfWorks.IngredientUnitRepository.FirstOrDefaultAsync(
-                x => x.IngredientId == ingredient.Id && x.UnitName == measurement);
-
-            // Skip this row if the unit is not found
-            if (unit == null) continue;
-
-            // Parse quantity safely
             if (!decimal.TryParse(quantityText, out decimal quantity) || quantity == 0)
-            {
-                continue;  // Skip if the quantity is invalid or 0
-            }
+                continue;
 
-            // Calculate total quantity with conversion factor
             decimal conversionFactor = _unitOfWorks.IngredientRepository.GetTotalConversionFactor(unit.Id);
             decimal quantityCalculate = quantity * conversionFactor;
 
-            // Add quantity to the ingredient
             ingredient.AddQuantity(quantityCalculate);
 
-            // Create a new ingredient transaction
-            IngredientUsage ingredientTransaction = new(quantityCalculate, IngredientTransactionType.Add, ingredient.Id);
-            await _unitOfWorks.IngredientTransactionRepository.AddAsync(ingredientTransaction);
-
-            // Update the ingredient and save changes
-            _unitOfWorks.IngredientRepository.Update(ingredient);
-            await _unitOfWorks.SaveChangeAsync();
         }
+
+        _unitOfWorks.IngredientRepository.UpdateRange(ingredients);
+
+        await _unitOfWorks.SaveChangeAsync();
+
 
         return Result.Ok();
     }
