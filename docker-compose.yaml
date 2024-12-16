@@ -79,25 +79,44 @@ services:
         reservations:
           memory: 128M
           cpus: "0.25"
-
-  # Prometheus for Monitoring
-  prometheus:
-    image: prom/prometheus:latest
-    container_name: prometheus
-    volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+  redis-exporter:
+    image: bitnami/redis-exporter:latest
+    container_name: redis-exporter
+    environment:
+      REDIS_ADDRESS: redis:6379  # Connect to your Redis container
     ports:
-      - "9090:9090"
+      - "9121:9121"  # Redis Exporter metrics exposed on port 9121
     networks:
       - fov_network
-    deploy:
-      resources:
-        limits:
-          memory: 256M
-          cpus: "0.50"
-        reservations:
-          memory: 128M
-          cpus: "0.25"
+    depends_on:
+      - redis
+  # Prometheus for Monitoring
+
+  prometheus:
+   image: prom/prometheus:latest
+   container_name: prometheus
+   volumes:
+    - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    - ./data/prometheus:/prometheus
+   command:
+    - '--config.file=/etc/prometheus/prometheus.yml'
+    - '--storage.tsdb.path=/prometheus'
+    - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+    - '--web.console.templates=/usr/share/prometheus/consoles'
+   ports:
+    - "9090:9090"
+   networks:
+    - fov_network
+   deploy:
+    resources:
+      limits:
+        memory: 256M
+        cpus: "0.50"
+      reservations:
+        memory: 128M
+        cpus: "0.25"
+
+
 
   # Grafana for Visualization
   grafana:
@@ -110,6 +129,12 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
+    volumes:
+      - ./data/grafana:/var/lib/grafana
+      - ./grafana/provisioning/:/etc/grafana/provisioning
+    env_file:
+      - ./grafana/config.monitoring
     deploy:
       resources:
         limits:
@@ -184,3 +209,5 @@ volumes:
   sonarqube_extensions: {}  # SonarQube plugins
   sonarqube_logs: {}  # SonarQube logs
   sonarqube_db_data: {}  # PostgreSQL data for SonarQube
+  prometheus_data: {}
+  grafana_data: {}
