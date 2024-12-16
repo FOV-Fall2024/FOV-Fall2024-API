@@ -73,7 +73,7 @@ namespace FOV.Application.Features.Payments.Commands
             payment.PaymentStatus = Domain.Entities.PaymentAggregator.Enums.PaymentStatus.Paid;
             order.OrderStatus = Domain.Entities.OrderAggregator.Enums.OrderStatus.Finish;
 
-            var table = await _unitOfWorks.TableRepository.GetByIdAsync(order.TableId);
+            var table = await _unitOfWorks.TableRepository.GetByIdAsync(order.TableId, x => x.Restaurant);
             table.TableStatus = TableStatus.Available;
 
             foreach (var detail in order.OrderDetails)
