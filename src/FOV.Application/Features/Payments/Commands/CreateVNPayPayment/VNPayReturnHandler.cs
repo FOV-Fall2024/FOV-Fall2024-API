@@ -3,9 +3,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using FOV.Domain.Entities.OrderAggregator.Enums;
 using FOV.Domain.Entities.TableAggregator.Enums;
+using FOV.Domain.Entities.UserAggregator;
+using FOV.Infrastructure.FCM;
+using FOV.Infrastructure.FirebaseDB;
 using FOV.Infrastructure.Helpers.VNPayHelper;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace FOV.Application.Features.Payments.Commands
@@ -20,10 +25,12 @@ namespace FOV.Application.Features.Payments.Commands
     {
         private readonly IUnitOfWorks _unitOfWorks;
         private readonly IConfiguration _configuration;
-        public VNPayCallbackHandler(IUnitOfWorks unitOfWorks, IConfiguration configuration)
+        private readonly UserManager<User> _userManager;
+        public VNPayCallbackHandler(IUnitOfWorks unitOfWorks, IConfiguration configuration, UserManager<User> userManager)
         {
             _unitOfWorks = unitOfWorks;
             _configuration = configuration;
+            _userManager = userManager;
         }
 
         public async Task<VNPayCallbackResponse> Handle(VNPayCallbackCommand request, CancellationToken cancellationToken)
@@ -82,6 +89,24 @@ namespace FOV.Application.Features.Payments.Commands
             _unitOfWorks.PaymentRepository.Update(payment);
             _unitOfWorks.OrderRepository.Update(order);
             await _unitOfWorks.SaveChangeAsync();
+
+            var restaurantId = table.Restaurant.Id;
+            var userInRestaurantAlreadyCheckAttendance = _userManager.Users
+                .Where(x => x.RestaurantId == restaurantId &&
+                            x.WaiterSchedules.Any(ws =>
+                                ws.Attendances.Any(a =>
+                                    a.CheckInTime != null &&
+                                    a.CheckOutTime == null &&
+                                    ws.DateTime == DateOnly.FromDateTime(DateTime.Now.AddHours(7)))))
+                .Include(x => x.WaiterSchedules)
+                    .ThenInclude(ws => ws.Attendances)
+                .ToList();
+
+            foreach (var eachUserInRestaurantAlreadyCheckAttendance in userInRestaurantAlreadyCheckAttendance)
+            {
+                var tokenUser = await FCMTokenHandler.GetFCMTokenByUserID(eachUserInRestaurantAlreadyCheckAttendance.Id);
+                await CloudMessagingHandlers.SendNotification(tokenUser, $"Khách hàng đã thanh toán qua VNPay", $"Khách hàng đã thanh toán qua VNPay tại bàn {table.TableNumber} thành công");
+            }
 
             return new VNPayCallbackResponse
             {
