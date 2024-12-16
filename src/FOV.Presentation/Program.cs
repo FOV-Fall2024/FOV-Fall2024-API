@@ -9,6 +9,7 @@ using FOV.Presentation.Infrastructure.Middleware;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using OpenTelemetry.Metrics;
+using Prometheus;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -83,8 +84,16 @@ app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapPrometheusScrapingEndpoint();
 app.UseCookiePolicy();
+
+app.UseHttpMetrics();
+app.MapMetrics();
+
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseCors("CorsPolicy");
-app.MapControllers();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapMetrics(); // Exposes the /metrics endpoint
+});
 app.Run();
