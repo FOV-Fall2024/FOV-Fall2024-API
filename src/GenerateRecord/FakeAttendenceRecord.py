@@ -4,14 +4,6 @@ import random
 from datetime import datetime, timedelta
 
 # Cấu hình kết nối PostgreSQL
-# db_config = {
-#     "host": "127.0.0.1",
-#     "port": 5433,
-#     "database": "RestaurantManagementDatabase",
-#     "user": "admin",
-#     "password": "admin",
-# }
-
 db_config_server = {
     "host": "dpg-ctd6q99u0jms73f3bmjg-a.singapore-postgres.render.com",
     "port": "5432",
@@ -20,19 +12,23 @@ db_config_server = {
     "password": "PetEBNZhmP9sYFiyrBAEgmPariwvsp7r",
 }
 
-# Hàm lấy danh sách WaiterScheduleId và DateTime từ cơ sở dữ liệu
+# Hàm lấy WaiterScheduleId, DateTime và StartTime từ cơ sở dữ liệu
 def fetch_waiter_schedule_data():
     try:
         conn = psycopg2.connect(**db_config_server)
         cur = conn.cursor()
         
-        query = 'SELECT "Id", "DateTime" FROM public."WaiterSchedules";'
+        query = '''
+        SELECT ws."Id", ws."DateTime", s."StartTime"
+        FROM public."WaiterSchedules" ws
+        JOIN public."Shifts" s ON ws."ShiftId" = s."Id";
+        '''
         cur.execute(query)
         waiter_schedule_data = cur.fetchall()
         cur.close()
         conn.close()
 
-        # Trả về danh sách các tuple (WaiterScheduleId, DateTime)
+        # Trả về danh sách các tuple (WaiterScheduleId, DateTime, StartTime)
         return waiter_schedule_data
 
     except Exception as e:
@@ -42,13 +38,15 @@ def fetch_waiter_schedule_data():
 # Hàm tạo dữ liệu giả cho bảng Attendances
 def generate_attendance_data(fake, waiter_schedule_data):
     records = []
-    for schedule_id, schedule_date in waiter_schedule_data:
-        # schedule_date chỉ có ngày, nên cần kết hợp với giờ ngẫu nhiên
-        check_in_hour = random.randint(9, 23)  # Chọn giờ từ 9 AM đến 11 PM
-        check_in_time = datetime.combine(schedule_date, datetime.min.time()) + timedelta(hours=check_in_hour)
-        
-        # Tạo thời gian CheckOutTime sau 4 đến 8 giờ từ CheckInTime
-        check_out_time = check_in_time + timedelta(hours=random.randint(4, 8))  # Đảm bảo CheckOutTime > CheckInTime
+    for schedule_id, schedule_date, shift_start_time in waiter_schedule_data:
+        # shift_start_time là TimeSpan (hh:mm:ss), chuyển thành datetime
+        shift_hours, shift_minutes, shift_seconds = map(int, str(shift_start_time).split(":"))
+        check_in_time = datetime.combine(schedule_date, datetime.min.time()) + timedelta(
+            hours=shift_hours, minutes=shift_minutes, seconds=shift_seconds
+        )
+
+        # Tạo thời gian CheckOutTime: CheckInTime + 4 đến 5 giờ
+        check_out_time = check_in_time + timedelta(hours=random.uniform(4, 5))  # Đảm bảo CheckOutTime > CheckInTime
         
         record = (
             fake.uuid4(),  # Id
@@ -88,7 +86,7 @@ def insert_attendance_data_to_db(records):
 if __name__ == "__main__":
     fake = Faker()
 
-    # Lấy dữ liệu WaiterScheduleId và DateTime từ cơ sở dữ liệu
+    # Lấy dữ liệu WaiterScheduleId, DateTime và StartTime từ cơ sở dữ liệu
     waiter_schedule_data = fetch_waiter_schedule_data()
     
     if waiter_schedule_data:
@@ -99,4 +97,4 @@ if __name__ == "__main__":
         insert_attendance_data_to_db(attendance_data)
         print(f"Processed {len(attendance_data)} attendance records")
     else:
-        print("No WaiterScheduleId found to generate attendance data.")
+        print("No WaiterSchedule data found to generate attendance data.")

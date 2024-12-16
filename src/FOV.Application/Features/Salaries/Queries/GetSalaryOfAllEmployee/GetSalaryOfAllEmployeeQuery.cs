@@ -113,18 +113,27 @@ public class GetSalaryOfAllEmployeeQuery(IUnitOfWorks unitOfWorks, IClaimService
                 .Where(s => !attendances.Any(a => a.WaiterScheduleId == s.Id))
                 .Select(ms =>
                 {
-                    var isFutureSchedule = ms.DateTime.ToDateTime(new TimeOnly()) > DateTime.UtcNow;
-                    if (!isFutureSchedule)
+                    if (ms.Shift.StartTime.HasValue) // Kiểm tra StartTime có giá trị hay không
                     {
-                        penalty += shiftHours * hourlyRate; // Áp dụng phạt cho các ca thuộc quá khứ
-                    }
+                        var shiftStartDateTime = ms.DateTime.ToDateTime(TimeOnly.FromTimeSpan(ms.Shift.StartTime.Value)); // Chuyển TimeSpan? thành TimeOnly và tính thời gian bắt đầu ca
+                        var isFutureSchedule = shiftStartDateTime > DateTime.UtcNow; // So sánh với thời gian hiện tại
 
-                    return new AttendanceDetailsDto(
-                        Date: ms.DateTime,
-                        ShiftName: ms.Shift.ShiftName,
-                        CheckInTime: "Không có CheckIn",
-                        CheckOutTime: isFutureSchedule ? "Lịch sắp tới" : "Không có CheckOut"
-                    );
+                        if (!isFutureSchedule)
+                        {
+                            penalty += shiftHours * hourlyRate; // Áp dụng phạt cho các ca đã qua
+                        }
+
+                        return new AttendanceDetailsDto(
+                            Date: ms.DateTime,
+                            ShiftName: ms.Shift.ShiftName,
+                            CheckInTime: "Không có CheckIn",
+                            CheckOutTime: isFutureSchedule ? "Lịch sắp tới" : "Không có CheckOut"
+                        );
+                    }
+                    else
+                    {
+                        throw new AppException($"Shift {ms.Shift.ShiftName} không có thời gian bắt đầu hợp lệ."); // Thông báo lỗi nếu StartTime là null
+                    }
                 }).ToList();
 
             var totalEmployeeHoursWorked = Math.Round(
