@@ -8,7 +8,6 @@ DOCKER_COMPOSE_FILE=docker-compose.yml
 .PHONY: all build run remove reset update help
 
 # Default target
-all: remove build run
 
 # Display help
 help:
@@ -41,5 +40,6 @@ update:
 	@echo "Rebuilding and restarting services..."
 	@docker-compose --project-name $(COMPOSE_PROJECT_NAME) up -d --build
 
+all: remove build run
 # Reset: full cleanup and rebuild
 reset: remove build update

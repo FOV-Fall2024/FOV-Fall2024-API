@@ -1,0 +1,17 @@
+{
+    "name": "grafana-clock-panel",
+    "id": "grafana-clock-panel",
+    "type": "panel",
+    "info": {
+      "description": "A simple clock panel for Grafana.",
+      "author": "Your Name",
+      "version": "2.1.8",
+      "keywords": ["clock", "panel"],
+      "license": "MIT"
+    },
+    "dependencies": {},
+    "paths": {
+      "root": "dist/",
+      "module": "dist/module.js"
+    }
+  }
