@@ -29,26 +29,24 @@ shift_ids = [
 def generate_waiter_schedule(fake):
     records = []
     start_date = datetime(datetime.now().year, 11, 1).date()
-    end_date = datetime(datetime.now().year, 12, 31).date()
+    end_date = datetime(datetime.now().year, 12, 15).date()
     current_date = start_date
 
     while current_date <= end_date:
-        daily_assigned_users = set()  # Đảm bảo không user nào lặp lại trong ngày
         for shift_id in shift_ids:
-            shift_users = []
-            while len(shift_users) < 3 and len(daily_assigned_users) < len(user_ids):
-                available_users = [user for user in user_ids if user not in daily_assigned_users]
+            assigned_users = set()  # Đảm bảo không user nào lặp lại trong 1 ca
+            while len(assigned_users) < 3:
+                available_users = [user for user in user_ids if user not in assigned_users]
                 if available_users:
                     user_id = random.choice(available_users)
-                    daily_assigned_users.add(user_id)
-                    shift_users.append(user_id)
+                    assigned_users.add(user_id)
 
                     record = (
                         fake.uuid4(),  # Id
                         current_date,  # DateTime (chỉ lấy phần ngày)
                         shift_id,      # ShiftId
                         user_id,       # UserId
-                        fake.date_time_this_year().date(),          # Created (chỉ lấy phần ngày)
+                        fake.date_time_this_year().date(),  # Created (chỉ lấy phần ngày)
                         None,          # CreatedBy
                         None,          # LastModified (chỉ lấy phần ngày)
                         None,          # LastModifiedBy
