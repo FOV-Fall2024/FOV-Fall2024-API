@@ -1,6 +1,6 @@
-projectKey=FOV_App
+projectKey=VROM_Test
 serverUrl=http://localhost:9000
 serverVersion=10.6.0.92116
-dashboardUrl=http://localhost:9000/dashboard?id=FOV_App
-ceTaskId=6e7c4040-6db6-497f-947e-38aa00faf990
-ceTaskUrl=http://localhost:9000/api/ce/task?id=6e7c4040-6db6-497f-947e-38aa00faf990
+dashboardUrl=http://localhost:9000/dashboard?id=VROM_Test
+ceTaskId=a550abae-6ecf-4141-bebb-b5ddc7053b73
+ceTaskUrl=http://localhost:9000/api/ce/task?id=a550abae-6ecf-4141-bebb-b5ddc7053b73

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ProjectInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sonarsource.com/msbuild/integration/2015/1">
-  <ProjectName>FOV.Infrastructure</ProjectName>
+  <ProjectName>FOV.Domain</ProjectName>
   <ProjectLanguage>C#</ProjectLanguage>
   <ProjectType>Product</ProjectType>
-  <ProjectGuid>c8c2a44a-1589-4fa2-a225-bb1ef28a0052</ProjectGuid>
-  <FullPath>C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\FOV.Infrastructure.csproj</FullPath>
+  <ProjectGuid>16eb6ce6-b29e-43ad-aa6b-37a4476a5105</ProjectGuid>
+  <FullPath>C:\Code\FOV-Fall2024-API\src\FOV.Domain\FOV.Domain.csproj</FullPath>
   <IsExcluded>false</IsExcluded>
   <AnalysisResults>
-    <AnalysisResult Id="FilesToAnalyze" Location="C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\.sonarqube\conf\1\FilesToAnalyze.txt" />
+    <AnalysisResult Id="FilesToAnalyze" Location="C:\Code\FOV-Fall2024-API\src\.sonarqube\conf\1\FilesToAnalyze.txt" />
   </AnalysisResults>
   <AnalysisSettings>
-    <Property Name="sonar.cs.roslyn.reportFilePaths">C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\.sonarqube\out\1\Issues.json</Property>
-    <Property Name="sonar.cs.analyzer.projectOutPaths">C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\.sonarqube\out\1</Property>
+    <Property Name="sonar.cs.roslyn.reportFilePaths">C:\Code\FOV-Fall2024-API\src\.sonarqube\out\1\Issues.json</Property>
+    <Property Name="sonar.cs.analyzer.projectOutPaths">C:\Code\FOV-Fall2024-API\src\.sonarqube\out\1</Property>
   </AnalysisSettings>
   <Configuration>Debug</Configuration>
   <Platform>AnyCPU</Platform>

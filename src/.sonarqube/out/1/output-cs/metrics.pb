@@ -1,366 +1,125 @@
-ñ
-wC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\UnitOfWork\UnitOfWorkSetup\UnitOfWorks.cs  8ro	
- !"#$%&()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPRTVXZ\^`bdfhjklnprtvxz|~ÄÅÇÉÑÇ!-./0123456789:;<=>?@ABCDEFGHIJKÇ§
-yC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\UnitOfWork\IUnitOfWorkSetup\IUnitOfWorks.cs8r#	
- "$&)*+,.1356õ
-ÅC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\Repositories\WaiterScheduleRepository.cs 8r
-ß
-xC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\Repositories\TableRepository.cs 8jr	Çë
-xC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\Repositories\ShiftRepository.cs 8r
-†
-}C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\Repositories\RestaurantRepository.cs 8r	
-Çç
-yC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\Repositories\RatingRepository.cs 8r
-	
-é
-zC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\Repositories\ProductRepository.cs 8r
-	
-ô
-ÑC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\Repositories\ProductIngredientRepository.cs 8r
-	
-†
-ãC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\Repositories\ProductIngredientGeneralRepository.cs 8r
-	
-ì
-C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\Repositories\ProductImageRepository.cs 8r
-	
-î
-ÅC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\Repositories\ProductGeneralRepository.cs 8j$1DTXZrQ	
- !"%&'()*+,-./0123456789;<=?@BCEFGHIJKLMNOPQRUVWYZ\]^`abxÇ'"%&')*+,.245;?EFGIJKLMNOUVYZ\`ì
-C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\Repositories\ProductComboRepository.cs 8r
-	
-¶
-zC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\Repositories\PaymentRepository.cs 8r	Ç°
-xC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\Repositories\OrderRepository.cs 8r	Ç®
-~C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\Repositories\OrderDetailRepository.cs 8r	Çû
-âC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\Repositories\NewProductRecommendLogRepository.cs 8r
-	
-ñ
-ÅC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\Repositories\IngredientUnitRepository.cs 8r
-	
-õ
-ÜC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\Repositories\NewProductRecommendRepository.cs 8r
-	
-™
-ÅC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\Repositories\IngredientTypeRepository.cs 8r	
-xÇº
-}C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\Repositories\IngredientRepository.cs	 8jr!	
- "#%&'(x
-Ç	 ô
-ÑC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\Repositories\IngredientGeneralRepository.cs 8r
-	
-ú
-áC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\Repositories\IngrdientTransactionRepository.cs 8r
-	
-ê
-|C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\Repositories\GroupUserRepository.cs 8r
-	
-ì
-C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\Repositories\GroupMessageRepository.cs 8r
-	
-ê
-|C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\Repositories\GroupChatRepository.cs 8r
-	
-˙
-zC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\Repositories\GenericRepository.cs 8rU	 !#$%&')*+,/012345789:<=>?@ABDEFGHIJLMOPQRSUVWXYZ[\^_`abcdxÇ $%*+1249>?LQRWY[_`bè
-{C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\Repositories\EmployeeRepository.cs 8r
-	
-è
-{C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\Repositories\CustomerRepository.cs 8r
-	
-å
-xC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\Repositories\ComboRepository.cs 8r
-	
-ò
-{C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\Repositories\CategoryRepository.cs 8r	Ç≠
-}C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\Repositories\AttendanceRepository.cs 8r	xÇî
-ÉC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\IRepositories\IWaiterScheduleRepository.csr
-	
-ë
-C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\IRepositories\IRestaurantRepository.csr	ä
-zC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\IRepositories\IShiftRepository.csr
-	
-ã
-zC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\IRepositories\ITableRepository.csr
-Ü
-{C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\IRepositories\IRatingRepository.csrá
-|C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\IRepositories\IProductRepository.csrê
-ÜC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\IRepositories\IProductIngredientRepository.csrô
-çC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\IRepositories\IProductIngredientGeneralRepository.csrç
-ÅC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\IRepositories\IProductImageRepository.csrç
-ÅC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\IRepositories\IProductComboRepository.csrè
-|C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\IRepositories\IPaymentRepository.csr	
-è
-ÉC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\IRepositories\IProductGeneralRepository.csr	ã
-zC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\IRepositories\IOrderRepository.csr	
-í
-ÄC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\IRepositories\IOrderDetailRepository.csr	
-î
-àC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\IRepositories\INewProductRecommendRepository.csró
-ãC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\IRepositories\INewProductRecommendLogRepository.csrê
-ÉC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\IRepositories\IIngredientTypeRepository.csrè
-ÉC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\IRepositories\IIngredientUnitRepository.csrä
-C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\IRepositories\IIngredientRepository.csrí
-ÜC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\IRepositories\IIngredientGeneralRepository.csrï
-âC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\IRepositories\IIngrdientTransactionRepository.csrâ
-~C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\IRepositories\IGroupUserRepository.csrç
-ÅC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\IRepositories\IGroupMessageRepository.csrâ
-~C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\IRepositories\IGroupChatRepository.csrï
-|C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\IRepositories\IGenericRepository.csr	
-à
-}C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\IRepositories\IEmployeeRepository.csrà
-}C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\IRepositories\ICustomerRepository.csrÖ
-zC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\IRepositories\IComboRepository.csrà
-}C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\IRepositories\ICategoryRepository.csrì
-C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Repository\IRepositories\IAttendanceRepository.csjr	
-ë
-yC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Migrations\20240924073936_EmployeeDomain.cs 8j
-gr«	 !#$%&'()*+-./012456789;<=>?@BCDEFGIJKLMNPQRSTUWXYZ[\^_`abcdehijklnoprstuvwxz{|}~ÄÅÇÑÖÜáàâãåçéèêíìîïñóôöõúùû†°¢£§•ß®©™´¨ÆØ∞±≤≥¥µ∂Ç<#-49;@BGIMNPTUW[\^djnrz|~ÄÅÑâãêíóôû†•ß¨Æœ 
-qC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Migrations\20240920085405_Domain.cs· 8j·
-rï	
- !"#$%&'()*+,-./012345678:;<=>?@ABCDEFGHIKLMNOPQRSTUVWXYZ[\]^_`bcdefghijklmnopqrstuwxyz{|}~ÄÅÇÉÑÖÜáàäãåçéèêëíìîïñóòôöõúùü†°¢£§•¶ß®©™´¨≠ÆØ∞±≤¥µ∂∑∏π∫ªºΩæø¿¡¬√ƒ≈∆»… ÀÃÕŒœ–—“”‘’÷◊ÿŸ⁄€‹›ﬁ‡·‚„‰ÂÊÁËÈÍÎÏÌÓÔÒÚÙıˆ˜¯˘˙˚¸˝˛ˇÄÅÇÉÑÖÜáàâäåçéèêëíìîïñóòôöõúùûü†°¢£•¶ß®©™´¨≠ÆØ∞±≤≥¥µ∂∑∏π∫ªºΩø¿¡¬√ƒ≈∆«»… ÀÃÕŒœ–—“”‘’÷◊Ÿ⁄€‹›ﬁﬂ‡·‚„‰ÂÊÁËÈÍÎÏÌÓÔÒÚÛÙˆ˜¯˘˙˚¸˝˛ˇÄÅÇÉÑÖÜáàâäãåçéèêëíìîñóòôöõúùûü†°¢£§•¶ß®©™¨≠ÆØ∞±≤≥¥µ∂∑∏π∫ªºΩæø¿¡¬√ƒ≈∆«» ÀÃÕŒœ–—“”‘’÷◊ÿŸ⁄€‹›ﬁﬂ‡·‚„ÂÊÁËÈÍÎÏÌÓÔÒÚÛÙıˆ˜¯˘˙˚¸˝˛ˇÄÅÉÑÖÜáàâäãåçéèêëíìîïñóòôöõúùûü†°¢£§•¶ß®™´¨≠ÆØ∞±≤≥¥µ∂∑∏π∫ªºΩæø¿¡¬√ƒ≈∆«… ÀÃÕŒœ–—“”‘’÷◊ÿŸ⁄€‹›ﬁﬂ‡·‚„‰ÂÊÁËÈÍÏÌÓÔÒÚÛÙıˆ˜¯˘˙˚¸˝˛ˇÄÅÇÉÑÖÜáàâãåçéèêëíìîïñóòôöõúùûü†°¢£§•¶®©™´¨≠ÆØ∞±≤≥¥µ∂∑∏π∫ªºΩæø¿¡¬√ƒ∆«»… ÀÃÕŒœ–—“”‘’÷◊ÿŸ⁄€‹›ﬁ‡·‚„‰ÂÊÁËÈÍÎÏÌÓÔÒÚÛÙıˆ˜¯˘˙˚¸˝˛ˇÅÇÉÑÖÜáàâäãåçéèêëíìîïñóòôöõúùü†°¢£§•¶ß®©™´¨≠ÆØ∞±≤≥¥µ∑∏π∫ªºΩæø¿¡¬√ƒ≈∆«»… ÀÃÕŒœ–—“”’÷◊ÿŸ⁄€‹›ﬁﬂ‡·‚„‰ÂÊÁËÈÍÎÏÌÓÔÒÚÛÙıˆ˜¯˙˚¸˝˛ˇÄÅÇÉÑÖÜáàâäãåçéèêëíìîïñóòöõúùûü†°¢£§•¶ß®©™´¨≠ÆØ∞±≤≥¥µ∂∑∏π∫ªºæø¿¡¬√ƒ≈∆«»… ÀÃÕŒœ–—“”‘’÷◊Ÿ⁄€‹›ﬁﬂ‡·‚„‰ÂÊÁËÈÍÎÏÌÓÔÒÚÙıˆ˜¯˘˙˚¸˛ˇÄÅÇÉÑÖáàâäãåçéêëíìîïñóôöõúùûü†°£§•¶ß®©™´≠ÆØ∞≤≥¥µ∂∑∏π∫ºΩæø¿¡¬√ƒ≈∆»… ÀÕŒœ–—“”‘’◊ÿŸ⁄‹›ﬁﬂ‡‚„‰ÂÁËÈÍÏÌÓÔÒÚÛÙˆ˜¯˘˙¸˝˛ˇÅ	Ç	É	Ñ	Ü	á	à	â	ã	å	ç	é	ê	ë	í	ì	î	ñ	ó	ò	ô	õ	ú	ù	û	ü	°	¢	£	§	¶	ß	®	©	´	¨	≠	Æ	∞	±	≤	≥	µ	∂	∑	∏	∫	ª	º	Ω	ø	¿	¡	¬	ƒ	≈	∆	«	…	 	À	Ã	Œ	œ	–	—	”	‘	’	÷	ÿ	Ÿ	⁄	€	›	ﬁ	ﬂ	‡	‚	„	‰	Â	Á	Ë	È	Í	Ï	Ì	Ó	Ô	Ò	Ú	Û	Ù	ˆ	˜	¯	˘	˚	¸	˝	˛	Ä
-Å
-Ç
-É
-Ö
-Ü
-á
-à
-ä
-ã
-å
-ç
-è
-ê
-ë
-í
-î
-ï
-ñ
-ó
-ô
-ö
-õ
-ú
-û
-ü
-†
-°
-£
-§
-•
-¶
-®
-©
-™
-´
-≠
-Æ
-Ø
-∞
-≤
-≥
-¥
-µ
-∑
-∏
-π
-∫
-º
-Ω
-æ
-ø
-¡
-¬
-√
-ƒ
-≈
-«
-»
-…
- 
-Ã
-Õ
-Œ
-œ
-—
-“
-”
-‘
-÷
-◊
-ÿ
-Ÿ
-€
-‹
-›
-ﬁ
-ﬂ
-‚
-„
-‰
-Â
-Á
-Ë
-Í
-Î
-Ì
-Ó
-
-Ò
-Û
-Ù
-ˆ
-˜
-˘
-˙
-¸
-˝
-ˇ
-ÄÇÉÖÜàâãåéèëíîïóòöõùû†°£§¶ß©™¨≠Ø∞≤≥µ∂∏πªºæø¡¬ƒ≈«» ÀÕŒ–—“”‘Ç±!#$%&'()*+,-./012357:<>?@ABCDFHKMOPQRSTUVWXYZ[]_bdfghijklmnoprtwy{|}~ÄÅÇÉÖáäåéèêëíîñóôúü°£§•¶ß©´¨Æ±¥∂∏π∫ªΩø¿¬≈» ÃÕœ—“‘◊ÿ⁄›‡‚‰ÂÊÁÈÎÏÓÒÙˆ¯˘˙˚¸˝˛ˇÅÉÑÜâåéêëíìîïñóòôõùû†•ß©™´¨≠ÆØ∞±≤≥µ∑∏∫ø¡√ƒ≈∆«»… ÀÃŒ–—”÷Ÿ€›ﬁﬂ‡·‚„‰ÂÊÁËÈÎÌÓÛˆ¯˙˚¸˝˛ˇÄÅÇÉÖáàäçéêìñòöõúùûü†¢§•ß¨Æ∞±≤≥¥µ∂∑∏πªΩæ¿√≈ ÃŒœ–—“”‘’÷◊ÿ⁄‹›ﬂ‚ÂÁÈÍÎÏÌÓÔÚÙı˜˙˚˝ÄÉÖáàâäãåçéèêëíìïóòöùü¢§ß™¨ÆØ∞±≤≥¥µ∂∏∫ªΩ¿¡√∆…ÀÕŒœ–—“”‘’◊Ÿ⁄‹ﬂ·‰ÊÈÏÓÒÚÛÙıˆ˜¯˙¸˝ˇÇÉÖàãçèêëíìîïóôöúü†¢•®™¨≠ÆØ∞±≤≥¥∂∏πªæ¿√∆» ÀÃÕŒœ–—“”’◊ÿ⁄›‡‚‰ÂÊÁËÈÍÎÏÌÓÚÛı¯˘˚˛ÅÉÖÜáàâäãåéêëìñóôúü°£§•¶ß®©™¨ÆØ±¥∑πªºΩæø¿¡¬ƒ∆«…ÃÕœ“’◊Ÿ⁄€‹›ﬁﬂ‡·‚‰ÊÁÈÏÓÒÚÙ˜˙¸˛ˇÄÅÇÉÑÖÜáàäåçèíìïöúûü†°¢£§•¶ß®™¨≠Ø≤¥∑πæ¿¬√ƒ≈∆«»… ÀÃŒ–—”÷Ÿ€›ﬁﬂ‡·‚„‰ÂÊÁÈÎÏÓÒÙˆ¯˘˙˚˛ÄÇÉÑáâãåçêíîïñôõùûü†£•ß®©™≠Ø∞≤¥∂∑∏πºæ¿¡¬√ƒ≈» ÀÕœ—“”‘◊‹‚ÁÏÒˆ¸Å	Ü	ã	ê	ñ	õ	°	¶	´	∞	µ	∫	ø	ƒ	…	Œ	”	ÿ	›	‚	Á	Ï	Ò	ˆ	˚	Ä
-Ö
-ä
-è
-î
-ô
-û
-£
-®
-≠
-≤
-∑
-º
-¡
-«
-Ã
-—
-÷
-€
-‰
-Á
-Í
-Ì
-
-Û
-ˆ
-˘
-¸
-ˇ
-ÇÖàãéëîóöù†£¶©¨Ø≤µ∏ªæ¡ƒ« Õ–‹
-qC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Helpers\VNPayHelper\VNPayHandler.cs6 	8j[rù	
- "#$%()*,-./1345678:;=>BCDEFGIJKLMNOQRSTVWXY\]^_abeghijklmnopqrstuwx{|}~ÄÅÇÉÑÖÜáàâäãåçèêëìîïñóòôöõúùxÇ9$,.1357:;=DEFLNQSVX\^almnpqswÄÅÇÑÜåèóòôöõ©
-ÖC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Helpers\QRCodeGeneratorHelper\QRCodeGeneratorHandler.cs 8r	Çà
-pC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Helpers\GetHelper\PagingRequest.cs 8r	
-õ
-rC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Helpers\GetHelper\PaginationUtils.cs 8	jr	
-Ç‚
-sC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Helpers\GetHelper\PaginationHelper.cs 8rK	
- !"#$%&'()*+,-./0123456789:;=>?@BCDEFGHIJKLMNPx
-Ç"$'(*+6;=?BDFHLó
-nC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Helpers\GetHelper\PagedResult.cs 
+ê
+[C:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\WaiterScheduleAggregator\WaiterSchedule.cs 8r!	 !"#Ç !è
+WC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\WaiterSalaryAggregator\WaiterSalary.cs 8r"	
+ !"#$Ç !"y
+QC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\WaiterSalaryAggregator\Salary.cs 8r
+Çj
+[C:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\WaiterSalaryAggregator\Enums\SalaryType.csr	
+è
+GC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\UserAggregator\User.cs 8j-r* !"#%&'()*+,./0xÇ	 !"'(,d
+MC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\UserAggregator\Enums\Role.csr		
+Ç	d
+UC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\UserAggregator\Enums\EmployeeType.csr	
+ä
+KC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\UserAggregator\Customer.cs 8r%	 !"#$%&'xÇ	 $%v
+RC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\UserAggregator\ApplicationRole.cs 8jr	Çé
+IC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\TableAggregator\Table.cs	 8jr(	
+ !"#$%&'()*+,xÇ	 $%)*f
+UC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\TableAggregator\Enums\TableStatus.csr	
+c
+PC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\TableAggregator\Enums\Status.csr	
+p
+SC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\ShiftAggregator\ShiftRestaurant.cs 8r
+à
+IC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\ShiftAggregator\Shift.cs 8r&
+ !"#$%&'()*xÇ!"#'(ß
+SC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\RestaurantAggregator\Restaurant.cs  8!r4
+ "#%'()*+,-./0123456789:;<=>xÇ)*+,-./04567;<Ç
+NC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\PaymentAggregator\Payments.cs 8jr	
+Ç	j
+YC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\PaymentAggregator\Enums\PaymentStatus.csr	
+i
+ZC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\PaymentAggregator\Enums\PaymentMethods.csr	
+á
+WC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\OrderAggregator\OrderResponsibility.cs 8jr	
+Çô
+OC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\OrderAggregator\OrderDetail.cs 8r/	 !"#$%&'()*+,-./01Ç"#$%&'+,-./Ñ
+IC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\OrderAggregator\Order.cs 8r&
+ !"#$%&'(+Ç $%&']
+SC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\OrderAggregator\Enums\OrderType.csri
+UC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\OrderAggregator\Enums\OrderStatus.csr	
+u
+aC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\OrderAggregator\Enums\OrderResponsibilityType.csr	
+o
+\C:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\OrderAggregator\Enums\OrderDetailsStatus.csr	
+ñ
+sC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\IngredientSupplyRequestAggregator\IngredientSupplyRequestDetail.cs 
 8
-j
- r	!"â
-oC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Helpers\GetHelper\CustomFilter.cs( 8j,r_
- !"#$%&'()*+-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdex/Ç' "$&)-/0248;=?ACEGJLNOQUWXZ[_cﬂ
-vC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Helpers\FirebaseHelper\StorageHandler.cs 8
-j>rG	
-!"#$%&'()*+,./012356789:<=>?@BCDFGHIJKLMNOPSxÇ!).79<=?@FNm
-\C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\GlobalUsing.csr	
-à
-sC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Elastic\Service\UserElasticService.cs 8r	
-—
-vC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Elastic\Service\ElasticGenericService.cs 8
-r9	
-!"#&')*+,-/0134678:;=>?@ACDEFGHxÇ#&+,138:?@EFÄ
-uC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Elastic\IService\IUserElasticService.csrè
-xC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Elastic\IService\IElasticGenericService.csr	
-œ
-`C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Data\FOVContext.cs 8jSTUr=	
- "$&(*,./0123579;<=?ACEGHIKMOPQRWXÇ "$&(*,./0123579;<=?ACEGHIKMQR–
-dC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\DependencyInjection.cs" 8j.r5	
- !"#$%&'()*+,-/0123456789:;<>?Ç" !"#$%&'()*+,-/0123456789:;<ù
-{C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Data\FluentAPI\WaiterScheduleConfiguration.cs 8r
-Çõ
-yC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Data\FluentAPI\WaiterSalaryConfiguration.cs 8r
-Ç…
-qC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Data\FluentAPI\UserConfiguration.cs 8j5 !"$&'()*+,-./01234579:;<=>?@ABCDEFGHr	
-KLÇ
-è
-rC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Data\FluentAPI\TableConfiguration.cs 8r	
-Çî
-rC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Data\FluentAPI\ShiftConfiguration.cs 8r
-Çπ
-wC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Data\FluentAPI\RestaurantConfiguration.cs 8r'	
- !"#$%&'()*Ç &é
-sC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Data\FluentAPI\RatingConfiguration.cs 8r	
-Ç
-î
-yC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Data\FluentAPI\ProductComboConfiguration.cs 8r	
-Çœ
-{C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Data\FluentAPI\ProductGeneralConfiguration.cs 8r7	
- !"#$%&'()*+,-./0123456789:Ç"#*+23æ
-tC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Data\FluentAPI\ProductConfiguration.cs 8r*	
- !"#$%&'()*+,-Ç $%()≠
-ÖC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Data\FluentAPI\ProductIngredientGeneralConfiguration.cs 8r	
-Ç
-î
-yC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Data\FluentAPI\ProductImageConfiguration.cs 8r	
-Ç
-ò
-xC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Data\FluentAPI\OrderDetailConfiguration.cs 8r
-Çï
-rC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Data\FluentAPI\OrderConfiguration.cs 8r	
-Çï
-uC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Data\FluentAPI\CustomerConfiguration.cs 8r
-Çö
-{C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Data\FluentAPI\IngredientUnitConfiguration.cs 8r	
-Ç
-û
-ÇC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Data\FluentAPI\IngredientTransactionConfiguration.cs 8r	
-Ç
-∑
-~C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Data\FluentAPI\IngredientGeneralConfiguration.cs 8r!	
- !#$%Ç	 ∏
-{C:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Data\FluentAPI\IngredientTypeConfiguration.cs 8jr#	
- !"#%&Ç#î
-wC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Data\FluentAPI\IngredientConfiguration.cs 8r	
-Ç¶
-uC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Data\FluentAPI\CategoryConfiguration.cs 8jr	
-Çû
-vC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Data\FluentAPI\GroupChatConfiguration.cs 8r	
-Ç
-ë
-vC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Data\FluentAPI\GroupUserConfiguration.cs 8r	
-Ç
-î
-yC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Data\FluentAPI\GroupMessageConfiguration.cs 8r	
-Ç
-—
-uC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Data\FluentAPI\EmployeeConfiguration.cs 8jr9
- !"#$%&'()*+,-./0123456789:;Ç!"&')./346ƒ
-rC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Data\FluentAPI\ComboConfiguration.cs 8r3	
- !"#$%&'()*+,-./0123456Ç $%*,01û
-wC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Data\FluentAPI\AttendanceConfiguration.cs 8r	
-Ç
-ß
-zC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Data\Configurations\IApplicationDbContext.cs8r%	
- "$&(*,.02479;ò
-ÑC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Data\Configurations\ApplicationDbContextInitializer.cs! 8j%r[	 !"#$&'()*+,-0123456789:;=>?@BCDEFGHIJKLMNOPQRSTUWXYZ[]^_`bcdefghjklxÇ$!#&*+489?@BDFHJLNPRTWXZ[]_bcdefjy
-eC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Constant\CurrentTime.csr
-	
-ÇÖ
-nC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Configuration\ElasticSettings.cs 8r	
-ò
-bC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Common\Pagination.cs 8jr	
- !"xÇä
-cC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Chat\Setup\ChatHub.cs 8r	Çè
-ÇC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Caching\ICachingService\IStateCacheManagerService.csrÑ
-xC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Caching\ICachingService\ILockingService.csr≠
-ÄC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Caching\CachingService\StateCacheManagerService.cs 8r	
-xÇ
-º
-vC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Caching\CachingService\LockingService.cs 8r(	
- !"#$%&'()*+,xÇ !"')¿
-vC:\Code\FinalCapstionProject_Fall2024\FOV-Fall2024-API\src\FOV.Infrastructure\Caching\CachingService\LockingHandler.cs 8r,	
- !"#$%&'()*+,-./01xÇ"$%&',.
+r	
+Ç≥
+mC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\IngredientSupplyRequestAggregator\IngredientSupplyRequest.cs 8r*	
+ #$%&'()*,-./0235xÇ
+ '*,.2Ü
+aC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\IngredientGeneralAggregator\IngredientMeasure.cs 8r	
+Çß
+aC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\IngredientGeneralAggregator\IngredientGeneral.cs
+ 8r(	
+ !"$%&'()+,-./0xÇ !&'(-.ç
+kC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\IngredientGeneralAggregator\Enums\IngredientMeasureType.cs 8r	
+xÇî
+XC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\IngredientAggregator\IngredientUsage.cs 8jr 	
+!#$%&'()+,-./1xÇ%&'(-.ì
+WC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\IngredientAggregator\IngredientUnit.cs	 8jr	
+!"#$%&Ç
+#$ê
+WC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\IngredientAggregator\IngredientType.cs 8jr	
+!"#$%'()*+,xÇ#$)*å
+SC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\IngredientAggregator\Ingredient.cs 8r"	
+ !#%&'()*+xÇ '()v
+lC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\IngredientSupplyRequestAggregator\Enum\SupplyRequestType.csrë
+^C:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\IngredientAggregator\Enums\MeasureTransfer.cs 8j
+	
+r !xÇx
+hC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\IngredientAggregator\Enums\IngredientTransactionType.csjr	
+l
+\C:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\DishGeneralAggregator\Enums\PriorityDish.csr	
+ö
+_C:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\DishGeneralAggregator\DishIngredientGeneral.cs 8r"	
+ !"#$%&'(*+xÇ !"&'Å
+ZC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\DishGeneralAggregator\DishGeneralImage.cs 8r	
+Ç	”
+UC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\DishGeneralAggregator\DishGeneral.cs %8&rK	
+!"#$%&'()*+,-./01234567:;<=>?@ACDEFGHJKLMNOPQRSTUVxÇ"#$%&'()*./0123456<=>?@EFGLMNOSTê
+aC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\DishAggregator\RefundDishInventoryTransaction.cs 8r
+ !"#&Ç !"}
+VC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\DishAggregator\RefundDishInventory.cs 8r
+Ç{
+kC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\DishAggregator\Enums\RefundDishInventoryTransactionType.csjr	
+[
+QC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\DishAggregator\Enums\DishType.csri
+]C:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\DishAggregator\Enums\DishIngredientStatus.csr	{
+QC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\DishAggregator\DishIngredient.cs 8jr
+ÇÄ
+KC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\DishAggregator\Category.cs 8jr	
+ "#$%&(xÇ	$%ä
+GC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\DishAggregator\Dish.cs  8!r+
+!"$&'()*+,-/012358xÇ()*+,12\
+PC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\ComboAggregator\Enums\Status.csr	
+Ä
+MC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\ComboAggregator\DishCombo.cs 8r	 "$%&'()+xÇ'(ò
+IC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\ComboAggregator\Combo.cs 8jr.	
+ !"#$%)*+,-/01234578xÇ !"#$+,1234q
+SC:\Code\FOV-Fall2024-API\src\FOV.Domain\Entities\AttendanceAggregator\Attendance.cs 8r
+ÇX
+EC:\Code\FOV-Fall2024-API\src\FOV.Domain\ElasticEntities\UserDomain.cs 8r	
+Y
+CC:\Code\FOV-Fall2024-API\src\FOV.Domain\DTOs\ProductQuantityDtos.cs 8r	
+e
+?C:\Code\FOV-Fall2024-API\src\FOV.Domain\DTOs\ProductCheckDTO.cs 8r	ÇW
+AC:\Code\FOV-Fall2024-API\src\FOV.Domain\DTOs\ComboQuantityDtos.cs 8r	
+C
+8C:\Code\FOV-Fall2024-API\src\FOV.Domain\DTOs\ComboDTO.csrF
+;C:\Code\FOV-Fall2024-API\src\FOV.Domain\Common\SortOrder.csrM
+?C:\Code\FOV-Fall2024-API\src\FOV.Domain\Common\IsSoftDeleted.cs8re
+AC:\Code\FOV-Fall2024-API\src\FOV.Domain\Common\FilterAttribute.csr	
+Q
+?C:\Code\FOV-Fall2024-API\src\FOV.Domain\Common\ElasticEntity.cs8r
+	
+S
+<C:\Code\FOV-Fall2024-API\src\FOV.Domain\Common\BaseEntity.cs 8r	
+Y
+AC:\Code\FOV-Fall2024-API\src\FOV.Domain\Common\DefaultDatetime.csjr		
+Ç	
+\
+EC:\Code\FOV-Fall2024-API\src\FOV.Domain\Common\BaseAuditableEntity.cs 8r
+Ç
