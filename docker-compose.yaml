@@ -114,31 +114,31 @@ services:
 
 
 
-  # Grafana for Visualization
   grafana:
-    image: grafana/grafana:latest
-    container_name: grafana
-    ports:
-      - "3000:3000"
-    networks:
-      - fov_network
-    environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
-    volumes:
-      - ./data/grafana:/var/lib/grafana
-      - ./grafana/provisioning/:/etc/grafana/provisioning
-    env_file:
-      - ./grafana/config.monitoring
-    deploy:
-      resources:
-        limits:
-          memory: 256M
-          cpus: "0.50"
-        reservations:
-          memory: 128M
-          cpus: "0.25"
+   image: grafana/grafana:latest
+   container_name: grafana
+   ports:
+     - "3000:3000"
+   networks:
+     - fov_network
+   environment:
+     - GF_SECURITY_ADMIN_USER=admin
+     - GF_SECURITY_ADMIN_PASSWORD=admin
+     - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
+   volumes:
+     - grafana_data:/grafana
+     - ./grafana/provisioning/:/etc/grafana/provisioning
+   env_file:
+     - ./grafana/config.monitoring
+   user: "472"  # Run the container as the Grafana user
+   deploy:
+     resources:
+       limits:
+         memory: 256M
+         cpus: "0.50"
+       reservations:
+         memory: 128M
+         cpus: "0.25"
 
   
 
