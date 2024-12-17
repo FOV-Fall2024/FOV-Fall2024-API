@@ -1,0 +1,17 @@
+{
+	"ulid": "01JF94SKVQ9019HVV58W4JDW39",
+	"minTime": 1734323424425,
+	"maxTime": 1734328800000,
+	"stats": {
+		"numSamples": 91978,
+		"numSeries": 1071,
+		"numChunks": 1071
+	},
+	"compaction": {
+		"level": 1,
+		"sources": [
+			"01JF94SKVQ9019HVV58W4JDW39"
+		]
+	},
+	"version": 1
+}
