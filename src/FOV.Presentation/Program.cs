@@ -86,7 +86,7 @@ app.MapHub<NotificationHub>("notification-hub").RequireCors("CorsPolicy");
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
-    endpoints.MapMetrics(); // This exposes the /metrics endpoint for Prometheus
+    endpoints.MapMetrics("/internal/metrics"); // This exposes the /metrics endpoint for Prometheus
     endpoints.MapPrometheusScrapingEndpoint();
 });
 
