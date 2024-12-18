@@ -10,10 +10,10 @@ public class CreateComboValidator : AbstractValidator<CreateComboCommand>
 {
     public CreateComboValidator(PriceValidator priceValidator,ComboNameValidator nameValidator)
     {
-        RuleFor(x => x.Price)
-            .MustAsync(async (command, price, cancellation) =>
-                await priceValidator.CheckPrice(price, command.ProductInCombos, cancellation))
-            .WithMessage("Giá phải nhỏ hơn giá tổng ");
+        //RuleFor(x => x.Price)
+        //    .MustAsync(async (command, price, cancellation) =>
+        //        await priceValidator.CheckPrice(price, command.ProductInCombos, cancellation))
+        //    .WithMessage("Giá phải nhỏ hơn giá tổng ");
         RuleFor(x => x.ComboName).SetValidator(nameValidator);
               
     }
