@@ -21,12 +21,12 @@ public partial class TableLogoutHandler(IUnitOfWorks unitOfWorks, UserManager<Us
     {
         if (!MyRegex().IsMatch(request.EmployeeCode))
         {
-            throw new Exception("Invalid Manager Code format.");
+            throw new AppException("Invalid Manager Code format.");
         }
 
-        var table = await _unitOfWorks.TableRepository.GetByIdAsync(request.TableId) ?? throw new Exception();
+        var table = await _unitOfWorks.TableRepository.GetByIdAsync(request.TableId) ?? throw new AppException();
         if (table.IsLogin == false) throw new AppException("Table is not login.");
-        if (table.TableStatus != Domain.Entities.TableAggregator.Enums.TableStatus.Available) throw new Exception("Bàn này hiện đang có đơn đang thực hiện.");
+        if (table.TableStatus != Domain.Entities.TableAggregator.Enums.TableStatus.Available) throw new AppException("Bàn này hiện đang có đơn đang thực hiện.");
 
         var restaurantId = table.RestaurantId;
         var manager = await _userManager.Users.FirstOrDefaultAsync(u => u.EmployeeCode == request.EmployeeCode && u.RestaurantId == restaurantId);
