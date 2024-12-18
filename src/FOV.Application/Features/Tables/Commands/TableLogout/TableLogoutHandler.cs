@@ -21,7 +21,7 @@ public partial class TableLogoutHandler(IUnitOfWorks unitOfWorks, UserManager<Us
     {
         if (!MyRegex().IsMatch(request.EmployeeCode))
         {
-            throw new AppException("Invalid Manager Code format.");
+            throw new AppException("Không đúng định dạng.");
         }
 
         var table = await _unitOfWorks.TableRepository.GetByIdAsync(request.TableId) ?? throw new AppException();
@@ -33,7 +33,7 @@ public partial class TableLogoutHandler(IUnitOfWorks unitOfWorks, UserManager<Us
 
         if (manager == null)
         {
-            throw new AppException("Manager not found or does not belong to this restaurant.");
+            throw new AppException("Mã manager này không thuộc về nhà hàng này.");
         }
 
         table.UpdateIsLogin(false);
