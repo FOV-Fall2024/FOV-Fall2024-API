@@ -17,5 +17,6 @@ namespace FOV.Infrastructure.Repository.IRepositories
         Task<Pagination<TEntity>> ToPagination(int pageNumber = 0, int pageSize = 10);
         Task<int> CountAsync(Expression<Func<TEntity, bool>>? filter = null);
         void Remove(TEntity entity);
+        Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression)
     }
 }

@@ -28,11 +28,13 @@ public class CreateUserCommandHandler(IUnitOfWorks unitOfWorks) : IRequestHandle
 
     public async Task<RegisterUserResponse> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        var existPhoneUser = _unitOfWorks.CustomerRepository.WhereAsync(x => x.PhoneNumber == request.PhoneNumber);
-        if (existPhoneUser != null)
+        var existPhoneUser = await _unitOfWorks.CustomerRepository.AnyAsync(x => x.PhoneNumber == request.PhoneNumber);
+
+        if (existPhoneUser)
         {
             throw new AppException("Đã trùng số điện thoại");
         }
+
         var customer = new Customer(request.PhoneNumber, request.FullName);
         await _unitOfWorks.CustomerRepository.AddAsync(customer);
         await _unitOfWorks.SaveChangeAsync();

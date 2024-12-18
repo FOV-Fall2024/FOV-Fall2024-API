@@ -104,4 +104,10 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
       .Where(expression!)
       .OrderByDescending(x => x.Created)
       .ToListAsync();
+
+    public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression)
+    {
+        return await _dbSet.AsNoTracking().AnyAsync(expression);
+    }
+
 }
