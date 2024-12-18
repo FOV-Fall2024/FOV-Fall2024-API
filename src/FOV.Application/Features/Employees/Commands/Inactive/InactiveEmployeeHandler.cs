@@ -34,10 +34,11 @@ public class InactiveEmployeeHandler(IUnitOfWorks unitOfWorks, UserManager<User>
         else
         {
             var futureSchedule = await _unitOfWorks.WaiterScheduleRepository.WhereAsync(x => x.UserId == user.Id && x.DateTime >= DateOnly.FromDateTime(DateTime.Now.AddHours(7)));
-            if (futureSchedule.Any())
+            fieldErrors.Add(new FieldError
             {
-                throw new AppException("Không thể vô hiệu hóa nhân viên vì đang có lịch làm trong tương lai");
-            }
+                Field = "userId",
+                Message = "Không thể vô hiệu hóa nhân viên vì đang có lịch làm trong tương lai."
+            });
         }
 
         if (fieldErrors.Any())
