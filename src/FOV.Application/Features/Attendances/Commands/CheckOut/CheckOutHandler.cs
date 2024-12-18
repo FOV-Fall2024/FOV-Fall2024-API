@@ -39,7 +39,7 @@ public class CheckOutHandler(IUnitOfWorks unitOfWorks, UserManager<User> userMan
     {
         //Cuối ngày hết đơn mới được check out
         //Những ca còn lại thì thằng cuối cùng của ca đó không được checkout nếu ca sau chưa có người
-        var user = _userManager.FindByIdAsync(_claimService.UserId.ToString()) 
+        var user = await _userManager.FindByIdAsync(_claimService.UserId.ToString()) 
             ?? throw new AppException("Không tìm thấy nhân viên");
         var restaurant = await _unitOfWorks.RestaurantRepository.GetByIdAsync(_claimService.RestaurantId) 
             ?? throw new AppException("Không tìm thấy nhà hàng nào");
