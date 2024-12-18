@@ -63,7 +63,7 @@ public class EmployeeController(IMediator mediator) : DefaultController
     {
         try
         {
-            var result = await _mediator.Send(new InactvieEmployeeCommand(id));
+            var result = await _mediator.Send(new InactiveEmployeeCommand(id));
 
             if (result.IsFailed)
             {
