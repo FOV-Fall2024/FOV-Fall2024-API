@@ -37,7 +37,7 @@ public class AttendanceController(ISender sender) : DefaultController
     {
         command.RestaurantId = restaurantId;
         command.ShiftId = shiftId;
-        command.CheckInTime = DateTime.Now.AddHours(7);
+        command.CheckInTime = DateTime.Now;
         command.Date = date;
 
         var attendanceId = await _sender.Send(command);
@@ -49,7 +49,7 @@ public class AttendanceController(ISender sender) : DefaultController
     {
         command.ShiftId = shiftId;
         command.Date = date;
-        command.CheckOutTime = DateTime.Now.AddHours(7);
+        command.CheckOutTime = DateTime.Now;
         var attendanceId = await _sender.Send(command);
         return Ok(new OK_Result<Guid>("Check-out thành công", attendanceId));
     }
