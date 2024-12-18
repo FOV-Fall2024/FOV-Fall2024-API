@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
+using FOV.Application.Common.Exceptions;
 using FOV.Application.Features.Users.Responses;
 using FOV.Domain.Entities.UserAggregator;
 using FOV.Domain.Entities.UserAggregator.Enums;
@@ -27,6 +28,11 @@ public class CreateUserCommandHandler(IUnitOfWorks unitOfWorks) : IRequestHandle
 
     public async Task<RegisterUserResponse> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
+        var existPhoneUser = _unitOfWorks.CustomerRepository.WhereAsync(x => x.PhoneNumber == request.PhoneNumber);
+        if (existPhoneUser != null)
+        {
+            throw new AppException("Đã trùng số điện thoại");
+        }
         var customer = new Customer(request.PhoneNumber, request.FullName);
         await _unitOfWorks.CustomerRepository.AddAsync(customer);
         await _unitOfWorks.SaveChangeAsync();
