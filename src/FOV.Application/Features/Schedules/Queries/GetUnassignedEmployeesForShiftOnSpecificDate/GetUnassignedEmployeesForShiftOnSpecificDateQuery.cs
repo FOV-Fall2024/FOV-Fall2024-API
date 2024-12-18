@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using FOV.Application.Common.Behaviours.Claim;
 using FOV.Application.Common.Exceptions;
 using FOV.Application.Features.Schedules.Responses;
+using FOV.Domain.Entities.TableAggregator.Enums;
 using FOV.Domain.Entities.UserAggregator;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
@@ -37,7 +38,7 @@ public class GetUnassignedEmployeesForShiftOnSpecificDateQuery : IRequestHandler
 
         var allEmployees = await _userManager.Users
             .Where(u => u.RestaurantId == restaurantId &&
-                        (u.EmployeeCode.StartsWith("WTR_") || u.EmployeeCode.StartsWith("CKR_")))
+                        (u.EmployeeCode.StartsWith("WTR_") || u.EmployeeCode.StartsWith("CKR_") && u.Status == Status.Active))
             .ToListAsync(cancellationToken);
 
         var assignedSchedules = await _unitOfWorks.WaiterScheduleRepository.GetAllAsync(s => s.User, s => s.Shift);
