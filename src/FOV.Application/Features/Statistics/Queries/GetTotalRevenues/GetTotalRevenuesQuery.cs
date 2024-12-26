@@ -12,7 +12,7 @@ using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Statistics.Queries.GetTotalRevenues;
-public record GetTotalRevenuesCommand(TimeFrame TimeFrame, DateTime? ChosenDate = null) : IRequest<List<TotalRevenuesDto>>;
+public record GetTotalRevenuesCommand(TimeFrame TimeFrame, DateTime? ChosenDate = null, Guid? RestaurantId = null) : IRequest<List<TotalRevenuesDto>>;
 public record TotalRevenuesDto(string TimePeriod, decimal TotalRevenues);
 public class GetTotalRevenuesQuery(IUnitOfWorks unitOfWorks, IClaimService claimService) : IRequestHandler<GetTotalRevenuesCommand, List<TotalRevenuesDto>>
 {
@@ -30,7 +30,18 @@ public class GetTotalRevenuesQuery(IUnitOfWorks unitOfWorks, IClaimService claim
         }
         else if (userRole == Role.Administrator)
         {
-            payments = await _unitOfWorks.PaymentRepository.WhereAsync(p => p.PaymentStatus == PaymentStatus.Paid, p => p.Order.Table);
+            if (request.RestaurantId.HasValue)
+            {
+                payments = await _unitOfWorks.PaymentRepository.WhereAsync(
+                    p => p.PaymentStatus == PaymentStatus.Paid && p.Order.Table.RestaurantId == request.RestaurantId,
+                    p => p.Order.Table);
+            }
+            else
+            {
+                payments = await _unitOfWorks.PaymentRepository.WhereAsync(
+                    p => p.PaymentStatus == PaymentStatus.Paid,
+                    p => p.Order.Table);
+            }
         }
 
         var chosenDate = request.ChosenDate ?? DateTime.Now;

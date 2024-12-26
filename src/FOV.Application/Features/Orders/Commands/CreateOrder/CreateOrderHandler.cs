@@ -233,6 +233,10 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
                 }
                 //dish.Price += dishPrice * quantity;
             }
+            if (dish.Status == Status.Inactive)
+            {
+                throw new AppException($"Món ăn '{dish.DishGeneral.DishName}' đã bị vô hiệu hóa.");
+            }
 
             foreach (var dishIngredient in dish.DishIngredients)
             {

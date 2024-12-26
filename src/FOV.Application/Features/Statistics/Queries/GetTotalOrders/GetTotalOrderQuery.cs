@@ -11,7 +11,7 @@ using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Statistics.Queries.GetTotalOrders;
-public record GetTotalOrderCommand(TimeFrame TimeFrame, DateTime? ChosenDate = null) : IRequest<List<TotalOrderDtos>>;
+public record GetTotalOrderCommand(TimeFrame TimeFrame, DateTime? ChosenDate = null, Guid? RestaurantId = null) : IRequest<List<TotalOrderDtos>>;
 public record TotalOrderDtos(string TimePeriod, int TotalOrders);
 public class GetTotalOrderQuery(IUnitOfWorks unitOfWorks, IClaimService claimService) : IRequestHandler<GetTotalOrderCommand, List<TotalOrderDtos>>
 {
@@ -28,7 +28,16 @@ public class GetTotalOrderQuery(IUnitOfWorks unitOfWorks, IClaimService claimSer
         }
         else if (userRole == Role.Administrator)
         {
-            orders = await _unitOfWorks.OrderRepository.GetAllAsync();
+            if (request.RestaurantId.HasValue)
+            {
+                orders = await _unitOfWorks.OrderRepository.WhereAsync(
+                    o => o.Table.RestaurantId == request.RestaurantId,
+                    o => o.Table);
+            }
+            else
+            {
+                orders = await _unitOfWorks.OrderRepository.GetAllAsync(o => o.Table);
+            }
         }
 
         var chosenDate = request.ChosenDate ?? DateTime.Now;

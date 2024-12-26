@@ -1,11 +1,14 @@
 ﻿using System.Web;
 using FOV.Application.Features.Payments.Commands;
+using FOV.Application.Features.Payments.Commands.ConfirmRecievedMoney;
 using FOV.Application.Features.Payments.Commands.Create;
 using FOV.Application.Features.Payments.Commands.CreateVNPayPayment;
 using FOV.Application.Features.Payments.Commands.FinishPayment;
 using FOV.Application.Features.Payments.Queries;
+using FOV.Domain.Entities.UserAggregator.Enums;
 using FOV.Presentation.Infrastructure.Core;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FOV.Presentation.Controllers.V1;
@@ -42,6 +45,14 @@ public class PaymentController(ISender sender) : DefaultController
     public async Task<IActionResult> ConfirmPayment(Guid orderId)
     {
         var command = new FinishPaymentCommand(orderId);
+        var response = await _sender.Send(command);
+        return Ok(response);
+    }
+    [Authorize(Roles = Role.Administrator)]
+    [HttpPatch("{orderId:guid}/confirm-received-money")]
+    public async Task<IActionResult> ConfirmReceivedMoney(Guid orderId)
+    {
+        var command = new ConfirmReceivedMoneyCommand(orderId);
         var response = await _sender.Send(command);
         return Ok(response);
     }

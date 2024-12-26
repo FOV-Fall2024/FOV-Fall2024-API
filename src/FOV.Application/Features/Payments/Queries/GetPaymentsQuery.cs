@@ -31,6 +31,8 @@ public class GetPaymentsQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetPay
             p.ReduceAmount,
             p.FinalAmount,
             p.PaymentStatus.ToString(),
-            p.PaymentMethods.ToString(), p.Created)).ToList();
+            p.PaymentMethods.ToString(),
+            p.IsAdminConfirm,
+            p.Created)).ToList();
     }
 }

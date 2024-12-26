@@ -789,16 +789,16 @@ namespace FOV.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("6531296e-a86a-4fcc-97e7-7e6182a5c011"),
-                            Created = new DateTime(2024, 12, 4, 14, 18, 9, 295, DateTimeKind.Utc).AddTicks(6410),
+                            Created = new DateTime(2024, 12, 26, 12, 50, 9, 444, DateTimeKind.Utc).AddTicks(767),
                             IngredientMeasureName = "gam",
-                            LastModified = new DateTime(2024, 12, 4, 14, 18, 9, 295, DateTimeKind.Utc).AddTicks(6412)
+                            LastModified = new DateTime(2024, 12, 26, 12, 50, 9, 444, DateTimeKind.Utc).AddTicks(769)
                         },
                         new
                         {
                             Id = new Guid("6531296e-a86a-4fcc-97e7-7e6192a5c011"),
-                            Created = new DateTime(2024, 12, 4, 14, 18, 9, 295, DateTimeKind.Utc).AddTicks(6421),
+                            Created = new DateTime(2024, 12, 26, 12, 50, 9, 444, DateTimeKind.Utc).AddTicks(780),
                             IngredientMeasureName = "ml",
-                            LastModified = new DateTime(2024, 12, 4, 14, 18, 9, 295, DateTimeKind.Utc).AddTicks(6421)
+                            LastModified = new DateTime(2024, 12, 26, 12, 50, 9, 444, DateTimeKind.Utc).AddTicks(781)
                         });
                 });
 
@@ -1048,6 +1048,9 @@ namespace FOV.Infrastructure.Migrations
 
                     b.Property<decimal>("FinalAmount")
                         .HasColumnType("numeric");
+
+                    b.Property<bool>("IsAdminConfirm")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("timestamp with time zone");
@@ -1500,9 +1503,6 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<Guid?>("SalaryId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("text");
-
                     b.Property<decimal>("TotalHoursWorked")
                         .HasColumnType("numeric");
 
@@ -1536,7 +1536,7 @@ namespace FOV.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
-                    b.Property<DateOnly?>("DateTime")
+                    b.Property<DateOnly>("DateTime")
                         .HasColumnType("date");
 
                     b.Property<DateTime?>("LastModified")

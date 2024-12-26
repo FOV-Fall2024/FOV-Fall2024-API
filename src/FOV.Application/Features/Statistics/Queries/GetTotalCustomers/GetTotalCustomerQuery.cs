@@ -12,7 +12,7 @@ using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Statistics.Queries.GetTotalCustomers;
-public record GetTotalCustomerCommand(TimeFrame TimeFrame, DateTime? ChosenDate = null) : IRequest<List<TotalCustomerDtos>>;
+public record GetTotalCustomerCommand(TimeFrame TimeFrame, DateTime? ChosenDate = null, Guid? RestaurantId = null) : IRequest<List<TotalCustomerDtos>>;
 public record TotalCustomerDtos(string TimePeriod, int TotalCustomers);
 internal class GetTotalCustomerQuery(IUnitOfWorks unitOfWorks, IClaimService claimService) : IRequestHandler<GetTotalCustomerCommand, List<TotalCustomerDtos>>
 {
@@ -29,14 +29,23 @@ internal class GetTotalCustomerQuery(IUnitOfWorks unitOfWorks, IClaimService cla
             customers = await _unitOfWorks.CustomerRepository.WhereAsync(
                 c => c.Orders.Any(o => o.Table.RestaurantId == restaurantId),
                 c => c.Orders);
-        } else if (userRole == Role.Administrator)
-        {
-            customers = await _unitOfWorks.CustomerRepository.GetAllAsync();
         }
-
+        else if (userRole == Role.Administrator)
+        {
+            if (request.RestaurantId.HasValue)
+            {
+                customers = await _unitOfWorks.CustomerRepository.WhereAsync(
+                    c => c.Orders.Any(o => o.Table.RestaurantId == request.RestaurantId),
+                    c => c.Orders);
+            }
+            else
+            {
+                customers = await _unitOfWorks.CustomerRepository.GetAllAsync();
+            }
+        }
         var chosenDate = request.ChosenDate ?? DateTime.Now;
         DateTime startDate, endDate;
-        
+
         switch (request.TimeFrame)
         {
             case TimeFrame.Week:
@@ -73,12 +82,12 @@ internal class GetTotalCustomerQuery(IUnitOfWorks unitOfWorks, IClaimService cla
             TimeFrame.Week or TimeFrame.Month => periods.Select(date => new TotalCustomerDtos(
                 date.ToString("yyyy-MM-dd"),
                 customers.Count(c => c.Created.Date == date)
-                )).ToList(),
+            )).ToList(),
 
             TimeFrame.Year => periods.Select(date => new TotalCustomerDtos(
                 date.ToString("yyyy-MM"),
                 customers.Count(c => c.Created.Month == date.Month)
-                )).ToList(),
+            )).ToList(),
 
             _ => throw new AppException("Không tìm thấy TimeFrame")
         };
