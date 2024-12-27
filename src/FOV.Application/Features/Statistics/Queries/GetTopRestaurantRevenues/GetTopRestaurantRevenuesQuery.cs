@@ -14,25 +14,26 @@ public record RestaurantRevenuesDto(string RestaurantName, decimal TotalRevenues
 public class GetTopRestaurantRevenuesQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetTopRestaurantRevenuesCommand, List<RestaurantRevenuesDto>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
+
     public async Task<List<RestaurantRevenuesDto>> Handle(GetTopRestaurantRevenuesCommand request, CancellationToken cancellationToken)
     {
         List<Domain.Entities.PaymentAggregator.Payments> payments = new();
         DateTime startDate, endDate;
 
-        var chosenDate = request.ChosenDate ?? DateTime.Now;
+        var chosenDate = (request.ChosenDate ?? DateTime.Now).ToUniversalTime();
 
         switch (request.TimeFrame)
         {
             case TimeFrame.Week:
-                startDate = chosenDate.AddDays(DayOfWeek.Monday - chosenDate.DayOfWeek);
-                endDate = startDate.AddDays(7);
+                startDate = chosenDate.AddDays(DayOfWeek.Monday - chosenDate.DayOfWeek).ToUniversalTime();
+                endDate = startDate.AddDays(7).ToUniversalTime();
                 break;
             case TimeFrame.Month:
-                startDate = new DateTime(chosenDate.Year, chosenDate.Month, 1);
+                startDate = new DateTime(chosenDate.Year, chosenDate.Month, 1, 0, 0, 0, DateTimeKind.Utc);
                 endDate = startDate.AddMonths(1);
                 break;
             case TimeFrame.Year:
-                startDate = new DateTime(chosenDate.Year, 1, 1);
+                startDate = new DateTime(chosenDate.Year, 1, 1, 0, 0, 0, DateTimeKind.Utc);
                 endDate = startDate.AddYears(1);
                 break;
             default:

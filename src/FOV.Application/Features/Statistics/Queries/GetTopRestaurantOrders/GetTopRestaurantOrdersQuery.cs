@@ -44,7 +44,7 @@ public class GetTopRestaurantOrdersQuery(IUnitOfWorks unitOfWorks) : IRequestHan
                 throw new AppException("TimeFrame không hợp lệ");
         }
 
-        var orders = await _unitOfWorks.OrderRepository.GetAllAsync(o => o.Table);
+        var orders = await _unitOfWorks.OrderRepository.GetAllAsync(o => o.Table.Restaurant);
 
         var filteredOrders = orders.Where(o => o.OrderTime >= startDate && o.OrderTime < endDate)
                                     .GroupBy(o => o.Table.RestaurantId)
