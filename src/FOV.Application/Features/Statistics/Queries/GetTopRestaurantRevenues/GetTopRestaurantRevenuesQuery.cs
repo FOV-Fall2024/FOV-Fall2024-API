@@ -17,7 +17,6 @@ public class GetTopRestaurantRevenuesQuery(IUnitOfWorks unitOfWorks) : IRequestH
 
     public async Task<List<RestaurantRevenuesDto>> Handle(GetTopRestaurantRevenuesCommand request, CancellationToken cancellationToken)
     {
-        List<Domain.Entities.PaymentAggregator.Payments> payments = new();
         DateTime startDate, endDate;
 
         var chosenDate = (request.ChosenDate ?? DateTime.Now).ToUniversalTime();
@@ -40,15 +39,10 @@ public class GetTopRestaurantRevenuesQuery(IUnitOfWorks unitOfWorks) : IRequestH
                 throw new AppException("TimeFrame không hợp lệ");
         }
 
-        payments = await _unitOfWorks.PaymentRepository.WhereAsync(
+        var payments = await _unitOfWorks.PaymentRepository.WhereAsync(
             p => p.PaymentStatus == Domain.Entities.PaymentAggregator.Enums.PaymentStatus.Paid &&
-                    p.PaymentDate >= startDate && p.PaymentDate < endDate,
+                 p.PaymentDate >= startDate && p.PaymentDate < endDate,
             p => p.Order.Table.Restaurant);
-
-        if (!payments.Any())
-        {
-            return new List<RestaurantRevenuesDto>();
-        }
 
         var restaurantRevenue = payments
             .GroupBy(p => p.Order.Table.RestaurantId)
@@ -57,6 +51,15 @@ public class GetTopRestaurantRevenuesQuery(IUnitOfWorks unitOfWorks) : IRequestH
                 g.Sum(p => p.FinalAmount)
             ))
             .ToList();
+
+        var allRestaurants = await _unitOfWorks.RestaurantRepository.GetAllAsync();
+        foreach (var restaurant in allRestaurants)
+        {
+            if (restaurantRevenue.All(r => r.RestaurantName != restaurant.RestaurantName))
+            {
+                restaurantRevenue.Add(new RestaurantRevenuesDto(restaurant.RestaurantName, 0));
+            }
+        }
 
         var sortedRevenue = request.SortAscending
             ? restaurantRevenue.OrderBy(r => r.TotalRevenues).ToList()

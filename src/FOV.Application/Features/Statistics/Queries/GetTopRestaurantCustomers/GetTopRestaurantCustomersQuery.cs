@@ -13,47 +13,51 @@ public record RestaurantCustomersDto(string RestaurantName, int TotalCustomers);
 public class GetTopRestaurantCustomersQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetTopRestaurantCustomersCommand, List<RestaurantCustomersDto>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
+
     public async Task<List<RestaurantCustomersDto>> Handle(GetTopRestaurantCustomersCommand request, CancellationToken cancellationToken)
     {
-        var customers = await _unitOfWorks.CustomerRepository.GetAllAsync();
-        var chosenDate = request.ChosenDate ?? DateTime.Now;
         DateTime startDate, endDate;
+        var chosenDate = (request.ChosenDate ?? DateTime.Now).ToUniversalTime();
 
         switch (request.TimeFrame)
         {
             case TimeFrame.Week:
-                startDate = chosenDate.AddDays(DayOfWeek.Monday - chosenDate.DayOfWeek);
-                endDate = startDate.AddDays(7);
+                startDate = chosenDate.AddDays(DayOfWeek.Monday - chosenDate.DayOfWeek).ToUniversalTime();
+                endDate = startDate.AddDays(7).ToUniversalTime();
                 break;
-
             case TimeFrame.Month:
-                startDate = new DateTime(chosenDate.Year, chosenDate.Month, 1);
+                startDate = new DateTime(chosenDate.Year, chosenDate.Month, 1, 0, 0, 0, DateTimeKind.Utc);
                 endDate = startDate.AddMonths(1);
                 break;
-
             case TimeFrame.Year:
-                startDate = new DateTime(chosenDate.Year, 1, 1);
+                startDate = new DateTime(chosenDate.Year, 1, 1, 0, 0, 0, DateTimeKind.Utc);
                 endDate = startDate.AddYears(1);
                 break;
-
             default:
                 throw new Exception("Invalid TimeFrame");
         }
 
-        var filteredCustomers = customers.Where(c => c.Created >= startDate && c.Created < endDate).ToList();
+        var restaurants = await _unitOfWorks.RestaurantRepository.GetAllAsync();
 
-        var restaurantCustomerCounts = filteredCustomers
-            .GroupBy(c => c.Orders.FirstOrDefault()?.Table.RestaurantId)
-            .Select(g => new RestaurantCustomersDto(
-                RestaurantName: g.First().Orders.FirstOrDefault()?.Table.Restaurant.RestaurantName ?? "Unknown",
-                TotalCustomers: g.Count()
-            ))
+        var orders = await _unitOfWorks.OrderRepository.WhereAsync(
+            o => o.Created >= startDate && o.Created <= endDate,
+            o => o.Table.Restaurant
+        );
+
+        var restaurantCustomersQuery = restaurants
+            .GroupJoin(orders,
+                restaurant => restaurant.Id,
+                order => order.Table.Restaurant.Id,
+                (restaurant, orderGroup) => new RestaurantCustomersDto(
+                    RestaurantName: restaurant.RestaurantName,
+                    TotalCustomers: orderGroup.Select(o => o.CustomerId).Distinct().Count()
+                ))
             .ToList();
 
-        var sortedResults = request.SortAscending
-            ? restaurantCustomerCounts.OrderBy(r => r.TotalCustomers).ToList()
-            : restaurantCustomerCounts.OrderByDescending(r => r.TotalCustomers).ToList();
+        var sortedRestaurantCustomers = request.SortAscending
+            ? restaurantCustomersQuery.OrderBy(r => r.TotalCustomers).ToList()
+            : restaurantCustomersQuery.OrderByDescending(r => r.TotalCustomers).ToList();
 
-        return sortedResults;
+        return sortedRestaurantCustomers;
     }
 }

@@ -14,29 +14,29 @@ namespace FOV.Application.Features.Statistics.Queries.GetTopRestaurantOrders;
 
 public record GetTopRestaurantOrdersCommand(TimeFrame TimeFrame, DateTime? ChosenDate = null, bool SortAscending = false) : IRequest<List<RestaurantOrdersDto>>;
 public record RestaurantOrdersDto(string RestaurantName, int TotalOrders);
-
 public class GetTopRestaurantOrdersQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetTopRestaurantOrdersCommand, List<RestaurantOrdersDto>>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
+
     public async Task<List<RestaurantOrdersDto>> Handle(GetTopRestaurantOrdersCommand request, CancellationToken cancellationToken)
     {
-        var chosenDate = request.ChosenDate ?? DateTime.Now;
         DateTime startDate, endDate;
+        var chosenDate = (request.ChosenDate ?? DateTime.Now).ToUniversalTime();
 
         switch (request.TimeFrame)
         {
             case TimeFrame.Week:
-                startDate = chosenDate.AddDays(DayOfWeek.Monday - chosenDate.DayOfWeek);
-                endDate = startDate.AddDays(7);
+                startDate = chosenDate.AddDays(DayOfWeek.Monday - chosenDate.DayOfWeek).ToUniversalTime();
+                endDate = startDate.AddDays(7).ToUniversalTime();
                 break;
 
             case TimeFrame.Month:
-                startDate = new DateTime(chosenDate.Year, chosenDate.Month, 1);
+                startDate = new DateTime(chosenDate.Year, chosenDate.Month, 1, 0, 0, 0, DateTimeKind.Utc);
                 endDate = startDate.AddMonths(1);
                 break;
 
             case TimeFrame.Year:
-                startDate = new DateTime(chosenDate.Year, 1, 1);
+                startDate = new DateTime(chosenDate.Year, 1, 1, 0, 0, 0, DateTimeKind.Utc);
                 endDate = startDate.AddYears(1);
                 break;
 
@@ -44,19 +44,34 @@ public class GetTopRestaurantOrdersQuery(IUnitOfWorks unitOfWorks) : IRequestHan
                 throw new AppException("TimeFrame không hợp lệ");
         }
 
-        var orders = await _unitOfWorks.OrderRepository.GetAllAsync(o => o.Table.Restaurant);
+        var orders = await _unitOfWorks.OrderRepository.WhereAsync(
+            o => o.OrderTime >= startDate && o.OrderTime < endDate,
+            o => o.Table.Restaurant
+        );
 
-        var filteredOrders = orders.Where(o => o.OrderTime >= startDate && o.OrderTime < endDate)
-                                    .GroupBy(o => o.Table.RestaurantId)
-                                    .Select(g => new RestaurantOrdersDto(
-                                        RestaurantName: g.First().Table.Restaurant.RestaurantName,
-                                        TotalOrders: g.Count()
-                                    ));
+        var restaurantOrderCounts = orders
+            .GroupBy(o => o.Table.RestaurantId)
+            .Select(g => new RestaurantOrdersDto(
+                RestaurantName: g.First().Table.Restaurant.RestaurantName,
+                TotalOrders: g.Count()
+            ))
+            .ToList();
+
+        var allRestaurants = await _unitOfWorks.RestaurantRepository.GetAllAsync();
+
+        foreach (var restaurant in allRestaurants)
+        {
+            if (restaurantOrderCounts.All(r => r.RestaurantName != restaurant.RestaurantName))
+            {
+                restaurantOrderCounts.Add(new RestaurantOrdersDto(restaurant.RestaurantName, 0));
+            }
+        }
 
         var sortedOrders = request.SortAscending
-            ? filteredOrders.OrderBy(o => o.TotalOrders).ToList()
-            : filteredOrders.OrderByDescending(o => o.TotalOrders).ToList();
+            ? restaurantOrderCounts.OrderBy(r => r.TotalOrders).ToList()
+            : restaurantOrderCounts.OrderByDescending(r => r.TotalOrders).ToList();
 
         return sortedOrders;
     }
 }
+

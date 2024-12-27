@@ -21,7 +21,7 @@ using StackExchange.Redis;
 namespace FOV.Application.Features.Orders.Queries.GetOrders;
 
 public record GetOrdersRequest(PagingRequest? PagingRequest, Guid? Id, OrderStatus? OrderStatus, string? PhoneNumber, DateTime? OrderTime, Guid? TableId) : IRequest<PagedResult<GetOrdersResponse>>;
-public record GetOrdersResponse(Guid Id, string OrderStatus, decimal TotalPrice, decimal ReduceAmount, decimal FinalAmount, DateTime OrderTime, Guid TableId, int TableNumber, string CustomerName, string? PhoneNumber, string? Feedback, DateTime CreatedDate);
+public record GetOrdersResponse(Guid Id, string OrderStatus, decimal TotalPrice, decimal ReduceAmount, decimal FinalAmount, bool IsAdminConfirm, string? PaymentMethods, DateTime OrderTime, Guid TableId, int TableNumber, string CustomerName, string? PhoneNumber, string? Feedback, DateTime CreatedDate);
 
 public class GetOrdersQuery : IRequestHandler<GetOrdersRequest, PagedResult<GetOrdersResponse>>
 {
@@ -99,15 +99,18 @@ public class GetOrdersQuery : IRequestHandler<GetOrdersRequest, PagedResult<GetO
                 o.TotalPrice,
                 payment?.ReduceAmount ?? 0,
                 payment?.FinalAmount ?? 0,
+                payment?.IsAdminConfirm ?? false,
+                payment?.PaymentMethods.ToString() ?? null,
                 o.OrderTime,
                 o.TableId,
                 o.Table.TableNumber,
                 o.Customer != null ? o.Customer.FullName : "Khách",
                 o.Customer?.PhoneNumber,
                 o.Feedback,
-            o.Created
+                o.Created
             );
         }).ToList();
+
 
         var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
         var sortedResults = PaginationHelper<GetOrdersResponse>.Sorting(sortType, mappedOrder, sortField);
