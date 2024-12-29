@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FOV.Application.Common.Exceptions;
 using FOV.Application.Features.Shared.TimeFrame;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
@@ -34,7 +35,7 @@ public class GetTopRestaurantCustomersQuery(IUnitOfWorks unitOfWorks) : IRequest
                 endDate = startDate.AddYears(1);
                 break;
             default:
-                throw new Exception("Invalid TimeFrame");
+                throw new AppException("Invalid TimeFrame");
         }
 
         var restaurants = await _unitOfWorks.RestaurantRepository.GetAllAsync();

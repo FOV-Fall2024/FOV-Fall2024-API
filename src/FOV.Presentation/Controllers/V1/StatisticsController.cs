@@ -1,4 +1,5 @@
 ﻿using FOV.Application.Features.Statistics.Queries.GetCurrentStatistic;
+using FOV.Application.Features.Statistics.Queries.GetDetailsRestaurants;
 using FOV.Application.Features.Statistics.Queries.GetTopNCombo;
 using FOV.Application.Features.Statistics.Queries.GetTopNDishGeneral;
 using FOV.Application.Features.Statistics.Queries.GetTopRestaurantCustomers;
@@ -65,6 +66,12 @@ public class StatisticsController(ISender sender) : DefaultController
     }
     [HttpGet("top-restaurant-customers")]
     public async Task<IActionResult> GetTopRestaurantCustomers([FromQuery] GetTopRestaurantCustomersCommand command)
+    {
+        var result = await _sender.Send(command);
+        return Ok(result);
+    }
+    [HttpGet("details-restaurant")]
+    public async Task<IActionResult> GetDetailsRestaurants([FromQuery] GetDetailsRestaurantsDetailsCommand command)
     {
         var result = await _sender.Send(command);
         return Ok(result);
