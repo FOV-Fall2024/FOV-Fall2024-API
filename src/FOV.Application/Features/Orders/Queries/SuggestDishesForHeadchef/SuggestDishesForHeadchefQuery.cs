@@ -9,7 +9,6 @@ using System.Linq.Expressions;
 namespace FOV.Application.Features.Orders.Queries.SuggestDishesForHeadchef;
 
 public record SuggestDishesForHeadchefCommand(PagingRequest? PagingRequest, Guid RestaurantId) : IRequest<PagedResult<SuggestDishesForHeadchefResponse>>;
-//them thang image, them quantity
 public record SuggestDishesForHeadchefResponse(Guid? OrderId, Guid Id, int TableNumber, string? DishName, string? ComboName, string Image, int Quantity, string? Note, DateTime CreatedDate);
 public class SuggestDishesForHeadchefQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<SuggestDishesForHeadchefCommand, PagedResult<SuggestDishesForHeadchefResponse>>
 {

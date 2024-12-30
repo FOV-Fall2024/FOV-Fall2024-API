@@ -48,7 +48,7 @@ public class PaymentController(ISender sender) : DefaultController
         var response = await _sender.Send(command);
         return Ok(response);
     }
-    [Authorize(Roles = Role.Administrator)]
+    [Authorize(Roles = Role.Manager)]
     [HttpPatch("{orderId:guid}/confirm-received-money")]
     public async Task<IActionResult> ConfirmReceivedMoney(Guid orderId)
     {
