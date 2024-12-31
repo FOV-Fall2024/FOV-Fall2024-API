@@ -10,9 +10,10 @@ using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
 namespace FOV.Application.Features.Statistics.Queries.GetDetailsRestaurants;
-public record GetDetailsRestaurantsDetailsCommand(TimeFrame TimeFrame, Guid RestaurantId, DateTime? ChosenDate = null, int TopNDish = 5, int TopNCombo = 5, bool SortAscending = false) : IRequest<GetDetailsRestaurantsDetailsResponse>;
-public record GetDetailsRestaurantsDetailsResponse(Guid RestaurantId, string RestaurantName, string Address, string RestaurantPhone, string RestaurantStatus, ICollection<TopDishDtos> TopDishes, ICollection<GetTopComboDtos> TopCombos);
-public sealed record TopDishDtos(Guid DishId, string DishName, string DishDescription, decimal? Price, string DishStatus, int Quantity, bool isRefundDish);
+public record GetDetailsRestaurantsDetailsCommand(TimeFrame TimeFrame, Guid RestaurantId, DateTime? ChosenDate = null, int TopNDish = 5, int TopNRefundableDish = 5, int TopNCombo = 5, bool SortAscending = false) : IRequest<GetDetailsRestaurantsDetailsResponse>;
+public record GetDetailsRestaurantsDetailsResponse(Guid RestaurantId, string RestaurantName, string Address, string RestaurantPhone, string RestaurantStatus, ICollection<TopDishDtos> TopDishes, ICollection<TopRefundableDishDtos> TopRefundableDish, ICollection<GetTopComboDtos> TopCombos);
+public sealed record TopDishDtos(Guid DishId, string DishName, string DishDescription, decimal? Price, string DishStatus, int Quantity);
+public sealed record TopRefundableDishDtos(Guid DishId, string DishName, string DishDescription, decimal? Price, string DishStatus, int Quantity);
 public sealed record GetTopComboDtos(Guid ComboId, string ComboName, decimal Price, decimal PercentReduce, string ComboStatus, int Quantity);
 public class GetDetailsRestaurantsQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<GetDetailsRestaurantsDetailsCommand, GetDetailsRestaurantsDetailsResponse>
 {
@@ -57,26 +58,43 @@ public class GetDetailsRestaurantsQuery(IUnitOfWorks unitOfWorks) : IRequestHand
                 TotalQuantity = g.Sum(od => od.Quantity),
                 IsRefundDish = g.Any(od => od.IsRefund)
             })
+            .ToList();
+
+        var normalDishes = topDishes
+            .Where(d => !d.IsRefundDish)
             .OrderBy(x => request.SortAscending ? x.TotalQuantity : -x.TotalQuantity)
-            .Take(request.TopNDish)
-            .ToList();
+            .Take(request.TopNDish);
 
-        var dishes = await _unitOfWorks.DishRepository.WhereAsync(
-            d => topDishes.Select(t => t.DishId).Contains(d.Id), d => d.DishGeneral
-        );
+        var refundDishes = topDishes
+            .Where(d => d.IsRefundDish)
+            .OrderBy(x => request.SortAscending ? x.TotalQuantity : -x.TotalQuantity)
+            .Take(request.TopNRefundableDish);
 
-        var dishDtos = dishes
-            .Select(d => new TopDishDtos(
-                d.Id,
-                d.DishGeneral.DishName,
-                d.DishGeneral.DishDescription,
-                d.Price,
-                d.Status.ToString(),
-                topDishes.FirstOrDefault(t => t.DishId == d.Id)?.TotalQuantity ?? 0,
-                topDishes.FirstOrDefault(t => t.DishId == d.Id)?.IsRefundDish ?? false
-            ))
-            .OrderBy(d => request.SortAscending ? d.Quantity : -d.Quantity)
-            .ToList();
+        var normalDishDtos = (await _unitOfWorks.DishRepository.WhereAsync(
+            d => normalDishes.Select(t => t.DishId).Contains(d.Id), d => d.DishGeneral
+                )).Select(d => new TopDishDtos(
+                    d.Id,
+                    d.DishGeneral.DishName,
+                    d.DishGeneral.DishDescription,
+                    d.Price,
+                    d.Status.ToString(),
+                    normalDishes.FirstOrDefault(t => t.DishId == d.Id)?.TotalQuantity ?? 0
+                ))
+                .OrderBy(x => request.SortAscending ? x.Quantity : -x.Quantity)
+                .ToList();
+
+        var refundDishDtos = (await _unitOfWorks.DishRepository.WhereAsync(
+            d => refundDishes.Select(t => t.DishId).Contains(d.Id), d => d.DishGeneral
+                )).Select(d => new TopRefundableDishDtos(
+                    d.Id,
+                    d.DishGeneral.DishName,
+                    d.DishGeneral.DishDescription,
+                    d.Price,
+                    d.Status.ToString(),
+                    refundDishes.FirstOrDefault(t => t.DishId == d.Id)?.TotalQuantity ?? 0
+                ))
+                .OrderBy(x => request.SortAscending ? x.Quantity : -x.Quantity)
+                .ToList();
 
         var topCombos = orders
             .SelectMany(o => o.OrderDetails)
@@ -113,7 +131,8 @@ public class GetDetailsRestaurantsQuery(IUnitOfWorks unitOfWorks) : IRequestHand
             restaurant.Address,
             restaurant.RestaurantPhone,
             restaurant.Status.ToString(),
-            dishDtos,
+            normalDishDtos,
+            refundDishDtos,
             comboDtos
         );
     }
