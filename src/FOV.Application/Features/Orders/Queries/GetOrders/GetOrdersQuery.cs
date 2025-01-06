@@ -91,7 +91,10 @@ public class GetOrdersQuery : IRequestHandler<GetOrdersRequest, PagedResult<GetO
         }
         var mappedOrder = orders.Select(o =>
         {
-            var payment = o.Payments.FirstOrDefault(p => p.OrderId == o.Id);
+            var payment = o.Payments
+                //.Where(x => x.PaymentStatus != PaymentStatus.Failed && x.PaymentStatus != PaymentStatus.Paid)
+                .OrderByDescending(x => x.Created)
+                .FirstOrDefault();
 
             return new GetOrdersResponse(
                 o.Id,

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using FOV.Application.Features.Orders.Responses;
 using FOV.Domain.Entities.OrderAggregator.Enums;
+using FOV.Domain.Entities.PaymentAggregator.Enums;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
@@ -12,6 +13,7 @@ public record GetOrderDetailsResponse(
     string OrderStatus,
     decimal TotalPrice,
     DateTime? OrderTime,
+    string? Vnp_TxnRef,
     string? Feedback,
     string? PaymentEmployeeCode,
     string? PaymentEmployeeName,
@@ -32,7 +34,6 @@ public record OrderDetailsDto(
     decimal Price,
     string Note,
     bool? IsAddMore,
-    string? Vnp_TxnRef,
     string? ConfirmOrderEmployeeCode,
     string? ConfirmOrderEmployeeName,
     string? CookedEmployeeCode,
@@ -103,7 +104,6 @@ public class GetOrderDetailsQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<Ge
                 od.Price,
                 od.Note,
                 od.IsAddMore,
-                od.Order?.Payments.FirstOrDefault()?.VnpTxnRef,
                 confirmOrderResponsibility?.EmployeeCode,
                 confirmOrderResponsibility?.EmployeeName,
                 cookedResponsibility?.EmployeeCode,
@@ -122,6 +122,9 @@ public class GetOrderDetailsQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<Ge
             order.OrderStatus.ToString(),
             order.TotalPrice,
             order.OrderTime,
+            order.Payments.Where(x => x.PaymentStatus != PaymentStatus.Failed && x.PaymentStatus != PaymentStatus.Paid)
+                .OrderByDescending(x => x.Created)
+                .FirstOrDefault().VnpTxnRef,
             order.Feedback,
             orderResponsibilities.FirstOrDefault(or => or.OrderResponsibilityType == OrderResponsibilityType.Payment)?.EmployeeCode,
             orderResponsibilities.FirstOrDefault(or => or.OrderResponsibilityType == OrderResponsibilityType.Payment)?.EmployeeName,
