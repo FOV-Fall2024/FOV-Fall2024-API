@@ -35,12 +35,13 @@ public class FinishPaymentHandler(IUnitOfWorks unitOfWorks, OrderHub orderHub, I
         var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.Payments, t => t.Table, o => o.OrderDetails)
             ?? throw new AppException("Đơn hàng không tồn tại");
 
-        var payment = await _unitOfWorks.PaymentRepository.WhereAsync(x => x.OrderId == order.Id && x.PaymentStatus != PaymentStatus.Failed && x.PaymentStatus != PaymentStatus.Paid);
-        if (payment == null)
+        var lastPayment = await _unitOfWorks.PaymentRepository
+            .FirstOrDefaultAsync(x => x.OrderId == order.Id && x.PaymentStatus != PaymentStatus.Failed && x.PaymentStatus != PaymentStatus.Paid);
+
+        if (lastPayment == null)
         {
-            throw new AppException("Thông tin thanh toán không tồn tại");
+            throw new AppException("Không tìm thấy thông tin thanh toán.");
         }
-        var lastPayment = payment.OrderByDescending(x => x.Created).FirstOrDefault();
 
         if (lastPayment.PaymentStatus != PaymentStatus.Paid)
         {
