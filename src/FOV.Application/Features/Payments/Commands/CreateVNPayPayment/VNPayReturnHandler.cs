@@ -49,15 +49,6 @@ namespace FOV.Application.Features.Payments.Commands
             }
             #endregion
 
-            if (request.vnp_ResponseCode != "00")
-            {
-                return new VNPayCallbackResponse
-                {
-                    Success = false,
-                    Message = "Payment failed. Response code: " + request.vnp_ResponseCode + " - " + request.vnp_TransactionStatus
-                };
-            }
-
             var payment = await _unitOfWorks.PaymentRepository.GetPaymentByTxnRefAsync(request.vnp_TxnRef);
             if (payment == null)
             {
@@ -69,6 +60,25 @@ namespace FOV.Application.Features.Payments.Commands
             }
 
             var order = await _unitOfWorks.OrderRepository.GetByIdAsync(payment.OrderId, x => x.OrderDetails);
+            if (order == null)
+            {
+                return new VNPayCallbackResponse
+                {
+                    Success = false,
+                    Message = "Order not found for the provided payment."
+                };
+            }
+
+            if (request.vnp_ResponseCode != "00")
+            {
+                order.OrderStatus = OrderStatus.Service;
+                payment.PaymentStatus = Domain.Entities.PaymentAggregator.Enums.PaymentStatus.Failed;
+                return new VNPayCallbackResponse
+                {
+                    Success = false,
+                    Message = "Payment failed. Response code: " + request.vnp_ResponseCode + " - " + request.vnp_TransactionStatus
+                };
+            }
 
             payment.PaymentStatus = Domain.Entities.PaymentAggregator.Enums.PaymentStatus.Paid;
             order.OrderStatus = Domain.Entities.OrderAggregator.Enums.OrderStatus.Finish;
