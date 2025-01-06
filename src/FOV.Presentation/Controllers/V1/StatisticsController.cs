@@ -5,6 +5,7 @@ using FOV.Application.Features.Statistics.Queries.GetTopNDishGeneral;
 using FOV.Application.Features.Statistics.Queries.GetTopRestaurantCustomers;
 using FOV.Application.Features.Statistics.Queries.GetTopRestaurantOrders;
 using FOV.Application.Features.Statistics.Queries.GetTopRestaurantRevenues;
+using FOV.Application.Features.Statistics.Queries.GetTopUnpopular;
 using FOV.Application.Features.Statistics.Queries.GetTotalCustomers;
 using FOV.Application.Features.Statistics.Queries.GetTotalOrders;
 using FOV.Application.Features.Statistics.Queries.GetTotalRevenues;
@@ -72,6 +73,12 @@ public class StatisticsController(ISender sender) : DefaultController
     }
     [HttpGet("details-restaurant")]
     public async Task<IActionResult> GetDetailsRestaurants([FromQuery] GetDetailsRestaurantsDetailsCommand command)
+    {
+        var result = await _sender.Send(command);
+        return Ok(result);
+    }
+    [HttpGet("top-unpopular")]
+    public async Task<IActionResult> GetTopUnpopular([FromQuery] GetTopUnpopularCommand command)
     {
         var result = await _sender.Send(command);
         return Ok(result);
