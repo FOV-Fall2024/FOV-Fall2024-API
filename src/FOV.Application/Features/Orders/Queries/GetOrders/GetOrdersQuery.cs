@@ -91,9 +91,13 @@ public class GetOrdersQuery : IRequestHandler<GetOrdersRequest, PagedResult<GetO
         }
         if (request.IsAdminConfirm.HasValue)
         {
-            orders = orders.OrderBy(o => o.Payments.Where(x => x.PaymentStatus != PaymentStatus.Failed && x.PaymentStatus != PaymentStatus.Paid)
-                .OrderByDescending(x => x.Created)
-                .FirstOrDefault().IsAdminConfirm == request.IsAdminConfirm.Value).ToList();
+            orders = orders.Where(o =>
+            {
+                var latestPayment = o.Payments.OrderByDescending(x => x.Created).FirstOrDefault();
+                return latestPayment == null
+                    ? !request.IsAdminConfirm.Value 
+                    : latestPayment.IsAdminConfirm == request.IsAdminConfirm.Value;
+            }).ToList();
         }
 
         var mappedOrder = orders.Select(o =>
@@ -121,12 +125,16 @@ public class GetOrdersQuery : IRequestHandler<GetOrdersRequest, PagedResult<GetO
             );
         }).ToList();
 
+        mappedOrder = mappedOrder
+            .OrderBy(o => o.OrderStatus == OrderStatus.Canceled.ToString())
+            .ThenByDescending(o => o.CreatedDate)
+            .ToList();
 
         var (page, pageSize, sortType, sortField) = PaginationUtils.GetPaginationAndSortingValues(request.PagingRequest);
+        sortField = sortField ?? nameof(GetOrdersResponse.IsAdminConfirm);
         var sortedResults = PaginationHelper<GetOrdersResponse>.Sorting(sortType, mappedOrder, sortField);
         var result = PaginationHelper<GetOrdersResponse>.Paging(sortedResults, page, pageSize);
 
         return result;
     }
-
 }
