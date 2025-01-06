@@ -73,6 +73,8 @@ namespace FOV.Application.Features.Payments.Commands
             {
                 order.OrderStatus = OrderStatus.Service;
                 payment.PaymentStatus = Domain.Entities.PaymentAggregator.Enums.PaymentStatus.Failed;
+                _unitOfWorks.OrderRepository.Update(order);
+                _unitOfWorks.PaymentRepository.Update(payment);
                 await _unitOfWorks.SaveChangeAsync();
                 return new VNPayCallbackResponse
                 {
