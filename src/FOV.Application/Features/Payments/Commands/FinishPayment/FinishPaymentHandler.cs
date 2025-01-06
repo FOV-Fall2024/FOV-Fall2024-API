@@ -33,18 +33,20 @@ public class FinishPaymentHandler(IUnitOfWorks unitOfWorks, OrderHub orderHub, I
             ?? throw new AppException("Employee not found");
 
         var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.Payments, t => t.Table, o => o.OrderDetails)
-            ?? throw new Exception("Đơn hàng không tồn tại");
+            ?? throw new AppException("Đơn hàng không tồn tại");
 
-        var payment = order.Payments.FirstOrDefault();
+        var payment = await _unitOfWorks.PaymentRepository.WhereAsync(x => x.OrderId == order.Id && x.PaymentStatus != PaymentStatus.Failed && x.PaymentStatus != PaymentStatus.Paid);
         if (payment == null)
         {
-            throw new Exception("Thông tin thanh toán không tồn tại");
+            throw new AppException("Thông tin thanh toán không tồn tại");
         }
+        var lastPayment = payment.OrderByDescending(x => x.Created).FirstOrDefault();
 
-        if (payment.PaymentStatus != PaymentStatus.Paid)
+        if (lastPayment.PaymentStatus != PaymentStatus.Paid)
         {
-            payment.PaymentStatus = PaymentStatus.Paid;
-            _unitOfWorks.PaymentRepository.Update(payment);
+            lastPayment.PaymentMethods = PaymentMethods.Cash;
+            lastPayment.PaymentStatus = PaymentStatus.Paid;
+            _unitOfWorks.PaymentRepository.Update(lastPayment);
         }
 
         if (order.OrderStatus != OrderStatus.Finish)
@@ -80,6 +82,6 @@ public class FinishPaymentHandler(IUnitOfWorks unitOfWorks, OrderHub orderHub, I
         await _unitOfWorks.SaveChangeAsync();
         await _orderHub.UpdateOrderStatus(order.Id, order.OrderStatus.ToString());
 
-        return payment.Id;
+        return lastPayment.Id;
     }
 }
