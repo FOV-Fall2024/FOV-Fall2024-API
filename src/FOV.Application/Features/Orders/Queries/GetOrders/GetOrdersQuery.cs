@@ -20,7 +20,7 @@ using StackExchange.Redis;
 
 namespace FOV.Application.Features.Orders.Queries.GetOrders;
 
-public record GetOrdersRequest(PagingRequest? PagingRequest, Guid? Id, OrderStatus? OrderStatus, string? PhoneNumber, DateTime? OrderTime, Guid? TableId) : IRequest<PagedResult<GetOrdersResponse>>;
+public record GetOrdersRequest(PagingRequest? PagingRequest, Guid? Id, OrderStatus? OrderStatus, bool? IsAdminConfirm, string? PhoneNumber, DateTime? OrderTime, Guid? TableId) : IRequest<PagedResult<GetOrdersResponse>>;
 public record GetOrdersResponse(Guid Id, string OrderStatus, decimal TotalPrice, decimal ReduceAmount, decimal FinalAmount, bool IsAdminConfirm, string? PaymentMethods, DateTime OrderTime, Guid TableId, int TableNumber, string CustomerName, string? PhoneNumber, string? Feedback, DateTime CreatedDate);
 
 public class GetOrdersQuery : IRequestHandler<GetOrdersRequest, PagedResult<GetOrdersResponse>>
@@ -89,6 +89,13 @@ public class GetOrdersQuery : IRequestHandler<GetOrdersRequest, PagedResult<GetO
         {
             orders = orders.Where(o => o.TableId == request.TableId.Value).ToList();
         }
+        if (request.IsAdminConfirm.HasValue)
+        {
+            orders = orders.OrderBy(o => o.Payments.Where(x => x.PaymentStatus != PaymentStatus.Failed && x.PaymentStatus != PaymentStatus.Paid)
+                .OrderByDescending(x => x.Created)
+                .FirstOrDefault().IsAdminConfirm == request.IsAdminConfirm.Value).ToList();
+        }
+
         var mappedOrder = orders.Select(o =>
         {
             var payment = o.Payments

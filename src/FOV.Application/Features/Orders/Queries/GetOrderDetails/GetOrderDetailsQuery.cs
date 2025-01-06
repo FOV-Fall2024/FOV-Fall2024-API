@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using FOV.Application.Common.Exceptions;
 using FOV.Application.Features.Orders.Responses;
 using FOV.Domain.Entities.OrderAggregator.Enums;
 using FOV.Domain.Entities.PaymentAggregator.Enums;
@@ -56,7 +57,12 @@ public class GetOrderDetailsQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<Ge
     public async Task<GetOrderDetailsResponse> Handle(GetOrderDetailsCommand request, CancellationToken cancellationToken)
     {
         var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.OrderDetails, o => o.Payments)
-            ?? throw new Exception("Order not found.");
+            ?? throw new AppException("Order not found.");
+
+        var latestPayment = order.Payments
+            .Where(x => x.PaymentStatus != PaymentStatus.Failed && x.PaymentStatus != PaymentStatus.Paid)
+            .OrderByDescending(x => x.Created)
+            .FirstOrDefault();
 
         var orderResponsibilities = await _unitOfWorks.OrderResponsibilityRepository
             .WhereAsync(or => or.OrderId == request.OrderId);
@@ -122,9 +128,7 @@ public class GetOrderDetailsQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<Ge
             order.OrderStatus.ToString(),
             order.TotalPrice,
             order.OrderTime,
-            order.Payments.Where(x => x.PaymentStatus != PaymentStatus.Failed && x.PaymentStatus != PaymentStatus.Paid)
-                .OrderByDescending(x => x.Created)
-                .FirstOrDefault().VnpTxnRef,
+            latestPayment?.VnpTxnRef ?? null,
             order.Feedback,
             orderResponsibilities.FirstOrDefault(or => or.OrderResponsibilityType == OrderResponsibilityType.Payment)?.EmployeeCode,
             orderResponsibilities.FirstOrDefault(or => or.OrderResponsibilityType == OrderResponsibilityType.Payment)?.EmployeeName,
