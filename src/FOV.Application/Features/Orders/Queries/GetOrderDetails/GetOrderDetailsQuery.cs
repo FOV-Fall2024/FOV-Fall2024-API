@@ -32,6 +32,7 @@ public record OrderDetailsDto(
     decimal Price,
     string Note,
     bool? IsAddMore,
+    string? Vnp_TxnRef,
     string? ConfirmOrderEmployeeCode,
     string? ConfirmOrderEmployeeName,
     string? CookedEmployeeCode,
@@ -53,7 +54,7 @@ public class GetOrderDetailsQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<Ge
 
     public async Task<GetOrderDetailsResponse> Handle(GetOrderDetailsCommand request, CancellationToken cancellationToken)
     {
-        var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.OrderDetails)
+        var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.OrderDetails, o => o.Payments)
             ?? throw new Exception("Order not found.");
 
         var orderResponsibilities = await _unitOfWorks.OrderResponsibilityRepository
@@ -62,6 +63,7 @@ public class GetOrderDetailsQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<Ge
         var orderDetails = await _unitOfWorks.OrderDetailRepository.WhereAsync(
             od => od.OrderId == order.Id,
             od => od.Order,
+            od => od.Order.Payments,
             od => od.Combo,
             od => od.Dish,
             od => od.Dish.DishGeneral,
@@ -101,6 +103,7 @@ public class GetOrderDetailsQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<Ge
                 od.Price,
                 od.Note,
                 od.IsAddMore,
+                od.Order?.Payments.FirstOrDefault()?.VnpTxnRef,
                 confirmOrderResponsibility?.EmployeeCode,
                 confirmOrderResponsibility?.EmployeeName,
                 cookedResponsibility?.EmployeeCode,
