@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FOV.Application.Common.Behaviours.Claim;
 using FOV.Application.Common.Exceptions;
+using FOV.Domain.Entities.PaymentAggregator.Enums;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using MediatR;
 
@@ -18,7 +19,11 @@ public class ConfirmReceivedMoneyHandler(IUnitOfWorks unitOfWorks) : IRequestHan
         var order = await _unitOfWorks.OrderRepository.GetByIdAsync(request.OrderId, o => o.Payments, t => t.Table, o => o.OrderDetails)
             ?? throw new AppException("Đơn hàng không tồn tại");
 
-        var payment = order.Payments.FirstOrDefault();
+        var payment = order.Payments
+            .Where(x => x.PaymentStatus != PaymentStatus.Failed && x.PaymentStatus != PaymentStatus.Paid)
+            .OrderByDescending(x => x.Created)
+            .FirstOrDefault();
+
         if (payment == null)
         {
             throw new AppException("Thông tin thanh toán không tồn tại");
