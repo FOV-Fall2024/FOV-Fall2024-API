@@ -49,8 +49,8 @@ public class GetTopUnpopularQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<Ge
             o => o.OrderDetails
         );
 
-        var allDishes = await _unitOfWorks.DishRepository.WhereAsync(d => d.RestaurantId == request.RestaurantId, d => d.DishGeneral);
-
+        var allDishes = await _unitOfWorks.DishRepository.WhereAsync(d => d.RestaurantId == request.RestaurantId, d => d.DishGeneral, d => d.RefundDishInventory);
+        var refundDishInventory = await _unitOfWorks.RefundDishInventoryRepository.WhereAsync(rdi => rdi.Dish.RestaurantId == request.RestaurantId, rdi => rdi.Dish, rdi => rdi.Dish.DishGeneral);
         var topDishes = orders
             .SelectMany(o => o.OrderDetails)
             .Where(od => od.ProductId.HasValue)
@@ -100,15 +100,14 @@ public class GetTopUnpopularQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<Ge
             .Take(request.TopNDish)
             .ToList();
 
-        var allRefundableDishDtos = topDishes
-            .Where(d => d.IsRefundDish)
-            .Select(td => new TopRefundableDishDtos(
-                td.DishId ?? Guid.Empty,
-                allDishes.First(d => d.Id == td.DishId).DishGeneral.DishName,
-                allDishes.First(d => d.Id == td.DishId).DishGeneral.DishDescription,
-                allDishes.First(d => d.Id == td.DishId).Price,
-                allDishes.First(d => d.Id == td.DishId).Status.ToString(),
-                td.TotalQuantity
+        var allRefundableDishDtos = refundDishInventory
+            .Select(rdi => new TopRefundableDishDtos(
+                rdi.DishId,
+                rdi.Dish.DishGeneral.DishName,
+                rdi.Dish.DishGeneral.DishDescription,
+                rdi.Dish.Price,
+                rdi.Dish.Status.ToString(),
+                topDishes.FirstOrDefault(td => td.DishId == rdi.DishId)?.TotalQuantity ?? 0
             ))
             .OrderByDescending(d => request.SortAscending ? d.Quantity : -d.Quantity)
             .Take(request.TopNRefundableDish)
