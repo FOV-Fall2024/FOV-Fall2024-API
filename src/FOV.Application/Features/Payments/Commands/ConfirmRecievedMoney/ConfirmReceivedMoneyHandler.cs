@@ -20,7 +20,7 @@ public class ConfirmReceivedMoneyHandler(IUnitOfWorks unitOfWorks) : IRequestHan
             ?? throw new AppException("Đơn hàng không tồn tại");
 
         var payment = order.Payments
-            .Where(x => x.PaymentStatus != PaymentStatus.Failed && x.PaymentStatus != PaymentStatus.Paid)
+            //.Where(x => x.PaymentStatus != PaymentStatus.Failed && x.PaymentStatus != PaymentStatus.Paid)
             .OrderByDescending(x => x.Created)
             .FirstOrDefault();
 
