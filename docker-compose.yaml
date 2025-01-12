@@ -15,7 +15,7 @@ services:
       - "8080:8080"
     environment:
       - TZ=Etc/UTC
-      - CONNECTIONSTRINGS__PostgresConnection=Host=dpg-ctd6q99u0jms73f3bmjg-a.singapore-postgres.render.com;Port=5432;Database=vrom_db;Username=vrom_db_user;Password=PetEBNZhmP9sYFiyrBAEgmPariwvsp7r;
+      - CONNECTIONSTRINGS__PostgresConnection=Host=dpg-cu1jd0bqf0us73dd2hf0-a.singapore-postgres.render.com;Port=5432;Database=vrom;Username=vrom_admin;Password=8GII27UAP3ybC1BORk9s3rS4rfZ8uB3m;
       - CONNECTIONSTRINGS__RedisConnection=redis:6379
     volumes:
       - data-protection-keys:/home/app/.aspnet/DataProtection-Keys
