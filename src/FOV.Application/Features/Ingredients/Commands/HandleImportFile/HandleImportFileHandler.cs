@@ -39,33 +39,17 @@ public class HandleImportFileHandler(IUnitOfWorks unitOfWorks, IClaimService cla
         // Pre-fetch units for the ingredients
         var ingredientIds = ingredients.Select(i => i.Id).ToList();
 
-        var units = await _unitOfWorks.IngredientUnitRepository
-            .WhereAsync(x => ingredientIds.Contains(x.IngredientId));
-
-        var unitDict = units.GroupBy(u => (u.IngredientId, u.UnitName))
-                            .ToDictionary(g => g.Key, g => g.First());
-
-
         // Loop through the worksheet
         for (int row = 2; row <= rowCount; row++)
         {
             var ingredientName = worksheet.Cells[row, 1].Text;  // Column A
-            var quantityText = worksheet.Cells[row, 2].Text;    // Column B
-            var measurement = worksheet.Cells[row, 3].Text;     // Column C
+            var quantityText = worksheet.Cells[row, 4].Text;    // Column B
 
             if (!ingredientDict.TryGetValue(ingredientName, out var ingredient))
                 continue;
-
-            if (!unitDict.TryGetValue((ingredient.Id, measurement), out var unit))
-                continue;
-
             if (!decimal.TryParse(quantityText, out decimal quantity) || quantity == 0)
                 continue;
-
-            decimal conversionFactor = _unitOfWorks.IngredientRepository.GetTotalConversionFactor(unit.Id);
-            decimal quantityCalculate = quantity * conversionFactor;
-
-            ingredient.AddQuantity(quantityCalculate);
+            ingredient.AddQuantity(quantity);
 
         }
 

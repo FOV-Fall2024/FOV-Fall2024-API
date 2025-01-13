@@ -41,7 +41,8 @@ public class HandleImportFileHandler(IUnitOfWorks
             // Fetch the dish by name and restaurant ID, including its RefundDishInventory
             Dish? dish = await _unitOfWorks.DishRepository.FirstOrDefaultAsync(
                 x => x.DishGeneral.DishName == dishName && x.RestaurantId == _claimService.RestaurantId,
-                x => x.RefundDishInventory
+                x => x.RefundDishInventory,
+                x => x.DishGeneral
             );
 
             if (dish == null || dish.RefundDishInventory == null)
