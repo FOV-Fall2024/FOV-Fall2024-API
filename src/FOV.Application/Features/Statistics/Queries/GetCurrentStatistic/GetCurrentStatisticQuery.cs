@@ -37,7 +37,7 @@ public class GetCurrentStatisticQuery(IUnitOfWorks unitOfWorks, IClaimService cl
         var previousMonthEnd = currentMonthStart.AddDays(-1);
 
         var payments = await _unitOfWorks.PaymentRepository.WhereAsync(p => (!restaurantId.HasValue
-                                                                             || p.Order.Table.RestaurantId == restaurantId) && p.PaymentStatus == Domain.Entities.PaymentAggregator.Enums.PaymentStatus.Paid,
+                                                                             || p.Order.Table.RestaurantId == restaurantId) && p.PaymentStatus == Domain.Entities.PaymentAggregator.Enums.PaymentStatus.Paid && p.IsAdminConfirm,
                                                                        p => p.Order.Table);
 
         var currentRevenue = payments.Where(p => p.PaymentDate >= currentMonthStart).Sum(p => p.FinalAmount);

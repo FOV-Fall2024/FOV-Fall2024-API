@@ -33,13 +33,13 @@ public class GetTotalRevenuesQuery(IUnitOfWorks unitOfWorks, IClaimService claim
             if (request.RestaurantId.HasValue)
             {
                 payments = await _unitOfWorks.PaymentRepository.WhereAsync(
-                    p => p.PaymentStatus == PaymentStatus.Paid && p.Order.Table.RestaurantId == request.RestaurantId,
+                    p => p.PaymentStatus == PaymentStatus.Paid && p.Order.Table.RestaurantId == request.RestaurantId && p.IsAdminConfirm,
                     p => p.Order.Table);
             }
             else
             {
                 payments = await _unitOfWorks.PaymentRepository.WhereAsync(
-                    p => p.PaymentStatus == PaymentStatus.Paid,
+                    p => p.PaymentStatus == PaymentStatus.Paid && p.IsAdminConfirm,
                     p => p.Order.Table);
             }
         }
