@@ -39,7 +39,6 @@ public class TakeImportFileHandler(IUnitOfWorks unitOfWorks, IClaimService claim
             worksheet.Cells[currentRow, 1].Value = ingredient.IngredientGeneral.IngredientName;
             worksheet.Cells[currentRow, 2].Value = 0; // Default Quantity
 
-            // Add list validation for Measurement (Column C)
             var listValidation = worksheet.DataValidations.AddListValidation($"C{currentRow}");
             var conversionQueries = new List<string>();
 
