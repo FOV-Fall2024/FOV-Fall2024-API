@@ -78,14 +78,22 @@ public class GetTopUnpopularQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<Ge
 
         var allNormalDishDtos = topDishes
             .Where(d => !d.IsRefundDish)
-            .Select(td => new TopDishDtos(
-                td.DishId ?? Guid.Empty,
-                allDishes.First(d => d.Id == td.DishId).DishGeneral.DishName,
-                allDishes.First(d => d.Id == td.DishId).DishGeneral.DishDescription,
-                allDishes.First(d => d.Id == td.DishId).Price,
-                allDishes.First(d => d.Id == td.DishId).Status.ToString(),
-                td.TotalQuantity
-            ))
+            .Select(td =>
+            {
+                var dish = allDishes.FirstOrDefault(d => d.Id == td.DishId);
+                if (dish == null)
+                    return null;
+
+                return new TopDishDtos(
+                    td.DishId ?? Guid.Empty,
+                    dish.DishGeneral.DishName,
+                    dish.DishGeneral.DishDescription,
+                    dish.Price,
+                    dish.Status.ToString(),
+                    td.TotalQuantity
+                );
+            })
+            .Where(dto => dto != null) // Exclude null entries
             .Concat(allDishes
                 .Where(d => !topDishes.Any(td => td.DishId == d.Id))
                 .Select(d => new TopDishDtos(
@@ -99,6 +107,7 @@ public class GetTopUnpopularQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<Ge
             .OrderByDescending(d => request.SortAscending ? d.Quantity : -d.Quantity)
             .Take(request.TopNDish)
             .ToList();
+
 
         var allRefundableDishDtos = refundDishInventory
             .Select(rdi => new TopRefundableDishDtos(
@@ -114,14 +123,22 @@ public class GetTopUnpopularQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<Ge
             .ToList();
 
         var allComboDtos = topCombos
-            .Select(tc => new GetTopComboDtos(
-                tc.ComboId ?? Guid.Empty,
-                allCombos.First(c => c.Id == tc.ComboId).ComboName,
-                allCombos.First(c => c.Id == tc.ComboId).Price,
-                allCombos.First(c => c.Id == tc.ComboId).PercentReduce,
-                allCombos.First(c => c.Id == tc.ComboId).Status.ToString(),
-                tc.TotalQuantity
-            ))
+            .Select(tc =>
+            {
+                var combo = allCombos.FirstOrDefault(c => c.Id == tc.ComboId);
+                if (combo == null)
+                    return null;
+
+                return new GetTopComboDtos(
+                    tc.ComboId ?? Guid.Empty,
+                    combo.ComboName,
+                    combo.Price,
+                    combo.PercentReduce,
+                    combo.Status.ToString(),
+                    tc.TotalQuantity
+                );
+            })
+            .Where(dto => dto != null) // Exclude null entries
             .Concat(allCombos
                 .Where(c => !topCombos.Any(tc => tc.ComboId == c.Id))
                 .Select(c => new GetTopComboDtos(
@@ -135,6 +152,7 @@ public class GetTopUnpopularQuery(IUnitOfWorks unitOfWorks) : IRequestHandler<Ge
             .OrderByDescending(c => request.SortAscending ? c.Quantity : -c.Quantity)
             .Take(request.TopNCombo)
             .ToList();
+
 
         return new GetTopUnpopularResponse(
             restaurant.Id,
