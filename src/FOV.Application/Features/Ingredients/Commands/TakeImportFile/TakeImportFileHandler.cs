@@ -1,14 +1,14 @@
-﻿using FluentResults;
-using MediatR;
+﻿using MediatR;
 using OfficeOpenXml.DataValidation;
 using OfficeOpenXml;
 using FOV.Infrastructure.UnitOfWork.IUnitOfWorkSetup;
 using FOV.Application.Common.Behaviours.Claim;
-using FOV.Domain.Entities.IngredientAggregator;
 
 namespace FOV.Application.Features.Ingredients.Commands.TakeImportFile;
+
 public sealed record TakeImportFileCommand : IRequest<TakeImportFileResponse>;
 public sealed record TakeImportFileResponse(MemoryStream ExcelFile, string ExcelName);
+
 public class TakeImportFileHandler(IUnitOfWorks unitOfWorks, IClaimService claimService) : IRequestHandler<TakeImportFileCommand, TakeImportFileResponse>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
@@ -28,69 +28,42 @@ public class TakeImportFileHandler(IUnitOfWorks unitOfWorks, IClaimService claim
         worksheet.Cells[1, 4].Value = "ConvertedQuantity"; // Column D (Optional)
         worksheet.Cells[1, 5].Value = "Unit";             // Column E (g)
 
-        int rowIngredient = 2;
+        int currentRow = 2;
         var ingredients = await _unitOfWorks.IngredientRepository.WhereAsync(
             x => x.RestaurantId == _claimService.RestaurantId,
             x => x.IngredientUnits,
-            x => x.IngredientGeneral
-        );
+            x => x.IngredientGeneral);
 
-        foreach (var item in ingredients)
+        foreach (var ingredient in ingredients)
         {
-            worksheet.Cells[rowIngredient, 1].Value = item.IngredientGeneral.IngredientName;
-            worksheet.Cells[$"B{rowIngredient}"].Value = 0; // Default Quantity
+            worksheet.Cells[currentRow, 1].Value = ingredient.IngredientGeneral.IngredientName;
+            worksheet.Cells[currentRow, 2].Value = 0; // Default Quantity
 
-            // Add list validation for Measurement (Column C)
-            var listValidation = worksheet.DataValidations.AddListValidation($"C{rowIngredient}");
-            List<string>? queries = [];
-            foreach (var ingredientUnit in item.IngredientUnits)
+            var listValidation = worksheet.DataValidations.AddListValidation($"C{currentRow}");
+            var conversionQueries = new List<string>();
+
+            foreach (var unit in ingredient.IngredientUnits)
             {
-                listValidation.Formula.Values.Add(ingredientUnit.UnitName);
-                queries.Add(@$"IF(C{rowIngredient}=""{ingredientUnit.UnitName}"",B{rowIngredient}*{await GetTotalConversionFactor(ingredientUnit.Id)}");
+                listValidation.Formula.Values.Add(unit.UnitName);
+                var conversionFactor = await GetTotalConversionFactor(unit.Id);
+                conversionQueries.Add($"IF(C{currentRow}=\"{unit.UnitName}\",B{currentRow}*{conversionFactor}");
             }
 
-            worksheet.Cells[$"D{rowIngredient}"].Formula = ExcelQuery(queries);
-            //@$"IF(C{rowIngredient}=""kg"",B{i}*1000,IF(C{i}=""thùng"",B{i}*10000,IF(C{i}=""gam"",B{i},0)))";
+            worksheet.Cells[currentRow, 4].Formula = BuildExcelFormula(conversionQueries);
 
             listValidation.ShowErrorMessage = true;
             listValidation.ErrorTitle = "Invalid Selection";
             listValidation.Error = "Please select a valid option from the list.";
             listValidation.AllowBlank = false;
 
-            // Set the default value to the first item in the list
-            if (item.IngredientUnits.Count != 0)
-            {
-                worksheet.Cells[rowIngredient, 3].Value = item.IngredientUnits.First().UnitName;
-            }
+            worksheet.Cells[currentRow, 3].Value = ingredient.IngredientUnits.FirstOrDefault()?.UnitName;
+            worksheet.Cells[currentRow, 5].Value = ingredient.IngredientUnits.FirstOrDefault(u => u.IngredientUnitParentId == null)?.UnitName ?? "null";
 
-            worksheet.Cells[rowIngredient, 5].Value = item.IngredientUnits.FirstOrDefault(x => x.IngredientUnitParentId == null)?.UnitName ?? "null";
-
-            rowIngredient++;
-            queries = null;
+            currentRow++;
         }
 
-        // Lock Column A
-        worksheet.Cells["A2:A3000"].Style.Locked = true;
-        worksheet.Cells["C2:C3000"].Style.Locked = true;
-        worksheet.Cells["D3:D3000"].Style.Locked = true;
-        worksheet.Cells["E3:E4000"].Style.Locked = true;
-        // Unlock Columns B (Quantity) and C (Measurement)
-        worksheet.Cells["B2:B3000"].Style.Locked = false;
-        worksheet.Cells["C2:C3000"].Style.Locked = false;
-
-
-
-        // Add number validation for Quantity column (Column B)
-        var numberValidation = worksheet.DataValidations.AddDecimalValidation($"B2:B{rowIngredient}");
-        numberValidation.ShowErrorMessage = true;
-        numberValidation.ErrorTitle = "Invalid Input";
-        numberValidation.Error = "Only numbers greater than 0 are allowed.";
-        numberValidation.Operator = ExcelDataValidationOperator.greaterThanOrEqual;
-        numberValidation.Formula.Value = 0;
-
-        // Protect the worksheet
-        worksheet.Protection.IsProtected = true;
-        worksheet.Protection.AllowSelectLockedCells = true;
+        // Lock and unlock specific cells
+        ProtectWorksheet(worksheet, currentRow);
 
         // Save the Excel file to a memory stream
         var stream = new MemoryStream();
@@ -101,32 +74,44 @@ public class TakeImportFileHandler(IUnitOfWorks unitOfWorks, IClaimService claim
         return new TakeImportFileResponse(stream, excelName);
     }
 
-    public async Task<decimal> GetTotalConversionFactor(Guid unitId)
+    private async Task<decimal> GetTotalConversionFactor(Guid unitId)
     {
-        IngredientUnit unit = await _unitOfWorks.IngredientUnitRepository.FirstOrDefaultAsync(u => u.Id == unitId)
-                              ?? throw new ArgumentException("Unit not found");
+        var unit = await _unitOfWorks.IngredientUnitRepository.FirstOrDefaultAsync(u => u.Id == unitId)
+                   ?? throw new ArgumentException("Unit not found");
 
         if (unit.IngredientUnitParentId == null)
-        {
             return unit.ConversionFactor;
-        }
-        decimal parentConversionFactor = await GetTotalConversionFactor(unit.IngredientUnitParentId.Value);
-        return unit.ConversionFactor * parentConversionFactor;
+
+        var parentFactor = await GetTotalConversionFactor(unit.IngredientUnitParentId.Value);
+        return unit.ConversionFactor * parentFactor;
     }
-    public string ExcelQuery(List<string> elements)
+
+    private static string BuildExcelFormula(List<string> elements)
     {
         if (elements == null || elements.Count == 0)
-        {
-            return "0"; // Default value if there are no elements
-        }
+            return "0";
 
-        // Dynamically combine all the queries into a single nested IF formula
         string formula = string.Join(",", elements) + ",0" + new string(')', elements.Count);
-
-        // Wrap the queries into a single formula
         return $"={formula}";
     }
 
+    private static void ProtectWorksheet(ExcelWorksheet worksheet, int rowCount)
+    {
+        worksheet.Cells[$"A2:A{rowCount}"].Style.Locked = true;
+        worksheet.Cells[$"C2:C{rowCount}"].Style.Locked = true;
+        worksheet.Cells[$"D2:D{rowCount}"].Style.Locked = true;
+        worksheet.Cells[$"E2:E{rowCount}"].Style.Locked = true;
+        worksheet.Cells[$"B2:B{rowCount}"].Style.Locked = false;
+        worksheet.Cells[$"C2:C{rowCount}"].Style.Locked = false;
 
+        var numberValidation = worksheet.DataValidations.AddDecimalValidation($"B2:B{rowCount}");
+        numberValidation.ShowErrorMessage = true;
+        numberValidation.ErrorTitle = "Invalid Input";
+        numberValidation.Error = "Only numbers greater than 0 are allowed.";
+        numberValidation.Operator = ExcelDataValidationOperator.greaterThanOrEqual;
+        numberValidation.Formula.Value = 0;
+
+        worksheet.Protection.IsProtected = true;
+        worksheet.Protection.AllowSelectLockedCells = true;
+    }
 }
-
