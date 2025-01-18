@@ -31,9 +31,6 @@ internal class GetExportFileQuery(IUnitOfWorks unitOfWorks, IClaimService claimS
         foreach (var item in nameDishes)
         {
             worksheet.Cells[rowIngredient, 1].Value = item.DishGeneral.DishName;
-            //  var listValidation = worksheet.DataValidations.AddListValidation($"C{rowIngredient}");
-            //worksheet.Cells[rowIngredient, 2].Value = 0;
-            //worksheet.Cells[$"B{nameDishes.Count}"].Value = 0;
             worksheet.Cells[rowIngredient, 2].Value = 0;
             rowIngredient++;
         }

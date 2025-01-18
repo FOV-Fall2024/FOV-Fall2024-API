@@ -47,15 +47,12 @@ public class HandleImportFileHandler(IUnitOfWorks
 
             if (dish == null || dish.RefundDishInventory == null)
             {
-                // Skip if dish or refund inventory is not found
                 continue;
             }
 
-            // Fetch the refund dish inventory record
             RefundDishInventory inventory = await _unitOfWorks.RefundDishInventoryRepository.GetByIdAsync(dish.RefundDishInventory.Id)
                 ?? throw new Exception("Refund Dish Inventory not found.");
 
-            // Create a new refund dish inventory transaction
             RefundDishInventoryTransaction transaction = new(
                 quantityCalculate,
                 dish.RefundDishInventory.Id,
