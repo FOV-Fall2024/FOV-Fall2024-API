@@ -71,7 +71,7 @@ public class GetDetailsRestaurantsQuery(IUnitOfWorks unitOfWorks) : IRequestHand
             .Take(request.TopNRefundableDish);
 
         var normalDishDtos = (await _unitOfWorks.DishRepository.WhereAsync(
-            d => normalDishes.Select(t => t.DishId).Contains(d.Id), d => d.DishGeneral
+            d => normalDishes.Select(t => t.DishId).Contains(d.Id) && d.RestaurantId == request.RestaurantId, d => d.DishGeneral
                 )).Select(d => new TopDishDtos(
                     d.Id,
                     d.DishGeneral.DishName,
@@ -84,7 +84,7 @@ public class GetDetailsRestaurantsQuery(IUnitOfWorks unitOfWorks) : IRequestHand
                 .ToList();
 
         var refundDishDtos = (await _unitOfWorks.DishRepository.WhereAsync(
-            d => refundDishes.Select(t => t.DishId).Contains(d.Id), d => d.DishGeneral
+            d => refundDishes.Select(t => t.DishId).Contains(d.Id) && d.RestaurantId == request.RestaurantId, d => d.DishGeneral
                 )).Select(d => new TopRefundableDishDtos(
                     d.Id,
                     d.DishGeneral.DishName,
