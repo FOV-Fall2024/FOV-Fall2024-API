@@ -29,7 +29,7 @@ public class ActiveComboHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<Acti
                 .Select(d => d.DishGeneral.DishName)
                 .ToList();
 
-            return Result.Fail($"Không thể active combo này. Món ăn trong combo này đang bị Inactive: {string.Join(", ", inactiveDishNames)}");
+            throw new AppException($"Không thể active combo này. Món ăn trong combo này đang bị Inactive: {string.Join(", ", inactiveDishNames)}");
         }
 
         combo.UpdateState(true);
