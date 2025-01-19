@@ -8,13 +8,13 @@ using MediatR;
 
 namespace FOV.Application.Features.Combos.Commands.Active;
 
-public sealed record ActiveComboCommand(Guid ComboId) : IRequest<Result>;
+public sealed record ActiveComboCommand(Guid ComboId) : IRequest<Guid>;
 
-public class ActiveComboHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<ActiveComboCommand, Result>
+public class ActiveComboHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<ActiveComboCommand, Guid>
 {
     private readonly IUnitOfWorks _unitOfWorks = unitOfWorks;
 
-    public async Task<Result> Handle(ActiveComboCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(ActiveComboCommand request, CancellationToken cancellationToken)
     {
         Combo combo = await _unitOfWorks.ComboRepository.GetByIdAsync(request.ComboId, c => c.DishCombos)
                           ?? throw new Exception("Combo not found");
@@ -36,6 +36,6 @@ public class ActiveComboHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<Acti
         _unitOfWorks.ComboRepository.Update(combo);
         await _unitOfWorks.SaveChangeAsync();
 
-        return Result.Ok();
+        return combo.Id;
     }
 }
