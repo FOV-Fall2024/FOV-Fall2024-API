@@ -17,10 +17,10 @@ public class ActiveComboHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<Acti
     public async Task<Guid> Handle(ActiveComboCommand request, CancellationToken cancellationToken)
     {
         Combo combo = await _unitOfWorks.ComboRepository.GetByIdAsync(request.ComboId, c => c.DishCombos)
-                          ?? throw new Exception("Combo not found");
+                          ?? throw new AppException("Combo not found");
 
         var dishIds = combo.DishCombos.Select(cd => cd.DishId).ToList();
-        var dishes = await _unitOfWorks.DishRepository.WhereAsync(d => dishIds.Contains(d.Id));
+        var dishes = await _unitOfWorks.DishRepository.WhereAsync(d => dishIds.Contains(d.Id), d => d.DishGeneral);
 
         if (dishes.Any(d => d.Status != Status.Active))
         {
@@ -29,7 +29,10 @@ public class ActiveComboHandler(IUnitOfWorks unitOfWorks) : IRequestHandler<Acti
                 .Select(d => d.DishGeneral.DishName)
                 .ToList();
 
-            throw new AppException($"Không thể active combo này. Món ăn trong combo này đang bị Inactive: {string.Join(", ", inactiveDishNames)}");
+            if (inactiveDishNames.Count != 0)
+            {
+                throw new AppException($"Không thể active combo này. Món ăn trong combo này đang bị Inactive: {string.Join(", ", inactiveDishNames)}");
+            }
         }
 
         combo.UpdateState(true);
