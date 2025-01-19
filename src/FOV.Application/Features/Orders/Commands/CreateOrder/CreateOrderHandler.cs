@@ -139,6 +139,10 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderWithTableIdCommand,
                     {
                         throw new AppException("Không có combo này trong hệ thống.");
                     }
+                    if (combo.Status == Status.Inactive)
+                    {
+                        throw new AppException($"Combo '{combo.ComboName}' đã bị vô hiệu hóa.");
+                    }
 
                     var comboPrice = combo.Price;
                     totalPrice += comboPrice * detail.Quantity;
