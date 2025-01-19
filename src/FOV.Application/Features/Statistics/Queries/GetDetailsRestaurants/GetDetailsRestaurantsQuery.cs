@@ -110,7 +110,7 @@ public class GetDetailsRestaurantsQuery(IUnitOfWorks unitOfWorks) : IRequestHand
             .ToList();
 
         var combos = await _unitOfWorks.ComboRepository.WhereAsync(
-            c => topCombos.Select(t => t.ComboId).Contains(c.Id)
+            c => topCombos.Select(t => t.ComboId).Contains(c.Id) && c.RestaurantId == request.RestaurantId
         );
 
         var comboDtos = combos
